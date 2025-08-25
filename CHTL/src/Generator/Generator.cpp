@@ -1,5 +1,6 @@
 #include "CHTL/Generator/Generator.h"
 #include "CHTL/Generator/SelectorScanner.h"
+#include "CHTL/Generator/CommentGenerator.h"
 #include <vector>
 
 namespace CHTL {

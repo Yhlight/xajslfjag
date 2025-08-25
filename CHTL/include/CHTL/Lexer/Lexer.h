@@ -31,11 +31,14 @@ namespace CHTL {
         void HandleLineComment();
         void HandleBlockComment();
         void HandleGeneratorComment();
+        void HandleNumber();
 
         bool IsDigit(char c);
         bool IsAlpha(char c);
         bool IsAlphaNumeric(char c);
         bool IsWhitespace(char c);
+        
+        void InitializeKeywords();
 
     private:
         const std::string& m_Source;
