@@ -10,7 +10,7 @@ namespace CHTL {
 
     class Parser {
     public:
-        Parser(const std::vector<Token>& tokens);
+        Parser(const std::vector<Token>& tokens, Config& config);
 
         std::shared_ptr<ProgramNode> Parse();
 
@@ -68,18 +68,9 @@ namespace CHTL {
         const std::vector<Token>& m_Tokens;
         size_t m_Current = 0;
         bool m_HasError = false;
-        #include "CHTL/Core/Config.h"
-
-class Parser {
-public:
-    Parser(const std::vector<Token>& tokens, Config& config);
-
-    // ... (rest of the file)
-private:
-    // ...
-    Config& m_Config;
-    GlobalMap m_Globals;
-    std::vector<std::string> m_NamespaceStack;
+        Config& m_Config;
+        GlobalMap m_Globals;
+        std::vector<std::string> m_NamespaceStack;
     };
 
 }

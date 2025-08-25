@@ -23,6 +23,7 @@ namespace CHTL {
         Inherit,         // inherit
         Delete,          // delete
         Custom,          // Custom (for [Custom])
+        Template,        // Template (for [Template])
         Number,          // 123
         // Insert keywords
         Insert,          // insert
@@ -41,6 +42,14 @@ namespace CHTL {
         TypeIdentifier,  // @Identifier
         Use,             // use
         Html5,           // html5
+        Text,            // text
+        Style,           // style
+        Script,          // script
+        Comma,           // ,
+        Equal,           // =
+        Arrow,           // ->
+        LiteralString,   // Unquoted literal
+        GeneratorComment,// -- comment
         EndOfFile,
         Unknown
     };

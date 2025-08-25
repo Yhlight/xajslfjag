@@ -5,8 +5,14 @@
 #include <memory>
 #include <variant>
 #include <optional>
+#include <map>
 
 namespace CHTL {
+
+    // Forward declaration for visitor pattern
+    namespace Test {
+        class ASTVisitor;
+    }
 
     // Forward declarations of all AST node types
     struct AstNode;
@@ -74,6 +80,11 @@ namespace CHTL {
         std::vector<std::shared_ptr<StyleRuleNode>> Rules;
     };
 
+    // Represents a script { ... } block
+    struct ScriptNode : public AstNode {
+        std::string Content;
+    };
+
     enum class ConstraintType {
         TypeName,      // e.g., [Template], [Custom]
         SpecificName   // e.g., span, Box
@@ -112,6 +123,25 @@ namespace CHTL {
     };
 
     enum class BlockType { Template, Custom, Origin, Namespace, Configuration };
+
+    enum class ImportType {
+        Html,
+        Style,
+        JavaScript,
+        Chtl,
+        CJmod,
+        Config,
+        Custom,
+        Template,
+        Origin
+    };
+
+    enum class ImportCategory {
+        Template,
+        Custom,
+        Origin,
+        None
+    };
 
     struct TemplateUsageNode : public AstNode {
         std::string Name;
@@ -156,7 +186,7 @@ namespace CHTL {
     struct InsertNode : public AstNode {
         InsertMode Mode;
         // The selector is a simplified element node, only tag and optional index are used.
-        std::shared_p<ElementNode> TargetSelector;
+        std::shared_ptr<ElementNode> TargetSelector;
         std::vector<AstNodePtr> Body;
     };
 

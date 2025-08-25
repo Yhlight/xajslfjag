@@ -47,6 +47,7 @@ Config::Config() {
     Names[ConfigurableKeyword::TYPE_IMPORT_CHTL] = {"@Chtl"};
     Names[ConfigurableKeyword::TYPE_IMPORT_CJMOD] = {"@CJmod"};
     Names[ConfigurableKeyword::TYPE_IMPORT_CONFIG] = {"@Config"};
+    Names[ConfigurableKeyword::TYPE_CONFIGURATION_CONFIG] = {"@Config"};
 }
 
 }
