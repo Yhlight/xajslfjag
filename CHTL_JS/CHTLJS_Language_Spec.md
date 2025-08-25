@@ -3,18 +3,16 @@
 ## Important: CHTL JS is NOT JavaScript
 
 CHTL JS is an independent programming language designed specifically for CHTL. It has its own:
-- Syntax
-- Runtime
-- Object model
-- DOM manipulation methods
-- Event system
+- Syntax (completely different from JavaScript)
+- Compiler (compiles TO JavaScript, but is not JavaScript itself)
+- Language constructs
 
 ## Core Principles
 
-1. **Independent Language**: CHTL JS is not a superset, subset, or variant of JavaScript
-2. **Own Compiler**: CHTL JS has its own compiler, separate from JavaScript engines
-3. **Own Runtime**: CHTL JS code executes in its own runtime environment
-4. **No JS Interop**: CHTL JS code cannot directly call JavaScript functions or vice versa
+1. **Independent Source Language**: CHTL JS source code is not JavaScript and cannot contain JavaScript code
+2. **Compiles to JavaScript**: The CHTL JS compiler generates JavaScript as its target output
+3. **Own Syntax**: CHTL JS has unique syntax like `{{selector}}`, `->`, etc.
+4. **No JS in Source**: CHTL JS source files cannot include raw JavaScript code
 
 ## CHTL JS Syntax Examples
 
@@ -75,7 +73,26 @@ CHTL JS provides its own runtime functions:
 
 1. CHTL JS source code → CHTL JS Parser
 2. CHTL JS AST → CHTL JS Compiler
-3. CHTL JS Bytecode → CHTL JS Runtime
-4. Execution in CHTL JS VM
+3. JavaScript output → Browser/JS Engine
 
-The CHTL JS compiler NEVER generates JavaScript code. It generates its own bytecode or intermediate representation that runs in the CHTL JS runtime.
+The CHTL JS compiler generates JavaScript code as its compilation target. This is similar to how TypeScript compiles to JavaScript, but CHTL JS has completely different syntax and is not related to JavaScript at the source level.
+
+## Example Compilation
+
+CHTL JS source:
+```chtljs
+{{.box}}->listen({
+    click: () => {
+        console->log("Clicked!");
+    }
+});
+```
+
+Compiles to JavaScript:
+```javascript
+Array.from(document.getElementsByClassName('box')).forEach(elem => {
+    elem.addEventListener('click', () => {
+        console.log("Clicked!");
+    });
+});
+```

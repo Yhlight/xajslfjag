@@ -42,8 +42,8 @@ std::vector<CodeSlice> CJMODProcessor::Process(const CodeSlice& slice) {
     
     CodeSlice processedSlice = slice;
     processedSlice.Content = processedContent;
-    // Keep as CHTL_JS - CJMOD extends CHTL JS, doesn't convert to JS
-    processedSlice.Type = SliceType::CHTL_JS;
+    // After processing CJMOD patterns, the output is JavaScript
+    processedSlice.Type = SliceType::JS;
     
     return {processedSlice};
 }
