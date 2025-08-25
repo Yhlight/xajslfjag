@@ -1,4 +1,5 @@
 #include "CHTL_JS/Generator/SelectorGenerator.h"
+#include "CHTL_JS/Core/Runtime.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
@@ -17,52 +18,48 @@ std::string SelectorGenerator::Generate(const SelectorNode& node) {
 }
 
 std::string SelectorGenerator::GenerateByType(const std::string& selector, std::optional<int> index) {
-    std::stringstream js;
+    std::stringstream chtljs;
     
     if (selector.empty()) {
         return "null";
     }
     
-    // Check selector type
+    // Generate CHTL JS selector syntax, NOT JavaScript!
+    // CHTL JS has its own selector resolution mechanism
+    
     if (selector[0] == '.') {
-        // Class selector
+        // Class selector in CHTL JS
         std::string className = selector.substr(1);
         if (index.has_value()) {
-            js << "document.getElementsByClassName('" << className << "')[" << index.value() << "]";
+            chtljs << "select_class(\"" << className << "\")[" << index.value() << "]";
         } else {
-            js << "Array.from(document.getElementsByClassName('" << className << "'))";
+            chtljs << "select_class(\"" << className << "\")";
         }
     } 
     else if (selector[0] == '#') {
-        // ID selector
+        // ID selector in CHTL JS
         std::string id = selector.substr(1);
-        js << "document.getElementById('" << id << "')";
+        chtljs << "select_id(\"" << id << "\")";
     }
     else {
         // Could be tag or implicit class/id
         if (IsTagSelector(selector)) {
-            // Tag selector
+            // Tag selector in CHTL JS
             if (index.has_value()) {
-                js << "document.getElementsByTagName('" << selector << "')[" << index.value() << "]";
+                chtljs << "select_element(\"" << selector << "\")[" << index.value() << "]";
             } else {
-                js << "Array.from(document.getElementsByTagName('" << selector << "'))";
+                chtljs << "select_element(\"" << selector << "\")";
             }
         } else {
-            // Try ID first, then class
-            js << "(function() {\n";
-            js << "    let elem = document.getElementById('" << selector << "');\n";
-            js << "    if (elem) return elem;\n";
-            js << "    let elems = document.getElementsByClassName('" << selector << "');\n";
+            // CHTL JS smart selector - tries ID first, then class
+            chtljs << "smart_select(\"" << selector << "\")";
             if (index.has_value()) {
-                js << "    return elems[" << index.value() << "];\n";
-            } else {
-                js << "    return elems.length > 0 ? Array.from(elems) : null;\n";
+                chtljs << "[" << index.value() << "]";
             }
-            js << "})()";
         }
     }
     
-    return js.str();
+    return chtljs.str();
 }
 
 bool SelectorGenerator::IsTagSelector(const std::string& selector) {
