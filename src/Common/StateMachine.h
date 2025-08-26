@@ -81,9 +81,10 @@ enum class StateTransitionEvent {
     ARROW_OPERATOR_DETECTED,    // -> 检测到
     
     // 统一化语法事件
-    CHTLJS_FUNCTION_START,      // CHTL JS函数开始
-    CHTLJS_KEYVALUE_START,      // CHTL JS键值对块开始 ({
-    CHTLJS_KEYVALUE_END,        // CHTL JS键值对块结束 })
+    CHTLJS_FUNCTION_START,      // CHTL JS函数开始 (animate/listen/delegate {)
+    CHTLJS_FUNCTION_BLOCK_START, // CHTL JS函数块开始 {
+    CHTLJS_FUNCTION_BLOCK_END,  // CHTL JS函数块结束 }
+    CSS_BLOCK_IN_CHTLJS,        // CHTL JS中的CSS块 (begin/end/when)
     NESTED_CONTEXT_ENTER,       // 进入嵌套上下文
     NESTED_CONTEXT_EXIT,        // 退出嵌套上下文
     SYNTAX_AMBIGUITY_DETECTED,  // 检测到语法歧义
