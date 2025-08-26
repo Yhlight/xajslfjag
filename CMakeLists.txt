@@ -148,6 +148,11 @@ set(CHTL_HEADERS
     src/Core/ZipLibrary.h
     src/Core/CMODManager.h
     
+    # 严格按照语法文档的模块系统
+    src/Core/ModuleStructure.h
+    src/Core/ChthollyModuleTemplate.h
+    src/Core/ModuleUsageRules.h
+    
     # CJMOD API系统头文件
     src/CJMOD/Syntax.h
     src/CJMOD/Arg.h
