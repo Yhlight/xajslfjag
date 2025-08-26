@@ -1,81 +1,75 @@
-# CHTL核心库
+# src CMakeLists.txt
+
+# 创建各个库
+# Core库
 add_library(CHTLCore STATIC
-    Core/FileSystem.cpp
+    Core/Common.cpp
     Core/Logger.cpp
     Core/Timer.cpp
-    Utils/StringUtils.cpp
-    Utils/PathUtils.cpp
+    Core/Utils.cpp
 )
 
-# 统一扫描器
+# Scanner库
 add_library(CHTLScanner STATIC
     Scanner/UnifiedScanner.cpp
+    Scanner/ScannerUtils.cpp
     Scanner/SliceManager.cpp
-    Scanner/TokenIdentifier.cpp
 )
 
-# CHTL编译器
+# CHTL编译器库
 add_library(CHTLCompiler STATIC
     CHTL/Token.cpp
     CHTL/Lexer.cpp
     CHTL/Parser.cpp
     CHTL/AST.cpp
     CHTL/Generator.cpp
-    CHTL/Context.cpp
-    CHTL/State.cpp
     CHTL/GlobalMap.cpp
+    CHTL/State.cpp
+    CHTL/Context.cpp
     CHTL/TemplateSystem.cpp
     CHTL/CustomSystem.cpp
+    CHTL/ConfigurationManager.cpp
     CHTL/ImportResolver.cpp
     CHTL/NamespaceManager.cpp
-    CHTL/ConfigurationManager.cpp
 )
 
-# CHTL JS编译器
+# CHTL JS编译器库
 add_library(CHTLJSCompiler STATIC
     CHTLJS/Token.cpp
     CHTLJS/Lexer.cpp
     CHTLJS/Parser.cpp
     CHTLJS/AST.cpp
     CHTLJS/Generator.cpp
-    CHTLJS/Context.cpp
-    CHTLJS/State.cpp
     CHTLJS/GlobalMap.cpp
-    CHTLJS/SelectorEngine.cpp
-    CHTLJS/ListenerEngine.cpp
-    CHTLJS/AnimationEngine.cpp
-    CHTLJS/VirtualObjectManager.cpp
+    CHTLJS/State.cpp
+    CHTLJS/Context.cpp
+    CHTLJS/EventHandler.cpp
+    CHTLJS/AnimationSystem.cpp
+    CHTLJS/VirtualObjectSystem.cpp
 )
 
-# CSS编译器（ANTLR）
-if(EXISTS ${ANTLR4_ROOT})
-    add_library(CSSCompiler STATIC
-        CSS/CSSCompiler.cpp
-        CSS/CSSLexer.cpp
-        CSS/CSSParser.cpp
-        CSS/CSSGenerator.cpp
-    )
-    target_link_libraries(CSSCompiler antlr4_static)
-endif()
+# CSS编译器库（暂时使用占位文件）
+add_library(CSSCompiler STATIC
+    CSS/CSSLexer.cpp
+    CSS/CSSParser.cpp
+    CSS/CSSGenerator.cpp
+)
 
-# JavaScript编译器（ANTLR）
-if(EXISTS ${ANTLR4_ROOT})
-    add_library(JavaScriptCompiler STATIC
-        JavaScript/JavaScriptCompiler.cpp
-        JavaScript/JavaScriptLexer.cpp
-        JavaScript/JavaScriptParser.cpp
-        JavaScript/JavaScriptGenerator.cpp
-    )
-    target_link_libraries(JavaScriptCompiler antlr4_static)
-endif()
+# JavaScript编译器库（暂时使用占位文件）
+add_library(JavaScriptCompiler STATIC
+    JavaScript/JSLexer.cpp
+    JavaScript/JSParser.cpp
+    JavaScript/JSGenerator.cpp
+)
 
-# 编译器调度器
+# 调度器库
 add_library(CHTLDispatcher STATIC
     Dispatcher/CompilerDispatcher.cpp
     Dispatcher/ResultMerger.cpp
+    Dispatcher/ModuleResolver.cpp
 )
 
-# 模块系统
+# 模块系统库
 add_library(CHTLModules STATIC
     Modules/CMODManager.cpp
     Modules/CJMODManager.cpp
@@ -84,31 +78,43 @@ add_library(CHTLModules STATIC
     Modules/ModuleResolver.cpp
 )
 
-# CHTL主程序
-add_executable(chtl
-    main.cpp
+# 设置包含目录
+target_include_directories(CHTLCore PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CHTLScanner PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CHTLCompiler PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CHTLJSCompiler PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CSSCompiler PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(JavaScriptCompiler PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CHTLDispatcher PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(CHTLModules PUBLIC ${CMAKE_SOURCE_DIR}/include)
+
+# 链接依赖
+target_link_libraries(CHTLScanner PUBLIC CHTLCore)
+target_link_libraries(CHTLCompiler PUBLIC CHTLCore CHTLScanner)
+target_link_libraries(CHTLJSCompiler PUBLIC CHTLCore CHTLScanner)
+target_link_libraries(CSSCompiler PUBLIC CHTLCore)
+target_link_libraries(JavaScriptCompiler PUBLIC CHTLCore)
+target_link_libraries(CHTLDispatcher PUBLIC 
+    CHTLCore 
+    CHTLScanner 
+    CHTLCompiler 
+    CHTLJSCompiler
+    CSSCompiler 
+    JavaScriptCompiler
 )
 
-# 链接库
-target_link_libraries(chtl
+# 创建主程序可执行文件
+add_executable(chtl main.cpp)
+
+# 链接所有库到主程序
+target_link_libraries(chtl PRIVATE
     CHTLCore
     CHTLScanner
     CHTLCompiler
     CHTLJSCompiler
+    CSSCompiler
+    JavaScriptCompiler
     CHTLDispatcher
     CHTLModules
     Threads::Threads
 )
-
-# 如果ANTLR存在，链接CSS和JS编译器
-if(EXISTS ${ANTLR4_ROOT})
-    target_link_libraries(chtl CSSCompiler JavaScriptCompiler)
-endif()
-
-# 设置可执行文件输出名称
-set_target_properties(chtl PROPERTIES OUTPUT_NAME "chtl")
-
-# Windows特定设置
-if(WIN32)
-    set_target_properties(chtl PROPERTIES SUFFIX ".exe")
-endif()

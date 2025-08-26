@@ -17,7 +17,7 @@ void CompileTimer::Stop() {
 }
 
 void CompileTimer::StartPhase(const String& phaseName) {
-    phases_[phaseName] = PhaseTime{phaseName, Clock::now(), TimePoint(), Duration(0), false};
+    phases_[phaseName] = PhaseTime{Clock::now(), TimePoint(), Duration(0), false};
 }
 
 void CompileTimer::EndPhase(const String& phaseName) {

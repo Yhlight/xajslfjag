@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libCHTLScanner.a CMakeFiles/CHTLScanner.dir/Scanner/UnifiedScanner.cpp.o CMakeFiles/CHTLScanner.dir/Scanner/ScannerUtils.cpp.o CMakeFiles/CHTLScanner.dir/Scanner/SliceManager.cpp.o
+/usr/bin/ranlib ../lib/libCHTLScanner.a

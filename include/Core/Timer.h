@@ -14,17 +14,11 @@ private:
     using Duration = std::chrono::duration<double>;
     
     struct PhaseTime {
-        String name;
         TimePoint start;
         TimePoint end;
         Duration duration;
         bool completed = false;
     };
-    
-    TimePoint startTime_;
-    TimePoint endTime_;
-    HashMap<String, PhaseTime> phases_;
-    bool running_ = false;
     
 public:
     CompileTimer() = default;
@@ -66,9 +60,17 @@ public:
     // 重置计时器
     void Reset();
     
-private:
-    // 格式化时间
+    // 获取编译状态
+    String GetStatus() const;
+    
+    // 格式化持续时间
     static String FormatDuration(double seconds);
+    
+private:
+    TimePoint startTime_;
+    TimePoint endTime_;
+    HashMap<String, PhaseTime> phases_;
+    bool running_ = false;
 };
 
 // RAII阶段计时器

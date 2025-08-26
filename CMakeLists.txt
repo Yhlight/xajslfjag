@@ -48,14 +48,12 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 # 查找线程库
 find_package(Threads REQUIRED)
 
-# ANTLR4运行时库设置
-set(ANTLR4_ROOT ${CMAKE_SOURCE_DIR}/ANTLR4)
-if(EXISTS ${ANTLR4_ROOT})
-    include_directories(${ANTLR4_ROOT}/runtime/src)
-    add_subdirectory(${ANTLR4_ROOT}/runtime/Cpp EXCLUDE_FROM_ALL)
-endif()
+# ANTLR4运行时（暂时注释，后续集成）
+# TODO: 集成ANTLR4
+# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/runtime/Cpp antlr4_runtime)
+# include_directories(${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/runtime/Cpp/runtime/src)
 
-# 添加子目录
+# 添加源代码子目录
 add_subdirectory(src)
 
 # 测试目录（可选）
