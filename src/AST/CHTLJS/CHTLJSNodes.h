@@ -47,6 +47,13 @@ enum class CHTLJSNodeType {
     
     // 动画配置对象
     ANIMATION_CONFIG,    // animate的配置对象
+    ANIMATION_KEYFRAME,  // 动画关键帧 (when数组中的对象)
+    
+    // 事件绑定表达式
+    EVENT_BIND_EXPR,     // &-> 事件绑定表达式
+    
+    // vir声明
+    VIR_DECLARATION,     // vir虚对象声明
     
     // 键值对（用于事件和动画配置）
     KEY_VALUE_PAIR,
@@ -487,6 +494,83 @@ public:
     
     // 优化CHTL JS AST
     static void optimizeAST(std::shared_ptr<ASTNode> root);
+};
+
+// ============================================================================
+// 扩展的CHTL JS AST节点类
+// ============================================================================
+
+// 事件绑定表达式节点 (&->)
+class EventBindExpressionNode : public ASTNodeImpl {
+public:
+    std::shared_ptr<EnhancedSelectorNode> target_selector; // 目标选择器
+    std::string event_type;                                // 事件类型 (click, hover等)
+    std::string handler_code;                              // 处理器代码
+    bool is_inline_handler;                                // 是否内联处理器
+    
+    EventBindExpressionNode() : ASTNodeImpl(NodeType::UNKNOWN), is_inline_handler(true) {}
+    
+    EventBindExpressionNode(const std::string& event, const std::string& handler)
+        : ASTNodeImpl(NodeType::UNKNOWN), event_type(event), handler_code(handler), is_inline_handler(true) {}
+    
+    void accept(Visitor& visitor) override;
+    std::shared_ptr<ASTNode> clone() const override;
+    
+    // 生成标准事件监听器代码
+    std::string generateEventListenerCode() const;
+};
+
+// vir虚对象声明节点
+class VirDeclarationNode : public ASTNodeImpl {
+public:
+    std::string vir_name;                                  // vir对象名称
+    std::shared_ptr<ASTNode> target_function;             // 目标函数 (listen, delegate等)
+    std::unordered_map<std::string, std::string> key_map; // 键值映射表
+    
+    VirDeclarationNode() : ASTNodeImpl(NodeType::UNKNOWN) {}
+    
+    VirDeclarationNode(const std::string& name) 
+        : ASTNodeImpl(NodeType::UNKNOWN), vir_name(name) {}
+    
+    void accept(Visitor& visitor) override;
+    std::shared_ptr<ASTNode> clone() const override;
+    
+    // 解析目标函数中的键
+    void extractKeysFromFunction();
+    
+    // 生成vir访问代码
+    std::string generateVirAccessCode(const std::string& key) const;
+    
+    // 检查键是否存在
+    bool hasKey(const std::string& key) const;
+    
+    // 获取键的类型
+    std::string getKeyType(const std::string& key) const;
+};
+
+// 动画关键帧节点
+class AnimationKeyframeNode : public ASTNodeImpl {
+public:
+    double at_time;                                        // 时间点 (0.0 - 1.0)
+    std::unordered_map<std::string, std::string> styles;  // CSS样式属性
+    
+    AnimationKeyframeNode() : ASTNodeImpl(NodeType::UNKNOWN), at_time(0.0) {}
+    
+    AnimationKeyframeNode(double time) : ASTNodeImpl(NodeType::UNKNOWN), at_time(time) {}
+    
+    void accept(Visitor& visitor) override;
+    std::shared_ptr<ASTNode> clone() const override;
+    
+    // 添加样式属性
+    void addStyle(const std::string& property, const std::string& value) {
+        styles[property] = value;
+    }
+    
+    // 生成CSS关键帧代码
+    std::string generateKeyframeCSS() const;
+    
+    // 验证时间点有效性
+    bool isValidTimePoint() const { return at_time >= 0.0 && at_time <= 1.0; }
 };
 
 } // namespace AST

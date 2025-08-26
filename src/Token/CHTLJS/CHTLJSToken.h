@@ -44,6 +44,22 @@ enum class CHTLJSTokenType {
     I_NEVER_AWAY,        // iNeverAway (珂朵莉模块特殊函数)
     PRINT_MY_LOVE,       // printMylove (珂朵莉模块函数)
     
+    // 扩展的CHTL JS特性
+    EVENT_BIND_OPERATOR, // &-> (事件绑定操作符)
+    
+    // 动画关键字
+    AT_KEYWORD,          // at (动画时间点)
+    BEGIN_KEYWORD,       // begin (动画起始状态)
+    WHEN_KEYWORD,        // when (动画关键帧)
+    END_KEYWORD,         // end (动画结束状态)
+    LOOP_KEYWORD,        // loop (动画循环)
+    DIRECTION_KEYWORD,   // direction (动画方向)
+    DELAY_KEYWORD,       // delay (动画延迟)
+    CALLBACK_KEYWORD,    // callback (动画回调)
+    TARGET_KEYWORD,      // target (动画目标)
+    DURATION_KEYWORD,    // duration (动画持续时间)
+    EASING_KEYWORD,      // easing (缓动函数)
+    
     // 选择器相关
     CSS_SELECTOR,        // CSS选择器内容 (在{{}}内部)
     CLASS_SELECTOR,      // 类选择器 (.xxx)

@@ -73,11 +73,11 @@ set(CHTL_SOURCES
     # 核心组件
     src/Core/CompilerDispatcher.cpp
     
-    # 编译器
-    src/Compiler/CHTL/CHTLCompiler.cpp
-    src/Compiler/CHTLJS/CHTLJSCompiler.cpp
-    src/Compiler/CSS/CSSCompiler.cpp
-    src/Compiler/JavaScript/JavaScriptCompiler.cpp
+    # 编译器 (TODO: 实现)
+    # src/Compiler/CHTL/CHTLCompiler.cpp
+    # src/Compiler/CHTLJS/CHTLJSCompiler.cpp
+    # src/Compiler/CSS/CSSCompiler.cpp
+    # src/Compiler/JavaScript/JavaScriptCompiler.cpp
     
     # ANTLR生成的文件
     css/css3Lexer.cpp
