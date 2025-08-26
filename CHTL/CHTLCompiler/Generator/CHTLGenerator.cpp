@@ -1,21 +1,16 @@
 #include "CHTLGenerator.h"
 #include <algorithm>
-#include <regex>
-#include <iomanip>
-#include <random>
+#include <sstream>
 
 namespace CHTL {
 
-// ====== CHTLStyleScope 实现 ======
+// === CHTLStyleScope实现 ===
 
 CHTLStyleScope::CHTLStyleScope(const std::string& id, bool global) 
-    : scopeId(id), isGlobal(global) {
-}
+    : scopeId(id), isGlobal(global) {}
 
 std::string CHTLStyleScope::getScopedSelector(const std::string& selector) {
-    if (isGlobal) {
-        return selector;
-    }
+    if (isGlobal) return selector;
     
     auto it = localSelectors.find(selector);
     if (it != localSelectors.end()) {
@@ -23,26 +18,16 @@ std::string CHTLStyleScope::getScopedSelector(const std::string& selector) {
     }
     
     // 生成作用域选择器
-    std::string scopedSelector;
-    if (selector.empty() || selector[0] == '.') {
-        scopedSelector = "." + scopeId + " " + selector;
-    } else if (selector[0] == '#') {
-        scopedSelector = "#" + scopeId + " " + selector;
-    } else if (selector[0] == '&') {
-        scopedSelector = "." + scopeId + selector.substr(1);
-    } else {
-        scopedSelector = "." + scopeId + " " + selector;
-    }
-    
-    localSelectors[selector] = scopedSelector;
-    return scopedSelector;
+    std::string scoped = "[data-chtl-scope=\"" + scopeId + "\"] " + selector;
+    localSelectors[selector] = scoped;
+    return scoped;
 }
 
 void CHTLStyleScope::addLocalSelector(const std::string& original, const std::string& scoped) {
     localSelectors[original] = scoped;
 }
 
-// ====== CHTLTemplateManager 实现 ======
+// === CHTLTemplateManager实现 ===
 
 void CHTLTemplateManager::registerTemplate(const std::string& name, std::shared_ptr<CHTLTemplateNode> templateNode) {
     templates[name] = templateNode;
@@ -83,7 +68,7 @@ bool CHTLTemplateManager::hasOrigin(const std::string& name) const {
     return origins.find(name) != origins.end();
 }
 
-// ====== CHTLVariableResolver 实现 ======
+// === CHTLVariableResolver实现 ===
 
 void CHTLVariableResolver::setVariable(const std::string& name, const std::string& value) {
     variables[name] = value;
@@ -99,12 +84,12 @@ std::string CHTLVariableResolver::resolveVariable(const std::string& name) const
         return it->second;
     }
     
-    auto git = globalVariables.find(name);
-    if (git != globalVariables.end()) {
-        return git->second;
+    auto globalIt = globalVariables.find(name);
+    if (globalIt != globalVariables.end()) {
+        return globalIt->second;
     }
     
-    return "${" + name + "}"; // 保持原样如果找不到
+    return ""; // 变量未找到
 }
 
 bool CHTLVariableResolver::hasVariable(const std::string& name) const {
@@ -114,30 +99,30 @@ bool CHTLVariableResolver::hasVariable(const std::string& name) const {
 
 std::string CHTLVariableResolver::interpolateString(const std::string& input) const {
     std::string result = input;
-    std::regex varPattern(R"(\$\{([^}]+)\})");
-    std::smatch match;
+    size_t pos = 0;
     
-    while (std::regex_search(result, match, varPattern)) {
-        std::string varName = match[1].str();
-        std::string varValue = resolveVariable(varName);
-        result.replace(match.position(), match.length(), varValue);
+    // 简单的变量插值 ${variable}
+    while ((pos = result.find("${", pos)) != std::string::npos) {
+        size_t end = result.find("}", pos);
+        if (end != std::string::npos) {
+            std::string varName = result.substr(pos + 2, end - pos - 2);
+            std::string varValue = resolveVariable(varName);
+            result.replace(pos, end - pos + 1, varValue);
+            pos += varValue.length();
+        } else {
+            break;
+        }
     }
     
     return result;
 }
 
-// ====== CHTLGenerator 主类实现 ======
+// === CHTLGenerator主类实现 ===
 
 CHTLGenerator::CHTLGenerator(const CHTLGeneratorConfig& cfg) 
-    : config(cfg), indentLevel(0), nextScopeId(1) {
-}
+    : config(cfg), indentLevel(0), nextScopeId(1) {}
 
 CHTLGenerationResult CHTLGenerator::generate(std::shared_ptr<CHTLDocumentNode> document) {
-    if (!document) {
-        addError("文档节点为空");
-        return createFailedResult();
-    }
-    
     // 重置状态
     htmlStream.str("");
     cssStream.str("");
@@ -146,21 +131,14 @@ CHTLGenerationResult CHTLGenerator::generate(std::shared_ptr<CHTLDocumentNode> d
     warnings.clear();
     indentLevel = 0;
     styleScopes.clear();
-    generationCache.clear();
-    
-    // 创建全局样式作用域
-    pushStyleScope(std::make_unique<CHTLStyleScope>("global", true));
+    nextScopeId = 1;
     
     try {
-        // 预处理：注册所有模板和自定义
-        preprocessDocument(document);
+        // 第一遍：收集模板、自定义和原始嵌入定义
+        collectDefinitions(document);
         
-        // 生成文档
+        // 第二遍：生成代码
         generateDocument(document);
-        
-        // 生成全局样式和脚本
-        generateGlobalStyles();
-        generateGlobalScripts();
         
         // 创建结果
         CHTLGenerationResult result;
@@ -171,215 +149,114 @@ CHTLGenerationResult CHTLGenerator::generate(std::shared_ptr<CHTLDocumentNode> d
         result.warnings = warnings;
         result.success = errors.empty();
         
-        // 优化和验证
-        if (config.enableOptimization && result.success) {
-            result.html = optimizeHTML(result.html);
-            result.css = optimizeCSS(result.css);
-        }
-        
-        if (config.minifyOutput && result.success) {
-            result.html = minifyHTML(result.html);
-            result.css = minifyCSS(result.css);
-        }
-        
-        if (config.validateOutput && result.success) {
-            if (!validateHTML(result.html)) {
-                addWarning("生成的HTML可能存在问题");
-            }
-            if (!validateCSS(result.css)) {
-                addWarning("生成的CSS可能存在问题");
-            }
-        }
-        
-        // 设置元数据
-        result.metadata["generator"] = "CHTL Compiler v1.0";
-        result.metadata["timestamp"] = std::to_string(std::time(nullptr));
-        result.metadata["charset"] = config.outputCharset;
-        
         return result;
         
     } catch (const std::exception& e) {
-        addError("生成过程中发生异常: " + std::string(e.what()));
-        return createFailedResult();
+        CHTLGenerationResult result;
+        result.success = false;
+        result.errors.push_back("代码生成异常: " + std::string(e.what()));
+        return result;
     }
 }
 
-void CHTLGenerator::preprocessDocument(std::shared_ptr<CHTLDocumentNode> document) {
-    // 遍历文档，注册所有模板、自定义和原始嵌入
-    document->traverse([this](std::shared_ptr<CHTLNode> node) {
-        switch (node->type) {
-            case CHTLNodeType::TEMPLATE_DEFINITION:
-                if (auto templateNode = std::dynamic_pointer_cast<CHTLTemplateNode>(node)) {
-                    templateManager.registerTemplate(templateNode->name, templateNode);
-                }
-                break;
-                
-            case CHTLNodeType::CUSTOM_DEFINITION:
-                if (auto customNode = std::dynamic_pointer_cast<CHTLCustomNode>(node)) {
-                    templateManager.registerCustom(customNode->name, customNode);
-                }
-                break;
-                
-            case CHTLNodeType::ORIGIN_DEFINITION:
-                templateManager.registerOrigin(node->name, node);
-                break;
-                
-            case CHTLNodeType::VARIABLE_DEFINITION:
-                // 处理变量定义
-                processVariableDefinitions(node);
-                break;
-                
-            default:
-                break;
+void CHTLGenerator::collectDefinitions(std::shared_ptr<CHTLDocumentNode> document) {
+    for (auto& child : document->children) {
+        if (child->type == CHTLNodeType::TEMPLATE_DEFINITION) {
+            auto templateNode = std::dynamic_pointer_cast<CHTLTemplateNode>(child);
+            if (templateNode) {
+                templateManager.registerTemplate(templateNode->name, templateNode);
+            }
+        } else if (child->type == CHTLNodeType::CUSTOM_DEFINITION) {
+            auto customNode = std::dynamic_pointer_cast<CHTLCustomNode>(child);
+            if (customNode) {
+                templateManager.registerCustom(customNode->name, customNode);
+            }
+        } else if (child->type == CHTLNodeType::ORIGIN_DEFINITION) {
+            templateManager.registerOrigin(child->name, child);
         }
-    });
+    }
 }
 
 void CHTLGenerator::generateDocument(std::shared_ptr<CHTLDocumentNode> document) {
-    writeHTML("<!DOCTYPE html>");
-    writeHTML("<html lang=\"zh-CN\">");
-    increaseIndent();
+    // HTML5文档结构
+    htmlStream << "<!DOCTYPE html>\n";
+    htmlStream << "<html lang=\"zh-CN\">\n";
+    htmlStream << "<head>\n";
+    htmlStream << "  <meta charset=\"utf-8\">\n";
+    htmlStream << "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n";
+    htmlStream << "  <title>CHTL Generated Page</title>\n";
     
-    // 生成头部
-    generateDocumentHead(document);
-    
-    // 生成主体
-    generateDocumentBody(document);
-    
-    decreaseIndent();
-    writeHTML("</html>");
-}
-
-void CHTLGenerator::generateDocumentHead(std::shared_ptr<CHTLDocumentNode> document) {
-    writeIndent();
-    writeHTML("<head>");
-    increaseIndent();
-    
-    writeIndent();
-    writeHTML("<meta charset=\"" + config.outputCharset + "\">");
-    writeIndent();
-    writeHTML("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-    writeIndent();
-    writeHTML("<meta name=\"generator\" content=\"CHTL Compiler\">");
-    
-    // 生成标题
-    writeIndent();
-    writeHTML("<title>CHTL Generated Page</title>");
-    
-    // 如果有CSS，添加样式标签
+    // 生成样式
     if (!cssStream.str().empty()) {
-        writeIndent();
-        writeHTML("<style>");
-        writeHTML(cssStream.str());
-        writeIndent();
-        writeHTML("</style>");
+        htmlStream << "  <style>\n";
+        htmlStream << addIndent(cssStream.str(), 2);
+        htmlStream << "  </style>\n";
     }
     
-    decreaseIndent();
-    writeIndent();
-    writeHTML("</head>");
-}
-
-void CHTLGenerator::generateDocumentBody(std::shared_ptr<CHTLDocumentNode> document) {
-    writeIndent();
-    writeHTML("<body>");
-    increaseIndent();
+    htmlStream << "</head>\n";
+    htmlStream << "<body>\n";
     
-    // 生成use声明（作为注释）
-    auto useDecls = document->getUseDeclarations();
-    for (auto& useDecl : useDecls) {
-        if (config.includeComments) {
-            writeIndent();
-            writeHTML("<!-- Use: " + useDecl->value + " -->");
-        }
-    }
-    
-    // 生成命名空间声明（作为注释）
-    auto namespaceDecls = document->getNamespaceDeclarations();
-    for (auto& nsDecl : namespaceDecls) {
-        if (config.includeComments) {
-            writeIndent();
-            writeHTML("<!-- Namespace: " + nsDecl->name + " -->");
-        }
-    }
-    
-    // 生成主要内容
+    // 生成主体内容
+    indentLevel = 1;
     for (auto& child : document->children) {
-        if (child->type == CHTLNodeType::HTML_ELEMENT ||
-            child->type == CHTLNodeType::TEXT_NODE ||
-            child->type == CHTLNodeType::TEMPLATE_USAGE ||
-            child->type == CHTLNodeType::CUSTOM_USAGE) {
-            generateNode(child);
-        }
+        generateNode(child);
     }
     
-    decreaseIndent();
-    writeIndent();
-    writeHTML("</body>");
+    htmlStream << "</body>\n";
+    
+    // 生成脚本
+    if (!jsStream.str().empty()) {
+        htmlStream << "<script>\n";
+        htmlStream << addIndent(jsStream.str(), 1);
+        htmlStream << "</script>\n";
+    }
+    
+    htmlStream << "</html>\n";
 }
 
 void CHTLGenerator::generateNode(std::shared_ptr<CHTLNode> node) {
     if (!node) return;
     
-    // 检查缓存
-    if (config.enableCaching) {
-        std::string cacheKey = getCacheKey(node);
-        if (hasCachedResult(cacheKey)) {
-            writeHTML(getCachedResult(cacheKey));
-            return;
-        }
-    }
-    
     switch (node->type) {
         case CHTLNodeType::HTML_ELEMENT:
-            if (auto element = std::dynamic_pointer_cast<CHTLElementNode>(node)) {
-                generateElement(element);
-            }
+            generateElement(std::dynamic_pointer_cast<CHTLElementNode>(node));
             break;
             
         case CHTLNodeType::TEXT_NODE:
             generateTextNode(node);
             break;
             
-        case CHTLNodeType::TEMPLATE_DEFINITION:
-            // 模板定义不直接生成内容
-            break;
-            
         case CHTLNodeType::TEMPLATE_USAGE:
             generateTemplateUsage(node);
-            break;
-            
-        case CHTLNodeType::CUSTOM_DEFINITION:
-            // 自定义定义不直接生成内容
             break;
             
         case CHTLNodeType::CUSTOM_USAGE:
             generateCustomUsage(node);
             break;
             
+        case CHTLNodeType::ORIGIN_DEFINITION:
+            generateOriginDefinition(node);
+            break;
+            
         case CHTLNodeType::STYLE_BLOCK:
-            if (auto styleNode = std::dynamic_pointer_cast<CHTLStyleNode>(node)) {
-                generateStyleBlock(styleNode);
-            }
+            generateStyleBlock(std::dynamic_pointer_cast<CHTLStyleNode>(node));
             break;
             
         case CHTLNodeType::SCRIPT_BLOCK:
-            if (auto scriptNode = std::dynamic_pointer_cast<CHTLScriptNode>(node)) {
-                generateScriptBlock(scriptNode);
-            }
+            generateScriptBlock(std::dynamic_pointer_cast<CHTLScriptNode>(node));
             break;
             
-        case CHTLNodeType::LINE_COMMENT:
-        case CHTLNodeType::BLOCK_COMMENT:
-        case CHTLNodeType::GENERATOR_COMMENT:
-            generateComment(node);
+        // 声明不在HTML输出中生成
+        case CHTLNodeType::USE_DECLARATION:
+        case CHTLNodeType::NAMESPACE_DECLARATION:
+        case CHTLNodeType::TEMPLATE_DEFINITION:
+        case CHTLNodeType::CUSTOM_DEFINITION:
+        case CHTLNodeType::CONFIGURATION_DEFINITION:
+        case CHTLNodeType::IMPORT_STATEMENT:
             break;
             
         default:
-            // 递归处理子节点
-            for (auto& child : node->children) {
-                generateNode(child);
-            }
+            addWarning("未处理的节点类型: " + node->getTypeName());
             break;
     }
 }
@@ -388,99 +265,146 @@ void CHTLGenerator::generateElement(std::shared_ptr<CHTLElementNode> element) {
     if (!element) return;
     
     std::string tagName = element->name;
-    bool isVoid = isVoidElement(tagName);
     
-    // 生成开始标签
-    writeIndent();
-    writeHTML("<" + tagName);
+    // 开始标签
+    htmlStream << getIndent() << "<" << tagName;
     
     // 生成属性
-    generateElementAttributes(element);
+    for (const auto& attr : element->attributes) {
+        htmlStream << " " << attr.first << "=\"" << escapeHTML(attr.second) << "\"";
+    }
     
-    if (isVoid) {
-        writeHTML(" />");
+    // 检查是否为自闭合标签
+    bool isSelfClosing = isSelfClosingTag(tagName);
+    
+    if (isSelfClosing) {
+        htmlStream << " />\n";
         return;
-    } else {
-        writeHTML(">");
     }
     
-    // 检查是否有本地样式或脚本需要创建作用域
-    bool hasLocalStyle = element->getStyleBlock() != nullptr;
-    std::string scopeId;
-    
-    if (hasLocalStyle) {
-        scopeId = createStyleScope(false);
-        element->addClass("chtl-scope-" + scopeId);
-    }
+    htmlStream << ">";
     
     // 生成子内容
-    bool hasBlockContent = false;
-    increaseIndent();
+    bool hasBlockChildren = hasBlockChildElements(element);
     
-    for (auto& child : element->children) {
-        if (child->type == CHTLNodeType::STYLE_BLOCK) {
-            // 样式块单独处理
-            if (auto styleNode = std::dynamic_pointer_cast<CHTLStyleNode>(child)) {
-                generateStyleBlock(styleNode);
-            }
-        } else if (child->type == CHTLNodeType::SCRIPT_BLOCK) {
-            // 脚本块单独处理
-            if (auto scriptNode = std::dynamic_pointer_cast<CHTLScriptNode>(child)) {
-                generateScriptBlock(scriptNode);
-            }
-        } else {
+    if (hasBlockChildren) {
+        htmlStream << "\n";
+        indentLevel++;
+        
+        for (auto& child : element->children) {
             generateNode(child);
-            hasBlockContent = true;
+        }
+        
+        indentLevel--;
+        htmlStream << getIndent();
+    } else {
+        // 内联内容
+        for (auto& child : element->children) {
+            if (child->type == CHTLNodeType::TEXT_NODE) {
+                htmlStream << escapeHTML(child->value);
+            } else {
+                generateNode(child);
+            }
         }
     }
     
-    decreaseIndent();
-    
-    // 生成结束标签
-    if (hasBlockContent) {
-        writeIndent();
-    }
-    writeHTML("</" + tagName + ">");
-    
-    if (hasLocalStyle) {
-        popStyleScope();
-    }
-}
-
-void CHTLGenerator::generateElementAttributes(std::shared_ptr<CHTLElementNode> element) {
-    for (const auto& attr : element->attributes) {
-        if (!attr.second.empty()) {
-            writeHTML(" " + attr.first + "=\"" + escapeHTML(attr.second) + "\"");
-        } else {
-            writeHTML(" " + attr.first);
-        }
-    }
+    // 结束标签
+    htmlStream << "</" << tagName << ">\n";
 }
 
 void CHTLGenerator::generateTextNode(std::shared_ptr<CHTLNode> textNode) {
-    if (!textNode || textNode->value.empty()) return;
+    if (!textNode) return;
     
     std::string text = variableResolver.interpolateString(textNode->value);
-    text = escapeHTML(text);
+    htmlStream << getIndent() << escapeHTML(text) << "\n";
+}
+
+void CHTLGenerator::generateTemplateUsage(std::shared_ptr<CHTLNode> templateUsage) {
+    if (!templateUsage) return;
     
-    if (!isEmptyOrWhitespace(text)) {
-        writeHTML(text);
+    std::string templateName = templateUsage->name;
+    std::string templateType = templateUsage->value;
+    
+    auto templateNode = templateManager.getTemplate(templateName);
+    if (!templateNode) {
+        addError("未找到模板: " + templateName);
+        return;
+    }
+    
+    if (templateType == "@Style") {
+        // 样式模板：生成CSS
+        for (auto& child : templateNode->children) {
+            if (child->type == CHTLNodeType::STYLE_PROPERTY) {
+                cssStream << "  " << child->name << ": " << child->value << ";\n";
+            }
+        }
+    } else if (templateType == "@Element") {
+        // 元素模板：直接生成HTML
+        for (auto& child : templateNode->children) {
+            generateNode(child);
+        }
+    } else if (templateType == "@Var") {
+        // 变量模板：设置变量值
+        for (auto& child : templateNode->children) {
+            if (child->type == CHTLNodeType::STYLE_PROPERTY) {
+                variableResolver.setVariable(child->name, child->value);
+            }
+        }
+    }
+}
+
+void CHTLGenerator::generateCustomUsage(std::shared_ptr<CHTLNode> customUsage) {
+    // 自定义使用与模板使用类似
+    generateTemplateUsage(customUsage);
+}
+
+void CHTLGenerator::generateOriginDefinition(std::shared_ptr<CHTLNode> originNode) {
+    if (!originNode) return;
+    
+    // 原始嵌入：直接输出内容
+    std::string content = originNode->value;
+    
+    // 提取实际内容（去掉[Origin] @Type Name { } 包装）
+    size_t startPos = content.find("{");
+    size_t endPos = content.rfind("}");
+    
+    if (startPos != std::string::npos && endPos != std::string::npos && endPos > startPos) {
+        std::string rawContent = content.substr(startPos + 1, endPos - startPos - 1);
+        
+        // 去掉前后空白
+        rawContent = trim(rawContent);
+        
+        // 检查类型并生成到相应流
+        if (content.find("@Html") != std::string::npos) {
+            htmlStream << getIndent() << rawContent << "\n";
+        } else if (content.find("@Style") != std::string::npos || content.find("@CSS") != std::string::npos) {
+            cssStream << rawContent << "\n";
+        } else if (content.find("@JavaScript") != std::string::npos || content.find("@JS") != std::string::npos) {
+            jsStream << rawContent << "\n";
+        } else {
+            // 默认为HTML
+            htmlStream << getIndent() << rawContent << "\n";
+        }
     }
 }
 
 void CHTLGenerator::generateStyleBlock(std::shared_ptr<CHTLStyleNode> styleNode) {
     if (!styleNode) return;
     
-    std::string scopeId = getCurrentStyleScope() ? getCurrentStyleScope()->getScopeId() : "";
-    bool isLocal = styleNode->isLocal;
+    // 创建样式作用域
+    std::string scopeId = "chtl-" + std::to_string(nextScopeId++);
+    auto scope = std::make_unique<CHTLStyleScope>(scopeId, !styleNode->isLocal);
     
+    // 生成样式规则
     for (auto& child : styleNode->children) {
         if (child->type == CHTLNodeType::STYLE_RULE) {
-            generateStyleRule(child, isLocal ? scopeId : "");
+            generateStyleRule(child, scopeId);
         } else if (child->type == CHTLNodeType::STYLE_PROPERTY) {
             generateStyleProperty(child);
         }
     }
+    
+    styleScopes.push_back(std::move(scope));
 }
 
 void CHTLGenerator::generateStyleRule(std::shared_ptr<CHTLNode> styleRule, const std::string& scopeId) {
@@ -488,310 +412,116 @@ void CHTLGenerator::generateStyleRule(std::shared_ptr<CHTLNode> styleRule, const
     
     std::string selector = styleRule->name;
     
-    // 处理选择器作用域
+    // 应用作用域
     if (!scopeId.empty()) {
-        selector = processCHTLSelector(selector, scopeId);
+        selector = "[data-chtl-scope=\"" + scopeId + "\"] " + selector;
     }
     
-    writeCSS(selector + " {\n");
+    cssStream << selector << " {\n";
     
-    // 生成属性
-    for (auto& property : styleRule->children) {
-        if (property->type == CHTLNodeType::STYLE_PROPERTY) {
-            writeCSS("  " + property->name + ": " + property->value + ";\n");
+    for (auto& child : styleRule->children) {
+        if (child->type == CHTLNodeType::STYLE_PROPERTY) {
+            cssStream << "  " << child->name << ": " << child->value << ";\n";
         }
     }
     
-    writeCSS("}\n\n");
+    cssStream << "}\n";
 }
 
 void CHTLGenerator::generateStyleProperty(std::shared_ptr<CHTLNode> styleProperty) {
     if (!styleProperty) return;
     
-    std::string property = normalizeCSSProperty(styleProperty->name);
-    std::string value = normalizeCSSValue(styleProperty->value);
+    std::string property = styleProperty->name;
+    std::string value = variableResolver.interpolateString(styleProperty->value);
     
-    if (!property.empty() && !value.empty()) {
-        writeCSS("  " + property + ": " + value + ";\n");
-    }
+    cssStream << "  " << property << ": " << value << ";\n";
 }
 
 void CHTLGenerator::generateScriptBlock(std::shared_ptr<CHTLScriptNode> scriptNode) {
     if (!scriptNode) return;
     
     std::string scriptContent = scriptNode->getScriptContent();
-    if (!scriptContent.empty()) {
-        writeJS(scriptContent + "\n");
-    }
-}
-
-void CHTLGenerator::generateComment(std::shared_ptr<CHTLNode> commentNode) {
-    if (!commentNode || !config.includeComments) return;
     
-    std::string comment = commentNode->value;
-    switch (commentNode->type) {
-        case CHTLNodeType::LINE_COMMENT:
-            writeIndent();
-            writeHTML("<!-- " + escapeHTML(comment) + " -->");
-            break;
-            
-        case CHTLNodeType::BLOCK_COMMENT:
-            writeIndent();
-            writeHTML("<!--\n" + escapeHTML(comment) + "\n-->");
-            break;
-            
-        case CHTLNodeType::GENERATOR_COMMENT:
-            // 生成器注释不输出到最终HTML
-            break;
-            
-        default:
-            break;
-    }
+    // 脚本内容交给CHTL JS编译器处理（这里简化为直接输出）
+    jsStream << "// CHTL Local Script\n";
+    jsStream << scriptContent << "\n";
 }
 
-// === 模板处理 ===
+// === 辅助方法 ===
 
-void CHTLGenerator::generateTemplateUsage(std::shared_ptr<CHTLNode> templateUsage) {
-    // TODO: 实现模板使用生成
-    addWarning("模板使用功能尚未实现");
+std::string CHTLGenerator::getIndent() const {
+    return std::string(indentLevel * config.indentString.length(), ' ');
 }
 
-void CHTLGenerator::generateCustomUsage(std::shared_ptr<CHTLNode> customUsage) {
-    // TODO: 实现自定义使用生成
-    addWarning("自定义使用功能尚未实现");
-}
-
-// === 辅助方法实现 ===
-
-std::string CHTLGenerator::createStyleScope(bool isGlobal) {
-    std::string scopeId = "scope" + std::to_string(nextScopeId++);
-    return scopeId;
-}
-
-CHTLStyleScope* CHTLGenerator::getCurrentStyleScope() {
-    return styleScopes.empty() ? nullptr : styleScopes.back().get();
-}
-
-void CHTLGenerator::pushStyleScope(std::unique_ptr<CHTLStyleScope> scope) {
-    styleScopes.push_back(std::move(scope));
-}
-
-void CHTLGenerator::popStyleScope() {
-    if (!styleScopes.empty()) {
-        styleScopes.pop_back();
-    }
-}
-
-std::string CHTLGenerator::processCHTLSelector(const std::string& selector, const std::string& scopeId) {
-    if (selector.empty()) return selector;
+std::string CHTLGenerator::addIndent(const std::string& text, int level) const {
+    std::string indent(level * config.indentString.length(), ' ');
+    std::stringstream ss(text);
+    std::string line;
+    std::stringstream result;
     
-    // 处理&选择器（父选择器）
-    if (selector[0] == '&') {
-        return ".chtl-scope-" + scopeId + selector.substr(1);
+    while (std::getline(ss, line)) {
+        if (!line.empty()) {
+            result << indent << line << "\n";
+        } else {
+            result << "\n";
+        }
     }
     
-    // 处理类选择器
-    if (selector[0] == '.') {
-        return ".chtl-scope-" + scopeId + " " + selector;
-    }
-    
-    // 处理ID选择器
-    if (selector[0] == '#') {
-        return ".chtl-scope-" + scopeId + " " + selector;
-    }
-    
-    // 普通元素选择器
-    return ".chtl-scope-" + scopeId + " " + selector;
+    return result.str();
 }
 
-void CHTLGenerator::processVariableDefinitions(std::shared_ptr<CHTLNode> node) {
-    // 简单的变量处理
-    if (node->type == CHTLNodeType::VARIABLE_DEFINITION) {
-        variableResolver.setVariable(node->name, node->value);
-    }
-}
-
-// === 输出格式化 ===
-
-void CHTLGenerator::writeIndent() {
-    if (!config.minifyOutput) {
-        htmlStream << std::string(indentLevel * config.indentString.length(), ' ');
-    }
-}
-
-void CHTLGenerator::increaseIndent() {
-    indentLevel++;
-}
-
-void CHTLGenerator::decreaseIndent() {
-    if (indentLevel > 0) {
-        indentLevel--;
-    }
-}
-
-void CHTLGenerator::writeLine(const std::string& content) {
-    writeHTML(content);
-    if (!config.minifyOutput) {
-        htmlStream << "\n";
-    }
-}
-
-void CHTLGenerator::writeHTML(const std::string& content) {
-    htmlStream << content;
-}
-
-void CHTLGenerator::writeCSS(const std::string& content) {
-    cssStream << content;
-}
-
-void CHTLGenerator::writeJS(const std::string& content) {
-    jsStream << content;
-}
-
-// === 错误处理 ===
-
-void CHTLGenerator::addError(const std::string& message) {
-    errors.push_back("[CHTLGenerator] " + message);
-}
-
-void CHTLGenerator::addWarning(const std::string& message) {
-    warnings.push_back("[CHTLGenerator] " + message);
-}
-
-// === 验证和优化 ===
-
-bool CHTLGenerator::validateHTML(const std::string& html) {
-    // 简单的HTML验证
-    return !html.empty() && html.find("<!DOCTYPE html>") != std::string::npos;
-}
-
-bool CHTLGenerator::validateCSS(const std::string& css) {
-    // 简单的CSS验证
-    return true; // 暂时返回true
-}
-
-std::string CHTLGenerator::optimizeHTML(const std::string& html) {
-    std::string result = html;
-    
-    // 移除多余的空白
-    std::regex extraSpaces(R"(\s+)");
-    result = std::regex_replace(result, extraSpaces, " ");
-    
-    // 移除注释中的多余空白
-    std::regex commentSpaces(R"(<!--\s+([^>]+)\s+-->)");
-    result = std::regex_replace(result, commentSpaces, "<!-- $1 -->");
-    
-    return result;
-}
-
-std::string CHTLGenerator::optimizeCSS(const std::string& css) {
-    std::string result = css;
-    
-    // 移除多余的空白和换行
-    std::regex extraSpaces(R"(\s+)");
-    result = std::regex_replace(result, extraSpaces, " ");
-    
-    return result;
-}
-
-std::string CHTLGenerator::minifyHTML(const std::string& html) {
-    std::string result = html;
-    
-    // 移除换行和多余空白
-    std::regex newlines(R"(\n\s*)");
-    result = std::regex_replace(result, newlines, "");
-    
-    return result;
-}
-
-std::string CHTLGenerator::minifyCSS(const std::string& css) {
-    std::string result = css;
-    
-    // 移除换行和空白
-    std::regex whitespace(R"(\s+)");
-    result = std::regex_replace(result, whitespace, "");
-    
-    // 在特定字符后添加必要的空格
-    std::regex addSpace(R"(([{}:;,]))");
-    result = std::regex_replace(result, addSpace, "$1 ");
-    
-    return result;
-}
-
-// === 缓存管理 ===
-
-std::string CHTLGenerator::getCacheKey(std::shared_ptr<CHTLNode> node) {
-    return node->getTypeName() + "_" + node->name + "_" + std::to_string(reinterpret_cast<uintptr_t>(node.get()));
-}
-
-bool CHTLGenerator::hasCachedResult(const std::string& key) {
-    return generationCache.find(key) != generationCache.end();
-}
-
-std::string CHTLGenerator::getCachedResult(const std::string& key) {
-    auto it = generationCache.find(key);
-    return it != generationCache.end() ? it->second : "";
-}
-
-void CHTLGenerator::setCachedResult(const std::string& key, const std::string& result) {
-    generationCache[key] = result;
-}
-
-// === HTML实体处理 ===
-
-std::string CHTLGenerator::escapeHTML(const std::string& text) {
+std::string CHTLGenerator::escapeHTML(const std::string& text) const {
     std::string result = text;
     
-    std::regex ampersand("&");
-    result = std::regex_replace(result, ampersand, "&amp;");
+    // 替换HTML特殊字符
+    size_t pos = 0;
+    while ((pos = result.find("&", pos)) != std::string::npos) {
+        result.replace(pos, 1, "&amp;");
+        pos += 5;
+    }
     
-    std::regex lessThan("<");
-    result = std::regex_replace(result, lessThan, "&lt;");
+    pos = 0;
+    while ((pos = result.find("<", pos)) != std::string::npos) {
+        result.replace(pos, 1, "&lt;");
+        pos += 4;
+    }
     
-    std::regex greaterThan(">");
-    result = std::regex_replace(result, greaterThan, "&gt;");
+    pos = 0;
+    while ((pos = result.find(">", pos)) != std::string::npos) {
+        result.replace(pos, 1, "&gt;");
+        pos += 4;
+    }
     
-    std::regex quote("\"");
-    result = std::regex_replace(result, quote, "&quot;");
-    
-    std::regex apostrophe("'");
-    result = std::regex_replace(result, apostrophe, "&#x27;");
+    pos = 0;
+    while ((pos = result.find("\"", pos)) != std::string::npos) {
+        result.replace(pos, 1, "&quot;");
+        pos += 6;
+    }
     
     return result;
 }
 
-// === CSS处理 ===
-
-std::string CHTLGenerator::normalizeCSSProperty(const std::string& property) {
-    std::string result = trim(property);
-    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return result;
-}
-
-std::string CHTLGenerator::normalizeCSSValue(const std::string& value) {
-    return variableResolver.interpolateString(trim(value));
-}
-
-bool CHTLGenerator::isValidCSSProperty(const std::string& property) {
-    // 简单验证
-    return !property.empty() && property.find(':') == std::string::npos;
-}
-
-// === 工具方法 ===
-
-std::string CHTLGenerator::generateUniqueId(const std::string& prefix) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dis(1000, 9999);
+bool CHTLGenerator::isSelfClosingTag(const std::string& tagName) const {
+    static const std::vector<std::string> selfClosingTags = {
+        "area", "base", "br", "col", "embed", "hr", "img", "input",
+        "link", "meta", "param", "source", "track", "wbr"
+    };
     
-    return prefix + "_" + std::to_string(dis(gen));
+    return std::find(selfClosingTags.begin(), selfClosingTags.end(), tagName) != selfClosingTags.end();
 }
 
-bool CHTLGenerator::isEmptyOrWhitespace(const std::string& str) {
-    return str.empty() || std::all_of(str.begin(), str.end(), ::isspace);
+bool CHTLGenerator::hasBlockChildElements(std::shared_ptr<CHTLElementNode> element) const {
+    for (auto& child : element->children) {
+        if (child->type == CHTLNodeType::HTML_ELEMENT || 
+            child->type == CHTLNodeType::STYLE_BLOCK || 
+            child->type == CHTLNodeType::SCRIPT_BLOCK) {
+            return true;
+        }
+    }
+    return false;
 }
 
-std::string CHTLGenerator::trim(const std::string& str) {
+std::string CHTLGenerator::trim(const std::string& str) const {
     size_t start = str.find_first_not_of(" \t\n\r");
     if (start == std::string::npos) return "";
     
@@ -799,37 +529,12 @@ std::string CHTLGenerator::trim(const std::string& str) {
     return str.substr(start, end - start + 1);
 }
 
-void CHTLGenerator::generateGlobalStyles() {
-    // 生成全局样式
+void CHTLGenerator::addError(const std::string& error) {
+    errors.push_back(error);
 }
 
-void CHTLGenerator::generateGlobalScripts() {
-    // 生成全局脚本
-}
-
-// === 静态HTML标签验证 ===
-
-const std::vector<std::string>& CHTLGenerator::getVoidElements() {
-    static std::vector<std::string> voidElements = {
-        "area", "base", "br", "col", "embed", "hr", "img", "input",
-        "link", "meta", "param", "source", "track", "wbr"
-    };
-    return voidElements;
-}
-
-bool CHTLGenerator::isVoidElement(const std::string& tagName) {
-    const auto& voidElements = getVoidElements();
-    return std::find(voidElements.begin(), voidElements.end(), tagName) != voidElements.end();
-}
-
-// === 辅助方法 ===
-
-CHTLGenerationResult CHTLGenerator::createFailedResult() {
-    CHTLGenerationResult result;
-    result.success = false;
-    result.errors = errors;
-    result.warnings = warnings;
-    return result;
+void CHTLGenerator::addWarning(const std::string& warning) {
+    warnings.push_back(warning);
 }
 
 } // namespace CHTL

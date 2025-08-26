@@ -156,6 +156,9 @@ private:
     void generateScriptBlock(std::shared_ptr<CHTLScriptNode> scriptNode);
     void generateGlobalScripts();
     
+    // 原始嵌入生成
+    void generateOriginDefinition(std::shared_ptr<CHTLNode> originNode);
+    
     // 导入和命名空间
     void generateImportStatement(std::shared_ptr<CHTLImportNode> importNode);
     void generateNamespaceDeclaration(std::shared_ptr<CHTLNode> namespaceNode);
@@ -221,7 +224,7 @@ private:
     void setCachedResult(const std::string& key, const std::string& result);
     
     // HTML实体处理
-    std::string escapeHTML(const std::string& text);
+    std::string escapeHTML(const std::string& text) const;
     std::string unescapeHTML(const std::string& text);
     
     // CSS处理
@@ -235,13 +238,18 @@ private:
     std::string resolveAssetPath(const std::string& path);
     
     // 工具方法
+    void collectDefinitions(std::shared_ptr<CHTLDocumentNode> document);
+    std::string getIndent() const;
+    std::string addIndent(const std::string& text, int level) const;
+    bool isSelfClosingTag(const std::string& tagName) const;
+    bool hasBlockChildElements(std::shared_ptr<CHTLElementNode> element) const;
     void preprocessDocument(std::shared_ptr<CHTLDocumentNode> document);
     CHTLGenerationResult createFailedResult();
     std::string generateUniqueId(const std::string& prefix = "chtl");
     std::string sanitizeClassName(const std::string& className);
     std::string sanitizeId(const std::string& id);
     bool isEmptyOrWhitespace(const std::string& str);
-    std::string trim(const std::string& str);
+    std::string trim(const std::string& str) const;
     std::vector<std::string> split(const std::string& str, char delimiter);
     std::string join(const std::vector<std::string>& parts, const std::string& separator);
     
