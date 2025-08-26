@@ -40,6 +40,7 @@ enum class StateType {
     DELEGATE_FUNCTION,          // delegate函数
     ANIMATE_FUNCTION,           // animate函数
     ARROW_OPERATION,            // -> 操作符
+    EVENT_BIND_OPERATION,       // &-> 事件绑定操作符
     
     // 模板和自定义状态
     TEMPLATE_BLOCK,             // 模板块

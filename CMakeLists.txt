@@ -61,6 +61,8 @@ set(CHTL_SOURCES
     src/Common/OriginEmbedManager.cpp
     src/Common/CHTLJSKeyValueManager.cpp
     src/Common/StateMachine.cpp
+    src/Common/UnquotedLiteralManager.cpp
+    src/Common/IndexAccessManager.cpp
     
     # AST系统
     src/AST/Common/ASTNode.cpp
@@ -106,6 +108,8 @@ set(CHTL_HEADERS
     src/Common/OriginEmbedManager.h
     src/Common/CHTLJSKeyValueManager.h
     src/Common/StateMachine.h
+    src/Common/UnquotedLiteralManager.h
+    src/Common/IndexAccessManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h

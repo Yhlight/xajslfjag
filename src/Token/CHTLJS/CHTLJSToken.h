@@ -40,9 +40,8 @@ enum class CHTLJSTokenType {
     DELEGATE,            // delegate (事件委托)
     ANIMATE,             // animate (动画)
     
-    // CHTL JS函数
-    I_NEVER_AWAY,        // iNeverAway (珂朵莉模块特殊函数)
-    PRINT_MY_LOVE,       // printMylove (珂朵莉模块函数)
+    // 注意：iNeverAway和printMylove是珂朵莉模块的CJMOD功能，不是基础语法
+    // 它们应该通过模块导入系统实现，而不是内置token
     
     // 扩展的CHTL JS特性
     EVENT_BIND_OPERATOR, // &-> (事件绑定操作符)

@@ -21,6 +21,7 @@ enum class TokenType {
     RIGHT_BRACE,         // }
     LEFT_BRACKET,        // [
     RIGHT_BRACKET,       // ]
+    INDEX_ACCESS,        // [index] (索引访问)
     LEFT_PAREN,          // (
     RIGHT_PAREN,         // )
     SEMICOLON,           // ;
