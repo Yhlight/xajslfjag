@@ -90,6 +90,11 @@ set(CHTL_SOURCES
     # 核心组件
     src/Core/CompilerDispatcher.cpp
     
+    # 核心基础设施 (手写FileSystem和Zip库)
+    # src/Core/FileSystem.cpp
+    # src/Core/ZipLibrary.cpp
+    # src/Core/CMODManager.cpp
+    
     # 编译器 (TODO: 实现)
     # src/Compiler/CHTL/CHTLCompiler.cpp
     # src/Compiler/CHTLJS/CHTLJSCompiler.cpp
@@ -137,6 +142,11 @@ set(CHTL_HEADERS
     src/AST/CHTLJS/CHTLJSNodes.h
     src/Scanner/CHTLUnifiedScanner.h
     src/Core/CompilerDispatcher.h
+    
+    # 核心基础设施头文件
+    src/Core/FileSystem.h
+    src/Core/ZipLibrary.h
+    src/Core/CMODManager.h
     
     # CJMOD API系统头文件
     src/CJMOD/Syntax.h
