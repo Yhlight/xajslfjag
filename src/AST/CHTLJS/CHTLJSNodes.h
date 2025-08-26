@@ -526,6 +526,7 @@ public:
     std::string vir_name;                                  // vir对象名称
     std::shared_ptr<ASTNode> target_function;             // 目标函数 (listen, delegate等)
     std::unordered_map<std::string, std::string> key_map; // 键值映射表
+    std::unordered_map<std::string, std::string> key_types; // 键的类型映射 (function, object, array等)
     
     VirDeclarationNode() : ASTNodeImpl(NodeType::UNKNOWN) {}
     
@@ -535,17 +536,29 @@ public:
     void accept(Visitor& visitor) override;
     std::shared_ptr<ASTNode> clone() const override;
     
-    // 解析目标函数中的键
+    // 解析目标函数中的键 - 创建C++编译期View对象
     void extractKeysFromFunction();
     
-    // 生成vir访问代码
+    // 生成vir访问代码 - 根据键值类型转换成不同内容
     std::string generateVirAccessCode(const std::string& key) const;
     
     // 检查键是否存在
     bool hasKey(const std::string& key) const;
     
-    // 获取键的类型
+    // 获取键的类型 (function, object, array等)
     std::string getKeyType(const std::string& key) const;
+    
+    // 缓存访问结果 - View对象的缓存机制
+    void cacheAccessResult(const std::string& key, const std::string& result);
+    std::string getCachedResult(const std::string& key) const;
+    
+    // 检测键值的实际类型
+    enum class KeyValueType { FUNCTION_REF, OBJECT_REF, ARRAY_REF, PRIMITIVE_VALUE, UNKNOWN };
+    KeyValueType detectKeyValueType(const std::string& key) const;
+
+private:
+    // C++编译期View对象的缓存
+    mutable std::unordered_map<std::string, std::string> access_cache;
 };
 
 // 动画关键帧节点

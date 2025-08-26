@@ -19,6 +19,7 @@ enum class ImportType {
     // CHTL模块导入
     CHTL_FILE,          // @Chtl from "file.chtl"
     CJMOD_FILE,         // @CJmod from "module"
+    OFFICIAL_MODULE,    // chtl::模块名 (官方模块前缀)
     
     // CHTL项目导入
     TEMPLATE_STYLE,     // [Template] @Style from "file.chtl"
@@ -117,6 +118,11 @@ public:
     
     // 解析Import语句
     ImportItem parseImportStatement(const std::string& statement);
+    
+    // 官方模块前缀处理
+    bool isOfficialModulePrefix(const std::string& path);
+    std::string extractOfficialModuleName(const std::string& path);
+    std::string resolveOfficialModulePath(const std::string& module_name);
     
     // 添加Import项
     bool addImport(const ImportItem& item);
