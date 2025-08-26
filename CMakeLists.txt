@@ -70,6 +70,7 @@ set(CHTL_SOURCES
     src/Common/VariableGroupManager.cpp
     src/Common/EnhancedSelectorManager.cpp
     src/Common/UseSyntaxManager.cpp
+    src/Common/FullQualifiedNameManager.cpp
     
     # AST系统
     src/AST/Common/ASTNode.cpp
