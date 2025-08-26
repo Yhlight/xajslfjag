@@ -11,6 +11,7 @@
 #include "DependencyManager.h"
 #include "SelectorManager.h"
 #include "InheritanceManager.h"
+#include "LocalBlockManager.h"
 #include "../CHTLLexer/GlobalMap.h"
 
 namespace CHTL {
@@ -27,6 +28,7 @@ private:
     std::unique_ptr<DependencyManager> dependencyManager;
     std::unique_ptr<SelectorManager> selectorManager;
     std::unique_ptr<InheritanceManager> inheritanceManager;
+    std::unique_ptr<LocalBlockManager> localBlockManager;
     
     // 全局符号注册表
     std::shared_ptr<GlobalMap> globalMap;
@@ -52,6 +54,7 @@ public:
     DependencyManager* getDependencyManager() { return dependencyManager.get(); }
     SelectorManager* getSelectorManager() { return selectorManager.get(); }
     InheritanceManager* getInheritanceManager() { return inheritanceManager.get(); }
+    LocalBlockManager* getLocalBlockManager() { return localBlockManager.get(); }
     
     // Const版本
     const SymbolManager* getSymbolManager() const { return symbolManager.get(); }
@@ -62,6 +65,7 @@ public:
     const DependencyManager* getDependencyManager() const { return dependencyManager.get(); }
     const SelectorManager* getSelectorManager() const { return selectorManager.get(); }
     const InheritanceManager* getInheritanceManager() const { return inheritanceManager.get(); }
+    const LocalBlockManager* getLocalBlockManager() const { return localBlockManager.get(); }
     
     // 全局注册表访问
     std::shared_ptr<GlobalMap> getGlobalMap() { return globalMap; }
@@ -121,6 +125,12 @@ public:
     // ===== 继承管理（委托给InheritanceManager）=====
     void addInheritance(const std::string& child, const std::string& parent, const std::string& type);
     InheritanceResolution resolveInheritance(const std::string& node) const;
+    
+    // ===== 局部块管理（委托给LocalBlockManager）=====
+    void enterElement(const std::string& elementName);
+    void exitElement();
+    void addLocalStyleBlock(const LocalBlockInfo& blockInfo);
+    void addLocalScriptBlock(const LocalBlockInfo& blockInfo);
     
     // ===== 综合验证 =====
     bool validateAll() const;
