@@ -42,6 +42,12 @@ enum class StateType {
     ARROW_OPERATION,            // -> 操作符
     EVENT_BIND_OPERATION,       // &-> 事件绑定操作符
     
+    // 统一化语法状态
+    CHTLJS_FUNCTION_CALL,       // CHTL JS函数调用状态
+    CHTLJS_KEYVALUE_BLOCK,      // CHTL JS键值对块状态
+    CHTLJS_NESTED_SELECTOR,     // CHTL JS嵌套选择器状态
+    CHTLJS_MIXED_SYNTAX,        // CHTL JS与原生JS混合语法状态
+    
     // 模板和自定义状态
     TEMPLATE_BLOCK,             // 模板块
     CUSTOM_BLOCK,               // 自定义块
@@ -73,6 +79,14 @@ enum class StateTransitionEvent {
     ENHANCED_SELECTOR_START,    // {{ 检测到
     ENHANCED_SELECTOR_END,      // }} 检测到
     ARROW_OPERATOR_DETECTED,    // -> 检测到
+    
+    // 统一化语法事件
+    CHTLJS_FUNCTION_START,      // CHTL JS函数开始
+    CHTLJS_KEYVALUE_START,      // CHTL JS键值对块开始 ({
+    CHTLJS_KEYVALUE_END,        // CHTL JS键值对块结束 })
+    NESTED_CONTEXT_ENTER,       // 进入嵌套上下文
+    NESTED_CONTEXT_EXIT,        // 退出嵌套上下文
+    SYNTAX_AMBIGUITY_DETECTED,  // 检测到语法歧义
     
     // 语法元素
     COMMENT_START,              // 注释开始
