@@ -2,7 +2,7 @@
 
 ## 概述
 
-根据CHTL语法文档，设计了完整的AST（抽象语法树）节点体系，涵盖了CHTL和CHTL JS的所有语法特性。
+根据CHTL语法文档，设计了完整的CHTL核心语言AST（抽象语法树）节点体系。当前专注于CHTL核心功能，暂不包含CHTL JS扩展。
 
 ## AST节点分类
 
@@ -51,19 +51,6 @@
 - **NamespaceDeclarationNode**: 命名空间声明（[Namespace]）
 - **ExceptConstraintNode**: except约束
 - **FromClauseNode**: from子句（命名空间引用）
-
-### 5. CHTL JS节点 (CHTLJSNodes.h)
-
-- **EnhancedSelectorNode**: 增强选择器（{{}}语法）
-  - 支持 {{.class}}, {{#id}}, {{tag}}, {{tag[index]}}
-- **ListenExpressionNode**: 监听器表达式（listen语法）
-- **DelegateExpressionNode**: 事件委托（delegate语法）
-- **AnimateExpressionNode**: 动画表达式（animate语法）
-- **VirtualObjectNode**: 虚对象声明（vir语法）
-- **VirtualObjectAccessNode**: 虚对象访问（->操作符）
-- **JSStatementNode**: 通用JS语句
-- **FunctionCallNode**: 函数调用
-- **SelectorExpressionNode**: 选择器表达式（&引用）
 
 ## 设计特点
 
@@ -142,20 +129,28 @@ MyVisitor visitor;
 div->accept(&visitor);
 ```
 
-## 完整性说明
+## CHTL核心功能覆盖
 
-该AST节点体系完整覆盖了CHTL语法文档中的所有语法特性：
+该AST节点体系完整覆盖了CHTL核心语法特性：
 
 ✅ 注释系统（三种注释类型）
 ✅ 文本和字面量
 ✅ HTML元素和属性
-✅ 局部样式和脚本块
-✅ 模板和自定义（包括继承、删除、插入）
-✅ 原始嵌入
-✅ 配置系统
-✅ 导入系统
-✅ 命名空间
-✅ 约束（except）
-✅ CHTL JS所有特性（增强选择器、listen、delegate、animate、vir）
+✅ 局部样式块（含选择器自动化）
+✅ 模板系统（[Template]）
+✅ 自定义系统（[Custom]）
+✅ 继承、删除、插入等特例化操作
+✅ 原始嵌入（[Origin]）
+✅ 配置系统（[Configuration]）
+✅ 导入系统（[Import]）
+✅ 命名空间（[Namespace]）
+✅ 约束系统（except）
 
-这个AST设计为后续的语法分析、语义分析和代码生成提供了坚实的基础。
+## 下一步
+
+1. 实现AST节点的具体方法（.cpp文件）
+2. 开发CHTL Parser，将Token流转换为AST
+3. 实现语义分析器，基于AST进行语义检查
+4. 开发代码生成器，将AST转换为HTML/CSS/JS
+
+这个AST设计为CHTL编译器的核心功能提供了坚实的基础。

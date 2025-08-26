@@ -30,7 +30,6 @@ enum class ASTNodeType {
     STYLE_BLOCK,
     SCRIPT_BLOCK,
     CSS_RULE,
-    JS_STATEMENT,
     
     // 模板和自定义
     TEMPLATE_DECLARATION,
@@ -65,21 +64,14 @@ enum class ASTNodeType {
     // 表达式
     SELECTOR_EXPRESSION,
     VARIABLE_REFERENCE,
-    FUNCTION_CALL,
     INDEX_ACCESS,
-    
-    // CHTL JS特有
-    ENHANCED_SELECTOR,
-    LISTEN_EXPRESSION,
-    DELEGATE_EXPRESSION,
-    ANIMATE_EXPRESSION,
-    VIRTUAL_OBJECT,
     
     // 其他
     IDENTIFIER,
     BLOCK,
     PROPERTY,
-    STATEMENT_LIST
+    STATEMENT_LIST,
+    FROM_CLAUSE
 };
 
 // AST节点基类

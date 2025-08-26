@@ -3,7 +3,7 @@
 
 namespace CHTL {
 
-// 前向声明所有节点类型
+// 前向声明所有CHTL节点类型
 class ProgramNode;
 class CommentNode;
 class TextNode;
@@ -39,16 +39,6 @@ class UseStatementNode;
 class NamespaceDeclarationNode;
 class ExceptConstraintNode;
 class FromClauseNode;
-
-class EnhancedSelectorNode;
-class ListenExpressionNode;
-class DelegateExpressionNode;
-class AnimateExpressionNode;
-class VirtualObjectNode;
-class VirtualObjectAccessNode;
-class JSStatementNode;
-class FunctionCallNode;
-class SelectorExpressionNode;
 
 // 具体的AST访问者接口
 class CHTLASTVisitor : public ASTVisitor {
@@ -95,17 +85,6 @@ public:
     virtual void visitExceptConstraint(ExceptConstraintNode* node) = 0;
     virtual void visitFromClause(FromClauseNode* node) = 0;
     
-    // CHTL JS节点
-    virtual void visitEnhancedSelector(EnhancedSelectorNode* node) = 0;
-    virtual void visitListenExpression(ListenExpressionNode* node) = 0;
-    virtual void visitDelegateExpression(DelegateExpressionNode* node) = 0;
-    virtual void visitAnimateExpression(AnimateExpressionNode* node) = 0;
-    virtual void visitVirtualObject(VirtualObjectNode* node) = 0;
-    virtual void visitVirtualObjectAccess(VirtualObjectAccessNode* node) = 0;
-    virtual void visitJSStatement(JSStatementNode* node) = 0;
-    virtual void visitFunctionCall(FunctionCallNode* node) = 0;
-    virtual void visitSelectorExpression(SelectorExpressionNode* node) = 0;
-    
     // 通用访问方法（根据节点类型分发）
     void visit(ASTNode* node) override;
 };
@@ -149,16 +128,6 @@ public:
     void visitNamespaceDeclaration(NamespaceDeclarationNode* node) override;
     void visitExceptConstraint(ExceptConstraintNode* node) override;
     void visitFromClause(FromClauseNode* node) override;
-    
-    void visitEnhancedSelector(EnhancedSelectorNode* node) override;
-    void visitListenExpression(ListenExpressionNode* node) override;
-    void visitDelegateExpression(DelegateExpressionNode* node) override;
-    void visitAnimateExpression(AnimateExpressionNode* node) override;
-    void visitVirtualObject(VirtualObjectNode* node) override;
-    void visitVirtualObjectAccess(VirtualObjectAccessNode* node) override;
-    void visitJSStatement(JSStatementNode* node) override;
-    void visitFunctionCall(FunctionCallNode* node) override;
-    void visitSelectorExpression(SelectorExpressionNode* node) override;
     
 protected:
     // 辅助方法：访问所有子节点
