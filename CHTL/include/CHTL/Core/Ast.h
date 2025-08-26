@@ -224,11 +224,4 @@ namespace CHTL {
         std::map<std::string, std::string> Settings;
     };
 
-    // Represents a use statement (e.g., use html5; or use @Config ConfigName;)
-    struct UseNode : public AstNode {
-        enum UseType { Html5, Config };
-        UseType Type;
-        std::optional<std::string> ConfigName; // For use @Config
-    };
-
 } // namespace CHTL
