@@ -230,6 +230,7 @@ std::shared_ptr<CHTLNode> CHTLParser::parseTemplateDefinition() {
         advance();
     } else {
         addError("Expected template type (@Style, @Element, @Var)");
+        state.popState();
         return nullptr;
     }
     
@@ -238,6 +239,7 @@ std::shared_ptr<CHTLNode> CHTLParser::parseTemplateDefinition() {
         template_name = advance().value;
     } else {
         addError("Expected template name");
+        state.popState();
         return nullptr;
     }
     
@@ -525,7 +527,8 @@ bool CHTLParser::isTemplateUsage() const {
 
 bool CHTLParser::isCustomUsage() const {
     // Custom usage detection logic
-    return false; // Simplified for now
+    return check(TokenType::CUSTOM) || 
+           (check(TokenType::AT_STYLE) || check(TokenType::AT_ELEMENT) || check(TokenType::AT_VAR));
 }
 
 bool CHTLParser::isStyleDeclaration() const {
@@ -543,32 +546,597 @@ std::string CHTLParser::parseStringLiteral() {
 
 // Stub implementations for remaining methods
 std::shared_ptr<CHTLNode> CHTLParser::parseCustomDefinition() {
-    // Implementation similar to parseTemplateDefinition
-    return nullptr;
+    consume(TokenType::CUSTOM, "Expected '[Custom]'");
+    state.pushState(ParsingState::InCustomDefinition);
+    
+    std::string custom_type;
+    if (check(TokenType::AT_STYLE)) {
+        custom_type = "Style";
+        advance();
+    } else if (check(TokenType::AT_ELEMENT)) {
+        custom_type = "Element";
+        advance();
+    } else if (check(TokenType::AT_VAR)) {
+        custom_type = "Var";
+        advance();
+    } else {
+        addError("Expected custom type (@Style, @Element, @Var)");
+        state.popState();
+        return nullptr;
+    }
+    
+    std::string custom_name;
+    if (check(TokenType::IDENTIFIER)) {
+        custom_name = advance().value;
+    } else {
+        addError("Expected custom name");
+        state.popState();
+        return nullptr;
+    }
+    
+    auto custom_node = NodeFactory::createCustom(custom_type, custom_name);
+    context.setCurrentCustom(custom_name);
+    
+    consume(TokenType::LBRACE, "Expected '{' after custom declaration");
+    
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (check(TokenType::NEWLINE)) {
+            advance();
+            continue;
+        }
+        
+        std::shared_ptr<CHTLNode> child = nullptr;
+        
+        if (custom_type == "Element") {
+            if (isElement()) {
+                child = parseElement();
+            } else if (isTemplateUsage() || isCustomUsage()) {
+                child = parseTemplateUsage(); // Will handle both template and custom usage
+            } else {
+                addError("Invalid content in custom element definition");
+                synchronize();
+                continue;
+            }
+        } else if (custom_type == "Style") {
+            if (check(TokenType::IDENTIFIER)) {
+                // Parse style property or inheritance
+                Token lookahead = peek(1);
+                if (lookahead.type == TokenType::COLON) {
+                    child = parseStyleProperty();
+                } else if (lookahead.type == TokenType::COMMA || lookahead.type == TokenType::SEMICOLON) {
+                    // Parse property list for Custom @Style without values
+                    auto prop_node = std::make_shared<CHTLNode>(NodeType::ATTRIBUTE);
+                    prop_node->name = advance().value;
+                    prop_node->value = ""; // No value for custom style properties
+                    
+                    // Handle comma-separated properties
+                    while (match(TokenType::COMMA)) {
+                        if (check(TokenType::IDENTIFIER)) {
+                            auto another_prop = std::make_shared<CHTLNode>(NodeType::ATTRIBUTE);
+                            another_prop->name = advance().value;
+                            another_prop->value = "";
+                            custom_node->addChild(another_prop);
+                        }
+                    }
+                    
+                    consume(TokenType::SEMICOLON, "Expected ';' after property list");
+                    child = prop_node;
+                } else {
+                    addError("Invalid content in custom style definition");
+                    synchronize();
+                    continue;
+                }
+            } else if (isTemplateUsage() || isCustomUsage()) {
+                child = parseTemplateUsage(); // Handle inheritance
+            } else {
+                addError("Invalid content in custom style definition");
+                synchronize();
+                continue;
+            }
+        } else if (custom_type == "Var") {
+            // Parse variable assignments
+            if (check(TokenType::IDENTIFIER)) {
+                auto var_node = std::make_shared<CHTLNode>(NodeType::VARIABLE_USAGE);
+                var_node->name = advance().value;
+                
+                consume(TokenType::COLON, "Expected ':' after variable name");
+                
+                if (check(TokenType::STRING_LITERAL)) {
+                    var_node->value = advance().value;
+                } else {
+                    var_node->value = parseStringLiteral();
+                }
+                
+                consume(TokenType::SEMICOLON, "Expected ';' after variable assignment");
+                child = var_node;
+            } else {
+                addError("Invalid content in custom variable definition");
+                synchronize();
+                continue;
+            }
+        }
+        
+        if (child) {
+            custom_node->addChild(child);
+        }
+    }
+    
+    consume(TokenType::RBRACE, "Expected '}' after custom body");
+    state.popState();
+    context.setCurrentCustom("");
+    
+    return custom_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseOriginDefinition() {
-    return nullptr;
+    consume(TokenType::ORIGIN, "Expected '[Origin]'");
+    state.pushState(ParsingState::InOriginDefinition);
+    
+    std::string origin_type;
+    if (check(TokenType::AT_HTML)) {
+        origin_type = "Html";
+        advance();
+    } else if (check(TokenType::AT_STYLE)) {
+        origin_type = "Style";
+        advance();
+    } else if (check(TokenType::AT_JAVASCRIPT)) {
+        origin_type = "JavaScript";
+        advance();
+    } else if (check(TokenType::IDENTIFIER) && peek().value.length() > 0 && peek().value[0] == '@') {
+        // Custom origin type like @Vue
+        origin_type = advance().value;
+    } else {
+        addError("Expected origin type (@Html, @Style, @JavaScript, or custom @Type)");
+        state.popState();
+        return nullptr;
+    }
+    
+    std::string origin_name;
+    if (check(TokenType::IDENTIFIER)) {
+        origin_name = advance().value;
+    }
+    
+    auto origin_node = std::make_shared<CHTLNode>(NodeType::ORIGIN_DEFINITION);
+    origin_node->name = origin_name;
+    origin_node->setAttribute("type", origin_type);
+    
+    if (match(TokenType::LBRACE)) {
+        // Parse raw content
+        std::string raw_content;
+        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+            Token token = advance();
+            if (token.type == TokenType::NEWLINE) {
+                raw_content += "\n";
+            } else {
+                raw_content += token.value;
+            }
+        }
+        
+        origin_node->value = raw_content;
+        consume(TokenType::RBRACE, "Expected '}' after origin content");
+    } else if (match(TokenType::SEMICOLON)) {
+        // Usage form: [Origin] @Html name;
+        origin_node->setAttribute("usage", "true");
+    }
+    
+    state.popState();
+    return origin_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseConfigurationDefinition() {
-    return nullptr;
+    consume(TokenType::CONFIGURATION, "Expected '[Configuration]'");
+    state.pushState(ParsingState::InConfigurationDefinition);
+    
+    auto config_node = std::make_shared<CHTLNode>(NodeType::CONFIGURATION_DEFINITION);
+    
+    consume(TokenType::LBRACE, "Expected '{' after [Configuration]");
+    
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (check(TokenType::NEWLINE)) {
+            advance();
+            continue;
+        }
+        
+        if (check(TokenType::IDENTIFIER)) {
+            std::string config_key = advance().value;
+            consume(TokenType::COLON, "Expected ':' after configuration key");
+            
+            std::string config_value;
+            if (check(TokenType::STRING_LITERAL)) {
+                config_value = advance().value;
+            } else if (check(TokenType::NUMBER)) {
+                config_value = advance().value;
+            } else if (check(TokenType::IDENTIFIER)) {
+                config_value = advance().value;
+            } else {
+                addError("Expected configuration value");
+                synchronize();
+                continue;
+            }
+            
+            consume(TokenType::SEMICOLON, "Expected ';' after configuration value");
+            
+            auto config_item = std::make_shared<CHTLNode>(NodeType::ATTRIBUTE);
+            config_item->name = config_key;
+            config_item->value = config_value;
+            config_node->addChild(config_item);
+            
+            // Set configuration in context
+            context.setConfig(config_key, config_value);
+        } else {
+            addError("Expected configuration key");
+            synchronize();
+        }
+    }
+    
+    consume(TokenType::RBRACE, "Expected '}' after configuration body");
+    state.popState();
+    
+    return config_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseImportStatement() {
-    return nullptr;
+    consume(TokenType::IMPORT, "Expected '[Import]'");
+    state.pushState(ParsingState::InImportStatement);
+    
+    std::string import_type;
+    if (check(TokenType::AT_HTML)) {
+        import_type = "Html";
+        advance();
+    } else if (check(TokenType::AT_STYLE)) {
+        import_type = "Style";
+        advance();
+    } else if (check(TokenType::AT_JAVASCRIPT)) {
+        import_type = "JavaScript";
+        advance();
+    } else if (check(TokenType::AT_CHTL)) {
+        import_type = "Chtl";
+        advance();
+    } else if (check(TokenType::AT_CJMOD)) {
+        import_type = "CJmod";
+        advance();
+    } else {
+        addError("Expected import type (@Html, @Style, @JavaScript, @Chtl, @CJmod)");
+        state.popState();
+        return nullptr;
+    }
+    
+    std::string import_path;
+    if (check(TokenType::STRING_LITERAL)) {
+        import_path = advance().value;
+    } else if (check(TokenType::IDENTIFIER)) {
+        import_path = advance().value;
+    } else {
+        addError("Expected import path");
+        state.popState();
+        return nullptr;
+    }
+    
+    auto import_node = NodeFactory::createImport(import_type, import_path);
+    
+    // Handle optional 'as' clause
+    if (check(TokenType::AS)) {
+        advance();
+        if (check(TokenType::IDENTIFIER)) {
+            std::string alias = advance().value;
+            import_node->setAttribute("alias", alias);
+        } else {
+            addError("Expected alias name after 'as'");
+        }
+    }
+    
+    // Handle optional 'except' clause
+    if (check(TokenType::EXCEPT)) {
+        advance();
+        state.pushState(ParsingState::InExceptClause);
+        
+        consume(TokenType::LBRACE, "Expected '{' after 'except'");
+        
+        std::string except_items;
+        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+            if (check(TokenType::IDENTIFIER)) {
+                if (!except_items.empty()) except_items += ",";
+                except_items += advance().value;
+                
+                if (match(TokenType::COMMA)) {
+                    // Continue with next item
+                }
+            } else if (check(TokenType::NEWLINE)) {
+                advance();
+            } else {
+                addError("Expected identifier in except clause");
+                break;
+            }
+        }
+        
+        consume(TokenType::RBRACE, "Expected '}' after except clause");
+        import_node->setAttribute("except", except_items);
+        
+        state.popState();
+    }
+    
+    consume(TokenType::SEMICOLON, "Expected ';' after import statement");
+    state.popState();
+    
+    return import_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseScriptBlock() {
-    return nullptr;
+    consume(TokenType::SCRIPT, "Expected 'script'");
+    state.pushState(ParsingState::InScriptBlock);
+    
+    auto script_node = NodeFactory::createScript(true); // local script
+    consume(TokenType::LBRACE, "Expected '{' after 'script'");
+    
+    std::string script_content;
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        Token token = advance();
+        if (token.type == TokenType::NEWLINE) {
+            script_content += "\n";
+        } else {
+            script_content += token.value + " ";
+        }
+    }
+    
+    script_node->value = script_content;
+    consume(TokenType::RBRACE, "Expected '}' after script block");
+    state.popState();
+    
+    return script_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseTemplateUsage() {
-    return nullptr;
+    std::string usage_type;
+    NodeType node_type;
+    
+    if (check(TokenType::AT_STYLE)) {
+        usage_type = "Style";
+        node_type = NodeType::TEMPLATE_USAGE;
+        advance();
+    } else if (check(TokenType::AT_ELEMENT)) {
+        usage_type = "Element";
+        node_type = NodeType::TEMPLATE_USAGE;
+        advance();
+    } else if (check(TokenType::AT_VAR)) {
+        usage_type = "Var";
+        node_type = NodeType::VARIABLE_USAGE;
+        advance();
+    } else if (check(TokenType::TEMPLATE)) {
+        // Full qualified name: [Template] @Style Name
+        advance(); // consume TEMPLATE
+        if (check(TokenType::AT_STYLE)) {
+            usage_type = "Style";
+            node_type = NodeType::TEMPLATE_USAGE;
+            advance();
+        } else if (check(TokenType::AT_ELEMENT)) {
+            usage_type = "Element";
+            node_type = NodeType::TEMPLATE_USAGE;
+            advance();
+        } else if (check(TokenType::AT_VAR)) {
+            usage_type = "Var";
+            node_type = NodeType::VARIABLE_USAGE;
+            advance();
+        } else {
+            addError("Expected template type after [Template]");
+            return nullptr;
+        }
+    } else if (check(TokenType::CUSTOM)) {
+        // Custom usage: [Custom] @Style Name
+        advance(); // consume CUSTOM
+        if (check(TokenType::AT_STYLE)) {
+            usage_type = "Style";
+            node_type = NodeType::CUSTOM_USAGE;
+            advance();
+        } else if (check(TokenType::AT_ELEMENT)) {
+            usage_type = "Element";
+            node_type = NodeType::CUSTOM_USAGE;
+            advance();
+        } else if (check(TokenType::AT_VAR)) {
+            usage_type = "Var";
+            node_type = NodeType::CUSTOM_USAGE;
+            advance();
+        } else {
+            addError("Expected custom type after [Custom]");
+            return nullptr;
+        }
+    } else {
+        addError("Expected template or custom usage");
+        return nullptr;
+    }
+    
+    std::string usage_name;
+    if (check(TokenType::IDENTIFIER)) {
+        usage_name = advance().value;
+    } else {
+        addError("Expected template/custom name");
+        return nullptr;
+    }
+    
+    auto usage_node = std::make_shared<CHTLNode>(node_type);
+    usage_node->name = usage_name;
+    usage_node->value = usage_type;
+    
+    // Handle specialization block or variable parameters
+    if (match(TokenType::LBRACE)) {
+        // Specialization block for Custom usage
+        state.pushState(ParsingState::InStyleSpecialization);
+        
+        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+            if (check(TokenType::NEWLINE)) {
+                advance();
+                continue;
+            }
+            
+            std::shared_ptr<CHTLNode> child = nullptr;
+            
+            // Handle delete, insert, inherit operations
+            if (check(TokenType::DELETE)) {
+                advance();
+                auto delete_node = std::make_shared<CHTLNode>(NodeType::ATTRIBUTE);
+                delete_node->name = "delete";
+                
+                std::string delete_items;
+                do {
+                    if (check(TokenType::IDENTIFIER)) {
+                        if (!delete_items.empty()) delete_items += ",";
+                        delete_items += advance().value;
+                    } else if (isTemplateUsage() || isCustomUsage()) {
+                        // Delete template/custom inheritance
+                        auto delete_ref = parseTemplateUsage();
+                        if (delete_ref) {
+                            delete_node->addChild(delete_ref);
+                        }
+                    }
+                } while (match(TokenType::COMMA));
+                
+                delete_node->value = delete_items;
+                consume(TokenType::SEMICOLON, "Expected ';' after delete statement");
+                child = delete_node;
+                
+            } else if (check(TokenType::INSERT)) {
+                advance();
+                auto insert_node = std::make_shared<CHTLNode>(NodeType::ATTRIBUTE);
+                insert_node->name = "insert";
+                
+                // Parse insert position
+                std::string position;
+                if (check(TokenType::AFTER)) {
+                    position = "after";
+                    advance();
+                } else if (check(TokenType::BEFORE)) {
+                    position = "before";
+                    advance();
+                } else if (check(TokenType::REPLACE)) {
+                    position = "replace";
+                    advance();
+                }
+                
+                insert_node->setAttribute("position", position);
+                
+                // Parse target selector
+                if (check(TokenType::IDENTIFIER)) {
+                    std::string target = advance().value;
+                    
+                    // Handle array index [0], [1] etc.
+                    if (match(TokenType::LBRACKET)) {
+                        if (check(TokenType::NUMBER)) {
+                            target += "[" + advance().value + "]";
+                        }
+                        consume(TokenType::RBRACKET, "Expected ']' after array index");
+                    }
+                    
+                    insert_node->setAttribute("target", target);
+                }
+                
+                consume(TokenType::LBRACE, "Expected '{' after insert statement");
+                
+                // Parse insert content
+                while (!check(TokenType::RBRACE) && !isAtEnd()) {
+                    if (check(TokenType::NEWLINE)) {
+                        advance();
+                        continue;
+                    }
+                    
+                    if (isElement()) {
+                        auto element = parseElement();
+                        if (element) insert_node->addChild(element);
+                    } else if (isTemplateUsage()) {
+                        auto template_ref = parseTemplateUsage();
+                        if (template_ref) insert_node->addChild(template_ref);
+                    } else {
+                        addError("Invalid content in insert block");
+                        synchronize();
+                        break;
+                    }
+                }
+                
+                consume(TokenType::RBRACE, "Expected '}' after insert content");
+                child = insert_node;
+                
+            } else if (check(TokenType::INHERIT)) {
+                advance();
+                auto inherit_node = parseTemplateUsage();
+                if (inherit_node) {
+                    inherit_node->setAttribute("operation", "inherit");
+                    child = inherit_node;
+                }
+                
+            } else if (usage_type == "Style") {
+                // Parse style properties or nested template usage
+                if (check(TokenType::IDENTIFIER)) {
+                    child = parseStyleProperty();
+                } else if (isTemplateUsage()) {
+                    child = parseTemplateUsage();
+                }
+            } else if (usage_type == "Element") {
+                // Parse element modifications
+                if (isElement()) {
+                    child = parseElement();
+                } else if (isTemplateUsage()) {
+                    child = parseTemplateUsage();
+                }
+            } else if (usage_type == "Var") {
+                // Parse variable assignments
+                if (check(TokenType::IDENTIFIER)) {
+                    auto var_assign = std::make_shared<CHTLNode>(NodeType::VARIABLE_USAGE);
+                    var_assign->name = advance().value;
+                    
+                    consume(TokenType::EQUAL, "Expected '=' for variable assignment");
+                    
+                    var_assign->value = parseStringLiteral();
+                    consume(TokenType::SEMICOLON, "Expected ';' after variable assignment");
+                    child = var_assign;
+                }
+            }
+            
+            if (child) {
+                usage_node->addChild(child);
+            } else {
+                addError("Invalid content in specialization block");
+                synchronize();
+            }
+        }
+        
+        consume(TokenType::RBRACE, "Expected '}' after specialization block");
+        state.popState();
+        
+    } else if (match(TokenType::LPAREN)) {
+        // Variable usage with parameters: ThemeColor(tableColor)
+        std::string parameters;
+        while (!check(TokenType::RPAREN) && !isAtEnd()) {
+            if (check(TokenType::IDENTIFIER)) {
+                if (!parameters.empty()) parameters += ",";
+                parameters += advance().value;
+                
+                // Handle variable assignment: tableColor = value
+                if (match(TokenType::EQUAL)) {
+                    parameters += "=";
+                    parameters += parseStringLiteral();
+                }
+            } else if (check(TokenType::COMMA)) {
+                advance();
+            } else {
+                addError("Invalid parameter in variable usage");
+                break;
+            }
+        }
+        
+        consume(TokenType::RPAREN, "Expected ')' after variable parameters");
+        usage_node->setAttribute("parameters", parameters);
+        
+    } else {
+        // Simple usage, consume semicolon if present
+        if (check(TokenType::SEMICOLON)) {
+            advance();
+        }
+    }
+    
+    return usage_node;
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseCustomUsage() {
-    return nullptr;
+    // Custom usage is now handled by parseTemplateUsage()
+    return parseTemplateUsage();
 }
 
 std::shared_ptr<CHTLNode> CHTLParser::parseComment() {

@@ -152,6 +152,8 @@ Token CHTLLexer::scanString(char quote) {
 }
 
 Token CHTLLexer::scanNumber() {
+    size_t start = position;
+    
     while (isDigit(peek())) {
         advance();
     }
@@ -161,11 +163,6 @@ Token CHTLLexer::scanNumber() {
         while (isDigit(peek())) {
             advance();
         }
-    }
-    
-    size_t start = position - 1;
-    while (start > 0 && (isDigit(source[start - 1]) || source[start - 1] == '.')) {
-        start--;
     }
     
     std::string value = source.substr(start, position - start);
@@ -382,10 +379,12 @@ Token CHTLLexer::nextToken() {
     }
     
     if (isDigit(c)) {
+        advance(); // consume the first digit
         return scanNumber();
     }
     
     if (isAlpha(c)) {
+        advance(); // consume the first character
         return scanIdentifier();
     }
     
