@@ -137,11 +137,11 @@ set(CHTL_HEADERS
     src/Common/IndexAccessManager.h
     src/Common/PositionKeywordManager.h
     src/Common/CHTLJSNewSyntaxHandler.h
-    src/Common/ConstraintSystem.h
+    # 简化版本（严格按照语法文档，删除过度工程化的管理器）
+    src/Common/SimpleConstraints.h
+    src/Common/SimpleIndexAccess.h
+    src/Common/SimpleUseSyntax.h
     src/Common/AdvancedNamespaceManager.h
-    src/Common/VariableGroupManager.h
-    src/Common/EnhancedSelectorManager.h
-    src/Common/UseSyntaxManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h
