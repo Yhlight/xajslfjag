@@ -1,0 +1,440 @@
+// 由比滨结衣音乐播放器 - 充满青春活力的音乐体验
+[Custom] @Element YuigahamaMusicPlayer
+{
+    div {
+        background: linear-gradient(135deg, rgba(255, 105, 180, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%),
+        border-radius: 25px,
+        padding: $(YuigahamaSpacing.xl),
+        max-width: 400px,
+        margin: 0 auto,
+        box-shadow: 0 15px 50px $(YuigahamaColors.shadow),
+        border: 3px solid $(YuigahamaColors.primary),
+        position: relative,
+        overflow: hidden
+    }
+    
+    // 活力装饰背景
+    &::before {
+        content: "",
+        position: absolute,
+        top: -50%,
+        left: -50%,
+        width: 200%,
+        height: 200%,
+        background: radial-gradient(circle, rgba(255, 105, 180, 0.1) 0%, transparent 70%),
+        animation: rotate 20s linear infinite
+    }
+    
+    .player-header {
+        text-align: center,
+        margin-bottom: $(YuigahamaSpacing.lg),
+        position: relative,
+        z-index: 2
+    }
+    
+    .song-title {
+        font-family: $(YuigahamaFonts.energetic),
+        font-size: 1.4em,
+        font-weight: bold,
+        color: $(YuigahamaColors.primary),
+        margin-bottom: $(YuigahamaSpacing.sm),
+        text-transform: uppercase,
+        letter-spacing: 1px
+    }
+    
+    .artist-name {
+        font-size: 1em,
+        color: $(YuigahamaColors.text),
+        opacity: 0.8
+    }
+    
+    .album-art {
+        width: 200px,
+        height: 200px,
+        border-radius: 50%,
+        margin: $(YuigahamaSpacing.lg) auto,
+        overflow: hidden,
+        border: 4px solid $(YuigahamaColors.primary),
+        box-shadow: 0 10px 30px $(YuigahamaColors.shadow),
+        position: relative,
+        animation: float 3s ease-in-out infinite
+    }
+    
+    .album-art img {
+        width: 100%,
+        height: 100%,
+        object-fit: cover,
+        transition: transform 0.3s ease
+    }
+    
+    .album-art.playing {
+        animation: rotate 10s linear infinite, float 3s ease-in-out infinite
+    }
+    
+    .album-art.playing img {
+        transform: scale(1.1)
+    }
+    
+    .progress-container {
+        margin: $(YuigahamaSpacing.lg) 0,
+        position: relative
+    }
+    
+    .progress-bar {
+        width: 100%,
+        height: 8px,
+        background: rgba(255, 105, 180, 0.2),
+        border-radius: 4px,
+        overflow: hidden,
+        cursor: pointer,
+        position: relative
+    }
+    
+    .progress-fill {
+        height: 100%,
+        background: linear-gradient(90deg, $(YuigahamaColors.primary) 0%, $(YuigahamaColors.secondary) 100%),
+        border-radius: 4px,
+        width: 0%,
+        transition: width 0.1s ease,
+        position: relative
+    }
+    
+    .progress-fill::after {
+        content: "",
+        position: absolute,
+        right: -6px,
+        top: 50%,
+        transform: translateY(-50%),
+        width: 16px,
+        height: 16px,
+        background: $(YuigahamaColors.primary),
+        border-radius: 50%,
+        box-shadow: 0 2px 8px $(YuigahamaColors.shadow)
+    }
+    
+    .time-info {
+        display: flex,
+        justify-content: space-between,
+        margin-top: $(YuigahamaSpacing.sm),
+        font-size: 0.9em,
+        color: $(YuigahamaColors.text),
+        opacity: 0.7
+    }
+    
+    .controls {
+        display: flex,
+        justify-content: center,
+        align-items: center,
+        gap: $(YuigahamaSpacing.lg),
+        margin: $(YuigahamaSpacing.xl) 0
+    }
+    
+    .control-btn {
+        background: $(YuigahamaColors.primary),
+        color: white,
+        border: none,
+        border-radius: 50%,
+        width: 50px,
+        height: 50px,
+        display: flex,
+        align-items: center,
+        justify-content: center,
+        cursor: pointer,
+        transition: all $(YuigahamaAnimations.duration) $(YuigahamaAnimations.easing),
+        font-size: 1.2em,
+        box-shadow: 0 6px 20px $(YuigahamaColors.shadow)
+    }
+    
+    .control-btn.play-pause {
+        width: 70px,
+        height: 70px,
+        font-size: 1.5em,
+        background: linear-gradient(45deg, $(YuigahamaColors.primary) 0%, $(YuigahamaColors.secondary) 100%)
+    }
+    
+    .control-btn:hover {
+        transform: scale(1.1) translateY(-2px),
+        box-shadow: 0 8px 25px $(YuigahamaColors.shadow)
+    }
+    
+    .control-btn:active {
+        transform: scale(0.95)
+    }
+    
+    .volume-container {
+        display: flex,
+        align-items: center,
+        gap: $(YuigahamaSpacing.md),
+        margin-top: $(YuigahamaSpacing.lg)
+    }
+    
+    .volume-slider {
+        flex: 1,
+        height: 6px,
+        background: rgba(255, 105, 180, 0.2),
+        border-radius: 3px,
+        outline: none,
+        cursor: pointer
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+        appearance: none,
+        width: 18px,
+        height: 18px,
+        background: $(YuigahamaColors.primary),
+        border-radius: 50%,
+        cursor: pointer,
+        box-shadow: 0 2px 8px $(YuigahamaColors.shadow)
+    }
+    
+    .playlist-toggle {
+        text-align: center,
+        margin-top: $(YuigahamaSpacing.lg)
+    }
+    
+    .playlist-btn {
+        background: transparent,
+        color: $(YuigahamaColors.primary),
+        border: 2px solid $(YuigahamaColors.primary),
+        border-radius: 20px,
+        padding: $(YuigahamaSpacing.sm) $(YuigahamaSpacing.lg),
+        cursor: pointer,
+        transition: all $(YuigahamaAnimations.duration) $(YuigahamaAnimations.easing),
+        font-weight: bold,
+        text-transform: uppercase,
+        letter-spacing: 0.5px
+    }
+    
+    .playlist-btn:hover {
+        background: $(YuigahamaColors.primary),
+        color: white,
+        transform: scale(1.05)
+    }
+}
+
+[Custom] @Style YuigahamaMusicPlayerStyle
+{
+    @keyframes rotate {
+        0% {
+            transform: rotate(0deg)
+        }
+        100% {
+            transform: rotate(360deg)
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0)
+        }
+        50% {
+            transform: translateY(-10px)
+        }
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1)
+        }
+        50% {
+            transform: scale(1.05)
+        }
+    }
+    
+    // 播放时的脉冲效果
+    .yuigahama-music-player.playing .control-btn.play-pause {
+        animation: pulse 2s ease-in-out infinite
+    }
+    
+    // 响应式设计
+    @media (max-width: $(YuigahamaBreakpoints.tablet)) {
+        .yuigahama-music-player {
+            padding: $(YuigahamaSpacing.lg),
+            margin: $(YuigahamaSpacing.md)
+        }
+        
+        .album-art {
+            width: 150px,
+            height: 150px
+        }
+        
+        .control-btn {
+            width: 40px,
+            height: 40px,
+            font-size: 1em
+        }
+        
+        .control-btn.play-pause {
+            width: 60px,
+            height: 60px,
+            font-size: 1.3em
+        }
+    }
+}
+
+script {
+    // 由比滨结衣音乐播放器控制器
+    class YuigahamaMusicPlayer {
+        constructor(container) {
+            this.container = container;
+            this.isPlaying = false;
+            this.currentTime = 0;
+            this.duration = 180; // 3分钟示例
+            this.volume = 0.7;
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupControls();
+            this.updateDisplay();
+        }
+        
+        setupControls() {
+            // 播放/暂停按钮
+            {{.play-pause}}->listen {
+                click: () => {
+                    this.togglePlay();
+                }
+            };
+            
+            // 上一首
+            {{.prev-btn}}->listen {
+                click: () => {
+                    this.previousTrack();
+                }
+            };
+            
+            // 下一首
+            {{.next-btn}}->listen {
+                click: () => {
+                    this.nextTrack();
+                }
+            };
+            
+            // 进度条点击
+            {{.progress-bar}}->listen {
+                click: (e) => {
+                    this.seekTo(e);
+                }
+            };
+            
+            // 音量滑块
+            {{.volume-slider}}->listen {
+                input: (e) => {
+                    this.setVolume(e.target.value);
+                }
+            };
+        }
+        
+        togglePlay() {
+            this.isPlaying = !this.isPlaying;
+            
+            const playBtn = {{.play-pause}};
+            const albumArt = {{.album-art}};
+            const player = this.container;
+            
+            if (this.isPlaying) {
+                playBtn.innerHTML = '⏸️';
+                albumArt.classList.add('playing');
+                player.classList.add('playing');
+                this.startProgress();
+            } else {
+                playBtn.innerHTML = '▶️';
+                albumArt.classList.remove('playing');
+                player.classList.remove('playing');
+                this.stopProgress();
+            }
+        }
+        
+        startProgress() {
+            this.progressInterval = setInterval(() => {
+                if (this.currentTime < this.duration) {
+                    this.currentTime += 1;
+                    this.updateProgress();
+                } else {
+                    this.nextTrack();
+                }
+            }, 1000);
+        }
+        
+        stopProgress() {
+            if (this.progressInterval) {
+                clearInterval(this.progressInterval);
+            }
+        }
+        
+        updateProgress() {
+            const percentage = (this.currentTime / this.duration) * 100;
+            {{.progress-fill}}.style.width = percentage + '%';
+            
+            {{.current-time}}.textContent = this.formatTime(this.currentTime);
+            {{.total-time}}.textContent = this.formatTime(this.duration);
+        }
+        
+        seekTo(e) {
+            const progressBar = {{.progress-bar}};
+            const rect = progressBar.getBoundingClientRect();
+            const percentage = (e.clientX - rect.left) / rect.width;
+            this.currentTime = Math.floor(this.duration * percentage);
+            this.updateProgress();
+        }
+        
+        previousTrack() {
+            // 由比滨风格的切换动画
+            const albumArt = {{.album-art}};
+            albumArt.style.animation = 'none';
+            albumArt.style.transform = 'scale(0.8) rotate(-90deg)';
+            
+            setTimeout(() => {
+                this.currentTime = 0;
+                this.updateTrackInfo();
+                albumArt.style.transform = 'scale(1) rotate(0deg)';
+                albumArt.style.animation = this.isPlaying ? 'rotate 10s linear infinite, float 3s ease-in-out infinite' : 'float 3s ease-in-out infinite';
+            }, 300);
+        }
+        
+        nextTrack() {
+            // 由比滨风格的切换动画
+            const albumArt = {{.album-art}};
+            albumArt.style.animation = 'none';
+            albumArt.style.transform = 'scale(0.8) rotate(90deg)';
+            
+            setTimeout(() => {
+                this.currentTime = 0;
+                this.updateTrackInfo();
+                albumArt.style.transform = 'scale(1) rotate(0deg)';
+                albumArt.style.animation = this.isPlaying ? 'rotate 10s linear infinite, float 3s ease-in-out infinite' : 'float 3s ease-in-out infinite';
+            }, 300);
+        }
+        
+        setVolume(volume) {
+            this.volume = volume / 100;
+            // 更新音量显示
+            {{.volume-icon}}.innerHTML = volume > 50 ? '🔊' : volume > 0 ? '🔉' : '🔇';
+        }
+        
+        updateTrackInfo() {
+            // 可以在这里更新歌曲信息
+            this.updateProgress();
+        }
+        
+        updateDisplay() {
+            this.updateProgress();
+            {{.volume-slider}}.value = this.volume * 100;
+            {{.play-pause}}.innerHTML = '▶️';
+        }
+        
+        formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+    }
+    
+    // 初始化音乐播放器
+    const playerContainer = {{.yuigahama-music-player}};
+    if (playerContainer) {
+        const musicPlayer = new YuigahamaMusicPlayer(playerContainer);
+    }
+}

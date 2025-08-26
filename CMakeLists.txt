@@ -95,6 +95,11 @@ set(CHTL_SOURCES
     # src/Core/ZipLibrary.cpp
     # src/Core/CMODManager.cpp
     
+    # 严格按照语法文档的模块系统实现 (待实现)
+    # src/Core/ModuleStructure.cpp
+    # src/Core/ChthollyModuleTemplate.cpp
+    # src/Core/ModuleUsageRules.cpp
+    
     # 编译器 (TODO: 实现)
     # src/Compiler/CHTL/CHTLCompiler.cpp
     # src/Compiler/CHTLJS/CHTLJSCompiler.cpp

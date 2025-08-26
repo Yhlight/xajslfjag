@@ -1,0 +1,258 @@
+// CHTL模块使用示例
+// 严格按照语法文档演示珂朵莉和由比滨结衣模块的正确使用方式
+
+// 严格按照语法文档：CMOD和CJMOD分别导入，不推荐统一管理
+[Import] @Chtl from Chtholly        // 导入珂朵莉CMOD部分
+[Import] @CJmod from Chtholly       // 导入珂朵莉CJMOD部分  
+[Import] @Chtl from Yuigahama       // 导入由比滨结衣CMOD部分
+
+[Namespace] ExampleApp
+
+[Configuration]
+{
+    USE_CHTHOLLY_THEME = true;
+    USE_YUIGAHAMA_COMPONENTS = true;
+    ENABLE_MIXED_STYLING = true;
+}
+
+// 使用珂朵莉的页面容器
+ChthollyPage {
+    // 使用由比滨结衣的导航
+    YuigahamaNavi {
+        ul {
+            li { a { href: "/home", text: "首页" } }
+            li { a { href: "/gallery", text: "相册" } }
+            li { a { href: "/music", text: "音乐" } }
+            li { a { href: "/about", text: "关于" } }
+        }
+    }
+    
+    // 主要内容区域
+    ChthollySection {
+        h1 { 
+            text: "欢迎来到珂朵莉与由比滨结衣的世界",
+            style {
+                color: $(ChthollyColors.primary),
+                font-family: $(ChthollyFonts.heading),
+                text-align: center,
+                margin-bottom: $(ChthollySpacing.xl)
+            }
+        }
+        
+        // 使用珂朵莉的手风琴组件
+        ChthollyAccordion {
+            .accordion-item {
+                .accordion-header { text: "珂朵莉的记忆片段" }
+                .accordion-content {
+                    .accordion-body {
+                        text: "在那个末日的世界里，珂朵莉带着温柔的笑容，守护着她所珍视的一切..."
+                    }
+                }
+            }
+            
+            .accordion-item {
+                .accordion-header { text: "由比滨结衣的青春" }
+                .accordion-content {
+                    .accordion-body {
+                        text: "充满活力的由比滨，总是用她的热情和开朗感染着身边的每一个人..."
+                    }
+                }
+            }
+        }
+        
+        // 使用珂朵莉的四叶窗相册
+        ChthollyFourLeafGallery {
+            .gallery-container {
+                .leaf-panel.top-left {
+                    img { src: "/images/chtholly1.jpg", alt: "珂朵莉的微笑" }
+                    .leaf-overlay {
+                        .leaf-title { text: "世界上最幸福的女孩" }
+                        .leaf-description { text: "珂朵莉的温柔笑容" }
+                    }
+                }
+                
+                .leaf-panel.top-right {
+                    img { src: "/images/yuigahama1.jpg", alt: "由比滨的活力" }
+                    .leaf-overlay {
+                        .leaf-title { text: "青春的活力" }
+                        .leaf-description { text: "由比滨的开朗性格" }
+                    }
+                }
+                
+                .leaf-panel.bottom-left {
+                    img { src: "/images/chtholly2.jpg", alt: "珂朵莉的守护" }
+                    .leaf-overlay {
+                        .leaf-title { text: "守护的决心" }
+                        .leaf-description { text: "为了重要的人" }
+                    }
+                }
+                
+                .leaf-panel.bottom-right {
+                    img { src: "/images/yuigahama2.jpg", alt: "由比滨的友情" }
+                    .leaf-overlay {
+                        .leaf-title { text: "珍贵的友情" }
+                        .leaf-description { text: "真挚的情感" }
+                    }
+                }
+                
+                .center-decoration {}
+                .gallery-controls {
+                    .close-btn { text: "✕" }
+                }
+            }
+        }
+        
+        // 使用由比滨结衣的音乐播放器
+        YuigahamaMusicPlayer {
+            .player-header {
+                .song-title { text: "Always in my heart" }
+                .artist-name { text: "Chtholly & Yuigahama" }
+            }
+            
+            .album-art {
+                img { src: "/images/album-cover.jpg", alt: "专辑封面" }
+            }
+            
+            .progress-container {
+                .progress-bar {
+                    .progress-fill {}
+                }
+                .time-info {
+                    .current-time { text: "0:00" }
+                    .total-time { text: "3:24" }
+                }
+            }
+            
+            .controls {
+                .control-btn.prev-btn { text: "⏮️" }
+                .control-btn.play-pause { text: "▶️" }
+                .control-btn.next-btn { text: "⏭️" }
+            }
+            
+            .volume-container {
+                .volume-icon { text: "🔊" }
+                input.volume-slider { type: "range", min: "0", max: "100", value: "70" }
+            }
+            
+            .playlist-toggle {
+                .playlist-btn { text: "播放列表" }
+            }
+        }
+        
+        // 混合使用两种风格的卡片
+        div {
+            style {
+                display: grid,
+                grid-template-columns: "1fr 1fr",
+                gap: $(ChthollySpacing.lg),
+                margin-top: $(ChthollySpacing.xl)
+            }
+            
+            // 珂朵莉风格卡片
+            ChthollySection {
+                h3 { 
+                    text: "珂朵莉的世界",
+                    style {
+                        color: $(ChthollyColors.primary),
+                        font-family: $(ChthollyFonts.heading)
+                    }
+                }
+                p { 
+                    text: "在那个充满温柔和美好的世界里，珂朵莉用她的纯真和善良温暖着每一个人的心。"
+                }
+            }
+            
+            // 由比滨结衣风格卡片
+            YuigahamaCard {
+                h3 { 
+                    text: "由比滨的青春",
+                    style {
+                        color: $(YuigahamaColors.primary),
+                        font-family: $(YuigahamaFonts.energetic)
+                    }
+                }
+                p { 
+                    text: "充满活力和热情的青春年华，由比滨用她的开朗和真诚为友谊献上最美好的色彩。"
+                }
+                
+                YuigahamaButton {
+                    text: "了解更多",
+                    onclick: "showMore()"
+                }
+            }
+        }
+    }
+    
+    // 珂朵莉樱花雨效果
+    ChthollyRain {}
+}
+
+// 使用CJMOD功能的脚本部分
+script {
+    // 使用珂朵莉的printMylove功能（严格按照语法文档）
+    const chthollyArt = printMylove {
+        url: "/images/chtholly-portrait.jpg",
+        mode: "ASCII",
+        width: "60px",
+        height: "30px",
+        scale: 1.0
+    };
+    
+    // 输出到控制台
+    console.log("珂朵莉的ASCII艺术:");
+    console.log(chthollyArt);
+    
+    // 使用珂朵莉的iNeverAway功能（严格按照语法文档）
+    vir ChthollyMemories = iNeverAway {
+        Remember<Happy>: function(string memory) {
+            console.log("珂朵莉的快乐回忆: " + memory);
+            return "已保存快乐回忆";
+        },
+        
+        Remember<Sad>: function(string memory) {
+            console.log("珂朵莉的悲伤回忆: " + memory);
+            return "已保存悲伤回忆，但我们选择记住美好";
+        },
+        
+        Smile: {
+            brightness: "infinite",
+            warmth: "endless",
+            message: "世界上最幸福的女孩的笑容"
+        },
+        
+        Promise: {
+            content: "我会一直守护着重要的人",
+            keeper: "珂朵莉·诺塔·瑟尼欧里斯",
+            eternal: true
+        }
+    };
+    
+    // 调用虚对象方法（严格按照语法文档）
+    ChthollyMemories->Remember<Happy>("与威廉一起度过的美好时光");
+    ChthollyMemories->Remember<Sad>("即将消失的痛苦");
+    
+    // 访问虚对象属性
+    console.log("珂朵莉的笑容:", ChthollyMemories->Smile);
+    console.log("珂朵莉的承诺:", ChthollyMemories->Promise);
+    
+    // 页面交互功能
+    function showMore() {
+        alert("由比滨结衣：总是充满活力的女孩，用她的热情感染着周围的人！");
+    }
+    
+    // 启动樱花雨效果
+    if (window.ChthollyRain) {
+        window.ChthollyRain.start();
+        window.ChthollyRain.setWind('gentle');
+    }
+    
+    // 响应式处理
+    window->listen {
+        resize: function() {
+            // 重新调整布局
+            {{.gallery-container}}.forEach(container => {
+                container.style.height = Math.min(window.innerHeight * 0.6, 500) + 'px';
+            });
+        }
+    };
+}
