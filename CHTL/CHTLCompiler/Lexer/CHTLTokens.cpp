@@ -10,31 +10,26 @@ static const std::unordered_map<CHTLTokenType, std::string> tokenTypeNames = {
     {CHTLTokenType::UNQUOTED_LITERAL, "UNQUOTED_LITERAL"},
     {CHTLTokenType::NUMBER, "NUMBER"},
     {CHTLTokenType::IDENTIFIER, "IDENTIFIER"},
+    
+    // CHTL核心关键字
     {CHTLTokenType::TEXT, "TEXT"},
     {CHTLTokenType::STYLE, "STYLE"},
     {CHTLTokenType::SCRIPT, "SCRIPT"},
     {CHTLTokenType::USE, "USE"},
-    {CHTLTokenType::INHERIT, "INHERIT"},
-    {CHTLTokenType::DELETE, "DELETE"},
-    {CHTLTokenType::INSERT, "INSERT"},
-    {CHTLTokenType::AFTER, "AFTER"},
-    {CHTLTokenType::BEFORE, "BEFORE"},
-    {CHTLTokenType::REPLACE, "REPLACE"},
-    {CHTLTokenType::AT_TOP, "AT_TOP"},
-    {CHTLTokenType::AT_BOTTOM, "AT_BOTTOM"},
-    {CHTLTokenType::FROM, "FROM"},
-    {CHTLTokenType::AS, "AS"},
-    {CHTLTokenType::EXCEPT, "EXCEPT"},
-    {CHTLTokenType::TEMPLATE, "TEMPLATE"},
-    {CHTLTokenType::CUSTOM, "CUSTOM"},
-    {CHTLTokenType::ORIGIN, "ORIGIN"},
-    {CHTLTokenType::IMPORT, "IMPORT"},
-    {CHTLTokenType::NAMESPACE, "NAMESPACE"},
-    {CHTLTokenType::CONFIGURATION, "CONFIGURATION"},
-    {CHTLTokenType::INFO, "INFO"},
-    {CHTLTokenType::EXPORT, "EXPORT"},
-    {CHTLTokenType::NAME, "NAME"},
-    {CHTLTokenType::ORIGINTYPE, "ORIGINTYPE"},
+    
+    // CHTL模板和自定义前缀
+    {CHTLTokenType::LBRACKET_TEMPLATE, "LBRACKET_TEMPLATE"},
+    {CHTLTokenType::LBRACKET_CUSTOM, "LBRACKET_CUSTOM"},
+    {CHTLTokenType::LBRACKET_ORIGIN, "LBRACKET_ORIGIN"},
+    {CHTLTokenType::LBRACKET_IMPORT, "LBRACKET_IMPORT"},
+    {CHTLTokenType::LBRACKET_NAMESPACE, "LBRACKET_NAMESPACE"},
+    {CHTLTokenType::LBRACKET_CONFIGURATION, "LBRACKET_CONFIGURATION"},
+    {CHTLTokenType::LBRACKET_INFO, "LBRACKET_INFO"},
+    {CHTLTokenType::LBRACKET_EXPORT, "LBRACKET_EXPORT"},
+    {CHTLTokenType::LBRACKET_NAME, "LBRACKET_NAME"},
+    {CHTLTokenType::LBRACKET_ORIGINTYPE, "LBRACKET_ORIGINTYPE"},
+    
+    // CHTL类型标识符
     {CHTLTokenType::AT_STYLE, "AT_STYLE"},
     {CHTLTokenType::AT_ELEMENT, "AT_ELEMENT"},
     {CHTLTokenType::AT_VAR, "AT_VAR"},
@@ -43,14 +38,29 @@ static const std::unordered_map<CHTLTokenType, std::string> tokenTypeNames = {
     {CHTLTokenType::AT_CHTL, "AT_CHTL"},
     {CHTLTokenType::AT_CJMOD, "AT_CJMOD"},
     {CHTLTokenType::AT_CONFIG, "AT_CONFIG"},
+    
+    // CHTL继承和修改关键字
+    {CHTLTokenType::INHERIT, "INHERIT"},
+    {CHTLTokenType::DELETE, "DELETE"},
+    {CHTLTokenType::INSERT, "INSERT"},
+    {CHTLTokenType::AFTER, "AFTER"},
+    {CHTLTokenType::BEFORE, "BEFORE"},
+    {CHTLTokenType::REPLACE, "REPLACE"},
+    {CHTLTokenType::AT_TOP, "AT_TOP"},
+    {CHTLTokenType::AT_BOTTOM, "AT_BOTTOM"},
+    
+    // CHTL导入关键字
+    {CHTLTokenType::FROM, "FROM"},
+    {CHTLTokenType::AS, "AS"},
+    {CHTLTokenType::EXCEPT, "EXCEPT"},
+    
+    // CHTL结构符号
     {CHTLTokenType::LBRACE, "LBRACE"},
     {CHTLTokenType::RBRACE, "RBRACE"},
     {CHTLTokenType::LPAREN, "LPAREN"},
     {CHTLTokenType::RPAREN, "RPAREN"},
     {CHTLTokenType::LBRACKET, "LBRACKET"},
     {CHTLTokenType::RBRACKET, "RBRACKET"},
-    {CHTLTokenType::LT, "LT"},
-    {CHTLTokenType::GT, "GT"},
     {CHTLTokenType::SEMICOLON, "SEMICOLON"},
     {CHTLTokenType::COLON, "COLON"},
     {CHTLTokenType::EQUAL, "EQUAL"},
@@ -60,11 +70,25 @@ static const std::unordered_map<CHTLTokenType, std::string> tokenTypeNames = {
     {CHTLTokenType::STAR, "STAR"},
     {CHTLTokenType::AMPERSAND, "AMPERSAND"},
     {CHTLTokenType::HASH, "HASH"},
+    
+    // CHTL选择器
     {CHTLTokenType::CLASS_SELECTOR, "CLASS_SELECTOR"},
     {CHTLTokenType::ID_SELECTOR, "ID_SELECTOR"},
+    
+    // CHTL注释
     {CHTLTokenType::LINE_COMMENT, "LINE_COMMENT"},
     {CHTLTokenType::BLOCK_COMMENT, "BLOCK_COMMENT"},
     {CHTLTokenType::GENERATOR_COMMENT, "GENERATOR_COMMENT"},
+    
+    // CHTL JS相关Token
+    {CHTLTokenType::ENHANCED_SELECTOR, "ENHANCED_SELECTOR"},
+    {CHTLTokenType::VIR, "VIR"},
+    {CHTLTokenType::LISTEN, "LISTEN"},
+    {CHTLTokenType::DELEGATE, "DELEGATE"},
+    {CHTLTokenType::ANIMATE, "ANIMATE"},
+    {CHTLTokenType::ARROW, "ARROW"},
+    
+    // 特殊Token
     {CHTLTokenType::NEWLINE, "NEWLINE"},
     {CHTLTokenType::WHITESPACE, "WHITESPACE"},
     {CHTLTokenType::EOF_TOKEN, "EOF_TOKEN"},
@@ -79,14 +103,6 @@ static const std::unordered_map<std::string, CHTLTokenType> keywordMap = {
     {"script", CHTLTokenType::SCRIPT},
     {"use", CHTLTokenType::USE},
     
-    // 声明关键字
-    {"template", CHTLTokenType::TEMPLATE},
-    {"custom", CHTLTokenType::CUSTOM},
-    {"origin", CHTLTokenType::ORIGIN},
-    {"import", CHTLTokenType::IMPORT},
-    {"namespace", CHTLTokenType::NAMESPACE},
-    {"configuration", CHTLTokenType::CONFIGURATION},
-    
     // 继承和修改关键字
     {"inherit", CHTLTokenType::INHERIT},
     {"delete", CHTLTokenType::DELETE},
@@ -99,40 +115,38 @@ static const std::unordered_map<std::string, CHTLTokenType> keywordMap = {
     {"from", CHTLTokenType::FROM},
     {"as", CHTLTokenType::AS},
     {"except", CHTLTokenType::EXCEPT},
+    
+    // CHTL JS关键字
+    {"vir", CHTLTokenType::VIR},
+    {"listen", CHTLTokenType::LISTEN},
+    {"delegate", CHTLTokenType::DELEGATE},
+    {"animate", CHTLTokenType::ANIMATE},
 };
 
-// CHTL前缀映射
-static const std::unordered_map<std::string, CHTLTokenType> prefixMap = {
-    {"[Template]", CHTLTokenType::TEMPLATE},
-    {"[Custom]", CHTLTokenType::CUSTOM},
-    {"[Origin]", CHTLTokenType::ORIGIN},
-    {"[Import]", CHTLTokenType::IMPORT},
-    {"[Namespace]", CHTLTokenType::NAMESPACE},
-    {"[Configuration]", CHTLTokenType::CONFIGURATION},
-    {"[Info]", CHTLTokenType::INFO},
-    {"[Export]", CHTLTokenType::EXPORT},
-    {"[Name]", CHTLTokenType::NAME},
-    {"[OriginType]", CHTLTokenType::ORIGINTYPE},
+// CHTL方括号关键字映射
+static const std::unordered_map<std::string, CHTLTokenType> bracketKeywordMap = {
+    {"[Template]", CHTLTokenType::LBRACKET_TEMPLATE},
+    {"[Custom]", CHTLTokenType::LBRACKET_CUSTOM},
+    {"[Origin]", CHTLTokenType::LBRACKET_ORIGIN},
+    {"[Import]", CHTLTokenType::LBRACKET_IMPORT},
+    {"[Namespace]", CHTLTokenType::LBRACKET_NAMESPACE},
+    {"[Configuration]", CHTLTokenType::LBRACKET_CONFIGURATION},
+    {"[Info]", CHTLTokenType::LBRACKET_INFO},
+    {"[Export]", CHTLTokenType::LBRACKET_EXPORT},
+    {"[Name]", CHTLTokenType::LBRACKET_NAME},
+    {"[OriginType]", CHTLTokenType::LBRACKET_ORIGINTYPE},
 };
 
-// 类型标识符映射
+// CHTL类型标识符映射
 static const std::unordered_map<std::string, CHTLTokenType> typeIdentifierMap = {
     {"@Style", CHTLTokenType::AT_STYLE},
-    {"@style", CHTLTokenType::AT_STYLE},
     {"@Element", CHTLTokenType::AT_ELEMENT},
-    {"@element", CHTLTokenType::AT_ELEMENT},
     {"@Var", CHTLTokenType::AT_VAR},
-    {"@var", CHTLTokenType::AT_VAR},
     {"@Html", CHTLTokenType::AT_HTML},
-    {"@html", CHTLTokenType::AT_HTML},
     {"@JavaScript", CHTLTokenType::AT_JAVASCRIPT},
-    {"@javascript", CHTLTokenType::AT_JAVASCRIPT},
     {"@Chtl", CHTLTokenType::AT_CHTL},
-    {"@chtl", CHTLTokenType::AT_CHTL},
     {"@CJmod", CHTLTokenType::AT_CJMOD},
-    {"@cjmod", CHTLTokenType::AT_CJMOD},
     {"@Config", CHTLTokenType::AT_CONFIG},
-    {"@config", CHTLTokenType::AT_CONFIG},
 };
 
 // CHTLToken方法实现
@@ -145,12 +159,24 @@ bool CHTLToken::isKeyword() const {
     return CHTLTokenUtils::isKeyword(value);
 }
 
-bool CHTLToken::isPrefix() const {
-    return CHTLTokenUtils::isPrefix(value);
+bool CHTLToken::isBracketKeyword() const {
+    return CHTLTokenUtils::isBracketKeyword(value);
 }
 
 bool CHTLToken::isTypeIdentifier() const {
     return CHTLTokenUtils::isTypeIdentifier(value);
+}
+
+bool CHTLToken::isComment() const {
+    return CHTLTokenUtils::isComment(type);
+}
+
+bool CHTLToken::isStructuralSymbol() const {
+    return CHTLTokenUtils::isStructuralSymbol(value);
+}
+
+bool CHTLToken::isSelector() const {
+    return CHTLTokenUtils::isSelector(type);
 }
 
 // CHTLTokenUtils方法实现
@@ -161,10 +187,10 @@ CHTLTokenType CHTLTokenUtils::stringToTokenType(const std::string& str) {
         return keywordIt->second;
     }
     
-    // 检查前缀
-    auto prefixIt = prefixMap.find(str);
-    if (prefixIt != prefixMap.end()) {
-        return prefixIt->second;
+    // 检查方括号关键字
+    auto bracketIt = bracketKeywordMap.find(str);
+    if (bracketIt != bracketKeywordMap.end()) {
+        return bracketIt->second;
     }
     
     // 检查类型标识符
@@ -176,35 +202,74 @@ CHTLTokenType CHTLTokenUtils::stringToTokenType(const std::string& str) {
     // 检查特殊情况
     if (str == "at top") return CHTLTokenType::AT_TOP;
     if (str == "at bottom") return CHTLTokenType::AT_BOTTOM;
+    if (str == "->") return CHTLTokenType::ARROW;
     
     // 默认为标识符
     return CHTLTokenType::IDENTIFIER;
 }
 
-bool CHTLTokenUtils::isKeyword(const std::string& str) {
-    return keywordMap.find(str) != keywordMap.end() ||
-           str == "at top" || str == "at bottom";
+std::string CHTLTokenUtils::tokenTypeToString(CHTLTokenType type) {
+    auto it = tokenTypeNames.find(type);
+    return it != tokenTypeNames.end() ? it->second : "UNKNOWN";
 }
 
-bool CHTLTokenUtils::isPrefix(const std::string& str) {
-    return prefixMap.find(str) != prefixMap.end();
+bool CHTLTokenUtils::isKeyword(const std::string& str) {
+    return keywordMap.find(str) != keywordMap.end();
+}
+
+bool CHTLTokenUtils::isBracketKeyword(const std::string& str) {
+    return bracketKeywordMap.find(str) != bracketKeywordMap.end();
 }
 
 bool CHTLTokenUtils::isTypeIdentifier(const std::string& str) {
     return typeIdentifierMap.find(str) != typeIdentifierMap.end();
 }
 
-std::vector<std::string> CHTLTokenUtils::getAllKeywords() {
-    std::vector<std::string> keywords;
-    
-    for (const auto& pair : keywordMap) {
-        keywords.push_back(pair.first);
+bool CHTLTokenUtils::isStructuralSymbol(const std::string& str) {
+    static const std::unordered_set<std::string> structuralSymbols = {
+        "{", "}", "(", ")", "[", "]", ";", ":", "=", ",", ".", "/", "*", "&", "#"
+    };
+    return structuralSymbols.find(str) != structuralSymbols.end();
+}
+
+bool CHTLTokenUtils::isComment(CHTLTokenType type) {
+    return type == CHTLTokenType::LINE_COMMENT || 
+           type == CHTLTokenType::BLOCK_COMMENT || 
+           type == CHTLTokenType::GENERATOR_COMMENT;
+}
+
+bool CHTLTokenUtils::isSelector(CHTLTokenType type) {
+    return type == CHTLTokenType::CLASS_SELECTOR || 
+           type == CHTLTokenType::ID_SELECTOR ||
+           type == CHTLTokenType::ENHANCED_SELECTOR;
+}
+
+const std::unordered_map<std::string, CHTLTokenType>& CHTLTokenUtils::getKeywordMap() {
+    return keywordMap;
+}
+
+const std::unordered_map<std::string, CHTLTokenType>& CHTLTokenUtils::getBracketKeywordMap() {
+    return bracketKeywordMap;
+}
+
+const std::unordered_map<std::string, CHTLTokenType>& CHTLTokenUtils::getTypeIdentifierMap() {
+    return typeIdentifierMap;
+}
+
+const std::unordered_set<std::string>& CHTLTokenUtils::getCHTLKeywords() {
+    static std::unordered_set<std::string> allKeywords;
+    if (allKeywords.empty()) {
+        for (const auto& pair : keywordMap) {
+            allKeywords.insert(pair.first);
+        }
+        for (const auto& pair : bracketKeywordMap) {
+            allKeywords.insert(pair.first);
+        }
+        for (const auto& pair : typeIdentifierMap) {
+            allKeywords.insert(pair.first);
+        }
     }
-    
-    keywords.push_back("at top");
-    keywords.push_back("at bottom");
-    
-    return keywords;
+    return allKeywords;
 }
 
 } // namespace CHTL

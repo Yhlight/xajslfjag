@@ -1,212 +1,504 @@
-// CHTL语法示例文件
+// CHTL语法示例文件 - 根据官方语法文档编写
 // 展示所有主要CHTL语法特性
 
-use standard
+use html5;
 
-namespace app {
-    // 配置定义
-    configuration {
-        name: "CHTL Demo"
-        version: "1.0.0"
+// 配置组
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 0;
+    DISABLE_NAME_GROUP = false;
+    DISABLE_CUSTOM_ORIGIN_TYPE = false;
+    DEBUG_MODE = false;
+}
+
+// 命名空间
+[Namespace] app
+{
+    // 变量组模板
+    [Template] @Var ThemeColors
+    {
+        primary: "rgb(0, 123, 255)";
+        secondary: "rgb(108, 117, 125)";
+        success: "rgb(40, 167, 69)";
+        background: "rgb(248, 249, 250)";
     }
-    
-    // 变量组
-    @var theme {
-        primary-color: #007bff
-        secondary-color: #6c757d
-        font-family: "Arial, sans-serif"
-        border-radius: 4px
+
+    // 样式组模板
+    [Template] @Style ButtonBase
+    {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
-    
-    // 全局样式组
-    @style {
-        .container {
-            max-width: 1200px
-            margin: 0 auto
-            padding: 20px
-            font-family: ${theme.font-family}
-        }
-        
-        .btn {
-            padding: 10px 15px
-            border: none
-            border-radius: ${theme.border-radius}
-            cursor: pointer
+
+    [Template] @Style PrimaryButton
+    {
+        @Style ButtonBase;
+        background-color: ThemeColors(primary);
+        color: white;
+    }
+
+    // 元素模板
+    [Template] @Element Card
+    {
+        div
+        {
+            class: card;
             
-            &.primary {
-                background-color: ${theme.primary-color}
-                color: white
+            style
+            {
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                margin: 16px 0;
+                background-color: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
-            
-            &.secondary {
-                background-color: ${theme.secondary-color}
-                color: white
+
+            div
+            {
+                class: card-header;
+                
+                style
+                {
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                    color: ThemeColors(primary);
+                }
+            }
+
+            div
+            {
+                class: card-body;
+                
+                style
+                {
+                    line-height: 1.6;
+                }
             }
         }
-        
-        .card {
-            border: 1px solid #ddd
-            border-radius: ${theme.border-radius}
-            padding: 20px
-            margin: 10px 0
-            
-            .header {
-                font-weight: bold
-                margin-bottom: 10px
-            }
-        }
     }
-    
-    // 模板定义
-    template Button(text, type: "primary") {
-        <button class="btn ${type}">
-            @script {
-                this.addEventListener('click', function() {
-                    console.log('Button clicked: ' + this.textContent);
-                });
-            }
-            ${text}
-        </button>
-    }
-    
-    template Card(title, content) {
-        <div class="card">
-            <div class="header">${title}</div>
-            <div class="content">${content}</div>
-        </div>
-    }
-    
+
     // 自定义组件
-    custom Modal(title, closable: true) {
-        <div class="modal">
-            @style {
-                position: fixed
-                top: 0
-                left: 0
-                width: 100%
-                height: 100%
-                background: rgba(0,0,0,0.5)
-                display: flex
-                justify-content: center
-                align-items: center
+    [Custom] @Element Modal
+    {
+        div
+        {
+            class: modal-overlay;
+            
+            style
+            {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 1000;
+            }
+
+            div
+            {
+                class: modal-content;
                 
-                .modal-content {
-                    background: white
-                    padding: 20px
-                    border-radius: ${theme.border-radius}
-                    min-width: 300px
+                style
+                {
+                    background: white;
+                    border-radius: 8px;
+                    padding: 24px;
+                    min-width: 300px;
+                    max-width: 500px;
+                    position: relative;
                 }
-                
-                .close-btn {
-                    float: right
-                    cursor: pointer
+
+                div
+                {
+                    class: modal-header;
+                    
+                    style
+                    {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        margin-bottom: 16px;
+                        padding-bottom: 16px;
+                        border-bottom: 1px solid #eee;
+                    }
+
+                    h3
+                    {
+                        text
+                        {
+                            模态框标题
+                        }
+                    }
+
+                    button
+                    {
+                        class: close-btn;
+                        
+                        style
+                        {
+                            background: none;
+                            border: none;
+                            font-size: 24px;
+                            cursor: pointer;
+                            color: #999;
+                            
+                            &:hover
+                            {
+                                color: #333;
+                            }
+                        }
+
+                        text
+                        {
+                            ×
+                        }
+                    }
+                }
+
+                div
+                {
+                    class: modal-body;
+                    
+                    text
+                    {
+                        这里是模态框的内容区域
+                    }
                 }
             }
-            
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>${title}</h3>
-                    {if closable}
-                        <span class="close-btn">×</span>
-                    {/if}
-                </div>
-                <div class="modal-body">
-                    <content />
-                </div>
-            </div>
-        </div>
+        }
     }
-    
-    // 主要内容
-    <div class="container">
-        <h1>CHTL语法演示</h1>
-        
-        // 基础HTML元素
-        <p>这是一个展示CHTL所有语法特性的示例文件。</p>
-        
-        // 模板使用
-        <Button text="点击我" type="primary" />
-        <Button text="次要按钮" type="secondary" />
-        
-        // 卡片组件
-        <Card title="功能特性" content="CHTL支持模板、组件、变量、样式组等强大功能" />
-        <Card title="语法简洁" content="使用类似HTML的语法，学习成本低" />
-        
-        // 选择器自动化
-        .highlight {
-            <div>这个div会自动获得highlight类</div>
+
+    // 原始嵌入
+    [Origin] @Style GlobalStyles
+    {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-        #main-content {
-            <div>这个div会自动获得main-content ID</div>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
         }
-        
-        // 嵌套结构
-        .grid {
-            @style {
-                display: grid
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
-                gap: 20px
-            }
-            
-            .grid-item {
-                <div>网格项目 1</div>
-            }
-            .grid-item {
-                <div>网格项目 2</div>
-            }
-            .grid-item {
-                <div>网格项目 3</div>
+    }
+
+    // 主页面内容
+    html
+    {
+        head
+        {
+            title
+            {
+                text
+                {
+                    CHTL示例页面
+                }
             }
         }
-        
-        // 本地样式和脚本
-        <div>
-            @style {
-                background: linear-gradient(45deg, #ff6b6b, #4ecdc4)
-                color: white
-                padding: 20px
-                text-align: center
-                margin: 20px 0
+
+        body
+        {
+            style
+            {
+                background-color: ThemeColors(background);
+                min-height: 100vh;
+                padding: 20px;
             }
-            
-            @script {
-                this.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                    this.style.transition = 'transform 0.3s ease';
-                });
+
+            // 使用原始嵌入
+            [Origin] @Style GlobalStyles;
+
+            div
+            {
+                class: container;
                 
-                this.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
+                style
+                {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                }
+
+                h1
+                {
+                    style
+                    {
+                        color: ThemeColors(primary);
+                        text-align: center;
+                        margin-bottom: 32px;
+                        font-size: 2.5rem;
+                    }
+
+                    text
+                    {
+                        CHTL语法演示
+                    }
+                }
+
+                p
+                {
+                    style
+                    {
+                        text-align: center;
+                        margin-bottom: 32px;
+                        font-size: 1.1rem;
+                        color: #666;
+                    }
+
+                    text
+                    {
+                        这是一个展示CHTL真实语法的示例页面
+                    }
+                }
+
+                // 使用元素模板
+                @Element Card;
+
+                // 自定义卡片内容
+                div
+                {
+                    class: card;
+                    
+                    style
+                    {
+                        border: 1px solid #ddd;
+                        border-radius: 8px;
+                        padding: 20px;
+                        margin: 16px 0;
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                    }
+
+                    div
+                    {
+                        class: card-header;
+                        
+                        text
+                        {
+                            特色功能
+                        }
+                    }
+
+                    div
+                    {
+                        class: card-body;
+                        
+                        text
+                        {
+                            CHTL支持局部样式块、模板系统、自定义组件等强大功能
+                        }
+                    }
+                }
+
+                // 按钮示例
+                div
+                {
+                    style
+                    {
+                        text-align: center;
+                        margin: 32px 0;
+                    }
+
+                    button
+                    {
+                        style
+                        {
+                            @Style PrimaryButton;
+                            margin: 0 8px;
+                        }
+
+                        script
+                        {
+                            this.addEventListener('click', function() {
+                                alert('按钮被点击了！');
+                            });
+                        }
+
+                        text
+                        {
+                            点击我
+                        }
+                    }
+
+                    button
+                    {
+                        style
+                        {
+                            @Style ButtonBase;
+                            background-color: ThemeColors(secondary);
+                            color: white;
+                            margin: 0 8px;
+                        }
+
+                        text
+                        {
+                            次要按钮
+                        }
+                    }
+                }
+
+                // 选择器自动化示例
+                .highlight
+                {
+                    style
+                    {
+                        background-color: yellow;
+                        padding: 16px;
+                        border-radius: 4px;
+                        margin: 16px 0;
+                    }
+
+                    text
+                    {
+                        这个div会自动获得highlight类名
+                    }
+                }
+
+                #main-content
+                {
+                    style
+                    {
+                        background-color: ThemeColors(success);
+                        color: white;
+                        padding: 20px;
+                        border-radius: 8px;
+                        text-align: center;
+                    }
+
+                    text
+                    {
+                        这个div会自动获得main-content的ID
+                    }
+                }
+
+                // 嵌套结构示例
+                div
+                {
+                    class: grid-container;
+                    
+                    style
+                    {
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                        gap: 20px;
+                        margin: 32px 0;
+                    }
+
+                    div
+                    {
+                        style
+                        {
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                            
+                            .title
+                            {
+                                font-weight: bold;
+                                color: ThemeColors(primary);
+                                margin-bottom: 12px;
+                            }
+                        }
+
+                        div
+                        {
+                            class: title;
+                            
+                            text
+                            {
+                                模板系统
+                            }
+                        }
+
+                        text
+                        {
+                            支持样式组、元素和变量组模板
+                        }
+                    }
+
+                    div
+                    {
+                        style
+                        {
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        }
+
+                        div
+                        {
+                            class: title;
+                            
+                            text
+                            {
+                                自定义组件
+                            }
+                        }
+
+                        text
+                        {
+                            支持特例化、继承和删除操作
+                        }
+                    }
+
+                    div
+                    {
+                        style
+                        {
+                            background: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                        }
+
+                        div
+                        {
+                            class: title;
+                            
+                            text
+                            {
+                                原始嵌入
+                            }
+                        }
+
+                        text
+                        {
+                            支持HTML、CSS、JavaScript原始代码嵌入
+                        }
+                    }
+                }
             }
-            
-            悬停我看效果！
-        </div>
-        
-        // 模态框示例
-        <Button text="打开模态框" type="primary" />
-        
-        /*
-        <Modal title="演示模态框" closable="true">
-            <p>这是模态框的内容。</p>
-            <Button text="确定" type="primary" />
-            <Button text="取消" type="secondary" />
-        </Modal>
-        */
+        }
     }
 }
 
 /* 
-这个文件展示了CHTL的主要语法特性：
-1. Use声明和命名空间
-2. 配置定义
-3. 变量组和插值
-4. 样式组和嵌套样式
-5. 模板定义和使用
-6. 自定义组件
-7. 选择器自动化
-8. 本地样式和脚本
-9. 条件语法
-10. 注释支持
+这个示例展示了CHTL的主要语法特性：
+1. use声明和配置组
+2. 命名空间
+3. 变量组模板 [Template] @Var
+4. 样式组模板 [Template] @Style
+5. 元素模板 [Template] @Element
+6. 自定义组件 [Custom] @Element
+7. 原始嵌入 [Origin] @Style
+8. 局部样式块 style { }
+9. 局部脚本块 script { }
+10. 选择器自动化 .class { } #id { }
+11. 文本节点 text { }
+12. CE对等式（: 与 = 等价）
+13. 变量插值
+14. 注释支持
 */

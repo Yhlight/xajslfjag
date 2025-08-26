@@ -1,212 +1,233 @@
 #include "CHTLLexer.h"
-#include <sstream>
 #include <cctype>
+#include <algorithm>
 
 namespace CHTL {
 
-// 构造函数
 CHTLLexer::CHTLLexer(const std::string& sourceCode) 
-    : source(sourceCode), position(0), line(1), column(1), currentState(LexerState::Normal) {
+    : source(sourceCode), position(0), line(1), column(1), start(0), currentState(CHTLLexerState::Normal) {
 }
 
-// 主词法分析函数
+void CHTLLexer::reset(const std::string& newSource) {
+    if (!newSource.empty()) {
+        source = newSource;
+    }
+    position = 0;
+    line = 1;
+    column = 1;
+    start = 0;
+    currentState = CHTLLexerState::Normal;
+    errors.clear();
+}
+
 std::vector<CHTLToken> CHTLLexer::tokenize() {
     std::vector<CHTLToken> tokens;
-    errors.clear();
     
     while (!isAtEnd()) {
+        start = position;
         CHTLToken token = nextToken();
-        if (token.isValid()) {
+        
+        if (token.type != CHTLTokenType::INVALID) {
             tokens.push_back(token);
         }
     }
     
     // 添加EOF token
-    tokens.push_back(makeToken(CHTLTokenType::EOF_TOKEN));
+    tokens.push_back(makeToken(CHTLTokenType::EOF_TOKEN, ""));
     
     return tokens;
 }
 
-// 获取下一个Token
 CHTLToken CHTLLexer::nextToken() {
     skipWhitespace();
     
     if (isAtEnd()) {
-        return makeToken(CHTLTokenType::EOF_TOKEN);
+        return makeToken(CHTLTokenType::EOF_TOKEN, "");
     }
     
-    char c = peek();
+    start = position;
+    return scanToken();
+}
+
+CHTLToken CHTLLexer::scanToken() {
+    char c = advance();
     
-    // 处理换行
-    if (c == '\n') {
-        advance();
-        return makeToken(CHTLTokenType::NEWLINE, "\n");
-    }
-    
-    // 处理字符串字面量
+    // 字符串字面量
     if (c == '"' || c == '\'') {
         return scanStringLiteral(c);
     }
     
-    // 处理数字
+    // 数字
     if (isDigit(c)) {
         return scanNumber();
     }
     
-    // 处理前缀 [Template], [Custom] 等
-    if (c == '[') {
-        return scanPrefix();
+    // 注释处理
+    if (c == '/') {
+        if (match('/')) {
+            return scanLineComment();
+        } else if (match('*')) {
+            return scanBlockComment();
+        } else {
+            return makeToken(CHTLTokenType::SLASH, "/");
+        }
     }
     
-    // 处理类型标识符 @Style, @Element 等
+    // 生成器注释 --
+    if (c == '-' && match('-')) {
+        return scanGeneratorComment();
+    }
+    
+    // 方括号关键字 [Template], [Custom] 等
+    if (c == '[') {
+        size_t savedPos = position;
+        CHTLToken bracketToken = scanBracketKeyword();
+        if (bracketToken.type != CHTLTokenType::INVALID) {
+            return bracketToken;
+        }
+        // 如果不是方括号关键字，回退并返回普通左括号
+        position = savedPos;
+        return makeToken(CHTLTokenType::LBRACKET, "[");
+    }
+    
+    // 类型标识符 @Style, @Element 等
     if (c == '@') {
         return scanTypeIdentifier();
     }
     
-    // 处理选择器 .class, #id
+    // CSS选择器 .class, #id
     if (c == '.' || c == '#') {
         return scanSelector();
     }
     
-    // 处理注释
-    if (c == '/') {
-        char next = peek(1);
-        if (next == '/') {
-            return scanLineComment();
-        } else if (next == '*') {
-            return scanBlockComment();
-        }
+    // 增强选择器 {{selector}}
+    if (c == '{' && peek() == '{') {
+        advance(); // 跳过第二个 {
+        return scanEnhancedSelector();
     }
     
-    // 处理生成器注释 --
-    if (c == '-' && peek(1) == '-') {
-        return scanGeneratorComment();
+    // 箭头操作符 ->
+    if (c == '-' && peek() == '>') {
+        advance(); // 跳过 >
+        return makeToken(CHTLTokenType::ARROW, "->");
     }
     
-    // 处理标识符和关键字
+    // 标识符和关键字
     if (isValidIdentifierStart(c)) {
+        position--; // 回退一个字符，让scanIdentifier处理
         return scanIdentifier();
     }
     
-    // 处理单字符符号
+    // 单字符token
     switch (c) {
-        case '{': advance(); return makeToken(CHTLTokenType::LBRACE, "{");
-        case '}': advance(); return makeToken(CHTLTokenType::RBRACE, "}");
-        case '(': advance(); return makeToken(CHTLTokenType::LPAREN, "(");
-        case ')': advance(); return makeToken(CHTLTokenType::RPAREN, ")");
-        case '<': advance(); return makeToken(CHTLTokenType::LT, "<");
-        case '>': advance(); return makeToken(CHTLTokenType::GT, ">");
-        case ';': advance(); return makeToken(CHTLTokenType::SEMICOLON, ";");
-        case ',': advance(); return makeToken(CHTLTokenType::COMMA, ",");
-        case '*': advance(); return makeToken(CHTLTokenType::STAR, "*");
-        case '/': advance(); return makeToken(CHTLTokenType::SLASH, "/");
-        case '&': advance(); return makeToken(CHTLTokenType::AMPERSAND, "&");
-        case ':': return handleCEEquivalent(c);
-        case '=': return handleCEEquivalent(c);
+        case '{': return makeToken(CHTLTokenType::LBRACE, "{");
+        case '}': return makeToken(CHTLTokenType::RBRACE, "}");
+        case '(': return makeToken(CHTLTokenType::LPAREN, "(");
+        case ')': return makeToken(CHTLTokenType::RPAREN, ")");
+        case ']': return makeToken(CHTLTokenType::RBRACKET, "]");
+        case ';': return makeToken(CHTLTokenType::SEMICOLON, ";");
+        case ',': return makeToken(CHTLTokenType::COMMA, ",");
+        case '*': return makeToken(CHTLTokenType::STAR, "*");
+        case '&': return makeToken(CHTLTokenType::AMPERSAND, "&");
+        case ':': return scanCEEquivalent(c);
+        case '=': return scanCEEquivalent(c);
+        case '\n': 
+            line++;
+            column = 1;
+            return makeToken(CHTLTokenType::NEWLINE, "\n");
         default:
             // 尝试无引号字面量
             if (isValidUnquotedChar(c)) {
+                position--; // 回退
                 return scanUnquotedLiteral();
             }
             
             // 无法识别的字符
             std::string errorChar(1, c);
-            advance();
+            addError("Unexpected character: " + errorChar);
             return makeErrorToken("Unexpected character: " + errorChar);
     }
 }
 
-// 扫描字符串字面量
 CHTLToken CHTLLexer::scanStringLiteral(char quote) {
-    size_t start = position;
-    advance(); // 跳过开始引号
-    
     std::string value;
     
     while (!isAtEnd() && peek() != quote) {
-        char c = peek();
-        
-        if (c == '\n') {
+        if (peek() == '\n') {
             line++;
             column = 1;
         }
         
+        char c = advance();
+        
+        // 处理转义字符
         if (c == '\\' && !isAtEnd()) {
-            advance(); // 跳过反斜杠
-            if (!isAtEnd()) {
-                char escaped = advance();
-                switch (escaped) {
-                    case 'n': value += '\n'; break;
-                    case 't': value += '\t'; break;
-                    case 'r': value += '\r'; break;
-                    case '\\': value += '\\'; break;
-                    case '"': value += '"'; break;
-                    case '\'': value += '\''; break;
-                    default:
-                        value += '\\';
-                        value += escaped;
-                        break;
-                }
+            char escaped = advance();
+            switch (escaped) {
+                case 'n': value += '\n'; break;
+                case 't': value += '\t'; break;
+                case 'r': value += '\r'; break;
+                case '\\': value += '\\'; break;
+                case '"': value += '"'; break;
+                case '\'': value += '\''; break;
+                default: 
+                    value += '\\';
+                    value += escaped;
+                    break;
             }
         } else {
-            value += advance();
+            value += c;
         }
     }
     
     if (isAtEnd()) {
+        addError("Unterminated string literal");
         return makeErrorToken("Unterminated string literal");
     }
     
-    advance(); // 跳过结束引号
+    // 跳过结束引号
+    advance();
+    
     return makeToken(CHTLTokenType::STRING_LITERAL, value);
 }
 
-// 扫描数字
+CHTLToken CHTLLexer::scanUnquotedLiteral() {
+    std::string value;
+    
+    while (!isAtEnd() && isValidUnquotedChar(peek())) {
+        value += advance();
+    }
+    
+    return makeToken(CHTLTokenType::UNQUOTED_LITERAL, value);
+}
+
 CHTLToken CHTLLexer::scanNumber() {
-    size_t start = position;
+    std::string value;
+    value += source[position - 1]; // 添加当前数字字符
     
-    while (isDigit(peek())) {
-        advance();
+    while (!isAtEnd() && (isDigit(peek()) || peek() == '.')) {
+        value += advance();
     }
     
-    // 处理小数点
-    if (peek() == '.' && isDigit(peek(1))) {
-        advance(); // 消费 '.'
-        while (isDigit(peek())) {
-            advance();
-        }
-    }
-    
-    std::string value = source.substr(start, position - start);
     return makeToken(CHTLTokenType::NUMBER, value);
 }
 
-// 扫描标识符
 CHTLToken CHTLLexer::scanIdentifier() {
-    size_t start = position;
+    std::string value;
     
-    while (isValidIdentifierChar(peek())) {
-        advance();
+    while (!isAtEnd() && isValidIdentifierChar(peek())) {
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
-    
-    // 处理多词关键字
+    // 检查多词关键字 "at top", "at bottom"
     if (value == "at") {
-        // 检查 "at top" 或 "at bottom"
-        size_t savedPos = position;
         skipWhitespace();
-        
-        if (peek() == 't' && source.substr(position, 3) == "top") {
+        if (position + 3 <= source.length() && source.substr(position, 3) == "top") {
             position += 3;
-            column += 3;
             return makeToken(CHTLTokenType::AT_TOP, "at top");
-        } else if (peek() == 'b' && source.substr(position, 6) == "bottom") {
+        } else if (position + 6 <= source.length() && source.substr(position, 6) == "bottom") {
             position += 6;
-            column += 6;
             return makeToken(CHTLTokenType::AT_BOTTOM, "at bottom");
-        } else {
-            position = savedPos;
         }
     }
     
@@ -215,146 +236,140 @@ CHTLToken CHTLLexer::scanIdentifier() {
     return makeToken(tokenType, value);
 }
 
-// 扫描前缀
-CHTLToken CHTLLexer::scanPrefix() {
-    if (peek() != '[') {
-        return makeErrorToken("Expected '[' for prefix");
-    }
+CHTLToken CHTLLexer::scanBracketKeyword() {
+    std::string value = "[";
     
-    size_t start = position;
-    advance(); // 跳过 '['
-    
-    std::string prefixContent;
+    // 扫描到 ] 或者遇到不合法字符
     while (!isAtEnd() && peek() != ']') {
-        prefixContent += advance();
+        char c = peek();
+        if (isAlpha(c)) {
+            value += advance();
+        } else {
+            // 不是有效的方括号关键字
+            return makeToken(CHTLTokenType::INVALID, "");
+        }
     }
     
-    if (isAtEnd()) {
-        return makeErrorToken("Unterminated prefix, expected ']'");
+    if (isAtEnd() || peek() != ']') {
+        return makeToken(CHTLTokenType::INVALID, "");
     }
     
-    advance(); // 跳过 ']'
+    value += advance(); // 添加 ]
     
-    std::string fullPrefix = "[" + prefixContent + "]";
-    CHTLTokenType tokenType = CHTLTokenUtils::stringToTokenType(fullPrefix);
+    // 检查是否为已知的方括号关键字
+    CHTLTokenType tokenType = CHTLTokenUtils::stringToTokenType(value);
+    if (tokenType != CHTLTokenType::IDENTIFIER) {
+        return makeToken(tokenType, value);
+    }
     
-    return makeToken(tokenType, fullPrefix);
+    return makeToken(CHTLTokenType::INVALID, "");
 }
 
-// 扫描类型标识符
 CHTLToken CHTLLexer::scanTypeIdentifier() {
-    if (peek() != '@') {
-        return makeErrorToken("Expected '@' for type identifier");
+    std::string value = "@";
+    
+    if (isAtEnd() || !isAlpha(peek())) {
+        addError("Expected type identifier after @");
+        return makeErrorToken("Expected type identifier after @");
     }
     
-    size_t start = position;
-    advance(); // 跳过 '@'
-    
-    while (isValidIdentifierChar(peek())) {
-        advance();
+    while (!isAtEnd() && isValidIdentifierChar(peek())) {
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
+    // 检查是否为已知的类型标识符
     CHTLTokenType tokenType = CHTLTokenUtils::stringToTokenType(value);
+    if (tokenType != CHTLTokenType::IDENTIFIER) {
+        return makeToken(tokenType, value);
+    }
     
+    // 未知的类型标识符，仍然返回，但标记为IDENTIFIER
+    return makeToken(CHTLTokenType::IDENTIFIER, value);
+}
+
+CHTLToken CHTLLexer::scanSelector() {
+    char selectorType = source[position - 1]; // . 或 #
+    std::string value(1, selectorType);
+    
+    if (isAtEnd() || (!isAlpha(peek()) && peek() != '_')) {
+        // 只有 . 或 # 没有后续标识符，返回DOT或HASH
+        return makeToken(selectorType == '.' ? CHTLTokenType::DOT : CHTLTokenType::HASH, value);
+    }
+    
+    while (!isAtEnd() && isValidIdentifierChar(peek())) {
+        value += advance();
+    }
+    
+    // 返回相应的选择器类型
+    CHTLTokenType tokenType = selectorType == '.' ? CHTLTokenType::CLASS_SELECTOR : CHTLTokenType::ID_SELECTOR;
     return makeToken(tokenType, value);
 }
 
-// 扫描选择器
-CHTLToken CHTLLexer::scanSelector() {
-    char selectorType = peek();
-    advance(); // 跳过 '.' 或 '#'
+CHTLToken CHTLLexer::scanEnhancedSelector() {
+    std::string value = "{{";
     
-    size_t start = position - 1;
-    
-    while (isValidIdentifierChar(peek())) {
-        advance();
+    while (!isAtEnd() && !(peek() == '}' && position + 1 < source.length() && source[position + 1] == '}')) {
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
-    
-    if (selectorType == '.') {
-        return makeToken(CHTLTokenType::CLASS_SELECTOR, value);
-    } else {
-        return makeToken(CHTLTokenType::ID_SELECTOR, value);
+    if (isAtEnd() || peek() != '}') {
+        addError("Unterminated enhanced selector");
+        return makeErrorToken("Unterminated enhanced selector");
     }
+    
+    advance(); // 跳过第一个 }
+    advance(); // 跳过第二个 }
+    value += "}}";
+    
+    return makeToken(CHTLTokenType::ENHANCED_SELECTOR, value);
 }
 
-// 扫描行注释
 CHTLToken CHTLLexer::scanLineComment() {
-    size_t start = position;
-    advance(); // 跳过第一个 '/'
-    advance(); // 跳过第二个 '/'
+    std::string value = "//";
     
     while (!isAtEnd() && peek() != '\n') {
-        advance();
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
     return makeToken(CHTLTokenType::LINE_COMMENT, value);
 }
 
-// 扫描块注释
 CHTLToken CHTLLexer::scanBlockComment() {
-    size_t start = position;
-    advance(); // 跳过 '/'
-    advance(); // 跳过 '*'
+    std::string value = "/*";
     
     while (!isAtEnd()) {
-        if (peek() == '*' && peek(1) == '/') {
-            advance(); // 跳过 '*'
-            advance(); // 跳过 '/'
+        if (peek() == '*' && position + 1 < source.length() && source[position + 1] == '/') {
+            value += advance(); // *
+            value += advance(); // /
             break;
         }
-        
         if (peek() == '\n') {
             line++;
             column = 1;
         }
-        advance();
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
     return makeToken(CHTLTokenType::BLOCK_COMMENT, value);
 }
 
-// 扫描生成器注释
 CHTLToken CHTLLexer::scanGeneratorComment() {
-    size_t start = position;
-    advance(); // 跳过第一个 '-'
-    advance(); // 跳过第二个 '-'
+    std::string value = "--";
     
     while (!isAtEnd() && peek() != '\n') {
-        advance();
+        value += advance();
     }
     
-    std::string value = source.substr(start, position - start);
     return makeToken(CHTLTokenType::GENERATOR_COMMENT, value);
 }
 
-// 扫描无引号字面量
-CHTLToken CHTLLexer::scanUnquotedLiteral() {
-    size_t start = position;
-    
-    while (isValidUnquotedChar(peek())) {
-        advance();
-    }
-    
-    std::string value = source.substr(start, position - start);
-    return makeToken(CHTLTokenType::UNQUOTED_LITERAL, value);
+CHTLToken CHTLLexer::scanCEEquivalent(char c) {
+    // CE对等式：: 和 = 等价
+    CHTLTokenType tokenType = (c == ':') ? CHTLTokenType::COLON : CHTLTokenType::EQUAL;
+    return makeToken(tokenType, std::string(1, c));
 }
 
-// 处理CE对等式
-CHTLToken CHTLLexer::handleCEEquivalent(char c) {
-    advance();
-    if (c == ':') {
-        return makeToken(CHTLTokenType::COLON, ":");
-    } else {
-        return makeToken(CHTLTokenType::EQUAL, "=");
-    }
-}
-
-// 字符检查方法
+// === 字符操作 ===
 char CHTLLexer::peek(size_t offset) const {
     size_t pos = position + offset;
     return pos >= source.length() ? '\0' : source[pos];
@@ -372,12 +387,23 @@ bool CHTLLexer::isAtEnd() const {
     return position >= source.length();
 }
 
-bool CHTLLexer::isDigit(char c) const {
-    return c >= '0' && c <= '9';
+bool CHTLLexer::match(char expected) {
+    if (isAtEnd() || source[position] != expected) {
+        return false;
+    }
+    
+    position++;
+    column++;
+    return true;
 }
 
+// === 字符分类 ===
 bool CHTLLexer::isAlpha(char c) const {
-    return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_';
+    return std::isalpha(c) || c == '_';
+}
+
+bool CHTLLexer::isDigit(char c) const {
+    return std::isdigit(c);
 }
 
 bool CHTLLexer::isAlphaNumeric(char c) const {
@@ -393,44 +419,59 @@ bool CHTLLexer::isValidIdentifierStart(char c) const {
 }
 
 bool CHTLLexer::isValidIdentifierChar(char c) const {
-    return isAlphaNumeric(c) || c == '-';
+    return isAlphaNumeric(c) || c == '-' || c == '_';
 }
 
 bool CHTLLexer::isValidUnquotedChar(char c) const {
-    // CHTL支持CSS风格的无引号字符串
-    return isAlphaNumeric(c) || c == '-' || c == '_' || c == '%';
+    return isAlphaNumeric(c) || c == '-' || c == '_' || c == '%' || c == '.' && isDigit(peek(1));
 }
 
+// === Token创建 ===
+CHTLToken CHTLLexer::makeToken(CHTLTokenType type, const std::string& value) {
+    std::string tokenValue = value.empty() ? getCurrentLexeme() : value;
+    return CHTLToken(type, tokenValue, line, column - tokenValue.length(), start);
+}
+
+CHTLToken CHTLLexer::makeErrorToken(const std::string& message) {
+    return CHTLToken(CHTLTokenType::INVALID, message, line, column, start);
+}
+
+// === 错误处理 ===
+void CHTLLexer::addError(const std::string& message) {
+    std::string errorMsg = "Lexer error at line " + std::to_string(line) + 
+                          ", column " + std::to_string(column) + ": " + message;
+    errors.push_back(errorMsg);
+}
+
+// === 工具方法 ===
 void CHTLLexer::skipWhitespace() {
     while (!isAtEnd() && isWhitespace(peek())) {
+        if (peek() == '\t') column += 4; // Tab作为4个空格
         advance();
     }
 }
 
-CHTLToken CHTLLexer::makeToken(CHTLTokenType type, const std::string& value) {
-    return CHTLToken(type, value, line, column - value.length(), position - value.length());
-}
-
-CHTLToken CHTLLexer::makeErrorToken(const std::string& message) {
-    addError(message);
-    return CHTLToken(CHTLTokenType::INVALID, message, line, column, position);
-}
-
-void CHTLLexer::addError(const std::string& message) {
-    std::stringstream ss;
-    ss << "Lexer error at line " << line << ", column " << column << ": " << message;
-    errors.push_back(ss.str());
-}
-
-void CHTLLexer::reset(const std::string& newSource) {
-    if (!newSource.empty()) {
-        source = newSource;
+void CHTLLexer::skipToEndOfLine() {
+    while (!isAtEnd() && peek() != '\n') {
+        advance();
     }
-    position = 0;
-    line = 1;
-    column = 1;
-    currentState = LexerState::Normal;
-    errors.clear();
+}
+
+std::string CHTLLexer::getCurrentLexeme() const {
+    if (start >= source.length()) return "";
+    return source.substr(start, position - start);
+}
+
+bool CHTLLexer::checkKeyword(const std::string& keyword) const {
+    if (position + keyword.length() > source.length()) {
+        return false;
+    }
+    
+    return source.substr(position, keyword.length()) == keyword;
+}
+
+bool CHTLLexer::checkBracketKeyword(const std::string& keyword) const {
+    return checkKeyword(keyword);
 }
 
 } // namespace CHTL

@@ -2,97 +2,108 @@
 #include "CHTLTokens.h"
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace CHTL {
+
+// CHTL词法分析器状态
+enum class CHTLLexerState {
+    Normal,                  // 正常状态
+    InStringLiteral,         // 字符串字面量中
+    InNumber,                // 数字中
+    InIdentifier,            // 标识符中
+    InBracketKeyword,        // 方括号关键字中 [Template], [Custom] 等
+    InTypeIdentifier,        // 类型标识符中 @Style, @Element 等
+    InSelector,              // 选择器中 .class, #id
+    InLineComment,           // 行注释中 //
+    InBlockComment,          // 块注释中 /* */
+    InGeneratorComment,      // 生成器注释中 --
+    InEnhancedSelector,      // 增强选择器中 {{selector}}
+};
 
 // CHTL词法分析器
 class CHTLLexer {
 private:
-    std::string source;           // 源代码
-    size_t position;              // 当前位置
-    size_t line;                  // 当前行号
-    size_t column;                // 当前列号
-    std::vector<std::string> errors; // 错误信息
+    // 源码信息
+    std::string source;
+    size_t position;
+    size_t line;
+    size_t column;
+    size_t start;            // 当前Token开始位置
     
-    // 词法分析状态
-    enum class LexerState {
-        Normal,                   // 正常状态
-        InString,                 // 字符串内部
-        InComment,                // 注释内部
-        InPrefix,                 // 前缀内部 [...]
-        InTypeIdentifier,         // 类型标识符 @...
-        InSelector                // 选择器 .class #id
-    };
+    // 错误信息
+    std::vector<std::string> errors;
     
-    LexerState currentState;
+    // 状态管理
+    CHTLLexerState currentState;
     
 public:
-    // 构造函数
     explicit CHTLLexer(const std::string& sourceCode);
     
-    // 词法分析主函数
+    // 主要接口
     std::vector<CHTLToken> tokenize();
+    void reset(const std::string& newSource = "");
     
-    // 获取错误信息
+    // 错误处理
     const std::vector<std::string>& getErrors() const { return errors; }
     bool hasErrors() const { return !errors.empty(); }
     
-    // 重置词法分析器
-    void reset(const std::string& newSource = "");
-    
 private:
-    // 核心词法分析方法
+    // === 核心扫描方法 ===
     CHTLToken nextToken();
+    CHTLToken scanToken();
     
-    // 字符检查方法
+    // === 特定Token扫描 ===
+    CHTLToken scanStringLiteral(char quote);      // 扫描字符串 "..." '...'
+    CHTLToken scanUnquotedLiteral();              // 扫描无引号字面量
+    CHTLToken scanNumber();                       // 扫描数字
+    CHTLToken scanIdentifier();                   // 扫描标识符和关键字
+    CHTLToken scanBracketKeyword();               // 扫描方括号关键字 [Template]
+    CHTLToken scanTypeIdentifier();               // 扫描类型标识符 @Style
+    CHTLToken scanSelector();                     // 扫描CSS选择器 .class #id
+    CHTLToken scanEnhancedSelector();             // 扫描增强选择器 {{selector}}
+    
+    // === 注释扫描 ===
+    CHTLToken scanLineComment();                  // 扫描行注释 //
+    CHTLToken scanBlockComment();                 // 扫描块注释 /* */
+    CHTLToken scanGeneratorComment();             // 扫描生成器注释 --
+    
+    // === 操作符扫描 ===
+    CHTLToken scanArrow();                        // 扫描 -> 操作符
+    CHTLToken scanCEEquivalent(char c);           // 扫描CE对等式 : =
+    
+    // === 字符操作 ===
     char peek(size_t offset = 0) const;
     char advance();
     bool isAtEnd() const;
-    bool isDigit(char c) const;
+    bool match(char expected);
+    
+    // === 字符分类 ===
     bool isAlpha(char c) const;
+    bool isDigit(char c) const;
     bool isAlphaNumeric(char c) const;
     bool isWhitespace(char c) const;
-    
-    // 跳过空白字符和换行
-    void skipWhitespace();
-    void skipToNextLine();
-    
-    // 具体Token扫描方法
-    CHTLToken scanStringLiteral(char quote);
-    CHTLToken scanNumber();
-    CHTLToken scanIdentifier();
-    CHTLToken scanUnquotedLiteral();
-    
-    // CHTL特有的扫描方法
-    CHTLToken scanPrefix();           // [Template], [Custom] 等
-    CHTLToken scanTypeIdentifier();   // @Style, @Element 等
-    CHTLToken scanSelector();         // .class, #id
-    
-    // 注释扫描方法
-    CHTLToken scanLineComment();      // //
-    CHTLToken scanBlockComment();     // /* */
-    CHTLToken scanGeneratorComment(); // --
-    
-    // 多字符操作符扫描
-    CHTLToken scanMultiCharOperator();
-    
-    // 工具方法
-    CHTLToken makeToken(CHTLTokenType type, const std::string& value = "");
-    CHTLToken makeErrorToken(const std::string& message);
-    void addError(const std::string& message);
-    
-    // CHTL特有的识别方法
     bool isValidIdentifierStart(char c) const;
     bool isValidIdentifierChar(char c) const;
     bool isValidUnquotedChar(char c) const;
     
-    // 前缀和类型标识符的完整扫描
-    std::string scanCompletePrefix();
-    std::string scanCompleteTypeIdentifier();
+    // === Token创建 ===
+    CHTLToken makeToken(CHTLTokenType type, const std::string& value = "");
+    CHTLToken makeErrorToken(const std::string& message);
     
-    // 处理CE对等式（冒号和等号等价）
-    CHTLToken handleCEEquivalent(char c);
+    // === 错误处理 ===
+    void addError(const std::string& message);
+    
+    // === 工具方法 ===
+    void skipWhitespace();
+    void skipToEndOfLine();
+    std::string getCurrentLexeme() const;
+    bool checkKeyword(const std::string& keyword) const;
+    bool checkBracketKeyword(const std::string& keyword) const;
+    
+    // === 特殊处理 ===
+    CHTLToken handleAtTop();                      // 处理 "at top"
+    CHTLToken handleAtBottom();                   // 处理 "at bottom"
+    bool isMultiWordKeyword() const;              // 检查多词关键字
 };
 
 } // namespace CHTL
