@@ -79,7 +79,7 @@ enum class CHTLNodeType {
 };
 
 // CHTL AST基础节点
-class CHTLNode {
+class CHTLNode : public std::enable_shared_from_this<CHTLNode> {
 public:
     CHTLNodeType type;
     std::string value;                    // 节点值
