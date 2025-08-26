@@ -456,7 +456,16 @@ bool CHTLLexer::isValidUnquotedChar(char c) const {
 // === Token创建 ===
 CHTLToken CHTLLexer::makeToken(CHTLTokenType type, const std::string& value) {
     std::string tokenValue = value.empty() ? getCurrentLexeme() : value;
-    return CHTLToken(type, tokenValue, line, column - tokenValue.length(), start);
+    
+    // 简单的位置计算，避免下溢
+    size_t tokenColumn = column;
+    if (tokenColumn > tokenValue.length()) {
+        tokenColumn = column - tokenValue.length();
+    } else {
+        tokenColumn = 1; // 回退到行首
+    }
+    
+    return CHTLToken(type, tokenValue, line, tokenColumn, start);
 }
 
 CHTLToken CHTLLexer::makeErrorToken(const std::string& message) {
