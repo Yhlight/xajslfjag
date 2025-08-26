@@ -353,15 +353,15 @@ FragmentType CHTLUnifiedScanner::detectFragmentTypeWithContext(const std::string
 }
 
 bool CHTLUnifiedScanner::containsCHTLJSSyntax(const std::string& content) {
-    // 检查CHTL JS特有语法
+    // 检查CHTL JS特有语法 - 更新为新语法格式
     const std::vector<std::string> chtljs_markers = {
-        R"(\{\{[^}]+\}\})",                    // 增强选择器
-        R"(->)",                               // 箭头操作符
-        R"(\bvir\b)",                          // 虚对象
-        R"(\blisten\s*\{)",                    // listen函数
-        R"(\bdelegate\s*\{)",                  // delegate函数
-        R"(\banimate\s*\{)",                   // animate函数
-        R"(\biNeverAway\b|\bprintMylove\b)"    // 特殊函数
+        R"(\{\{[^}]+\}\})",                              // 增强选择器
+        R"(->)",                                         // 箭头操作符
+        R"(\bvir\b)",                                    // 虚对象
+        R"(\{\{[^}]+\}\}\s*->\s*listen\s*\{)",          // 新语法：{{}}->listen {
+        R"(\{\{[^}]+\}\}\s*->\s*delegate\s*\{)",        // 新语法：{{}}->delegate {
+        R"(\banimate\s*\{)",                             // 新语法：animate {
+        R"(\bvir\s+\w+\s*=\s*(listen|iNeverAway)\s*\{)" // 新语法：vir obj = func {
     };
     
     for (const auto& pattern : chtljs_markers) {

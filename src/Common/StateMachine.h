@@ -367,8 +367,13 @@ private:
     // 初始化辅助
     void setupCHTLTransitions();
     void setupCHTLJSTransitions();
+    void setupNewCHTLJSSyntaxTransitions(); // 新语法转换规则
     void setupStyleTransitions();
     void setupScriptTransitions();
+    
+    // 新语法状态检测
+    bool isNewSyntaxFunction(const std::string& input) const;
+    StateType detectNewSyntaxState(const std::string& function_name) const;
     
     friend class StateGuard;
 };
