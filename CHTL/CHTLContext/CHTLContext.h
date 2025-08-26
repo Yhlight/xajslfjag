@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <stack>
 #include "../CHTLState/CHTLState.h"
-#include "../CHTLLexer/GlobalMap.h"
+#include "../CHTLManage/CHTLManager.h"
 
 namespace CHTL {
 
@@ -65,7 +65,7 @@ struct ElementContext {
 class CHTLContext {
 private:
     std::shared_ptr<CHTLState> state;
-    std::shared_ptr<GlobalMap> globalMap;
+    std::shared_ptr<CHTLManager> manager;
     
     // 当前文件信息
     std::string currentFilePath;
@@ -75,8 +75,7 @@ private:
     // 元素栈
     std::stack<ElementContext> elementStack;
     
-    // 当前配置
-    ConfigInfo currentConfig;
+    // 当前配置缓存
     bool configLoaded;
     
     // 选择器自动化规则
@@ -98,7 +97,7 @@ private:
     std::string resolveReference(const std::string& ref) const;
     
 public:
-    CHTLContext(std::shared_ptr<CHTLState> state, std::shared_ptr<GlobalMap> globalMap);
+    CHTLContext(std::shared_ptr<CHTLState> state, std::shared_ptr<CHTLManager> manager);
     ~CHTLContext() = default;
     
     // 文件管理
@@ -109,7 +108,7 @@ public:
     // 命名空间管理
     void enterNamespace(const std::string& name);
     void exitNamespace();
-    std::string getCurrentNamespace() const { return currentNamespace; }
+    std::string getCurrentNamespace() const;
     std::string getFullQualifiedName(const std::string& name) const;
     
     // 元素管理

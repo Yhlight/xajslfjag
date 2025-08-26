@@ -33,102 +33,101 @@ struct SymbolInfo {
     std::string namespacePath;  // 命名空间路径，如 "space.room"
     bool isImported;
     std::string importAlias;     // 导入时的别名
+    std::string sourcePath;      // 原始定义文件（如果是导入的）
+    
+    // 符号特定的额外信息
+    std::unordered_map<std::string, std::string> metadata;
     
     SymbolInfo() : type(SymbolType::UNKNOWN), line(0), column(0), isImported(false) {}
 };
 
-// 导入信息
-struct ImportInfo {
-    std::string sourcePath;      // 导入源文件路径
-    std::string targetPath;      // 被导入文件路径
-    std::string namespaceName;   // 导入的命名空间
-    std::vector<std::string> symbols;  // 导入的符号列表
-    bool isWildcard;             // 是否通配符导入
-    
-    ImportInfo() : isWildcard(false) {}
-};
-
-// 配置信息
-struct ConfigInfo {
-    std::string name;
-    std::unordered_map<std::string, std::string> options;
-    std::unordered_map<std::string, std::vector<std::string>> nameGroup;
-    std::unordered_map<std::string, std::string> originTypes;
-    bool isDefault;  // 是否为默认配置（无名配置）
-    
-    ConfigInfo() : isDefault(false) {}
-};
-
-// 全局符号表管理器
+// 全局符号注册表
 class GlobalMap {
 private:
-    // 符号表：文件路径 -> 符号列表
+    // 主符号表：文件路径 -> 符号列表
     std::unordered_map<std::string, std::vector<std::shared_ptr<SymbolInfo>>> symbolTable;
     
-    // 命名空间表：命名空间路径 -> 符号列表
-    std::unordered_map<std::string, std::vector<std::shared_ptr<SymbolInfo>>> namespaceTable;
+    // 符号索引：符号名 -> 符号信息列表（支持重名）
+    std::unordered_map<std::string, std::vector<std::shared_ptr<SymbolInfo>>> symbolIndex;
     
-    // 导入表：文件路径 -> 导入信息列表
-    std::unordered_map<std::string, std::vector<ImportInfo>> importTable;
+    // 类型索引：符号类型 -> 符号信息列表
+    std::unordered_map<SymbolType, std::vector<std::shared_ptr<SymbolInfo>>> typeIndex;
     
-    // 配置表：配置名 -> 配置信息
-    std::unordered_map<std::string, ConfigInfo> configTable;
+    // 命名空间索引：命名空间路径 -> 符号信息列表
+    std::unordered_map<std::string, std::vector<std::shared_ptr<SymbolInfo>>> namespaceIndex;
     
-    // 官方模块前缀
-    static const std::string OFFICIAL_MODULE_PREFIX;
+    // 统计信息
+    size_t totalSymbols;
+    std::unordered_map<SymbolType, size_t> symbolCounts;
     
-    // 当前活动配置
-    std::string activeConfig;
-    
-    // 循环依赖检测
-    std::unordered_set<std::string> importStack;
+    // 辅助方法
+    void updateIndices(std::shared_ptr<SymbolInfo> symbol);
+    void removeFromIndices(std::shared_ptr<SymbolInfo> symbol);
     
 public:
     GlobalMap();
     ~GlobalMap() = default;
     
-    // 符号管理
-    void addSymbol(const std::string& filePath, std::shared_ptr<SymbolInfo> symbol);
-    std::vector<std::shared_ptr<SymbolInfo>> getSymbols(const std::string& filePath) const;
-    std::shared_ptr<SymbolInfo> findSymbol(const std::string& name, const std::string& namespacePath = "") const;
+    // 符号注册
+    void registerSymbol(std::shared_ptr<SymbolInfo> symbol);
+    void registerSymbol(const std::string& filePath, std::shared_ptr<SymbolInfo> symbol);
+    void unregisterSymbol(const std::string& name, const std::string& filePath);
+    
+    // 符号查询
+    std::shared_ptr<SymbolInfo> findSymbol(const std::string& name) const;
+    std::shared_ptr<SymbolInfo> findSymbol(const std::string& name, const std::string& namespacePath) const;
+    std::vector<std::shared_ptr<SymbolInfo>> findAllSymbols(const std::string& name) const;
     std::vector<std::shared_ptr<SymbolInfo>> findSymbolsByType(SymbolType type) const;
+    std::vector<std::shared_ptr<SymbolInfo>> findSymbolsInNamespace(const std::string& namespacePath) const;
+    std::vector<std::shared_ptr<SymbolInfo>> findSymbolsInFile(const std::string& filePath) const;
     
-    // 命名空间管理
-    void addToNamespace(const std::string& namespacePath, std::shared_ptr<SymbolInfo> symbol);
-    std::vector<std::shared_ptr<SymbolInfo>> getNamespaceSymbols(const std::string& namespacePath) const;
-    void mergeNamespaces(const std::string& namespacePath1, const std::string& namespacePath2);
-    bool namespaceExists(const std::string& namespacePath) const;
+    // 符号存在性检查
+    bool symbolExists(const std::string& name) const;
+    bool symbolExists(const std::string& name, const std::string& namespacePath) const;
+    bool symbolExistsInFile(const std::string& name, const std::string& filePath) const;
     
-    // 导入管理
-    void addImport(const std::string& sourcePath, const ImportInfo& import);
-    std::vector<ImportInfo> getImports(const std::string& filePath) const;
-    bool checkCircularDependency(const std::string& sourcePath, const std::string& targetPath);
-    void resolveImports(const std::string& filePath);
-    
-    // 配置管理
-    void addConfig(const std::string& name, const ConfigInfo& config);
-    ConfigInfo getConfig(const std::string& name) const;
-    ConfigInfo getActiveConfig() const;
-    void setActiveConfig(const std::string& name);
-    bool hasDefaultConfig() const;
-    
-    // 路径解析
-    std::string resolveModulePath(const std::string& moduleName, const std::string& currentPath, bool isCJmod = false) const;
-    std::string resolveFilePath(const std::string& path, const std::string& currentPath) const;
-    bool isOfficialModule(const std::string& moduleName) const;
-    
-    // 冲突检测
-    bool hasSymbolConflict(const std::string& name, const std::string& namespacePath = "") const;
+    // 符号冲突检测
+    bool hasSymbolConflict(const std::string& name) const;
+    bool hasSymbolConflict(const std::string& name, const std::string& namespacePath) const;
     std::vector<std::shared_ptr<SymbolInfo>> getConflictingSymbols(const std::string& name) const;
     
-    // 清理和重置
+    // 批量操作
+    void registerSymbols(const std::string& filePath, const std::vector<std::shared_ptr<SymbolInfo>>& symbols);
+    void unregisterSymbolsFromFile(const std::string& filePath);
+    void unregisterSymbolsFromNamespace(const std::string& namespacePath);
+    
+    // 符号更新
+    void updateSymbol(std::shared_ptr<SymbolInfo> symbol);
+    void updateSymbolNamespace(const std::string& symbolName, const std::string& oldNamespace, const std::string& newNamespace);
+    void updateSymbolAlias(const std::string& symbolName, const std::string& namespacePath, const std::string& newAlias);
+    
+    // 统计信息
+    size_t getTotalSymbolCount() const { return totalSymbols; }
+    size_t getSymbolCount(SymbolType type) const;
+    std::unordered_map<SymbolType, size_t> getSymbolStatistics() const;
+    size_t getFileSymbolCount(const std::string& filePath) const;
+    size_t getNamespaceSymbolCount(const std::string& namespacePath) const;
+    
+    // 清理
     void clear();
     void clearFile(const std::string& filePath);
+    void clearNamespace(const std::string& namespacePath);
+    
+    // 验证
+    bool validateSymbolTable() const;
+    std::vector<std::string> getValidationErrors() const;
     
     // 调试输出
     void dumpSymbolTable() const;
-    void dumpNamespaceTable() const;
-    void dumpImportTable() const;
+    void dumpSymbolIndex() const;
+    void dumpTypeIndex() const;
+    void dumpNamespaceIndex() const;
+    void dumpStatistics() const;
+    
+    // 迭代器支持
+    using SymbolIterator = std::unordered_map<std::string, std::vector<std::shared_ptr<SymbolInfo>>>::const_iterator;
+    SymbolIterator begin() const { return symbolTable.begin(); }
+    SymbolIterator end() const { return symbolTable.end(); }
 };
 
 } // namespace CHTL

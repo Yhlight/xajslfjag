@@ -6,8 +6,8 @@
 
 namespace CHTL {
 
-CHTLContext::CHTLContext(std::shared_ptr<CHTLState> state, std::shared_ptr<GlobalMap> globalMap)
-    : state(state), globalMap(globalMap), configLoaded(false),
+CHTLContext::CHTLContext(std::shared_ptr<CHTLState> state, std::shared_ptr<CHTLManager> manager)
+    : state(state), manager(manager), configLoaded(false),
       disableStyleAutoAddClass(false), disableStyleAutoAddId(false),
       disableScriptAutoAddClass(true), disableScriptAutoAddId(true),
       disableDefaultNamespace(false) {
@@ -23,30 +23,50 @@ void CHTLContext::setCurrentFile(const std::string& filePath) {
     fs::path path(filePath);
     currentFileName = path.stem().string();
     
-    // 如果没有显式命名空间且未禁用默认命名空间，使用文件名作为命名空间
-    if (currentNamespace.empty() && !disableDefaultNamespace) {
-        currentNamespace = currentFileName;
+    // 通过manager设置当前文件
+    if (manager) {
+        manager->setCurrentFile(filePath);
+        
+        // 获取或创建默认命名空间
+        auto namespaceManager = manager->getNamespaceManager();
+        if (namespaceManager && !disableDefaultNamespace) {
+            std::string defaultNs = namespaceManager->getFileDefaultNamespace(filePath);
+            if (defaultNs.empty()) {
+                defaultNs = currentFileName;
+                namespaceManager->setFileDefaultNamespace(filePath, defaultNs);
+            }
+            currentNamespace = defaultNs;
+        }
     }
 }
 
 // 命名空间管理
 void CHTLContext::enterNamespace(const std::string& name) {
-    if (!currentNamespace.empty()) {
-        currentNamespace += ".";
+    if (manager) {
+        manager->enterNamespace(name);
+        currentNamespace = manager->getCurrentNamespace();
     }
-    currentNamespace += name;
 }
 
 void CHTLContext::exitNamespace() {
-    size_t lastDot = currentNamespace.rfind('.');
-    if (lastDot != std::string::npos) {
-        currentNamespace = currentNamespace.substr(0, lastDot);
-    } else {
-        currentNamespace.clear();
+    if (manager) {
+        manager->exitNamespace();
+        currentNamespace = manager->getCurrentNamespace();
     }
 }
 
+std::string CHTLContext::getCurrentNamespace() const {
+    if (manager) {
+        return manager->getCurrentNamespace();
+    }
+    return currentNamespace;
+}
+
 std::string CHTLContext::getFullQualifiedName(const std::string& name) const {
+    if (manager && manager->getNamespaceManager()) {
+        return manager->getNamespaceManager()->getFullyQualifiedName(name);
+    }
+    
     if (currentNamespace.empty()) {
         return name;
     }
@@ -300,11 +320,13 @@ bool CHTLContext::resolveVariable(const std::string& name, std::string& value) c
         return true;
     }
     
-    // 然后在全局符号表中查找
-    auto globalSymbol = globalMap->findSymbol(name, currentNamespace);
-    if (globalSymbol && globalSymbol->type == SymbolType::VAR_TEMPLATE) {
-        // TODO: 从符号中获取值
-        return true;
+    // 然后通过manager在全局符号表中查找
+    if (manager) {
+        auto globalSymbol = manager->findSymbol(name, currentNamespace);
+        if (globalSymbol && globalSymbol->type == SymbolType::VAR_TEMPLATE) {
+            // TODO: 从符号中获取值
+            return true;
+        }
     }
     
     return false;
@@ -340,6 +362,11 @@ bool CHTLContext::hasInheritance(const std::string& baseName) const {
 void CHTLContext::addLocalSymbol(std::shared_ptr<SymbolInfo> symbol) {
     if (symbol) {
         localSymbols[symbol->name] = symbol;
+        
+        // 同时注册到manager
+        if (manager) {
+            manager->registerSymbol(symbol);
+        }
     }
 }
 
@@ -357,52 +384,34 @@ void CHTLContext::clearLocalSymbols() {
 
 // 配置访问
 void CHTLContext::loadConfiguration() {
-    // 从全局映射加载活动配置
-    currentConfig = globalMap->getActiveConfig();
+    if (!manager || !manager->getConfigManager()) {
+        return;
+    }
     
-    if (!currentConfig.name.empty() || currentConfig.isDefault) {
+    auto configManager = manager->getConfigManager();
+    
+    if (configManager->hasActiveConfiguration()) {
         configLoaded = true;
         
         // 解析选择器自动化配置
-        auto styleClassOpt = currentConfig.options.find("DISABLE_STYLE_AUTO_ADD_CLASS");
-        if (styleClassOpt != currentConfig.options.end()) {
-            disableStyleAutoAddClass = (styleClassOpt->second == "true");
-        }
-        
-        auto styleIdOpt = currentConfig.options.find("DISABLE_STYLE_AUTO_ADD_ID");
-        if (styleIdOpt != currentConfig.options.end()) {
-            disableStyleAutoAddId = (styleIdOpt->second == "true");
-        }
-        
-        auto scriptClassOpt = currentConfig.options.find("DISABLE_SCRIPT_AUTO_ADD_CLASS");
-        if (scriptClassOpt != currentConfig.options.end()) {
-            disableScriptAutoAddClass = (scriptClassOpt->second == "true");
-        }
-        
-        auto scriptIdOpt = currentConfig.options.find("DISABLE_SCRIPT_AUTO_ADD_ID");
-        if (scriptIdOpt != currentConfig.options.end()) {
-            disableScriptAutoAddId = (scriptIdOpt->second == "true");
-        }
-        
-        auto defaultNsOpt = currentConfig.options.find("DISABLE_DEFAULT_NAMESPACE");
-        if (defaultNsOpt != currentConfig.options.end()) {
-            disableDefaultNamespace = (defaultNsOpt->second == "true");
-        }
+        disableStyleAutoAddClass = configManager->isStyleAutoAddClassDisabled();
+        disableStyleAutoAddId = configManager->isStyleAutoAddIdDisabled();
+        disableScriptAutoAddClass = configManager->isScriptAutoAddClassDisabled();
+        disableScriptAutoAddId = configManager->isScriptAutoAddIdDisabled();
+        disableDefaultNamespace = configManager->isDefaultNamespaceDisabled();
     }
 }
 
 std::string CHTLContext::getConfigOption(const std::string& key) const {
-    auto it = currentConfig.options.find(key);
-    if (it != currentConfig.options.end()) {
-        return it->second;
+    if (manager && manager->getConfigManager()) {
+        return manager->getConfigManager()->getStringOption(key);
     }
     return "";
 }
 
 std::vector<std::string> CHTLContext::getNameGroupOption(const std::string& key) const {
-    auto it = currentConfig.nameGroup.find(key);
-    if (it != currentConfig.nameGroup.end()) {
-        return it->second;
+    if (manager && manager->getConfigManager()) {
+        return manager->getConfigManager()->getNameGroupOption(key);
     }
     return {};
 }
@@ -449,7 +458,7 @@ bool CHTLContext::isInLocalScript() const {
 void CHTLContext::dumpContext() const {
     std::cout << "=== CHTL Context ===" << std::endl;
     std::cout << "Current File: " << currentFilePath << std::endl;
-    std::cout << "Current Namespace: " << currentNamespace << std::endl;
+    std::cout << "Current Namespace: " << getCurrentNamespace() << std::endl;
     std::cout << "Config Loaded: " << (configLoaded ? "Yes" : "No") << std::endl;
     std::cout << "Element Stack Size: " << elementStack.size() << std::endl;
     std::cout << "Local Symbols: " << localSymbols.size() << std::endl;
