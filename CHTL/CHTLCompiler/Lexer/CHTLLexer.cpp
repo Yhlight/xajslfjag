@@ -94,9 +94,12 @@ CHTLToken CHTLLexer::nextToken() {
         case '}': advance(); return makeToken(CHTLTokenType::RBRACE, "}");
         case '(': advance(); return makeToken(CHTLTokenType::LPAREN, "(");
         case ')': advance(); return makeToken(CHTLTokenType::RPAREN, ")");
+        case '<': advance(); return makeToken(CHTLTokenType::LT, "<");
+        case '>': advance(); return makeToken(CHTLTokenType::GT, ">");
         case ';': advance(); return makeToken(CHTLTokenType::SEMICOLON, ";");
         case ',': advance(); return makeToken(CHTLTokenType::COMMA, ",");
         case '*': advance(); return makeToken(CHTLTokenType::STAR, "*");
+        case '/': advance(); return makeToken(CHTLTokenType::SLASH, "/");
         case '&': advance(); return makeToken(CHTLTokenType::AMPERSAND, "&");
         case ':': return handleCEEquivalent(c);
         case '=': return handleCEEquivalent(c);

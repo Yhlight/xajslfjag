@@ -13,6 +13,7 @@ struct CHTLGeneratorConfig {
     bool minifyOutput = false;          // 压缩输出
     bool includeComments = true;        // 包含注释
     bool generateSourceMap = false;     // 生成源映射
+    bool enableOptimization = true;     // 启用优化
     std::string indentString = "  ";    // 缩进字符串
     std::string outputCharset = "utf-8"; // 输出字符集
     bool enableCaching = true;          // 启用缓存
@@ -234,6 +235,8 @@ private:
     std::string resolveAssetPath(const std::string& path);
     
     // 工具方法
+    void preprocessDocument(std::shared_ptr<CHTLDocumentNode> document);
+    CHTLGenerationResult createFailedResult();
     std::string generateUniqueId(const std::string& prefix = "chtl");
     std::string sanitizeClassName(const std::string& className);
     std::string sanitizeId(const std::string& id);

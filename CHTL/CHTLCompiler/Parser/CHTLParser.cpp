@@ -561,7 +561,9 @@ std::shared_ptr<CHTLElementNode> CHTLParser::parseElement() {
         elementName = advance().value;
     } else if (check(CHTLTokenType::AT_STYLE) || check(CHTLTokenType::AT_ELEMENT) || check(CHTLTokenType::AT_VAR)) {
         // 模板/自定义使用
-        return parseTemplateUsage();
+        auto templateNode = parseTemplateUsage();
+        // 模板使用需要转换为元素节点
+        return std::dynamic_pointer_cast<CHTLElementNode>(templateNode);
     } else {
         addError("期望元素名称");
         return nullptr;

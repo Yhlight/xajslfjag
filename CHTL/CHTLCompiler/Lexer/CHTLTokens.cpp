@@ -43,7 +43,32 @@ static const std::unordered_map<CHTLTokenType, std::string> tokenTypeNames = {
     {CHTLTokenType::AT_CHTL, "AT_CHTL"},
     {CHTLTokenType::AT_CJMOD, "AT_CJMOD"},
     {CHTLTokenType::AT_CONFIG, "AT_CONFIG"},
-    // ... 其他Token类型
+    {CHTLTokenType::LBRACE, "LBRACE"},
+    {CHTLTokenType::RBRACE, "RBRACE"},
+    {CHTLTokenType::LPAREN, "LPAREN"},
+    {CHTLTokenType::RPAREN, "RPAREN"},
+    {CHTLTokenType::LBRACKET, "LBRACKET"},
+    {CHTLTokenType::RBRACKET, "RBRACKET"},
+    {CHTLTokenType::LT, "LT"},
+    {CHTLTokenType::GT, "GT"},
+    {CHTLTokenType::SEMICOLON, "SEMICOLON"},
+    {CHTLTokenType::COLON, "COLON"},
+    {CHTLTokenType::EQUAL, "EQUAL"},
+    {CHTLTokenType::COMMA, "COMMA"},
+    {CHTLTokenType::DOT, "DOT"},
+    {CHTLTokenType::SLASH, "SLASH"},
+    {CHTLTokenType::STAR, "STAR"},
+    {CHTLTokenType::AMPERSAND, "AMPERSAND"},
+    {CHTLTokenType::HASH, "HASH"},
+    {CHTLTokenType::CLASS_SELECTOR, "CLASS_SELECTOR"},
+    {CHTLTokenType::ID_SELECTOR, "ID_SELECTOR"},
+    {CHTLTokenType::LINE_COMMENT, "LINE_COMMENT"},
+    {CHTLTokenType::BLOCK_COMMENT, "BLOCK_COMMENT"},
+    {CHTLTokenType::GENERATOR_COMMENT, "GENERATOR_COMMENT"},
+    {CHTLTokenType::NEWLINE, "NEWLINE"},
+    {CHTLTokenType::WHITESPACE, "WHITESPACE"},
+    {CHTLTokenType::EOF_TOKEN, "EOF_TOKEN"},
+    {CHTLTokenType::INVALID, "INVALID"}
 };
 
 // CHTL关键字映射
@@ -53,6 +78,14 @@ static const std::unordered_map<std::string, CHTLTokenType> keywordMap = {
     {"style", CHTLTokenType::STYLE},
     {"script", CHTLTokenType::SCRIPT},
     {"use", CHTLTokenType::USE},
+    
+    // 声明关键字
+    {"template", CHTLTokenType::TEMPLATE},
+    {"custom", CHTLTokenType::CUSTOM},
+    {"origin", CHTLTokenType::ORIGIN},
+    {"import", CHTLTokenType::IMPORT},
+    {"namespace", CHTLTokenType::NAMESPACE},
+    {"configuration", CHTLTokenType::CONFIGURATION},
     
     // 继承和修改关键字
     {"inherit", CHTLTokenType::INHERIT},
@@ -85,13 +118,21 @@ static const std::unordered_map<std::string, CHTLTokenType> prefixMap = {
 // 类型标识符映射
 static const std::unordered_map<std::string, CHTLTokenType> typeIdentifierMap = {
     {"@Style", CHTLTokenType::AT_STYLE},
+    {"@style", CHTLTokenType::AT_STYLE},
     {"@Element", CHTLTokenType::AT_ELEMENT},
+    {"@element", CHTLTokenType::AT_ELEMENT},
     {"@Var", CHTLTokenType::AT_VAR},
+    {"@var", CHTLTokenType::AT_VAR},
     {"@Html", CHTLTokenType::AT_HTML},
+    {"@html", CHTLTokenType::AT_HTML},
     {"@JavaScript", CHTLTokenType::AT_JAVASCRIPT},
+    {"@javascript", CHTLTokenType::AT_JAVASCRIPT},
     {"@Chtl", CHTLTokenType::AT_CHTL},
+    {"@chtl", CHTLTokenType::AT_CHTL},
     {"@CJmod", CHTLTokenType::AT_CJMOD},
+    {"@cjmod", CHTLTokenType::AT_CJMOD},
     {"@Config", CHTLTokenType::AT_CONFIG},
+    {"@config", CHTLTokenType::AT_CONFIG},
 };
 
 // CHTLToken方法实现

@@ -1,131 +1,212 @@
-use html5;
+// CHTL语法示例文件
+// 展示所有主要CHTL语法特性
 
-[Template] @Style PrimaryButton {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-}
+use standard
 
-[Template] @Element Card {
-    div {
-        class: card;
-        
-        h3 {
-            class: card-title;
-            text { Default Card Title }
-        }
-        
-        p {
-            class: card-content;
-            text { Default card content goes here. }
-        }
+namespace app {
+    // 配置定义
+    configuration {
+        name: "CHTL Demo"
+        version: "1.0.0"
     }
-}
-
-html {
-    head {
-        title {
-            text { CHTL Example Page }
+    
+    // 变量组
+    @var theme {
+        primary-color: #007bff
+        secondary-color: #6c757d
+        font-family: "Arial, sans-serif"
+        border-radius: 4px
+    }
+    
+    // 全局样式组
+    @style {
+        .container {
+            max-width: 1200px
+            margin: 0 auto
+            padding: 20px
+            font-family: ${theme.font-family}
+        }
+        
+        .btn {
+            padding: 10px 15px
+            border: none
+            border-radius: ${theme.border-radius}
+            cursor: pointer
+            
+            &.primary {
+                background-color: ${theme.primary-color}
+                color: white
+            }
+            
+            &.secondary {
+                background-color: ${theme.secondary-color}
+                color: white
+            }
+        }
+        
+        .card {
+            border: 1px solid #ddd
+            border-radius: ${theme.border-radius}
+            padding: 20px
+            margin: 10px 0
+            
+            .header {
+                font-weight: bold
+                margin-bottom: 10px
+            }
         }
     }
     
-    body {
-        div {
-            id: main-container;
-            
-            style {
-                max-width: 1200px;
-                margin: 0 auto;
-                padding: 20px;
-                font-family: Arial, sans-serif;
+    // 模板定义
+    template Button(text, type: "primary") {
+        <button class="btn ${type}">
+            @script {
+                this.addEventListener('click', function() {
+                    console.log('Button clicked: ' + this.textContent);
+                });
+            }
+            ${text}
+        </button>
+    }
+    
+    template Card(title, content) {
+        <div class="card">
+            <div class="header">${title}</div>
+            <div class="content">${content}</div>
+        </div>
+    }
+    
+    // 自定义组件
+    custom Modal(title, closable: true) {
+        <div class="modal">
+            @style {
+                position: fixed
+                top: 0
+                left: 0
+                width: 100%
+                height: 100%
+                background: rgba(0,0,0,0.5)
+                display: flex
+                justify-content: center
+                align-items: center
                 
-                .header {
-                    text-align: center;
-                    margin-bottom: 30px;
+                .modal-content {
+                    background: white
+                    padding: 20px
+                    border-radius: ${theme.border-radius}
+                    min-width: 300px
                 }
                 
-                .content {
-                    display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-                    gap: 20px;
-                }
-                
-                .card {
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                    padding: 20px;
-                    background-color: #f9f9f9;
-                }
-                
-                .card-title {
-                    color: #333;
-                    margin-bottom: 10px;
-                }
-                
-                .card-content {
-                    color: #666;
-                    line-height: 1.6;
+                .close-btn {
+                    float: right
+                    cursor: pointer
                 }
             }
             
-            div {
-                class: header;
-                
-                h1 {
-                    text { Welcome to CHTL }
-                }
-                
-                p {
-                    text { This page demonstrates the CHTL template language features. }
-                }
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>${title}</h3>
+                    {if closable}
+                        <span class="close-btn">×</span>
+                    {/if}
+                </div>
+                <div class="modal-body">
+                    <content />
+                </div>
+            </div>
+        </div>
+    }
+    
+    // 主要内容
+    <div class="container">
+        <h1>CHTL语法演示</h1>
+        
+        // 基础HTML元素
+        <p>这是一个展示CHTL所有语法特性的示例文件。</p>
+        
+        // 模板使用
+        <Button text="点击我" type="primary" />
+        <Button text="次要按钮" type="secondary" />
+        
+        // 卡片组件
+        <Card title="功能特性" content="CHTL支持模板、组件、变量、样式组等强大功能" />
+        <Card title="语法简洁" content="使用类似HTML的语法，学习成本低" />
+        
+        // 选择器自动化
+        .highlight {
+            <div>这个div会自动获得highlight类</div>
+        }
+        
+        #main-content {
+            <div>这个div会自动获得main-content ID</div>
+        }
+        
+        // 嵌套结构
+        .grid {
+            @style {
+                display: grid
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))
+                gap: 20px
             }
             
-            div {
-                class: content;
-                
-                @Element Card;
-                
-                div {
-                    class: card;
-                    
-                    h3 {
-                        class: card-title;
-                        text { Custom Card }
-                    }
-                    
-                    p {
-                        class: card-content;
-                        text { This card was created without using the template. }
-                    }
-                }
-                
-                div {
-                    class: card;
-                    
-                    h3 {
-                        class: card-title;
-                        text { Another Card }
-                    }
-                    
-                    p {
-                        class: card-content;
-                        text { Cards can contain any HTML content. }
-                    }
-                    
-                    button {
-                        style {
-                            @Style PrimaryButton;
-                            margin-top: 10px;
-                        }
-                        
-                        text { Learn More }
-                    }
-                }
+            .grid-item {
+                <div>网格项目 1</div>
+            }
+            .grid-item {
+                <div>网格项目 2</div>
+            }
+            .grid-item {
+                <div>网格项目 3</div>
             }
         }
+        
+        // 本地样式和脚本
+        <div>
+            @style {
+                background: linear-gradient(45deg, #ff6b6b, #4ecdc4)
+                color: white
+                padding: 20px
+                text-align: center
+                margin: 20px 0
+            }
+            
+            @script {
+                this.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.transition = 'transform 0.3s ease';
+                });
+                
+                this.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            }
+            
+            悬停我看效果！
+        </div>
+        
+        // 模态框示例
+        <Button text="打开模态框" type="primary" />
+        
+        /*
+        <Modal title="演示模态框" closable="true">
+            <p>这是模态框的内容。</p>
+            <Button text="确定" type="primary" />
+            <Button text="取消" type="secondary" />
+        </Modal>
+        */
     }
 }
+
+/* 
+这个文件展示了CHTL的主要语法特性：
+1. Use声明和命名空间
+2. 配置定义
+3. 变量组和插值
+4. 样式组和嵌套样式
+5. 模板定义和使用
+6. 自定义组件
+7. 选择器自动化
+8. 本地样式和脚本
+9. 条件语法
+10. 注释支持
+*/

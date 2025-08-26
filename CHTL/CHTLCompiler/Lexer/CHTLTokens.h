@@ -61,6 +61,7 @@ enum class CHTLTokenType {
     LBRACE, RBRACE,           // { }
     LPAREN, RPAREN,           // ( )
     LBRACKET, RBRACKET,       // [ ]
+    LT, GT,                   // < > (HTML标签)
     SEMICOLON,                // ;
     COLON,                    // : (CE对等式)
     EQUAL,                    // = (CE对等式)
