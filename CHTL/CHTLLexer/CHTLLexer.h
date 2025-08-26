@@ -8,47 +8,81 @@
 namespace CHTL {
 
 enum class TokenType {
-    // Literals and Identifiers
-    STRING_LITERAL,
-    UNQUOTED_LITERAL,
-    NUMBER,
-    IDENTIFIER,
+    // CHTL Literals and Identifiers
+    STRING_LITERAL,           // "string" 'string'
+    UNQUOTED_LITERAL,         // unquoted values like CSS
+    NUMBER,                   // 123 123.45
+    IDENTIFIER,               // element names, property names
     
-    // Keywords
-    TEXT, STYLE, SCRIPT,
-    INHERIT, DELETE, INSERT, AFTER, BEFORE, REPLACE,
-    FROM, AS, EXCEPT, USE,
+    // CHTL Core Keywords  
+    TEXT,                     // text keyword
+    STYLE,                    // style keyword for local styles
+    SCRIPT,                   // script keyword for local scripts
+    USE,                      // use declarations
     
-    // Prefixes
-    TEMPLATE, CUSTOM, ORIGIN, IMPORT, NAMESPACE, CONFIGURATION,
-    INFO, EXPORT, NAME, ORIGINTYPE,
+    // CHTL Inheritance and Modification Keywords
+    INHERIT,                  // inherit keyword
+    DELETE,                   // delete keyword for removal
+    INSERT,                   // insert keyword for addition
+    AFTER, BEFORE, REPLACE,   // position keywords for insert
+    AT_TOP, AT_BOTTOM,        // at top, at bottom keywords
     
-    // Type Identifiers
-    AT_STYLE, AT_ELEMENT, AT_VAR, AT_HTML, AT_JAVASCRIPT, AT_CHTL, AT_CJMOD, AT_CONFIG,
+    // CHTL Import Keywords
+    FROM,                     // from keyword in imports
+    AS,                       // as keyword for aliases
+    EXCEPT,                   // except keyword for exclusions
     
-    // Symbols
-    LBRACE, RBRACE,           // { }
-    LPAREN, RPAREN,           // ( )
-    LBRACKET, RBRACKET,       // [ ]
-    SEMICOLON, COLON, EQUAL,  // ; : =
-    COMMA, DOT,               // , .
-    SLASH, STAR,              // / *
-    AMPERSAND,                // &
-    HASH,                     // #
+    // CHTL Declaration Prefixes
+    TEMPLATE,                 // [Template] prefix
+    CUSTOM,                   // [Custom] prefix  
+    ORIGIN,                   // [Origin] prefix
+    IMPORT,                   // [Import] prefix
+    NAMESPACE,                // [Namespace] prefix
+    CONFIGURATION,            // [Configuration] prefix
+    INFO,                     // [Info] prefix (for CMOD)
+    EXPORT,                   // [Export] prefix (for CMOD)
     
-    // Selectors
+    // CHTL Configuration Block Types
+    NAME,                     // [Name] config block
+    ORIGINTYPE,               // [OriginType] config block
+    
+    // CHTL Type Identifiers
+    AT_STYLE,                 // @Style
+    AT_ELEMENT,               // @Element  
+    AT_VAR,                   // @Var
+    AT_HTML,                  // @Html
+    AT_JAVASCRIPT,            // @JavaScript
+    AT_CHTL,                  // @Chtl
+    AT_CJMOD,                 // @CJmod
+    AT_CONFIG,                // @Config
+    
+    // CHTL Structural Symbols
+    LBRACE, RBRACE,           // { } - blocks
+    LPAREN, RPAREN,           // ( ) - parameters
+    LBRACKET, RBRACKET,       // [ ] - prefixes and arrays
+    SEMICOLON,                // ; - statement terminator
+    COLON,                    // : - property separator (CE equal)
+    EQUAL,                    // = - assignment (CE equal)
+    COMMA,                    // , - separator
+    DOT,                      // . - path separator
+    SLASH,                    // / - path and comments
+    STAR,                     // * - comments and wildcards
+    AMPERSAND,                // & - reference selector
+    HASH,                     // # - for ID selectors
+    
+    // CHTL Selectors (for local styles)
     CLASS_SELECTOR,           // .className
     ID_SELECTOR,              // #idName
     
-    // Comments
-    LINE_COMMENT,             // //
-    BLOCK_COMMENT,            // /* */
-    GENERATOR_COMMENT,        // --
+    // CHTL Comments (3 types as specified)
+    LINE_COMMENT,             // // - ignored by generator
+    BLOCK_COMMENT,            // /* */ - ignored by generator  
+    GENERATOR_COMMENT,        // -- - processed by generator
     
-    // Special
-    NEWLINE,
-    EOF_TOKEN,
-    INVALID
+    // Special Tokens
+    NEWLINE,                  // line breaks
+    EOF_TOKEN,                // end of file
+    INVALID                   // error token
 };
 
 struct Token {
