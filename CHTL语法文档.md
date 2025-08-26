@@ -6,6 +6,7 @@ CHTL是基于C++语言实现的超文本语言，其本质是为了提供一种�
 使用/**/代表多行注释  
 使用--代表会被生成器识别的注释  
 //和/**/注释不会被生成器所识别，生成的HTML不会带有这些注释  
+而--注释则会根据上下文生成不同编程语言类型的注释  
 
 ## 文本节点
 在CHTL中，使用text { }表示一段文本
@@ -630,6 +631,7 @@ body
 在CHTL中，你可以使用[Origin]表示这是一段原始的代码，这部分代码不会被CHTL处理，而是让生成器直接生成  
 原始嵌入是CHTL的兼容处理机制，避免CHTL考虑不到的极端问题  
 原始嵌入允许在任意节点中被解析  
+原始嵌入是直接把内容进行输出，绝对不会进行处理  
 
 ### 嵌入HTML代码
 ```chtl
@@ -768,7 +770,7 @@ body
 ```
 
 ### 命名配置组
-你现在可以为配置组命名，命名配置组不会被使用，不被命名的配置组才会启用，如果存在多个不被命名的配置组则冲突，并且可以创建多个，这是因为命名配置组服务于导入[Import]  
+你现在可以为配置组命名，命名配置组不会被使用，不被命名的配置组才会启用，如果存在多个无名的配置组则冲突，命名配置组可以创建多个，这是因为命名配置组服务于导入[Import]  
 
 ```chtl
 [Configuration] @Config Basic
@@ -882,13 +884,18 @@ body
 你可以使用[Import]导入CHTL，HTML，CSS，JS，CJMOD文件  
 
 导入HTML文件  
-[Import] @Html from html文件路径 as(可选) 命名为  
+[Import] @Html from html文件路径 as(必须) 命名为  
 
 导入CSS文件  
-[Import] @Style from css文件路径 as(可选) 命名为  
+[Import] @Style from css文件路径 as(必须) 命名为  
 
 导入JS文件  
-[Import] @JavaScript from js文件路径 as(可选) 命名为  
+[Import] @JavaScript from js文件路径 as(必须) 命名为  // 如果不具有as，直接跳过，具有as，则是创建命名原始嵌入节点  
+
+对于上述三种类型  
+如果写的是文件名（不带后缀）：在编译文件所在目录（非递归）按类型搜索相关文件  
+具体文件名（带后缀）：在编译文件所在目录（非递归）直接搜索该文件  
+如果路径为文件夹或不包含具体文件信息时，触发报错  
 
 导入另一个chtl文件之中的自定义元素  
 [Import] [Custom] @Element 需要导入的自定义元素名 from chtl文件路径 as(可选) 命名为  
@@ -953,9 +960,35 @@ body
 
 可以使用'.'来表示'/'  
 
+对于@Chtl类型来说  
+名称（不带后缀）：优先搜索官方模块目录(源码编译后生成的module文件夹，通常和编译器同一个文件夹，含cmod，chtl和cjmod文件），其次搜索编译文件所在的目录module文件夹，最后搜索编译文件所在目录，优先匹配cmod文件，其次chtl，不匹配cjmod文件)
+具体名称（带后缀）：按官方模块目录→当前目录module文件夹→当前目录顺序搜索指定文件
+具体路径（含文件信息）：直接按路径查找，未找到则报错
+具体路径（不含文件信息）：触发报错
+对于使用官方模块前缀，直接在官方模块目录中搜索  
+
+## use
+use语法能够明确当前文件使用什么配置组  
+use语法必须在文件开头，且只能有一个用于配置组  
+
+### HTML5类型
+```chtl
+use html5;
+```
+
+生成HTML5声明  
+
+### 使用命名配置组
+```chtl
+use @Config Basic;  // 此文件使用Basic配置组
+
+use [Configuration] @Config Basic;  // 也可以使用全缀名
+```
+
 ## 命名空间
 你可以使用[Namespace]创建命名空间，命名空间能够有效防止模块污染  
 导入一整个文件，或导入了重名的任意单元时，命名空间起效  
+命名空间允许不使用{}  
 
 test.chtl  
 ```chtl
@@ -1059,6 +1092,18 @@ body
 }
 ```
 
+命名空间功能说明  
+同名命名空间自动合并  
+命名空间冲突检测策略  
+对于没有使用命名空间的文件，在被导入时，会默认以文件名作为命名空间  
+你可以在[Configuration]之中添加下述规则禁用默认命名空间功能，这意味着导入时可能会造成污染  
+```chtl
+[Configuration]
+{
+    DISABLE_DEFAULT_NAMESPACE = false;
+}
+```
+
 ## 约束
 你可以使用except关键字来进行定义域约束  
 
@@ -1096,8 +1141,36 @@ div
 }
 ```
 
+## 选择器自动化与引用规则
+现在，你可以在[Configuration]之中添加下述规则禁用自动化    
+
+```chtl
+[Configuration]
+{
+    // 禁止局部样式块自动添加类选择器
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    // 禁止局部样式块自动添加id选择器
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    // 禁止局部脚本自动添加类选择器
+    DISABLE_SCRIPT_AUTO_ADD_CLASS = true;
+    // 禁止局部脚本自动添加id选择器
+    DISABLE_SCRIPT_AUTO_ADD_ID = true;
+}
+```
+
+当局部style内部存在多组类选择器时，若class属性缺失，则自动添加第一个类选择器  
+当局部style内部存在多组id选择器时，若id属性缺失，则自动添加第一个id选择器  
+对于局部style来说，& 引用选择器优先选择class  
+
+// 如果DISABLE_SCRIPT_AUTO_ADD_CLASS 和 DISABLE_SCRIPT_AUTO_ADD_ID 为真  
+当局部script内部存在多组类选择器时，若class属性，局部style没有触发class自动化添加缺失，第一个{{.box}}会被自动添加  
+当局部script内部存在多组id选择器时，若id属性，局部style没有触发id自动化添加缺失，第一个{{#box}}会被自动添加  
+{{box}}不会自动添加，只有{{.box}}和{{#box}}能够触发自动化添加  
+对于局部script来说，& 引用选择器优先选择id  
+
 ## CHTL JS
 CHTL JS是CHTL的扩展语法，并不是JS的超集，也不支持JS的语法  
+CHTL JS完全独立于JS，只是最终转变为JS代码  
 JS的语法由CHTL内置的JS编译器解析，CHTL JS的语法由CHTL JS编译器解析  
 两者之间并不兼容，CHTL JS的语法是CHTL JS编译器的扩展语法  
 
@@ -1528,3 +1601,40 @@ iNeverAway函数存在的意义其实很迷惑人，这是因为相对于使用i
 #### 暖色笔记
 #### 樱花雨
 #### 鼠标特效
+
+
+对于@Chtl类型来说  
+名称（不带后缀）：优先搜索官方模块目录(源码编译后生成的module文件夹，通常和编译器同一个文件夹，含cmod，chtl和cjmod文件），其次搜索编译文件所在的目录module文件夹，最后搜索编译文件所在目录，优先匹配cmod文件，其次chtl，不匹配cjmod文件)
+具体名称（带后缀）：按官方模块目录→当前目录module文件夹→当前目录顺序搜索指定文件
+具体路径（含文件信息）：直接按路径查找，未找到则报错
+具体路径（不含文件信息）：触发报错
+对于使用官方模块前缀，直接在官方模块目录中搜索  
+
+对于@CJmod类型来说  
+名称（不带后缀）：优先搜索官方模块目录，其次搜索当前目录module文件夹，最后搜索当前目录，仅匹配cjmod文件  
+具体名称（带后缀）：按官方模块目录→当前目录module文件夹→当前目录顺序搜索指定文件  
+具体路径（含文件信息）：直接按路径查找，未找到则报错  
+具体路径（不含文件信息）：触发报错
+对于使用官方模块前缀，直接在官方模块目录中搜索  
+
+编译生成的module文件夹(官方模块)有两种结构，一种就是常规的混杂，chtl文件，cmod，cjmod  
+一种是使用CMOD / cmod / Cmod(包括chtl文件) + CJMOD / cjmod / CJmod(不包括chtl文件)两个文件夹进行分类  
+
+对于用户来说，他们创建的module文件夹也能够使用分类结构  
+值得一提，源代码目录下的模块源码目录Module也可以使用分类结构  
+
+[Import] @Chtl from 具体路径.*  // 导入具体路径下的所有.cmod和.chtl文件  
+[Import] @Chtl from 具体路径.*.cmod  // 导入具体路径下的所有.cmod文件  
+[Import] @Chtl from 具体路径.*.chtl  // 导入具体路径下的所有.chtl文件  
+等价于
+[Import] @Chtl from 具体路径/*  // 导入具体路径下的所有.cmod和.chtl文件  
+[Import] @Chtl from 具体路径/*.cmod  // 导入具体路径下的所有.cmod文件  
+[Import] @Chtl from 具体路径/*.chtl  // 导入具体路径下的所有.chtl文件  
+
+// 导入子模块时，支持使用'/'替代'.'作为路径分隔符  
+[Import] @Chtl from Chtholly.*  // 导入Chtholly模块的所有子模块  
+[Import] @Chtl from Chtholly.Space  // 导入Chtholly模块中指定的Space子模块  
+
+[Import] @CJmod from 模块名称  // 导入指定名称的CJmod模块  
+
+CJmod与Cmod采用相同的路径搜索策略。  
