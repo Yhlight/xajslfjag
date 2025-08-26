@@ -1170,7 +1170,7 @@ div
 
 ## CHTL JS
 CHTL JS是CHTL的扩展语法，并不是JS的超集，也不支持JS的语法  
-CHTL JS完全独立于JS，只是最终转变为JS代码  
+CHTL JS完全独立于JS，是一门独立的编程语言，与JS毫无关系，只是最终转变为JS代码  
 JS的语法由CHTL内置的JS编译器解析，CHTL JS的语法由CHTL JS编译器解析  
 两者之间并不兼容，CHTL JS的语法是CHTL JS编译器的扩展语法  
 
@@ -1271,7 +1271,8 @@ button
 
 script
 {
-    {{box}}->listen({
+    // 声明式
+    {{box}}->listen {
         click: () => {
 
         },
@@ -1281,7 +1282,7 @@ script
         mousemove: function() {
 
         }
-    });
+    };
 }
 ```
 
@@ -1292,12 +1293,12 @@ script
 ```chtl
 script
 {
-    {{父元素选择器}}->delegate({
+    {{父元素选择器}}->delegate {
         target: {{选择器}} | [{{选择器1}}, {{选择器2}},...], // 要代理的子元素对象 / 子元素对象数组
         click: 函数,  // 绑定的事件类型及对应回调函数
         mouseenter: 函数,
         mouseleave: 函数,
-    });
+    };
 }
 ```
 需要创建一个全局注册表，管理所有事件委托的父元素，重复绑定父元素的子元素会作为分支合并在同一个事件委托之中  
@@ -1309,7 +1310,7 @@ CHTL JS简化了动画的使用，封装了requestAnimationFrame
 ```chtl
 script
 {
-    const anim = animate({
+    const anim = animate {
         target: {{选择器}} || [{{选择器1}}, {{选择器2}}] || DOM对象
         duration: 100,  // 动画持续时间，ms
         easing: ease-in-out,  // 缓慢函数
@@ -1340,7 +1341,7 @@ script
         direction: ,  // 播放的方向
         delay:  ,  // 开始播放的延迟，ms
         callback: function,  // 播放完毕后做什么
-    });
+    };
 }
 ```
 
@@ -1349,7 +1350,7 @@ script
 虚对象能够获取CHTL JS函数的任意键的键值  
 
 ```
-vir test = listen({
+vir test = listen {
     click: () => {
 
     }
@@ -1357,7 +1358,7 @@ vir test = listen({
     other: {
 
     }
-});
+};
 
 test->click();  // 解析click为函数引用
 test->other;  // 解析other为对象
@@ -1368,11 +1369,11 @@ listen会按原样生成JS代码
 vir本身就不存在，是编译期间的语法糖  
 
 ```
-vir Test = listen({
+vir Test = listen {
     click: ()=>{
 
     }
-});
+};
 ```
 编译器扫描到vir时，会创建一个C++对象，这个C++对象负责vir的解析  
 假设这个对象为View  
@@ -1543,13 +1544,13 @@ CJmod文件夹
 printMylove可以将一张图片变成字符像素块的形式，你可以使用printMylove来把图片转换成字符像素块或ASCII的形式  
 然后输出到控制台  
 ```chtl
-const str = printMylove({
+const str = printMylove {
     url: ,
     mode: ,  // 模式可以选择ASCII或Pixel
     width: ,  // 宽度，支持的单位有CSS单位以及百分比，小数，纯数字(像素)
     height: ,  // 高度
     scale:  ,  // 缩放倍数，限定为等比缩放策略
-});
+};
 ```
 
 ##### iNeverAway
@@ -1558,7 +1559,7 @@ iNeverAway与其他CHTL JS功能不同，它允许开发者定义键，而不是
 iNeverAway需要与虚对象共用  
 
 ```chtl
-vir Test = iNeverAway({
+vir Test = iNeverAway {
     Void<A>: function(int, int) {
 
     },
@@ -1574,7 +1575,7 @@ vir Test = iNeverAway({
     Ax: {
 
     }
-});
+};
 
 Test->Void<A>();
 ```
