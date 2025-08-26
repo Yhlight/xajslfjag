@@ -175,6 +175,19 @@ chtl_compiler/fast:
 .PHONY : chtl_compiler/fast
 
 #=============================================================================
+# Target rules for targets named test_cjmod
+
+# Build rule for target.
+test_cjmod: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_cjmod
+.PHONY : test_cjmod
+
+# fast build rule for target.
+test_cjmod/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/build
+.PHONY : test_cjmod/fast
+
+#=============================================================================
 # Target rules for targets named clean-antlr
 
 # Build rule for target.
@@ -211,6 +224,30 @@ Test/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/Test/main.cpp.s
 .PHONY : Test/main.cpp.s
 
+Test/test_cjmod.o: Test/test_cjmod.cpp.o
+.PHONY : Test/test_cjmod.o
+
+# target to build an object file
+Test/test_cjmod.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/Test/test_cjmod.cpp.o
+.PHONY : Test/test_cjmod.cpp.o
+
+Test/test_cjmod.i: Test/test_cjmod.cpp.i
+.PHONY : Test/test_cjmod.i
+
+# target to preprocess a source file
+Test/test_cjmod.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/Test/test_cjmod.cpp.i
+.PHONY : Test/test_cjmod.cpp.i
+
+Test/test_cjmod.s: Test/test_cjmod.cpp.s
+.PHONY : Test/test_cjmod.s
+
+# target to generate assembly for a file
+Test/test_cjmod.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/Test/test_cjmod.cpp.s
+.PHONY : Test/test_cjmod.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -225,9 +262,13 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... clean-antlr"
 	@echo "... chtl_compiler"
+	@echo "... test_cjmod"
 	@echo "... Test/main.o"
 	@echo "... Test/main.i"
 	@echo "... Test/main.s"
+	@echo "... Test/test_cjmod.o"
+	@echo "... Test/test_cjmod.i"
+	@echo "... Test/test_cjmod.s"
 .PHONY : help
 
 

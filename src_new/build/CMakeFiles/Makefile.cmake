@@ -56,5 +56,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/chtl_compiler.dir/DependInfo.cmake"
+  "CMakeFiles/test_cjmod.dir/DependInfo.cmake"
   "CMakeFiles/clean-antlr.dir/DependInfo.cmake"
   )

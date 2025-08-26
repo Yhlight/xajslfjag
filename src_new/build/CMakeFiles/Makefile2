@@ -64,10 +64,12 @@ CMAKE_BINARY_DIR = /workspace/src_new/build
 
 # The main recursive "all" target.
 all: CMakeFiles/chtl_compiler.dir/all
+all: CMakeFiles/test_cjmod.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/chtl_compiler.dir/codegen
+codegen: CMakeFiles/test_cjmod.dir/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -76,6 +78,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/chtl_compiler.dir/clean
+clean: CMakeFiles/test_cjmod.dir/clean
 clean: CMakeFiles/clean-antlr.dir/clean
 .PHONY : clean
 
@@ -110,6 +113,38 @@ CMakeFiles/chtl_compiler.dir/codegen:
 CMakeFiles/chtl_compiler.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/clean
 .PHONY : CMakeFiles/chtl_compiler.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/test_cjmod.dir
+
+# All Build rule for target.
+CMakeFiles/test_cjmod.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=4,5 "Built target test_cjmod"
+.PHONY : CMakeFiles/test_cjmod.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/test_cjmod.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_cjmod.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
+.PHONY : CMakeFiles/test_cjmod.dir/rule
+
+# Convenience name for target.
+test_cjmod: CMakeFiles/test_cjmod.dir/rule
+.PHONY : test_cjmod
+
+# codegen rule for target.
+CMakeFiles/test_cjmod.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=4,5 "Finished codegen for target test_cjmod"
+.PHONY : CMakeFiles/test_cjmod.dir/codegen
+
+# clean rule for target.
+CMakeFiles/test_cjmod.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod.dir/build.make CMakeFiles/test_cjmod.dir/clean
+.PHONY : CMakeFiles/test_cjmod.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/clean-antlr.dir

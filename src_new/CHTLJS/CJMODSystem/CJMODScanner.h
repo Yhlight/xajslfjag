@@ -5,7 +5,7 @@
 #include <unordered_map>
 #include <functional>
 #include "Arg.h"
-#include "../Scanner/CJMODScanner.h"
+// 自包含，无需外部CJMODScanner依赖
 
 namespace CHTL {
 namespace CJMOD {

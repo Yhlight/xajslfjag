@@ -192,8 +192,12 @@ target_include_directories(chtl_compiler_lib INTERFACE
 # 创建可执行文件
 add_executable(chtl_compiler Test/main.cpp)
 
+# 创建CJMOD测试可执行文件
+add_executable(test_cjmod Test/test_cjmod.cpp)
+
 # 链接库
 target_link_libraries(chtl_compiler chtl_compiler_lib)
+target_link_libraries(test_cjmod chtl_compiler_lib)
 
 # 设置可执行文件属性
 set_target_properties(chtl_compiler PROPERTIES
@@ -201,11 +205,17 @@ set_target_properties(chtl_compiler PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+set_target_properties(test_cjmod PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # 为可执行文件单独设置C++标准
 target_compile_features(chtl_compiler PRIVATE cxx_std_17)
+target_compile_features(test_cjmod PRIVATE cxx_std_17)
 
 # 安装目标
-install(TARGETS chtl_compiler
+install(TARGETS chtl_compiler test_cjmod
         RUNTIME DESTINATION bin)
 
 install(TARGETS chtl_compiler_lib
