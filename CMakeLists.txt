@@ -53,6 +53,13 @@ set(CHTL_SOURCES
     # 公共组件
     src/Common/GlobalMap.cpp
     src/Common/Context.cpp
+    src/Common/SelectorAutomation.cpp
+    src/Common/ImportManager.cpp
+    src/Common/CEEquivalence.cpp
+    src/Common/GeneratorComment.cpp
+    src/Common/SyntaxConstraints.cpp
+    src/Common/OriginEmbedManager.cpp
+    src/Common/CHTLJSKeyValueManager.cpp
     
     # AST系统
     src/AST/Common/ASTNode.cpp
@@ -90,6 +97,13 @@ set(CHTL_HEADERS
     src/Token/CHTLJS/CHTLJSToken.h
     src/Common/GlobalMap.h
     src/Common/Context.h
+    src/Common/SelectorAutomation.h
+    src/Common/ImportManager.h
+    src/Common/CEEquivalence.h
+    src/Common/GeneratorComment.h
+    src/Common/SyntaxConstraints.h
+    src/Common/OriginEmbedManager.h
+    src/Common/CHTLJSKeyValueManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h
