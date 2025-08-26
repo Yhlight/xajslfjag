@@ -80,6 +80,13 @@ set(CHTL_SOURCES
     # 扫描器
     src/Scanner/CHTLUnifiedScanner.cpp
     
+    # CJMOD API系统 (头文件实现，将来实现.cpp)
+    # src/CJMOD/Syntax.cpp
+    # src/CJMOD/Arg.cpp
+    # src/CJMOD/CJMODScanner.cpp
+    # src/CJMOD/CJMODGenerator.cpp
+    # src/CJMOD/CHTLJSFunction.cpp
+    
     # 核心组件
     src/Core/CompilerDispatcher.cpp
     
@@ -130,6 +137,13 @@ set(CHTL_HEADERS
     src/AST/CHTLJS/CHTLJSNodes.h
     src/Scanner/CHTLUnifiedScanner.h
     src/Core/CompilerDispatcher.h
+    
+    # CJMOD API系统头文件
+    src/CJMOD/Syntax.h
+    src/CJMOD/Arg.h
+    src/CJMOD/CJMODScanner.h
+    src/CJMOD/CJMODGenerator.h
+    src/CJMOD/CHTLJSFunction.h
 )
 
 # 创建CHTL编译器库
