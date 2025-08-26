@@ -43,7 +43,7 @@ public:
     std::shared_ptr<AnimationConfig> getAnimation(const std::string& name) const;
     std::string generateAnimationCode(const std::string& name);
     
-    // JavaScript代码生成辅助
+    // 代码生成辅助
     std::string wrapInIIFE(const std::string& code) const;
     std::string generateDOMReady(const std::string& code) const;
     std::string generateSelectorCode(const std::string& selector, bool multiple = false) const;

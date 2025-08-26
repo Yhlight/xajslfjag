@@ -30,7 +30,6 @@ enum class TokenType {
     AMPERSAND,           // &
     AT,                  // @
     HASH,                // #
-    DOLLAR,              // $
     
     // 注释
     COMMENT,             // // 和 /* */ 注释
@@ -77,7 +76,6 @@ enum class TokenType {
     // 关键字 - 特殊
     USE,                 // use
     HTML5,               // html5
-    VIR,                 // vir (虚对象，但这是CHTL JS的)
     
     // 特殊Token
     EOF_TOKEN,           // 文件结束

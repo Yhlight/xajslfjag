@@ -51,51 +51,7 @@ enum class CHTLJSTokenType {
     CALLBACK,               // callback关键字
     TARGET,                 // target关键字
     
-    // JavaScript基础Token（简化版）
-    FUNCTION,               // function
-    CONST,                  // const
-    LET,                    // let
-    VAR,                    // var
-    IF,                     // if
-    ELSE,                   // else
-    FOR,                    // for
-    WHILE,                  // while
-    RETURN,                 // return
-    NEW,                    // new
-    THIS,                   // this
-    
-    // 操作符
-    PLUS,                   // +
-    MINUS,                  // -
-    MULTIPLY,               // *
-    DIVIDE,                 // /
-    MODULO,                 // %
-    ASSIGN,                 // =
-    PLUS_ASSIGN,            // +=
-    MINUS_ASSIGN,           // -=
-    EQUAL,                  // ==
-    NOT_EQUAL,              // !=
-    STRICT_EQUAL,           // ===
-    STRICT_NOT_EQUAL,       // !==
-    LESS_THAN,              // <
-    GREATER_THAN,           // >
-    LESS_EQUAL,             // <=
-    GREATER_EQUAL,          // >=
-    LOGICAL_AND,            // &&
-    LOGICAL_OR,             // ||
-    LOGICAL_NOT,            // !
-    
-    // 特殊值
-    TRUE,                   // true
-    FALSE,                  // false
-    NULL_VALUE,             // null
-    UNDEFINED,              // undefined
-    
-    // 扩展Token
-    REGEX,                  // 正则表达式
-    TEMPLATE_STRING,        // 模板字符串
-    SPREAD,                 // ...
-    ARROW_FUNCTION,         // =>
+
     
     // CHTL JS特殊功能
     PLACEHOLDER             // $ 占位符
@@ -131,7 +87,6 @@ struct CHTLJSToken : public Token {
     bool isEvent() const;
     bool isAnimationKeyword() const;
     bool isCHTLJSKeyword() const;
-    bool isJavaScriptKeyword() const;
     
     std::string getSelectorString() const;
     std::string toDebugString() const;
