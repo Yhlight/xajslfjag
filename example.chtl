@@ -1,0 +1,131 @@
+use html5;
+
+[Template] @Style PrimaryButton {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+[Template] @Element Card {
+    div {
+        class: card;
+        
+        h3 {
+            class: card-title;
+            text { Default Card Title }
+        }
+        
+        p {
+            class: card-content;
+            text { Default card content goes here. }
+        }
+    }
+}
+
+html {
+    head {
+        title {
+            text { CHTL Example Page }
+        }
+    }
+    
+    body {
+        div {
+            id: main-container;
+            
+            style {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+                
+                .header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                }
+                
+                .content {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                    gap: 20px;
+                }
+                
+                .card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    padding: 20px;
+                    background-color: #f9f9f9;
+                }
+                
+                .card-title {
+                    color: #333;
+                    margin-bottom: 10px;
+                }
+                
+                .card-content {
+                    color: #666;
+                    line-height: 1.6;
+                }
+            }
+            
+            div {
+                class: header;
+                
+                h1 {
+                    text { Welcome to CHTL }
+                }
+                
+                p {
+                    text { This page demonstrates the CHTL template language features. }
+                }
+            }
+            
+            div {
+                class: content;
+                
+                @Element Card;
+                
+                div {
+                    class: card;
+                    
+                    h3 {
+                        class: card-title;
+                        text { Custom Card }
+                    }
+                    
+                    p {
+                        class: card-content;
+                        text { This card was created without using the template. }
+                    }
+                }
+                
+                div {
+                    class: card;
+                    
+                    h3 {
+                        class: card-title;
+                        text { Another Card }
+                    }
+                    
+                    p {
+                        class: card-content;
+                        text { Cards can contain any HTML content. }
+                    }
+                    
+                    button {
+                        style {
+                            @Style PrimaryButton;
+                            margin-top: 10px;
+                        }
+                        
+                        text { Learn More }
+                    }
+                }
+            }
+        }
+    }
+}
