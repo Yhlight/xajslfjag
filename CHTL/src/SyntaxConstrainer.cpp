@@ -130,6 +130,10 @@ void SyntaxConstrainer::Visit(const ConfigNode& node) {
     CheckRule(node);
 }
 
+void SyntaxConstrainer::Visit(const UseNode& node) {
+    CheckRule(node);
+}
+
 void SyntaxConstrainer::CheckRule(const AstNode& node) {
     SyntaxContext currentCtx = GetCurrentContext();
     std::string nodeType = typeid(node).name();

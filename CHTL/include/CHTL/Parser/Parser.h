@@ -47,6 +47,7 @@ namespace CHTL {
         AstNodePtr ParseImportNode();
         AstNodePtr ParseNamespaceNode();
         void ParseConfigNode(Config& config);
+        AstNodePtr ParseUseStatement();
 
         // Utility methods
         bool IsAtEnd();

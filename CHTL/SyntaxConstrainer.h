@@ -41,6 +41,7 @@ namespace CHTL {
         void Visit(const OriginNode& node) override;
         void Visit(const InlineStyleRuleNode& node) override { CheckRule(node); }
         void Visit(const SelectorBlockNode& node) override { CheckRule(node); }
+        void Visit(const UseNode& node) override { CheckRule(node); }
 
     private:
         void PushContext(SyntaxContext ctx);
