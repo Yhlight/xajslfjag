@@ -148,8 +148,9 @@ public:
     std::shared_ptr<EnhancedSelectorNode> target_selector;
     std::unordered_map<std::string, std::string> event_handlers; // event -> handler
     bool is_method_call; // 是否是方法调用形式 (selector->listen())
+    bool uses_new_syntax; // 是否使用新的大括号语法 listen { } 而不是 listen({ })
     
-    ListenCallNode() : ASTNodeImpl(NodeType::UNKNOWN), is_method_call(false) {}
+    ListenCallNode() : ASTNodeImpl(NodeType::UNKNOWN), is_method_call(false), uses_new_syntax(true) {}
     
     void accept(Visitor& visitor) override;
     std::shared_ptr<ASTNode> clone() const override;
@@ -179,8 +180,9 @@ public:
     std::shared_ptr<EnhancedSelectorNode> parent_selector;
     std::vector<std::shared_ptr<EnhancedSelectorNode>> target_selectors;
     std::unordered_map<std::string, std::string> event_handlers;
+    bool uses_new_syntax; // 是否使用新的大括号语法 delegate { } 而不是 delegate({ })
     
-    DelegateCallNode() : ASTNodeImpl(NodeType::UNKNOWN) {}
+    DelegateCallNode() : ASTNodeImpl(NodeType::UNKNOWN), uses_new_syntax(true) {}
     
     void accept(Visitor& visitor) override;
     std::shared_ptr<ASTNode> clone() const override;
@@ -211,8 +213,9 @@ public:
     std::shared_ptr<EnhancedSelectorNode> target_selector;
     std::vector<std::shared_ptr<EnhancedSelectorNode>> target_selectors; // 多目标
     std::shared_ptr<AnimationConfigNode> config;
+    bool uses_new_syntax; // 是否使用新的大括号语法 animate { } 而不是 animate({ })
     
-    AnimateCallNode() : ASTNodeImpl(NodeType::UNKNOWN) {}
+    AnimateCallNode() : ASTNodeImpl(NodeType::UNKNOWN), uses_new_syntax(true) {}
     
     void accept(Visitor& visitor) override;
     std::shared_ptr<ASTNode> clone() const override;

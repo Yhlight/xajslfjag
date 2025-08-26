@@ -46,6 +46,10 @@ enum class CHTLJSTokenType {
     // 扩展的CHTL JS特性
     EVENT_BIND_OPERATOR, // &-> (事件绑定操作符)
     
+    // 新语法标识
+    FUNCTION_BLOCK_START, // 函数块开始 (识别 listen {, delegate {, animate { 等)
+    FUNCTION_BLOCK_END,   // 函数块结束
+    
     // 动画关键字
     AT_KEYWORD,          // at (动画时间点)
     BEGIN_KEYWORD,       // begin (动画起始状态)
