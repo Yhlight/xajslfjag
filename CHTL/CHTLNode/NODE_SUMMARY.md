@@ -1,14 +1,14 @@
-# CHTL AST节点体系
+# CHTL节点体系
 
 ## 概述
 
-根据CHTL语法文档，设计了完整的CHTL核心语言AST（抽象语法树）节点体系。当前专注于CHTL核心功能，暂不包含CHTL JS扩展。
+根据CHTL语法文档，设计了完整的CHTL核心语言节点体系。当前专注于CHTL核心功能，暂不包含CHTL JS扩展。
 
-## AST节点分类
+## 节点分类
 
 ### 1. 基础节点 (BasicNodes.h)
 
-- **ProgramNode**: AST根节点，表示整个CHTL程序
+- **ProgramNode**: 根节点，表示整个CHTL程序
 - **CommentNode**: 注释节点（支持 //, /* */, --）
 - **TextNode**: 文本节点（text { } 块）
 - **LiteralNode**: 字面量节点（无引号、双引号、单引号）
@@ -59,11 +59,11 @@
 所有节点都实现了访问者模式，便于遍历和转换：
 
 ```cpp
-class ASTNode {
-    virtual void accept(ASTVisitor* visitor) = 0;
+class Node {
+    virtual void accept(Visitor* visitor) = 0;
 };
 
-class CHTLASTVisitor {
+class CHTLVisitor {
     virtual void visitElement(ElementNode* node) = 0;
     // ... 其他visit方法
 };
@@ -87,8 +87,8 @@ Token endToken;
 支持完整的树形结构：
 
 ```cpp
-std::weak_ptr<ASTNode> parent;
-std::vector<std::shared_ptr<ASTNode>> children;
+std::weak_ptr<Node> parent;
+std::vector<std::shared_ptr<Node>> children;
 ```
 
 ### 4. 元数据支持
@@ -104,7 +104,7 @@ std::unordered_map<std::string, std::string> metadata;
 所有节点都支持深度克隆：
 
 ```cpp
-virtual std::shared_ptr<ASTNode> clone() const = 0;
+virtual std::shared_ptr<Node> clone() const = 0;
 ```
 
 ## 使用示例
@@ -124,14 +124,14 @@ div->addAttribute(classAttr);
 auto styleBlock = std::make_shared<StyleBlockNode>(false, token);
 div->setLocalStyleBlock(styleBlock);
 
-// 访问AST
-MyVisitor visitor;
+// 访问节点树
+MyCHTLVisitor visitor;
 div->accept(&visitor);
 ```
 
 ## CHTL核心功能覆盖
 
-该AST节点体系完整覆盖了CHTL核心语法特性：
+该节点体系完整覆盖了CHTL核心语法特性：
 
 ✅ 注释系统（三种注释类型）
 ✅ 文本和字面量
@@ -148,9 +148,9 @@ div->accept(&visitor);
 
 ## 下一步
 
-1. 实现AST节点的具体方法（.cpp文件）
-2. 开发CHTL Parser，将Token流转换为AST
-3. 实现语义分析器，基于AST进行语义检查
-4. 开发代码生成器，将AST转换为HTML/CSS/JS
+1. 实现节点的具体方法（.cpp文件）
+2. 开发CHTL Parser，将Token流转换为节点树
+3. 实现语义分析器，基于节点树进行语义检查
+4. 开发代码生成器，将节点树转换为HTML/CSS/JS
 
-这个AST设计为CHTL编译器的核心功能提供了坚实的基础。
+这个节点设计为CHTL编译器的核心功能提供了坚实的基础。

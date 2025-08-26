@@ -1,12 +1,12 @@
 #ifndef CHTL_BASIC_NODES_H
 #define CHTL_BASIC_NODES_H
 
-#include "ASTNode.h"
+#include "Node.h"
 
 namespace CHTL {
 
 // 程序节点 - AST的根节点
-class ProgramNode : public ASTNode {
+class ProgramNode : public Node {
 private:
     std::string fileName;
     std::string useStatement;  // use语句（如 "html5" 或 "@Config Basic"）
@@ -18,13 +18,13 @@ public:
     std::string getUseStatement() const { return useStatement; }
     std::string getFileName() const { return fileName; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 注释节点
-class CommentNode : public ASTNode {
+class CommentNode : public Node {
 public:
     enum CommentType {
         LINE_COMMENT,        // //
@@ -42,13 +42,13 @@ public:
     CommentType getCommentType() const { return commentType; }
     std::string getContent() const { return content; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 文本节点
-class TextNode : public ASTNode {
+class TextNode : public Node {
 private:
     std::string content;
     bool isLiteral;  // 是否为字面量（无引号）
@@ -61,13 +61,13 @@ public:
     void setIsLiteral(bool literal) { isLiteral = literal; }
     bool getIsLiteral() const { return isLiteral; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 字面量节点
-class LiteralNode : public ASTNode {
+class LiteralNode : public Node {
 public:
     enum LiteralType {
         UNQUOTED,      // 无引号字面量
@@ -86,13 +86,13 @@ public:
     std::string getValue() const { return value; }
     std::string getUnquotedValue() const;  // 获取去除引号的值
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 标识符节点
-class IdentifierNode : public ASTNode {
+class IdentifierNode : public Node {
 private:
     std::string name;
     
@@ -101,13 +101,13 @@ public:
     
     std::string getName() const { return name; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 块节点
-class BlockNode : public ASTNode {
+class BlockNode : public Node {
 private:
     bool hasBraces;  // 是否有花括号
     
@@ -117,19 +117,19 @@ public:
     void setHasBraces(bool braces) { hasBraces = braces; }
     bool getHasBraces() const { return hasBraces; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 语句列表节点
-class StatementListNode : public ASTNode {
+class StatementListNode : public Node {
 public:
     StatementListNode(const Token& token);
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 } // namespace CHTL

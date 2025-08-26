@@ -1,7 +1,7 @@
 #ifndef CHTL_TEMPLATE_NODES_H
 #define CHTL_TEMPLATE_NODES_H
 
-#include "ASTNode.h"
+#include "Node.h"
 #include "BasicNodes.h"
 
 namespace CHTL {
@@ -14,7 +14,7 @@ enum class TemplateType {
 };
 
 // 模板声明节点
-class TemplateDeclarationNode : public ASTNode {
+class TemplateDeclarationNode : public Node {
 private:
     TemplateType templateType;
     std::string name;
@@ -33,13 +33,13 @@ public:
     void addInheritance(const std::string& parent) { inheritFrom.push_back(parent); }
     std::vector<std::string> getInheritances() const { return inheritFrom; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 自定义声明节点
-class CustomDeclarationNode : public ASTNode {
+class CustomDeclarationNode : public Node {
 private:
     TemplateType customType;
     std::string name;
@@ -58,13 +58,13 @@ public:
     void addInheritance(const std::string& parent) { inheritFrom.push_back(parent); }
     std::vector<std::string> getInheritances() const { return inheritFrom; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 模板使用节点
-class TemplateUsageNode : public ASTNode {
+class TemplateUsageNode : public Node {
 private:
     TemplateType templateType;
     std::string name;
@@ -84,13 +84,13 @@ public:
     void setHasFullPrefix(bool full) { hasFullPrefix = full; }
     bool getHasFullPrefix() const { return hasFullPrefix; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 自定义使用节点
-class CustomUsageNode : public ASTNode {
+class CustomUsageNode : public Node {
 private:
     TemplateType customType;
     std::string name;
@@ -110,13 +110,13 @@ public:
     void setHasFullPrefix(bool full) { hasFullPrefix = full; }
     bool getHasFullPrefix() const { return hasFullPrefix; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 变量引用节点
-class VariableReferenceNode : public ASTNode {
+class VariableReferenceNode : public Node {
 private:
     std::string variableGroupName;
     std::string variableName;
@@ -131,13 +131,13 @@ public:
     void addSpecialization(const std::string& key, const std::string& value);
     std::unordered_map<std::string, std::string> getSpecializations() const { return specializations; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 继承语句节点
-class InheritStatementNode : public ASTNode {
+class InheritStatementNode : public Node {
 private:
     TemplateType inheritType;
     std::string inheritFrom;
@@ -150,13 +150,13 @@ public:
     std::string getInheritFrom() const { return inheritFrom; }
     bool getIsExplicit() const { return isExplicit; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 删除语句节点
-class DeleteStatementNode : public ASTNode {
+class DeleteStatementNode : public Node {
 private:
     std::vector<std::string> targetNames;  // 要删除的属性/元素/继承
     bool isProperty;      // 删除属性
@@ -177,13 +177,13 @@ public:
     bool getIsElement() const { return isElement; }
     bool getIsInheritance() const { return isInheritance; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 插入语句节点
-class InsertStatementNode : public ASTNode {
+class InsertStatementNode : public Node {
 public:
     enum InsertPosition {
         AFTER,
@@ -210,13 +210,13 @@ public:
     void setContentBlock(std::shared_ptr<BlockNode> block) { contentBlock = block; }
     std::shared_ptr<BlockNode> getContentBlock() const { return contentBlock; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 索引访问节点
-class IndexAccessNode : public ASTNode {
+class IndexAccessNode : public Node {
 private:
     std::string elementName;
     int index;
@@ -227,9 +227,9 @@ public:
     std::string getElementName() const { return elementName; }
     int getIndex() const { return index; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 } // namespace CHTL

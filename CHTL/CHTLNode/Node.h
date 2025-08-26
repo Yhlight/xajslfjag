@@ -1,5 +1,5 @@
-#ifndef CHTL_AST_NODE_H
-#define CHTL_AST_NODE_H
+#ifndef CHTL_NODE_H
+#define CHTL_NODE_H
 
 #include <string>
 #include <vector>
@@ -10,10 +10,10 @@
 namespace CHTL {
 
 // 前向声明
-class ASTVisitor;
+class Visitor;
 
-// AST节点类型
-enum class ASTNodeType {
+// 节点类型
+enum class NodeType {
     // 基础节点
     PROGRAM,
     COMMENT,
@@ -74,14 +74,14 @@ enum class ASTNodeType {
     FROM_CLAUSE
 };
 
-// AST节点基类
-class ASTNode {
+// 节点基类
+class Node {
 protected:
-    ASTNodeType type;
+    NodeType type;
     Token startToken;
     Token endToken;
-    std::weak_ptr<ASTNode> parent;
-    std::vector<std::shared_ptr<ASTNode>> children;
+    std::weak_ptr<Node> parent;
+    std::vector<std::shared_ptr<Node>> children;
     
     // 位置信息
     size_t line;
@@ -93,33 +93,33 @@ protected:
     std::unordered_map<std::string, std::string> metadata;
     
 public:
-    ASTNode(ASTNodeType type, const Token& token);
-    virtual ~ASTNode() = default;
+    Node(NodeType type, const Token& token);
+    virtual ~Node() = default;
     
     // 基本访问器
-    ASTNodeType getType() const { return type; }
+    NodeType getType() const { return type; }
     size_t getLine() const { return line; }
     size_t getColumn() const { return column; }
     size_t getEndLine() const { return endLine; }
     size_t getEndColumn() const { return endColumn; }
     
     // 父子关系
-    void setParent(std::shared_ptr<ASTNode> parent) { this->parent = parent; }
-    std::shared_ptr<ASTNode> getParent() const { return parent.lock(); }
+    void setParent(std::shared_ptr<Node> parent) { this->parent = parent; }
+    std::shared_ptr<Node> getParent() const { return parent.lock(); }
     
     // 子节点管理
-    void addChild(std::shared_ptr<ASTNode> child);
-    void insertChild(size_t index, std::shared_ptr<ASTNode> child);
-    void removeChild(std::shared_ptr<ASTNode> child);
+    void addChild(std::shared_ptr<Node> child);
+    void insertChild(size_t index, std::shared_ptr<Node> child);
+    void removeChild(std::shared_ptr<Node> child);
     void removeChildAt(size_t index);
-    std::vector<std::shared_ptr<ASTNode>> getChildren() const { return children; }
-    std::shared_ptr<ASTNode> getChild(size_t index) const;
+    std::vector<std::shared_ptr<Node>> getChildren() const { return children; }
+    std::shared_ptr<Node> getChild(size_t index) const;
     size_t getChildCount() const { return children.size(); }
     
     // 查找子节点
-    std::shared_ptr<ASTNode> findChild(ASTNodeType type) const;
-    std::vector<std::shared_ptr<ASTNode>> findAllChildren(ASTNodeType type) const;
-    std::shared_ptr<ASTNode> findChildByName(const std::string& name) const;
+    std::shared_ptr<Node> findChild(NodeType type) const;
+    std::vector<std::shared_ptr<Node>> findAllChildren(NodeType type) const;
+    std::shared_ptr<Node> findChildByName(const std::string& name) const;
     
     // Token管理
     void setStartToken(const Token& token) { startToken = token; }
@@ -136,27 +136,27 @@ public:
     bool hasMetadata(const std::string& key) const;
     
     // 访问者模式
-    virtual void accept(ASTVisitor* visitor) = 0;
+    virtual void accept(Visitor* visitor) = 0;
     
     // 调试
     virtual std::string toString() const = 0;
     virtual void dump(int indent = 0) const;
     
     // 克隆
-    virtual std::shared_ptr<ASTNode> clone() const = 0;
+    virtual std::shared_ptr<Node> clone() const = 0;
 };
 
-// AST访问者接口
-class ASTVisitor {
+// 访问者接口
+class Visitor {
 public:
-    virtual ~ASTVisitor() = default;
+    virtual ~Visitor() = default;
     
     // 通用访问方法
-    virtual void visit(ASTNode* node) = 0;
+    virtual void visit(Node* node) = 0;
     
     // 每种节点类型的访问方法将在具体节点类中定义
 };
 
 } // namespace CHTL
 
-#endif // CHTL_AST_NODE_H
+#endif // CHTL_NODE_H

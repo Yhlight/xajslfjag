@@ -1,13 +1,13 @@
 #ifndef CHTL_SYSTEM_NODES_H
 #define CHTL_SYSTEM_NODES_H
 
-#include "ASTNode.h"
+#include "Node.h"
 #include "BasicNodes.h"
 
 namespace CHTL {
 
 // 原始嵌入节点
-class OriginEmbedNode : public ASTNode {
+class OriginEmbedNode : public Node {
 private:
     std::string embedType;      // @Html, @Style, @JavaScript, 或自定义
     std::string name;           // 可选的名称
@@ -27,13 +27,13 @@ public:
     void setContent(const std::string& c) { content = c; }
     std::string getContent() const { return content; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 配置节点
-class ConfigurationNode : public ASTNode {
+class ConfigurationNode : public Node {
 private:
     std::string name;  // 配置名称（可选）
     bool hasName;
@@ -49,13 +49,13 @@ public:
     void setBody(std::shared_ptr<BlockNode> b) { body = b; }
     std::shared_ptr<BlockNode> getBody() const { return body; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 配置选项节点
-class ConfigOptionNode : public ASTNode {
+class ConfigOptionNode : public Node {
 private:
     std::string key;
     std::string value;
@@ -66,13 +66,13 @@ public:
     std::string getKey() const { return key; }
     std::string getValue() const { return value; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // Name组节点
-class NameGroupNode : public ASTNode {
+class NameGroupNode : public Node {
 private:
     std::unordered_map<std::string, std::vector<std::string>> nameOptions;
     
@@ -83,13 +83,13 @@ public:
     std::unordered_map<std::string, std::vector<std::string>> getNameOptions() const { return nameOptions; }
     std::vector<std::string> getOption(const std::string& key) const;
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // OriginType组节点
-class OriginTypeNode : public ASTNode {
+class OriginTypeNode : public Node {
 private:
     std::unordered_map<std::string, std::string> originTypes;
     
@@ -100,13 +100,13 @@ public:
     std::unordered_map<std::string, std::string> getOriginTypes() const { return originTypes; }
     std::string getOriginType(const std::string& key) const;
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 导入语句节点
-class ImportStatementNode : public ASTNode {
+class ImportStatementNode : public Node {
 public:
     enum ImportTargetType {
         FILE,           // 导入文件
@@ -151,13 +151,13 @@ public:
     void setHasFullPrefix(bool full) { hasFullPrefix = full; }
     bool getHasFullPrefix() const { return hasFullPrefix; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // use语句节点
-class UseStatementNode : public ASTNode {
+class UseStatementNode : public Node {
 private:
     std::string target;  // "html5" 或 "@Config Basic" 等
     
@@ -166,13 +166,13 @@ public:
     
     std::string getTarget() const { return target; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 命名空间声明节点
-class NamespaceDeclarationNode : public ASTNode {
+class NamespaceDeclarationNode : public Node {
 private:
     std::string name;
     std::shared_ptr<BlockNode> body;  // 可选的花括号内容
@@ -187,13 +187,13 @@ public:
     std::shared_ptr<BlockNode> getBody() const { return body; }
     bool getHasBody() const { return hasBody; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // except约束节点
-class ExceptConstraintNode : public ASTNode {
+class ExceptConstraintNode : public Node {
 public:
     enum ConstraintType {
         PRECISE,    // 精确约束（具体元素/模板/自定义）
@@ -213,13 +213,13 @@ public:
     void addTarget(const std::string& target) { targets.push_back(target); }
     std::vector<std::string> getTargets() const { return targets; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // from子句节点（用于命名空间引用）
-class FromClauseNode : public ASTNode {
+class FromClauseNode : public Node {
 private:
     std::string namespacePath;
     
@@ -228,9 +228,9 @@ public:
     
     std::string getNamespacePath() const { return namespacePath; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 } // namespace CHTL

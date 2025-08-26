@@ -1,13 +1,13 @@
 #ifndef CHTL_ELEMENT_NODES_H
 #define CHTL_ELEMENT_NODES_H
 
-#include "ASTNode.h"
+#include "Node.h"
 #include "BasicNodes.h"
 
 namespace CHTL {
 
 // 属性节点
-class AttributeNode : public ASTNode {
+class AttributeNode : public Node {
 private:
     std::string name;
     std::shared_ptr<LiteralNode> value;
@@ -25,13 +25,13 @@ public:
     void setUseColon(bool colon) { useColon = colon; }
     bool getUseColon() const { return useColon; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 元素节点
-class ElementNode : public ASTNode {
+class ElementNode : public Node {
 private:
     std::string tagName;
     std::vector<std::shared_ptr<AttributeNode>> attributes;
@@ -66,13 +66,13 @@ public:
     std::string getIdAttribute() const;
     std::vector<std::string> getClassList() const;
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 样式块节点
-class StyleBlockNode : public ASTNode {
+class StyleBlockNode : public Node {
 private:
     bool isGlobal;  // 是否为全局样式块
     std::string content;  // 原始CSS内容（用于内联样式）
@@ -86,13 +86,13 @@ public:
     void setContent(const std::string& css) { content = css; }
     std::string getContent() const { return content; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // CSS规则节点
-class CSSRuleNode : public ASTNode {
+class CSSRuleNode : public Node {
 private:
     std::string selector;
     std::unordered_map<std::string, std::string> properties;
@@ -112,13 +112,13 @@ public:
     void setIsInlineStyle(bool inline_) { isInlineStyle = inline_; }
     bool getIsInlineStyle() const { return isInlineStyle; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 脚本块节点
-class ScriptBlockNode : public ASTNode {
+class ScriptBlockNode : public Node {
 private:
     bool isGlobal;  // 是否为全局脚本块
     std::string content;  // 原始JS内容
@@ -132,13 +132,13 @@ public:
     void setContent(const std::string& js) { content = js; }
     std::string getContent() const { return content; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 // 属性节点（用于style和script块内的属性）
-class PropertyNode : public ASTNode {
+class PropertyNode : public Node {
 private:
     std::string name;
     std::string value;
@@ -154,9 +154,9 @@ public:
     std::string getValue() const { return value; }
     bool getHasValue() const { return hasValue; }
     
-    void accept(ASTVisitor* visitor) override;
+    void accept(Visitor* visitor) override;
     std::string toString() const override;
-    std::shared_ptr<ASTNode> clone() const override;
+    std::shared_ptr<Node> clone() const override;
 };
 
 } // namespace CHTL

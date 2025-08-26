@@ -1,5 +1,5 @@
-#ifndef CHTL_AST_VISITOR_H
-#define CHTL_AST_VISITOR_H
+#ifndef CHTL_VISITOR_H
+#define CHTL_VISITOR_H
 
 namespace CHTL {
 
@@ -40,10 +40,10 @@ class NamespaceDeclarationNode;
 class ExceptConstraintNode;
 class FromClauseNode;
 
-// 具体的AST访问者接口
-class CHTLASTVisitor : public ASTVisitor {
+// 具体的CHTL访问者接口
+class CHTLVisitor : public Visitor {
 public:
-    virtual ~CHTLASTVisitor() = default;
+    virtual ~CHTLVisitor() = default;
     
     // 基础节点
     virtual void visitProgram(ProgramNode* node) = 0;
@@ -86,11 +86,11 @@ public:
     virtual void visitFromClause(FromClauseNode* node) = 0;
     
     // 通用访问方法（根据节点类型分发）
-    void visit(ASTNode* node) override;
+    void visit(Node* node) override;
 };
 
 // 基础访问者实现（提供默认遍历行为）
-class BaseASTVisitor : public CHTLASTVisitor {
+class BaseCHTLVisitor : public CHTLVisitor {
 public:
     // 默认实现：遍历所有子节点
     void visitProgram(ProgramNode* node) override;
@@ -131,9 +131,9 @@ public:
     
 protected:
     // 辅助方法：访问所有子节点
-    void visitChildren(ASTNode* node);
+    void visitChildren(Node* node);
 };
 
 } // namespace CHTL
 
-#endif // CHTL_AST_VISITOR_H
+#endif // CHTL_VISITOR_H
