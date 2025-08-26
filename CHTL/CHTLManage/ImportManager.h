@@ -40,7 +40,7 @@ struct ImportItem {
 // 导入记录
 struct ImportRecord {
     std::string sourcePath;         // 导入语句所在文件
-    std::string targetPath;         // 被导入的文件路径
+    std::string targetPath;         // 被导入的文件路径（已解析）
     std::string rawPath;            // 原始路径（导入语句中的路径）
     ImportType baseType;            // 基础导入类型
     std::vector<ImportItem> items;  // 导入的具体项
@@ -48,104 +48,84 @@ struct ImportRecord {
     size_t line;                    // 导入语句所在行
     size_t column;                  // 导入语句所在列
     bool resolved;                  // 是否已解析
+    std::string errorMessage;       // 错误信息（如果有）
     
     ImportRecord() : baseType(ImportType::CHTL_MODULE), line(0), column(0), resolved(false) {}
 };
 
-// 路径解析结果
-struct ResolvedPath {
-    std::string fullPath;           // 完整路径
-    bool found;                     // 是否找到
-    bool isOfficialModule;          // 是否为官方模块
-    std::string errorMessage;       // 错误信息
-    
-    ResolvedPath() : found(false), isOfficialModule(false) {}
-};
-
-// 导入管理器
+// 导入管理器 - 负责导入记录的管理
 class ImportManager {
 private:
     // 导入记录表：源文件路径 -> 导入记录列表
     std::unordered_map<std::string, std::vector<ImportRecord>> importTable;
     
-    // 依赖图：文件路径 -> 依赖的文件路径集合
-    std::unordered_map<std::string, std::unordered_set<std::string>> dependencyGraph;
+    // 导入索引：目标文件 -> 源文件列表（反向索引）
+    std::unordered_map<std::string, std::unordered_set<std::string>> importIndex;
     
-    // 反向依赖图：文件路径 -> 依赖它的文件路径集合
-    std::unordered_map<std::string, std::unordered_set<std::string>> reverseDependencyGraph;
-    
-    // 循环依赖检测栈
-    std::unordered_set<std::string> visitStack;
-    std::unordered_set<std::string> visited;
-    
-    // 官方模块前缀
-    static const std::string OFFICIAL_MODULE_PREFIX;
-    
-    // 路径缓存
-    mutable std::unordered_map<std::string, ResolvedPath> pathCache;
+    // 导入别名表：别名 -> 原始名称
+    std::unordered_map<std::string, std::string> aliasTable;
     
     // 辅助方法
-    bool detectCycleUtil(const std::string& node, std::vector<std::string>& cycle);
-    void buildDependencyGraph();
-    std::string normalizePathPattern(const std::string& pattern) const;
+    void updateIndex(const ImportRecord& record);
+    void removeFromIndex(const ImportRecord& record);
     
 public:
     ImportManager();
     ~ImportManager() = default;
     
-    // 添加导入记录
-    void addImport(const ImportRecord& record);
-    void addImport(const std::string& sourcePath, const ImportRecord& record);
+    // 导入记录管理
+    void addImportRecord(const ImportRecord& record);
+    void updateImportRecord(const std::string& sourcePath, size_t index, const ImportRecord& record);
+    void removeImportRecord(const std::string& sourcePath, size_t index);
     
-    // 获取导入记录
+    // 导入查询
     std::vector<ImportRecord> getImports(const std::string& sourcePath) const;
     std::vector<ImportRecord> getImportsByType(const std::string& sourcePath, ImportType type) const;
     ImportRecord* findImport(const std::string& sourcePath, const std::string& targetPath);
+    const ImportRecord* findImport(const std::string& sourcePath, const std::string& targetPath) const;
     
-    // 路径解析
-    ResolvedPath resolvePath(const std::string& path, const std::string& currentPath, ImportType type) const;
-    ResolvedPath resolveModulePath(const std::string& moduleName, const std::string& currentPath, bool isCJmod = false) const;
-    ResolvedPath resolveFilePath(const std::string& filePath, const std::string& currentPath, const std::string& extension) const;
-    ResolvedPath resolveWildcardPath(const std::string& pattern, const std::string& currentPath, ImportType type) const;
+    // 导入项查询
+    std::vector<ImportItem> getImportedItems(const std::string& sourcePath, const std::string& targetPath) const;
+    bool hasImportedItem(const std::string& sourcePath, const std::string& itemName) const;
+    ImportItem* findImportedItem(const std::string& sourcePath, const std::string& itemName);
     
-    // 子模块解析
-    std::vector<std::string> resolveSubmodules(const std::string& moduleName, const std::string& currentPath) const;
-    bool isSubmodule(const std::string& moduleName) const;
-    std::pair<std::string, std::string> splitModulePath(const std::string& moduleName) const;
+    // 别名管理
+    void registerAlias(const std::string& alias, const std::string& originalName, const std::string& scope = "");
+    std::string resolveAlias(const std::string& alias, const std::string& scope = "") const;
+    bool isAlias(const std::string& name, const std::string& scope = "") const;
+    std::unordered_map<std::string, std::string> getAliasesInScope(const std::string& scope) const;
     
-    // 官方模块
-    bool isOfficialModule(const std::string& moduleName) const;
-    std::string stripOfficialPrefix(const std::string& moduleName) const;
+    // 反向查询
+    std::unordered_set<std::string> getImporters(const std::string& targetPath) const;
+    bool isImportedBy(const std::string& targetPath, const std::string& sourcePath) const;
+    size_t getImporterCount(const std::string& targetPath) const;
     
-    // 依赖管理
-    void addDependency(const std::string& source, const std::string& target);
-    void removeDependency(const std::string& source, const std::string& target);
-    std::unordered_set<std::string> getDependencies(const std::string& source) const;
-    std::unordered_set<std::string> getDependents(const std::string& target) const;
+    // 导入解析状态
+    void markAsResolved(const std::string& sourcePath, const std::string& targetPath);
+    void markAsError(const std::string& sourcePath, const std::string& targetPath, const std::string& error);
+    bool isResolved(const std::string& sourcePath, const std::string& targetPath) const;
+    std::vector<ImportRecord> getUnresolvedImports() const;
+    std::vector<ImportRecord> getErrorImports() const;
     
-    // 循环依赖检测
-    bool hasCircularDependency(const std::string& source, const std::string& target);
-    std::vector<std::string> findCircularDependency(const std::string& source);
-    bool checkCircularDependency();
-    
-    // 导入解析
-    void resolveImport(ImportRecord& record, const std::string& currentPath);
-    void resolveAllImports(const std::string& sourcePath);
-    bool isImportResolved(const std::string& sourcePath, const std::string& targetPath) const;
-    
-    // 清理
+    // 批量操作
     void clearImports(const std::string& sourcePath);
-    void clearAll();
-    void clearPathCache();
+    void clearAllImports();
+    void removeUnresolvedImports();
     
     // 验证
-    bool validateImport(const ImportRecord& record) const;
+    bool hasImportCycle(const std::string& sourcePath) const;
+    bool validateImports(const std::string& sourcePath) const;
     std::vector<std::string> getImportErrors(const std::string& sourcePath) const;
+    
+    // 统计
+    size_t getTotalImportCount() const;
+    size_t getImportCount(const std::string& sourcePath) const;
+    std::unordered_map<ImportType, size_t> getImportStatistics() const;
     
     // 调试
     void dumpImportTable() const;
-    void dumpDependencyGraph() const;
-    void dumpCircularDependencies() const;
+    void dumpImportIndex() const;
+    void dumpAliasTable() const;
 };
 
 } // namespace CHTL
