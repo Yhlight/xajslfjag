@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Xlinker --dependency-file=CMakeFiles/chtl_compiler.dir/link.d CMakeFiles/chtl_compiler.dir/Test/main.cpp.o -o chtl_compiler

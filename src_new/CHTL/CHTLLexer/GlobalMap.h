@@ -7,7 +7,7 @@
 #include <mutex>
 
 namespace CHTL {
-namespace Common {
+namespace Lexer {
 
 // 前向声明
 class CHTLContext;
@@ -196,5 +196,5 @@ private:
                                    std::unordered_map<std::string, int>& visited) const;
 };
 
-} // namespace Common
+} // namespace Lexer
 } // namespace CHTL

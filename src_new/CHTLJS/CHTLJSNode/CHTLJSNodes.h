@@ -1,12 +1,13 @@
 #pragma once
 
-#include "../Common/ASTNode.h"
+#include "../../CHTL/CHTLNode/BaseNode.h"
 #include <vector>
 #include <memory>
 #include <unordered_map>
 
 namespace CHTL {
-namespace AST {
+namespace CHTLJS {
+namespace Node {
 
 // 前向声明
 class Visitor;
@@ -69,7 +70,7 @@ enum class CHTLJSNodeType {
 // ============================================================================
 
 // 增强选择器节点 {{selector}}
-class EnhancedSelectorNode : public ASTNodeImpl {
+class EnhancedSelectorNode : public CHTL::Node::BaseNode {
 public:
     enum SelectorType { 
         GENERAL,         // {{box}}
@@ -86,7 +87,7 @@ public:
     bool is_auto_resolved;       // 是否自动解析
     
     explicit EnhancedSelectorNode(const std::string& selector)
-        : ASTNodeImpl(NodeType::UNKNOWN), selector_value(selector), is_auto_resolved(false) {
+        : CHTL::Node::BaseNode(CHTL::Node::BaseNode::NodeType::ELEMENT), selector_value(selector), is_auto_resolved(false) {
         selector_type = parseSelectorType(selector);
     }
     
@@ -111,7 +112,7 @@ public:
 // ============================================================================
 
 // 虚对象节点
-class VirObjectNode : public ASTNodeImpl {
+class VirObjectNode : public CHTL::Node::BaseNode {
 public:
     std::string object_name;
     std::string function_assignment;  // 赋值的函数名
@@ -143,7 +144,7 @@ public:
 // ============================================================================
 
 // 监听器调用节点
-class ListenCallNode : public ASTNodeImpl {
+class ListenCallNode : public CHTL::Node::BaseNode {
 public:
     std::shared_ptr<EnhancedSelectorNode> target_selector;
     std::unordered_map<std::string, std::string> event_handlers; // event -> handler
@@ -175,7 +176,7 @@ public:
 // ============================================================================
 
 // 事件委托调用节点
-class DelegateCallNode : public ASTNodeImpl {
+class DelegateCallNode : public CHTL::Node::BaseNode {
 public:
     std::shared_ptr<EnhancedSelectorNode> parent_selector;
     std::vector<std::shared_ptr<EnhancedSelectorNode>> target_selectors;
@@ -208,7 +209,7 @@ public:
 // ============================================================================
 
 // 动画调用节点
-class AnimateCallNode : public ASTNodeImpl {
+class AnimateCallNode : public CHTL::Node::BaseNode {
 public:
     std::shared_ptr<EnhancedSelectorNode> target_selector;
     std::vector<std::shared_ptr<EnhancedSelectorNode>> target_selectors; // 多目标
@@ -237,7 +238,7 @@ public:
 };
 
 // 动画配置节点
-class AnimationConfigNode : public ASTNodeImpl {
+class AnimationConfigNode : public CHTL::Node::BaseNode {
 public:
     int duration;                                           // 持续时间
     std::string easing;                                     // 缓动函数
@@ -287,7 +288,7 @@ public:
 // ============================================================================
 
 // iNeverAway调用节点
-class INeverAwayCallNode : public ASTNodeImpl {
+class INeverAwayCallNode : public CHTL::Node::BaseNode {
 public:
     std::unordered_map<std::string, std::string> functions; // 函数映射
     std::unordered_map<std::string, std::string> objects;   // 对象映射
@@ -315,7 +316,7 @@ public:
 };
 
 // printMylove调用节点
-class PrintMyLoveCallNode : public ASTNodeImpl {
+class PrintMyLoveCallNode : public CHTL::Node::BaseNode {
 public:
     std::string url;
     std::string mode;      // ASCII 或 Pixel
@@ -344,7 +345,7 @@ public:
 // ============================================================================
 
 // 选择器引用节点 (&)
-class SelectorReferenceNode : public ASTNodeImpl {
+class SelectorReferenceNode : public CHTL::Node::BaseNode {
 public:
     std::string reference_type; // class 或 id
     std::string resolved_value; // 解析后的值
@@ -365,7 +366,7 @@ public:
 };
 
 // 箭头操作符节点 (->)
-class ArrowOperatorNode : public ASTNodeImpl {
+class ArrowOperatorNode : public CHTL::Node::BaseNode {
 public:
     std::shared_ptr<ASTNode> left_operand;   // 左操作数
     std::shared_ptr<ASTNode> right_operand;  // 右操作数
@@ -388,7 +389,7 @@ public:
 // ============================================================================
 
 // 事件对象节点
-class EventObjectNode : public ASTNodeImpl {
+class EventObjectNode : public CHTL::Node::BaseNode {
 public:
     std::unordered_map<std::string, std::string> event_handlers;
     bool allows_unordered;  // 是否允许无序
@@ -413,7 +414,7 @@ public:
 };
 
 // 键值对节点
-class KeyValuePairNode : public ASTNodeImpl {
+class KeyValuePairNode : public CHTL::Node::BaseNode {
 public:
     std::string key;
     std::string value;
@@ -436,7 +437,7 @@ public:
 // ============================================================================
 
 // CHTL JS表达式节点
-class CHTLJSExpressionNode : public ASTNodeImpl {
+class CHTLJSExpressionNode : public CHTL::Node::BaseNode {
 public:
     enum ExpressionType { 
         SELECTOR_CHAIN,      // {{selector}}->method()
@@ -504,7 +505,7 @@ public:
 // ============================================================================
 
 // 事件绑定表达式节点 (&->)
-class EventBindExpressionNode : public ASTNodeImpl {
+class EventBindExpressionNode : public CHTL::Node::BaseNode {
 public:
     std::shared_ptr<EnhancedSelectorNode> target_selector; // 目标选择器
     std::string event_type;                                // 事件类型 (click, hover等)
@@ -524,7 +525,7 @@ public:
 };
 
 // vir虚对象声明节点
-class VirDeclarationNode : public ASTNodeImpl {
+class VirDeclarationNode : public CHTL::Node::BaseNode {
 public:
     std::string vir_name;                                  // vir对象名称
     std::shared_ptr<ASTNode> target_function;             // 目标函数 (listen, delegate等)
@@ -565,7 +566,7 @@ private:
 };
 
 // 动画关键帧节点
-class AnimationKeyframeNode : public ASTNodeImpl {
+class AnimationKeyframeNode : public CHTL::Node::BaseNode {
 public:
     double at_time;                                        // 时间点 (0.0 - 1.0)
     std::unordered_map<std::string, std::string> styles;  // CSS样式属性
@@ -589,5 +590,6 @@ public:
     bool isValidTimePoint() const { return at_time >= 0.0 && at_time <= 1.0; }
 };
 
-} // namespace AST
+} // namespace Node
+} // namespace CHTLJS
 } // namespace CHTL

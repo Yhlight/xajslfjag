@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../Scanner/CHTLUnifiedScanner.h"
-#include "../Common/GlobalMap.h"
-#include "../Common/Context.h"
+#include "../CHTL/CHTLLexer/GlobalMap.h"
+#include "../CHTL/CHTLContext/CHTLContext.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -10,7 +10,7 @@
 #include <functional>
 
 namespace CHTL {
-namespace Core {
+namespace CompilerDispatcher {
 
 // 前向声明
 namespace Compiler {
@@ -193,7 +193,6 @@ public:
     void dumpCompilerStates() const;
     
     // 配置
-    void setGlobalMap(Common::GlobalMap* global_map) { this->global_map = global_map; }
     void setScanner(Scanner::CHTLUnifiedScanner* scanner) { this->scanner = scanner; }
     
 private:
@@ -206,8 +205,7 @@ private:
     
     // 核心组件
     std::unique_ptr<Scanner::CHTLUnifiedScanner> scanner;
-    Common::GlobalMap* global_map;
-    std::unique_ptr<Common::Context> context;
+    std::unique_ptr<CHTL::Context::CHTLContext> context;
     
     // 编译器注册表
     std::unordered_map<CompilerType, CompilerRegistration> registered_compilers;
@@ -321,5 +319,5 @@ public:
         const std::vector<CompilationResult>& results);
 };
 
-} // namespace Core
+} // namespace CompilerDispatcher
 } // namespace CHTL

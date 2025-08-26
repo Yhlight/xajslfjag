@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../CHTLJSLexer/CHTLJSToken.h"
-#include "../CHTLJSNode/CHTLJSNode.h"
+#include "../CHTLJSNode/CHTLJSNodes.h"
 #include "../CHTLJSContext/CHTLJSContext.h"
 #include <string>
 #include <vector>

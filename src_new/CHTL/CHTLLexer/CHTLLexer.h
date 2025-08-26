@@ -21,7 +21,7 @@ private:
     size_t line_number_;
     size_t column_number_;
     std::vector<Token> tokens_;
-    std::shared_ptr<GlobalMap> global_map_;
+    std::shared_ptr<CHTL::Lexer::GlobalMap> global_map_;
     
 public:
     /**
@@ -32,7 +32,7 @@ public:
      */
     CHTLLexer(const std::string& source_code, 
               const std::string& file_path = "",
-              std::shared_ptr<GlobalMap> global_map = nullptr);
+              std::shared_ptr<CHTL::Lexer::GlobalMap> global_map = nullptr);
     
     /**
      * 执行词法分析
