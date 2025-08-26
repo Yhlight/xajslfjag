@@ -248,17 +248,33 @@ CodeSlice CHTLUnifiedScanner::ScanScriptSlice() {
     }
     
     // Determine if this is CHTL JS or regular JS
-    // For now, check if it contains CHTL JS syntax like {{
     size_t start = m_Current;
     bool isCHTLJS = false;
     
-    // Quick scan to detect CHTL JS syntax
+    // Scan for CHTL JS specific syntax
     size_t scanPos = m_Current;
     while (scanPos < m_Source.length() - 1) {
+        // Check for {{ selector syntax
         if (m_Source[scanPos] == '{' && m_Source[scanPos + 1] == '{') {
             isCHTLJS = true;
             break;
         }
+        
+        // Check for -> operator
+        if (m_Source[scanPos] == '-' && m_Source[scanPos + 1] == '>') {
+            isCHTLJS = true;
+            break;
+        }
+        
+        // Check for vir keyword at word boundary
+        if (scanPos == m_Current || !std::isalnum(m_Source[scanPos - 1])) {
+            if (m_Source.substr(scanPos, 3) == "vir" && 
+                (scanPos + 3 >= m_Source.length() || !std::isalnum(m_Source[scanPos + 3]))) {
+                isCHTLJS = true;
+                break;
+            }
+        }
+        
         if (m_Source[scanPos] == '}' && !IsInsideString()) {
             break;
         }

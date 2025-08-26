@@ -224,4 +224,22 @@ namespace CHTL {
         std::map<std::string, std::string> Settings;
     };
 
+    // Represents module info block (for CMOD)
+    struct InfoNode : public AstNode {
+        std::string Name;
+        std::string Version;
+        std::string Description;
+        std::string Author;
+        std::string License;
+        std::string Dependencies;
+        std::string Category;
+        std::string MinCHTLVersion;
+        std::string MaxCHTLVersion;
+    };
+
+    // Represents module export block (for CMOD)
+    struct ExportNode : public AstNode {
+        std::vector<std::pair<BlockType, std::vector<std::string>>> Exports;
+    };
+
 } // namespace CHTL

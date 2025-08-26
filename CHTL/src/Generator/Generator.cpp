@@ -39,6 +39,7 @@ void Generator::VisitElementNode(std::shared_ptr<ElementNode> node) {
         classAttr->Key = "class";
         classAttr->Value = firstClass;
         node->Attributes.push_back(classAttr);
+        hasClassAttr = true;
     }
     
     // Auto-add id attribute if needed
@@ -47,7 +48,12 @@ void Generator::VisitElementNode(std::shared_ptr<ElementNode> node) {
         idAttr->Key = "id";
         idAttr->Value = firstId;
         node->Attributes.push_back(idAttr);
+        hasIdAttr = true;
     }
+    
+    // Store context for & resolution
+    m_CurrentElementClass = hasClassAttr ? firstClass : "";
+    m_CurrentElementId = hasIdAttr ? firstId : "";
 
     // --- Standard generation pass ---
     m_Result << "<" << node->TagName;

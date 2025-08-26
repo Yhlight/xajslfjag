@@ -46,7 +46,11 @@ void Lexer::ScanToken() {
         case '\n': m_Line++; m_Column = 1; break;
         
         // Single character tokens
-        case ':': AddToken(TokenType::Colon); break;
+        case ':': 
+        case '=': 
+            // CE对等式：冒号和等号完全等价
+            AddToken(TokenType::Colon); 
+            break;
         case ';': AddToken(TokenType::Semicolon); break;
         case '{': AddToken(TokenType::LBrace); break;
         case '}': AddToken(TokenType::RBrace); break;
@@ -180,7 +184,8 @@ void Lexer::HandleIdentifier() {
     
     // Special handling for block keywords like [Template]
     if (text == "Template" || text == "Custom" || text == "Origin" || 
-        text == "Import" || text == "Namespace" || text == "Configuration") {
+        text == "Import" || text == "Namespace" || text == "Configuration" ||
+        text == "Info" || text == "Export") {
         // These should have been preceded by [
         if (m_Tokens.size() > 0 && m_Tokens.back().Type == TokenType::LBracket) {
             // Update the type based on the keyword
@@ -190,6 +195,8 @@ void Lexer::HandleIdentifier() {
             else if (text == "Import") type = TokenType::Import;
             else if (text == "Namespace") type = TokenType::Namespace;
             else if (text == "Configuration") type = TokenType::Configuration;
+            else if (text == "Info") type = TokenType::Info;
+            else if (text == "Export") type = TokenType::Export;
         }
     }
     

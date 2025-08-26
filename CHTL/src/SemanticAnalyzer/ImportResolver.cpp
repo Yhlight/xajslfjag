@@ -70,15 +70,19 @@ std::string ImportResolver::ResolvePath(const std::string& importPath, ImportTyp
 
     // For @Chtl type
     if (type == ImportType::Chtl) {
+        // Handle submodule syntax (e.g., Chtholly.Space or Chtholly/Space)
+        std::string modulePath = path;
+        std::replace(modulePath.begin(), modulePath.end(), '.', '/');
+        
         if (searchOfficialOnly) {
-            return ResolveOfficialModule(path, type);
+            return ResolveOfficialModule(modulePath, type);
         }
         
         // Search order: official -> local module -> current directory
-        std::string result = ResolveOfficialModule(path, type);
+        std::string result = ResolveOfficialModule(modulePath, type);
         if (!result.empty()) return result;
         
-        result = ResolveLocalModule(path, type);
+        result = ResolveLocalModule(modulePath, type);
         if (!result.empty()) return result;
         
         // Search in current directory

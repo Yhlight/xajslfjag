@@ -80,4 +80,18 @@ namespace CHTL_JS {
         std::map<std::string, MemberInfo> Members;
     };
 
+    // Represents a printMylove() call
+    struct PrintMyloveNode : public AstNode {
+        std::string Url;
+        enum Mode { ASCII, Pixel } Mode = Pixel;
+        std::optional<std::string> Width;
+        std::optional<std::string> Height;
+        std::optional<double> Scale;
+    };
+
+    // Represents an iNeverAway() call
+    struct INeverAwayNode : public AstNode {
+        std::map<std::string, std::shared_ptr<AstNode>> Functions;
+    };
+
 }

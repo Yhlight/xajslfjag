@@ -23,6 +23,43 @@ std::string SelectorGenerator::GenerateByType(const std::string& selector, std::
         return "null";
     }
     
+    // Check for compound selectors (space-separated)
+    size_t spacePos = selector.find(' ');
+    if (spacePos != std::string::npos) {
+        // Handle compound selectors like ".box button"
+        std::string parentSelector = selector.substr(0, spacePos);
+        std::string childSelector = selector.substr(spacePos + 1);
+        
+        js << "(function() {\n";
+        js << "    let parents = " << GenerateByType(parentSelector, std::nullopt) << ";\n";
+        js << "    if (!parents) return null;\n";
+        js << "    if (!Array.isArray(parents)) parents = [parents];\n";
+        js << "    let results = [];\n";
+        js << "    parents.forEach(parent => {\n";
+        
+        // Generate child selector within parent context
+        if (childSelector[0] == '.') {
+            std::string className = childSelector.substr(1);
+            js << "        results.push(...parent.getElementsByClassName('" << className << "'));\n";
+        } else if (childSelector[0] == '#') {
+            std::string id = childSelector.substr(1);
+            js << "        let elem = parent.querySelector('#" << id << "');\n";
+            js << "        if (elem) results.push(elem);\n";
+        } else if (IsTagSelector(childSelector)) {
+            js << "        results.push(...parent.getElementsByTagName('" << childSelector << "'));\n";
+        }
+        
+        js << "    });\n";
+        if (index.has_value()) {
+            js << "    return results[" << index.value() << "];\n";
+        } else {
+            js << "    return results.length > 0 ? results : null;\n";
+        }
+        js << "})()";
+        
+        return js.str();
+    }
+    
     // Generate JavaScript DOM API calls from CHTL JS selector syntax
     // This is the COMPILATION output, not CHTL JS source code
     

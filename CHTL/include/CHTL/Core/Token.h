@@ -39,6 +39,8 @@ namespace CHTL {
         Namespace,       // [Namespace]
         Except,          // except
         Configuration,   // [Configuration]
+        Info,            // [Info]
+        Export,          // [Export]
         TypeIdentifier,  // @Identifier
         Use,             // use
         Html5,           // html5
