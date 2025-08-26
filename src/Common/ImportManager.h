@@ -119,10 +119,20 @@ public:
     // 解析Import语句
     ImportItem parseImportStatement(const std::string& statement);
     
-    // 官方模块前缀处理
+    // 官方模块前缀处理 (chtl::)
     bool isOfficialModulePrefix(const std::string& path);
     std::string extractOfficialModuleName(const std::string& path);
     std::string resolveOfficialModulePath(const std::string& module_name);
+    
+    // 通配符导入处理 (.* 和 /*)
+    bool isWildcardImport(const std::string& path);
+    std::vector<std::string> expandWildcardPath(const std::string& wildcard_path);
+    std::vector<std::string> findMatchingFiles(const std::string& directory, const std::string& pattern);
+    
+    // 子模块访问处理 (Module.Submodule)
+    bool isSubmoduleAccess(const std::string& path);
+    std::vector<std::string> parseSubmodulePath(const std::string& path);
+    std::string resolveSubmodulePath(const std::string& module_path);
     
     // 添加Import项
     bool addImport(const ImportItem& item);

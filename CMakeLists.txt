@@ -65,6 +65,9 @@ set(CHTL_SOURCES
     src/Common/IndexAccessManager.cpp
     src/Common/PositionKeywordManager.cpp
     src/Common/CHTLJSNewSyntaxHandler.cpp
+    src/Common/ConstraintSystem.cpp
+    src/Common/AdvancedNamespaceManager.cpp
+    src/Common/ImportManager.cpp
     
     # AST系统
     src/AST/Common/ASTNode.cpp
@@ -114,6 +117,8 @@ set(CHTL_HEADERS
     src/Common/IndexAccessManager.h
     src/Common/PositionKeywordManager.h
     src/Common/CHTLJSNewSyntaxHandler.h
+    src/Common/ConstraintSystem.h
+    src/Common/AdvancedNamespaceManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h
