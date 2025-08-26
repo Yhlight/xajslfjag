@@ -100,11 +100,11 @@ set(CHTL_SOURCES
     # src/Core/ChthollyModuleTemplate.cpp
     # src/Core/ModuleUsageRules.cpp
     
-    # 编译器 (TODO: 实现)
-    # src/Compiler/CHTL/CHTLCompiler.cpp
-    # src/Compiler/CHTLJS/CHTLJSCompiler.cpp
-    # src/Compiler/CSS/CSSCompiler.cpp
-    # src/Compiler/JavaScript/JavaScriptCompiler.cpp
+    # 编译器实现
+    src/Compiler/CHTL/CHTLCompiler.cpp
+    # src/Compiler/CHTLJS/CHTLJSCompiler.cpp  (待实现.cpp文件)
+    # src/Compiler/CSS/CSSCompiler.cpp        (待实现.cpp文件)
+    # src/Compiler/JavaScript/JavaScriptCompiler.cpp  (待实现.cpp文件)
     
     # ANTLR生成的文件
     css/css3Lexer.cpp
@@ -142,6 +142,10 @@ set(CHTL_HEADERS
     src/Common/SimpleIndexAccess.h
     src/Common/SimpleUseSyntax.h
     src/Common/AdvancedNamespaceManager.h
+    
+    # 恢复的重要管理器（基于真实规则文档）
+    src/Common/SelectorAutomationManager.h
+    src/Common/EnhancedImportManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h
@@ -157,6 +161,10 @@ set(CHTL_HEADERS
     src/Core/ModuleStructure.h
     src/Core/ChthollyModuleTemplate.h
     src/Core/ModuleUsageRules.h
+    
+    # 利用现有ANTLR4基础设施的编译器
+    src/Compiler/CSS/CSSCompiler.h
+    src/Compiler/JavaScript/JavaScriptCompiler.h
     
     # CJMOD API系统头文件
     src/CJMOD/Syntax.h
