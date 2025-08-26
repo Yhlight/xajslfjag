@@ -31,6 +31,10 @@ namespace CHTL {
         std::string m_HtmlOutput;
         std::string m_CssOutput; // For later use with style blocks
         int m_IndentLevel = 0;
+        
+        // For & reference resolution
+        std::string m_CurrentElementClass;
+        std::string m_CurrentElementId;
     };
 
 }

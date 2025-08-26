@@ -32,7 +32,11 @@ Config::Config() {
     Names[ConfigurableKeyword::KEYWORD_CONFIGURATION] = {"[Configuration]"};
 
     // Type Identifiers
+    // Apply OPTION_COUNT limit
     Names[ConfigurableKeyword::TYPE_CUSTOM_STYLE] = {"@Style", "@style", "@CSS", "@Css", "@css"};
+    if (Names[ConfigurableKeyword::TYPE_CUSTOM_STYLE].size() > OptionCountLimit) {
+        Names[ConfigurableKeyword::TYPE_CUSTOM_STYLE].resize(OptionCountLimit);
+    }
     Names[ConfigurableKeyword::TYPE_CUSTOM_ELEMENT] = {"@Element"};
     Names[ConfigurableKeyword::TYPE_CUSTOM_VAR] = {"@Var"};
     Names[ConfigurableKeyword::TYPE_TEMPLATE_STYLE] = {"@Style"};
@@ -47,6 +51,7 @@ Config::Config() {
     Names[ConfigurableKeyword::TYPE_IMPORT_CHTL] = {"@Chtl"};
     Names[ConfigurableKeyword::TYPE_IMPORT_CJMOD] = {"@CJmod"};
     Names[ConfigurableKeyword::TYPE_IMPORT_CONFIG] = {"@Config"};
+    Names[ConfigurableKeyword::TYPE_CONFIGURATION_CONFIG] = {"@Config"};
 }
 
 }

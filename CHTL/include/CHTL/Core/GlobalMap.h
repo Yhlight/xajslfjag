@@ -3,9 +3,17 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <vector>
+#include <stdexcept>
 #include "Ast.h"
 
 namespace CHTL {
+
+    class NamespaceConflictException : public std::runtime_error {
+    public:
+        NamespaceConflictException(const std::string& name, const std::string& type)
+            : std::runtime_error("Namespace conflict: " + type + " '" + name + "' already exists") {}
+    };
 
     class GlobalMap {
     public:
@@ -44,13 +52,76 @@ namespace CHTL {
             return m_Customs;
         }
 
-        void Merge(const GlobalMap& other) {
-            m_Templates.insert(other.m_Templates.begin(), other.m_Templates.end());
-            m_Customs.insert(other.m_Customs.begin(), other.m_Customs.end());
-            m_Origins.insert(other.m_Origins.begin(), other.m_Origins.end());
-            for (const auto& pair : other.m_Namespaces) {
-                m_Namespaces[pair.first].Merge(pair.second);
+        void Merge(const GlobalMap& other, bool checkConflicts = true) {
+            // Merge templates with conflict detection
+            for (const auto& [name, node] : other.m_Templates) {
+                if (checkConflicts && m_Templates.find(name) != m_Templates.end()) {
+                    throw NamespaceConflictException(name, "template");
+                }
+                m_Templates[name] = node;
             }
+            
+            // Merge customs with conflict detection
+            for (const auto& [name, node] : other.m_Customs) {
+                if (checkConflicts && m_Customs.find(name) != m_Customs.end()) {
+                    throw NamespaceConflictException(name, "custom");
+                }
+                m_Customs[name] = node;
+            }
+            
+            // Merge origins with conflict detection
+            for (const auto& [name, node] : other.m_Origins) {
+                if (checkConflicts && m_Origins.find(name) != m_Origins.end()) {
+                    throw NamespaceConflictException(name, "origin");
+                }
+                m_Origins[name] = node;
+            }
+            
+            // Merge nested namespaces
+            for (const auto& [nsName, nsMap] : other.m_Namespaces) {
+                if (m_Namespaces.find(nsName) == m_Namespaces.end()) {
+                    m_Namespaces[nsName] = nsMap;
+                } else {
+                    // Merge same-named namespaces
+                    m_Namespaces[nsName].Merge(nsMap, checkConflicts);
+                }
+            }
+        }
+        
+        // Add namespace support
+        void AddNamespace(const std::string& name, const GlobalMap& namespaceMap) {
+            if (m_Namespaces.find(name) == m_Namespaces.end()) {
+                m_Namespaces[name] = namespaceMap;
+            } else {
+                // Merge with existing namespace of same name
+                m_Namespaces[name].Merge(namespaceMap);
+            }
+        }
+        
+        GlobalMap* GetNamespace(const std::string& name) {
+            auto it = m_Namespaces.find(name);
+            return (it != m_Namespaces.end()) ? &it->second : nullptr;
+        }
+        
+        // Resolve item from namespace path (e.g., "space.room.item")
+        template<typename T>
+        std::shared_ptr<T> ResolveFromNamespace(const std::string& path, 
+            std::shared_ptr<T> (GlobalMap::*getter)(const std::string&) const) {
+            size_t dotPos = path.find('.');
+            if (dotPos == std::string::npos) {
+                // No namespace, look in current scope
+                return (this->*getter)(path);
+            }
+            
+            std::string nsName = path.substr(0, dotPos);
+            std::string remaining = path.substr(dotPos + 1);
+            
+            auto ns = GetNamespace(nsName);
+            if (ns) {
+                return ns->ResolveFromNamespace(remaining, getter);
+            }
+            
+            return nullptr;
         }
 
     private:

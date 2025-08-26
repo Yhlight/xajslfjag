@@ -50,7 +50,8 @@ namespace CHTL {
         TYPE_IMPORT_JAVASCRIPT,
         TYPE_IMPORT_CHTL,
         TYPE_IMPORT_CJMOD,
-        TYPE_IMPORT_CONFIG
+        TYPE_IMPORT_CONFIG,
+        TYPE_CONFIGURATION_CONFIG
     };
 
     struct Config {
