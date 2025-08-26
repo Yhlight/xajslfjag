@@ -62,7 +62,6 @@ enum class NodeType {
     INHERIT_STATEMENT,
     
     // 表达式
-    SELECTOR_EXPRESSION,
     VARIABLE_REFERENCE,
     INDEX_ACCESS,
     
