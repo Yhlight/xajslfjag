@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libCSSCompiler.a CMakeFiles/CSSCompiler.dir/CSS/CSSLexer.cpp.o CMakeFiles/CSSCompiler.dir/CSS/CSSParser.cpp.o CMakeFiles/CSSCompiler.dir/CSS/CSSGenerator.cpp.o
+/usr/bin/ranlib ../lib/libCSSCompiler.a

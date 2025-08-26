@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libCHTLModules.a CMakeFiles/CHTLModules.dir/Modules/CMODManager.cpp.o CMakeFiles/CHTLModules.dir/Modules/CJMODManager.cpp.o CMakeFiles/CHTLModules.dir/Modules/ModulePacker.cpp.o CMakeFiles/CHTLModules.dir/Modules/ModuleUnpacker.cpp.o CMakeFiles/CHTLModules.dir/Modules/ModuleResolver.cpp.o
+/usr/bin/ranlib ../lib/libCHTLModules.a

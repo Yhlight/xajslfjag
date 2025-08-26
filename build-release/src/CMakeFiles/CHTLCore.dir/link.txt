@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libCHTLCore.a CMakeFiles/CHTLCore.dir/Core/Common.cpp.o CMakeFiles/CHTLCore.dir/Core/Logger.cpp.o CMakeFiles/CHTLCore.dir/Core/Timer.cpp.o CMakeFiles/CHTLCore.dir/Core/Utils.cpp.o
+/usr/bin/ranlib ../lib/libCHTLCore.a

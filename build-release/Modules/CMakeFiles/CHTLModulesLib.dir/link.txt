@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libCHTLModulesLib.a CMakeFiles/CHTLModulesLib.dir/placeholder.cpp.o
+/usr/bin/ranlib ../lib/libCHTLModulesLib.a

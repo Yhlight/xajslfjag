@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libJavaScriptCompiler.a CMakeFiles/JavaScriptCompiler.dir/JavaScript/JSLexer.cpp.o CMakeFiles/JavaScriptCompiler.dir/JavaScript/JSParser.cpp.o CMakeFiles/JavaScriptCompiler.dir/JavaScript/JSGenerator.cpp.o
+/usr/bin/ranlib ../lib/libJavaScriptCompiler.a
