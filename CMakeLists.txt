@@ -67,7 +67,9 @@ set(CHTL_SOURCES
     src/Common/CHTLJSNewSyntaxHandler.cpp
     src/Common/ConstraintSystem.cpp
     src/Common/AdvancedNamespaceManager.cpp
-    src/Common/ImportManager.cpp
+    src/Common/VariableGroupManager.cpp
+    src/Common/EnhancedSelectorManager.cpp
+    src/Common/UseSyntaxManager.cpp
     
     # AST系统
     src/AST/Common/ASTNode.cpp
@@ -119,6 +121,9 @@ set(CHTL_HEADERS
     src/Common/CHTLJSNewSyntaxHandler.h
     src/Common/ConstraintSystem.h
     src/Common/AdvancedNamespaceManager.h
+    src/Common/VariableGroupManager.h
+    src/Common/EnhancedSelectorManager.h
+    src/Common/UseSyntaxManager.h
     src/AST/Common/ASTNode.h
     src/AST/CHTL/CHTLNodes.h
     src/AST/CHTLJS/CHTLJSNodes.h
