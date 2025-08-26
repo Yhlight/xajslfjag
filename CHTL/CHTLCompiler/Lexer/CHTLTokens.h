@@ -79,6 +79,9 @@ enum class CHTLTokenType {
     BLOCK_COMMENT,            // /* */ (被生成器忽略)
     GENERATOR_COMMENT,        // -- (被生成器处理)
     
+    // === 原始嵌入内容 ===
+    ORIGIN_CONTENT,           // 原始嵌入块内的原始内容（不进行词法分析）
+    
     // === CHTL JS相关Token ===
     ENHANCED_SELECTOR,        // {{selector}} (CHTL JS增强选择器)
     VIR,                      // vir (虚对象关键字)

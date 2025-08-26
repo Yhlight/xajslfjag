@@ -80,6 +80,9 @@ static const std::unordered_map<CHTLTokenType, std::string> tokenTypeNames = {
     {CHTLTokenType::BLOCK_COMMENT, "BLOCK_COMMENT"},
     {CHTLTokenType::GENERATOR_COMMENT, "GENERATOR_COMMENT"},
     
+    // 原始嵌入内容
+    {CHTLTokenType::ORIGIN_CONTENT, "ORIGIN_CONTENT"},
+    
     // CHTL JS相关Token
     {CHTLTokenType::ENHANCED_SELECTOR, "ENHANCED_SELECTOR"},
     {CHTLTokenType::VIR, "VIR"},

@@ -18,6 +18,7 @@ enum class CHTLLexerState {
     InBlockComment,          // 块注释中 /* */
     InGeneratorComment,      // 生成器注释中 --
     InEnhancedSelector,      // 增强选择器中 {{selector}}
+    InOriginContent,         // 原始嵌入内容中（直接跳过词法分析）
 };
 
 // CHTL词法分析器
@@ -35,6 +36,10 @@ private:
     
     // 状态管理
     CHTLLexerState currentState;
+    bool inOriginBlock;      // 是否在原始嵌入块中
+    size_t originBraceCount; // 原始嵌入块中的花括号计数
+    bool expectingOriginContent; // 是否期待原始嵌入内容（在[Origin]类型标识符后）
+    CHTLTokenType lastTokenType; // 最后解析的Token类型（用于Origin检测）
     
 public:
     explicit CHTLLexer(const std::string& sourceCode);
@@ -66,6 +71,10 @@ private:
     CHTLToken scanLineComment();                  // 扫描行注释 //
     CHTLToken scanBlockComment();                 // 扫描块注释 /* */
     CHTLToken scanGeneratorComment();             // 扫描生成器注释 --
+    
+    // === 原始嵌入扫描 ===
+    CHTLToken scanOriginContent();                // 扫描原始嵌入内容（直接跳过）
+    CHTLToken scanCompleteOriginBlock(const std::string& prefix); // 扫描完整的原始嵌入块
     
     // === 操作符扫描 ===
     CHTLToken scanArrow();                        // 扫描 -> 操作符
@@ -104,6 +113,10 @@ private:
     CHTLToken handleAtTop();                      // 处理 "at top"
     CHTLToken handleAtBottom();                   // 处理 "at bottom"
     bool isMultiWordKeyword() const;              // 检查多词关键字
+    bool isInOriginBlock() const;                 // 检查是否在原始嵌入块中
+    void enterOriginBlock();                      // 进入原始嵌入块状态
+    void exitOriginBlock();                       // 退出原始嵌入块状态
+    bool lastTokenWasOrigin() const;              // 检查最后的Token是否表示将要开始Origin块
 };
 
 } // namespace CHTL

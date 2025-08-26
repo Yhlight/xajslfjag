@@ -5,7 +5,9 @@
 namespace CHTL {
 
 CHTLLexer::CHTLLexer(const std::string& sourceCode) 
-    : source(sourceCode), position(0), line(1), column(1), start(0), currentState(CHTLLexerState::Normal) {
+    : source(sourceCode), position(0), line(1), column(1), start(0), 
+      currentState(CHTLLexerState::Normal), inOriginBlock(false), originBraceCount(0),
+      expectingOriginContent(false), lastTokenType(CHTLTokenType::INVALID) {
 }
 
 void CHTLLexer::reset(const std::string& newSource) {
@@ -17,6 +19,10 @@ void CHTLLexer::reset(const std::string& newSource) {
     column = 1;
     start = 0;
     currentState = CHTLLexerState::Normal;
+    inOriginBlock = false;
+    originBraceCount = 0;
+    expectingOriginContent = false;
+    lastTokenType = CHTLTokenType::INVALID;
     errors.clear();
 }
 
@@ -46,10 +52,26 @@ CHTLToken CHTLLexer::nextToken() {
     }
     
     start = position;
-    return scanToken();
+    CHTLToken token = scanToken();
+    
+    // 记录最后的Token类型（忽略空白和注释）
+    if (token.type != CHTLTokenType::WHITESPACE && 
+        token.type != CHTLTokenType::NEWLINE &&
+        token.type != CHTLTokenType::LINE_COMMENT &&
+        token.type != CHTLTokenType::BLOCK_COMMENT &&
+        token.type != CHTLTokenType::GENERATOR_COMMENT) {
+        lastTokenType = token.type;
+    }
+    
+    return token;
 }
 
 CHTLToken CHTLLexer::scanToken() {
+    // 如果在原始嵌入块中，扫描原始内容
+    if (inOriginBlock) {
+        return scanOriginContent();
+    }
+    
     char c = advance();
     
     // 字符串字面量
@@ -120,7 +142,8 @@ CHTLToken CHTLLexer::scanToken() {
     
     // 单字符token
     switch (c) {
-        case '{': return makeToken(CHTLTokenType::LBRACE, "{");
+        case '{': 
+            return makeToken(CHTLTokenType::LBRACE, "{");
         case '}': return makeToken(CHTLTokenType::RBRACE, "}");
         case '(': return makeToken(CHTLTokenType::LPAREN, "(");
         case ')': return makeToken(CHTLTokenType::RPAREN, ")");
@@ -259,6 +282,10 @@ CHTLToken CHTLLexer::scanBracketKeyword() {
     // 检查是否为已知的方括号关键字
     CHTLTokenType tokenType = CHTLTokenUtils::stringToTokenType(value);
     if (tokenType != CHTLTokenType::IDENTIFIER) {
+        // 如果是[Origin]，立即扫描整个原始嵌入块
+        if (tokenType == CHTLTokenType::LBRACKET_ORIGIN) {
+            return scanCompleteOriginBlock(value);
+        }
         return makeToken(tokenType, value);
     }
     
@@ -472,6 +499,114 @@ bool CHTLLexer::checkKeyword(const std::string& keyword) const {
 
 bool CHTLLexer::checkBracketKeyword(const std::string& keyword) const {
     return checkKeyword(keyword);
+}
+
+// === 原始嵌入处理方法 ===
+CHTLToken CHTLLexer::scanCompleteOriginBlock(const std::string& prefix) {
+    std::string content = prefix;
+    
+    // 跳过空白字符，寻找花括号开始
+    while (!isAtEnd() && isWhitespace(peek())) {
+        char c = advance();
+        if (c == '\n') {
+            line++;
+            column = 1;
+        }
+        content += c;
+    }
+    
+    // 扫描到开始花括号前的所有内容（类型标识符和名称）
+    while (!isAtEnd() && peek() != '{') {
+        char c = advance();
+        if (c == '\n') {
+            line++;
+            column = 1;
+        }
+        content += c;
+    }
+    
+    if (isAtEnd()) {
+        addError("Expected '{' to start origin block");
+        return makeToken(CHTLTokenType::INVALID, content);
+    }
+    
+    // 开始扫描花括号内的原始内容
+    content += advance(); // 添加开始的 '{'
+    int braceCount = 1;
+    
+    while (!isAtEnd() && braceCount > 0) {
+        char c = advance();
+        
+        if (c == '{') {
+            braceCount++;
+        } else if (c == '}') {
+            braceCount--;
+        }
+        
+        if (c == '\n') {
+            line++;
+            column = 1;
+        }
+        
+        content += c;
+    }
+    
+    if (braceCount > 0) {
+        addError("Unterminated origin block");
+        return makeToken(CHTLTokenType::INVALID, content);
+    }
+    
+    return makeToken(CHTLTokenType::ORIGIN_CONTENT, content);
+}
+
+CHTLToken CHTLLexer::scanOriginContent() {
+    std::string content;
+    
+    while (!isAtEnd()) {
+        char c = peek();
+        
+        if (c == '{') {
+            originBraceCount++;
+            content += advance();
+        } else if (c == '}') {
+            if (originBraceCount == 0) {
+                // 遇到原始嵌入块的结束花括号
+                exitOriginBlock();
+                break;
+            } else {
+                originBraceCount--;
+                content += advance();
+            }
+        } else {
+            if (c == '\n') {
+                line++;
+                column = 1;
+            }
+            content += advance();
+        }
+    }
+    
+    return makeToken(CHTLTokenType::ORIGIN_CONTENT, content);
+}
+
+bool CHTLLexer::isInOriginBlock() const {
+    return inOriginBlock;
+}
+
+void CHTLLexer::enterOriginBlock() {
+    inOriginBlock = true;
+    originBraceCount = 0;
+    currentState = CHTLLexerState::InOriginContent;
+}
+
+void CHTLLexer::exitOriginBlock() {
+    inOriginBlock = false;
+    originBraceCount = 0;
+    currentState = CHTLLexerState::Normal;
+}
+
+bool CHTLLexer::lastTokenWasOrigin() const {
+    return lastTokenType == CHTLTokenType::LBRACKET_ORIGIN;
 }
 
 } // namespace CHTL
