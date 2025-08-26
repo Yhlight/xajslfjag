@@ -1,0 +1,280 @@
+// 珂朵莉樱花雨效果 - 如她心中永恒的樱花飘落
+[Custom] @Element ChthollyRain
+{
+    div {
+        position: fixed,
+        top: 0,
+        left: 0,
+        width: 100vw,
+        height: 100vh,
+        pointer-events: none,
+        z-index: 9999,
+        overflow: hidden
+    }
+    
+    .cherry-blossom {
+        position: absolute,
+        width: 12px,
+        height: 12px,
+        background: radial-gradient(circle, $(ChthollyColors.primary) 0%, rgba(255, 182, 193, 0.3) 100%),
+        border-radius: 50% 0 50% 0,
+        animation: fall linear infinite,
+        opacity: 0
+    }
+    
+    // 不同大小的樱花花瓣
+    .cherry-blossom.small {
+        width: 8px,
+        height: 8px,
+        animation-duration: 8s
+    }
+    
+    .cherry-blossom.medium {
+        width: 12px,
+        height: 12px,
+        animation-duration: 6s
+    }
+    
+    .cherry-blossom.large {
+        width: 16px,
+        height: 16px,
+        animation-duration: 4s
+    }
+    
+    // 不同颜色变化的樱花
+    .cherry-blossom.pink {
+        background: radial-gradient(circle, #FFB6C1 0%, rgba(255, 182, 193, 0.3) 100%)
+    }
+    
+    .cherry-blossom.white {
+        background: radial-gradient(circle, #FFF 0%, rgba(255, 255, 255, 0.3) 100%)
+    }
+    
+    .cherry-blossom.light-pink {
+        background: radial-gradient(circle, #FFC0CB 0%, rgba(255, 192, 203, 0.3) 100%)
+    }
+}
+
+[Custom] @Style ChthollyRainStyle
+{
+    @keyframes fall {
+        0% {
+            transform: translateY(-100vh) rotateZ(0deg) translateX(0),
+            opacity: 0
+        }
+        10% {
+            opacity: 1
+        }
+        90% {
+            opacity: 1
+        }
+        100% {
+            transform: translateY(100vh) rotateZ(360deg) translateX(100px),
+            opacity: 0
+        }
+    }
+    
+    @keyframes sway {
+        0%, 100% {
+            transform: translateX(0)
+        }
+        50% {
+            transform: translateX(30px)
+        }
+    }
+    
+    @keyframes rotate {
+        0% {
+            transform: rotateZ(0deg)
+        }
+        100% {
+            transform: rotateZ(360deg)
+        }
+    }
+    
+    // 添加摇摆效果的樱花
+    .cherry-blossom.swaying {
+        animation: fall linear infinite, sway 3s ease-in-out infinite, rotate 4s linear infinite
+    }
+    
+    // 春风效果
+    .spring-wind .cherry-blossom {
+        animation: fall linear infinite, sway 2s ease-in-out infinite
+    }
+    
+    // 暴风雨效果
+    .storm .cherry-blossom {
+        animation-duration: 2s !important
+    }
+    
+    .storm .cherry-blossom.small {
+        animation-duration: 1.5s !important
+    }
+}
+
+script {
+    // 珂朵莉樱花雨控制器
+    class ChthollyRainController {
+        constructor(container) {
+            this.container = container;
+            this.isActive = false;
+            this.cherryBlossoms = [];
+            this.maxPetals = 50;  // 最大花瓣数量
+            this.spawnRate = 300; // 生成间隔 (ms)
+            this.windStrength = 'gentle'; // gentle, moderate, strong
+            
+            this.init();
+        }
+        
+        init() {
+            this.setupControls();
+        }
+        
+        start() {
+            if (this.isActive) return;
+            
+            this.isActive = true;
+            this.spawnInterval = setInterval(() => {
+                this.createCherryBlossom();
+            }, this.spawnRate);
+        }
+        
+        stop() {
+            this.isActive = false;
+            if (this.spawnInterval) {
+                clearInterval(this.spawnInterval);
+            }
+            
+            // 优雅地清除现有花瓣
+            this.cherryBlossoms.forEach(petal => {
+                setTimeout(() => {
+                    if (petal.parentNode) {
+                        petal.parentNode.removeChild(petal);
+                    }
+                }, Math.random() * 3000);
+            });
+            
+            this.cherryBlossoms = [];
+        }
+        
+        createCherryBlossom() {
+            if (this.cherryBlossoms.length >= this.maxPetals) {
+                // 移除最老的花瓣
+                const oldPetal = this.cherryBlossoms.shift();
+                if (oldPetal.parentNode) {
+                    oldPetal.parentNode.removeChild(oldPetal);
+                }
+            }
+            
+            const petal = document.createElement('div');
+            petal.className = 'cherry-blossom';
+            
+            // 随机大小
+            const sizes = ['small', 'medium', 'large'];
+            const size = sizes[Math.floor(Math.random() * sizes.length)];
+            petal.classList.add(size);
+            
+            // 随机颜色
+            const colors = ['pink', 'white', 'light-pink'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            petal.classList.add(color);
+            
+            // 随机效果
+            if (Math.random() > 0.7) {
+                petal.classList.add('swaying');
+            }
+            
+            // 随机起始位置
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // 根据风力调整动画
+            const duration = this.getAnimationDuration(size);
+            petal.style.animationDuration = duration + 's';
+            
+            // 随机延迟
+            petal.style.animationDelay = Math.random() * 2 + 's';
+            
+            this.container.appendChild(petal);
+            this.cherryBlossoms.push(petal);
+            
+            // 自动清理
+            setTimeout(() => {
+                if (petal.parentNode) {
+                    petal.parentNode.removeChild(petal);
+                    const index = this.cherryBlossoms.indexOf(petal);
+                    if (index > -1) {
+                        this.cherryBlossoms.splice(index, 1);
+                    }
+                }
+            }, duration * 1000 + 2000);
+        }
+        
+        getAnimationDuration(size) {
+            const base = {
+                small: 8,
+                medium: 6,
+                large: 4
+            };
+            
+            const windMultiplier = {
+                gentle: 1,
+                moderate: 0.7,
+                strong: 0.4
+            };
+            
+            return base[size] * windMultiplier[this.windStrength];
+        }
+        
+        setWindStrength(strength) {
+            this.windStrength = strength;
+            
+            // 更新容器类名以应用相应样式
+            this.container.className = 'chtholly-rain';
+            if (strength === 'strong') {
+                this.container.classList.add('storm');
+            } else if (strength === 'moderate') {
+                this.container.classList.add('spring-wind');
+            }
+        }
+        
+        setupControls() {
+            // 可以通过全局函数控制
+            window.ChthollyRain = {
+                start: () => this.start(),
+                stop: () => this.stop(),
+                setWind: (strength) => this.setWindStrength(strength),
+                setSpawnRate: (rate) => {
+                    this.spawnRate = rate;
+                    if (this.isActive) {
+                        clearInterval(this.spawnInterval);
+                        this.spawnInterval = setInterval(() => {
+                            this.createCherryBlossom();
+                        }, this.spawnRate);
+                    }
+                }
+            };
+        }
+    }
+    
+    // 初始化樱花雨
+    const rainContainer = {{.chtholly-rain}};
+    if (rainContainer) {
+        const rainController = new ChthollyRainController(rainContainer);
+        
+        // 自动开始（可选）
+        // rainController.start();
+    }
+    
+    // 页面可见性变化时停止/开始樱花雨以节省性能
+    document->listen {
+        visibilitychange: function() {
+            if (window.ChthollyRain) {
+                if (document.hidden) {
+                    window.ChthollyRain.stop();
+                } else {
+                    window.ChthollyRain.start();
+                }
+            }
+        }
+    };
+}

@@ -1,0 +1,104 @@
+// INeverAway CJMOD 信息文件
+// 严格按照语法文档：CJMOD不使用[Export]，只有[Info]
+
+[Info]
+{
+    name = "ineveraway";
+    version = "1.0.0";
+    description = "珂朵莉的标记函数系统 - iNeverAway是一个很特别的功能，用于创建一组标记函数。iNeverAway与其他CHTL JS功能不同，它允许开发者定义键而不是使用键，并可以使用状态区分同名的键。iNeverAway需要与虚对象共用。";
+    author = "CHTL Team";
+    license = "MIT";
+    dependencies = "";
+    category = "virtual-object";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+    
+    // CJMOD特有配置
+    moduleType = "cjmod";
+    cppStandard = "c++17";
+    
+    // 扩展信息
+    homepage = "https://chtl.dev/modules/chtholly/cjmod/ineveraway";
+    repository = "https://github.com/chtl/chtholly-module/tree/main/CJMOD/INeverAway";
+    keywords = "virtual-object, function-marking, state-management, chtholly, cjmod";
+    
+    // 功能特性
+    features = {
+        virtualObjects: true,       // 虚对象支持
+        stateManagement: true,      // 状态管理
+        functionMarking: true,      // 函数标记
+        keyDefinition: true,        // 键定义（而非使用）
+        sameNameOverload: true,     // 同名重载
+        globalFunctions: true,      // 全局函数生成
+        compileTimeProcessing: true // 编译时处理
+    };
+    
+    // 实现原理（严格按照语法文档）
+    implementationPrinciple = {
+        description: "iNeverAway -> 创建一组JS全局函数，名称由CHTL编译器统一管理，在调用时才生成对应的JS函数代码",
+        virtualObjectNature: "vir对象本身不存在，最终转变成相对应的函数的引用",
+        compilationPhase: "compile-time"
+    };
+    
+    // 支持的语法（严格按照语法文档）
+    supportedSyntax = {
+        stateAnnotations: ["<A>", "<B>", "自定义状态"],
+        functionTypes: ["function(int, int)", "function(string)", "function()"],
+        objectTypes: ["对象字面量", "复杂对象"],
+        accessPatterns: ["Test->Void<A>()", "Test->Void", "Test->Ax"]
+    };
+    
+    // 使用示例（严格按照语法文档）
+    usageExample = `
+        vir Test = iNeverAway {
+            Void<A>: function(int, int) {
+                // 状态A的函数实现
+            },
+            
+            Void<B>: function(int, int) {
+                // 通过状态同名同参重载
+            },
+            
+            Void: {
+                // 对象定义
+            },
+            
+            Ax: {
+                // 另一个对象
+            }
+        };
+        
+        // 访问方式
+        Test->Void<A>();  // 调用状态A的函数
+        Test->Void<B>();  // 调用状态B的函数  
+        Test->Void;       // 访问对象
+        Test->Ax;         // 访问另一个对象
+    `;
+    
+    // 状态系统
+    stateSystem = {
+        builtinStates: ["A", "B", "DEFAULT"],
+        customStates: "支持自定义状态标识",
+        overloadResolution: "基于状态进行同名函数重载解析",
+        stateAnnotation: "使用<>语法标记状态"
+    };
+    
+    // C++实现详情
+    implementation = {
+        headerFile: "INeverAway.h",
+        sourceFile: "INeverAway.cpp",
+        mainClass: "INeverAway",
+        jsInterface: "INeverAwayJS",
+        managerClass: "VirtualObjectManager",
+        dependencies: ["virtual-object-registry", "function-generator", "state-manager"]
+    };
+    
+    // 编译器集成
+    compilerIntegration = {
+        phase: "compilation",
+        globalFunctionGeneration: "编译时生成全局JS函数",
+        nameManagement: "CHTL编译器统一管理函数名称",
+        codeGeneration: "调用时才生成对应的JS函数代码",
+        virtualObjectTransformation: "虚对象转换为函数引用"
+    };
+}
