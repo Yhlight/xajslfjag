@@ -67,9 +67,6 @@ enum class TokenType {
     EQUALS,             // =
     COMMA,              // ,
     DOT,                // .
-    ARROW,              // ->
-    DOUBLE_LEFT_BRACE,  // {{
-    DOUBLE_RIGHT_BRACE, // }}
     AMPERSAND,          // &
     HASH,               // #
     STAR,               // *

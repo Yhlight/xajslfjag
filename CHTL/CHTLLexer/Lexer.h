@@ -6,19 +6,8 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include <stack>
 
 namespace CHTL {
-
-// 词法分析器状态
-enum class LexerState {
-    NORMAL,              // 正常状态
-    IN_STRING,           // 在字符串内
-    IN_COMMENT,          // 在注释内
-    IN_MULTI_COMMENT,    // 在多行注释内
-    IN_GENERATOR_COMMENT,// 在生成器注释内
-    IN_UNQUOTED_LITERAL  // 在无引号字面量内
-};
 
 // 词法分析器
 class Lexer {
@@ -30,9 +19,6 @@ private:
     size_t tokenStartPos;        // token开始位置
     size_t tokenStartLine;       // token开始行号
     size_t tokenStartColumn;     // token开始列号
-    
-    LexerState state;            // 当前状态
-    std::stack<LexerState> stateStack;  // 状态栈
     
     std::shared_ptr<GlobalMap> globalMap;  // 全局符号表
     
@@ -79,11 +65,6 @@ public:
     // 主要接口
     std::vector<Token> tokenize();
     Token nextToken();
-    
-    // 状态管理
-    void pushState(LexerState newState);
-    void popState();
-    LexerState getCurrentState() const { return state; }
     
     // 位置信息
     size_t getPosition() const { return position; }

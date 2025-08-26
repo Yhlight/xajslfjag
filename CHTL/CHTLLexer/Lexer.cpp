@@ -8,7 +8,7 @@ namespace CHTL {
 Lexer::Lexer(const std::string& source, std::shared_ptr<GlobalMap> globalMap)
     : source(source), position(0), line(1), column(1),
       tokenStartPos(0), tokenStartLine(1), tokenStartColumn(1),
-      state(LexerState::NORMAL), globalMap(globalMap) {}
+      globalMap(globalMap) {}
 
 // 主要接口
 std::vector<Token> Lexer::tokenize() {
@@ -115,7 +115,7 @@ char Lexer::advance() {
 }
 
 void Lexer::skipWhitespace() {
-    while (!isAtEnd() && isWhitespace(peek()) && state == LexerState::NORMAL) {
+    while (!isAtEnd() && isWhitespace(peek())) {
         advance();
     }
 }
@@ -346,19 +346,9 @@ Token Lexer::scanSymbol() {
     
     switch (c) {
         case '{':
-            // 检查是否为 {{
-            if (peek() == '{') {
-                advance();
-                return Token(TokenType::DOUBLE_LEFT_BRACE, "{{", tokenStartLine, tokenStartColumn, tokenStartPos);
-            }
             return Token(TokenType::LEFT_BRACE, "{", tokenStartLine, tokenStartColumn, tokenStartPos);
             
         case '}':
-            // 检查是否为 }}
-            if (peek() == '}') {
-                advance();
-                return Token(TokenType::DOUBLE_RIGHT_BRACE, "}}", tokenStartLine, tokenStartColumn, tokenStartPos);
-            }
             return Token(TokenType::RIGHT_BRACE, "}", tokenStartLine, tokenStartColumn, tokenStartPos);
             
         case '[':
@@ -401,12 +391,7 @@ Token Lexer::scanSymbol() {
             return Token(TokenType::SLASH, "/", tokenStartLine, tokenStartColumn, tokenStartPos);
             
         case '-':
-            // 检查是否为 ->
-            if (peek() == '>') {
-                advance();
-                return Token(TokenType::ARROW, "->", tokenStartLine, tokenStartColumn, tokenStartPos);
-            }
-            // 否则作为标识符的一部分或未知token
+            // 单独的 - 作为标识符的一部分或未知token
             return Token(TokenType::UNKNOWN, std::string(1, c), tokenStartLine, tokenStartColumn, tokenStartPos);
             
         default:
@@ -446,19 +431,6 @@ void Lexer::reportError(const std::string& message) {
               << ": " << message << std::endl;
 }
 
-// 状态管理
-void Lexer::pushState(LexerState newState) {
-    stateStack.push(state);
-    state = newState;
-}
-
-void Lexer::popState() {
-    if (!stateStack.empty()) {
-        state = stateStack.top();
-        stateStack.pop();
-    }
-}
-
 // 重置
 void Lexer::reset() {
     position = 0;
@@ -467,10 +439,6 @@ void Lexer::reset() {
     tokenStartPos = 0;
     tokenStartLine = 1;
     tokenStartColumn = 1;
-    state = LexerState::NORMAL;
-    while (!stateStack.empty()) {
-        stateStack.pop();
-    }
 }
 
 // 设置源代码
