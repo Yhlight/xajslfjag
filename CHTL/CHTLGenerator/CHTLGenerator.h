@@ -45,6 +45,8 @@ private:
     void generateScriptBlock(std::shared_ptr<CHTLNode> node);
     void generateTemplateDefinition(std::shared_ptr<CHTLNode> node);
     void generateCustomDefinition(std::shared_ptr<CHTLNode> node);
+    void generateOriginDefinition(std::shared_ptr<CHTLNode> node);
+    void generateConfigurationDefinition(std::shared_ptr<CHTLNode> node);
     void generateTemplateUsage(std::shared_ptr<CHTLNode> node);
     void generateCustomUsage(std::shared_ptr<CHTLNode> node);
     void generateComment(std::shared_ptr<CHTLNode> node);
@@ -62,6 +64,12 @@ private:
     
     // Auto-generated classes and IDs
     void autoAddClassesAndIds(std::shared_ptr<CHTLNode> element);
+    
+    // Inheritance and specialization processing
+    void processInheritanceOperations(std::shared_ptr<CHTLNode> node);
+    void processDeleteOperation(std::shared_ptr<CHTLNode> node);
+    void processInsertOperation(std::shared_ptr<CHTLNode> node);
+    void processInheritOperation(std::shared_ptr<CHTLNode> node);
     
 public:
     CHTLGenerator(CHTLContext* ctx = nullptr);
