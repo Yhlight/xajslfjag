@@ -1,0 +1,218 @@
+cmake_minimum_required(VERSION 3.16)
+project(CHTL_Compiler LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 新的目录结构 - 专业化组织
+set(CHTL_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src_new")
+
+# 包含目录 - 新框架结构
+include_directories(${CHTL_SOURCE_DIR})
+include_directories(${CHTL_SOURCE_DIR}/CHTL)
+include_directories(${CHTL_SOURCE_DIR}/CHTLJS)
+include_directories(${CHTL_SOURCE_DIR}/CSS)
+include_directories(${CHTL_SOURCE_DIR}/JS)
+include_directories(${CHTL_SOURCE_DIR}/Scanner)
+include_directories(${CHTL_SOURCE_DIR}/CompilerDispatcher)
+include_directories(${CHTL_SOURCE_DIR}/Util)
+include_directories(${CHTL_SOURCE_DIR}/ThirdParty)
+
+# CHTL核心源文件
+set(CHTL_CORE_SOURCES
+    # CHTL词法分析
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/CHTLLexer.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/Token.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/GlobalMap.cpp
+    
+    # CHTL节点系统
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/BaseNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/ElementNode/ElementNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/TextNode/TextNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/CommentNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/TemplateNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/CustomNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/StyleNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ScriptNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/OriginNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ImportNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ConfigNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/NamespaceNode.cpp
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/OperatorNode.cpp
+    
+    # CHTL解析器
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLParser/CHTLParser.cpp
+    
+    # CHTL生成器
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLGenerator/CHTLGenerator.cpp
+    
+    # CHTL状态机
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLState/CHTLState.cpp
+    
+    # CHTL管理器
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLManage/CHTLManage.cpp
+    
+    # CHTL上下文
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLContext/CHTLContext.cpp
+    
+    # CHTL加载器
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLoader/CHTLLoader.cpp
+    
+    # CMOD系统
+    ${CHTL_SOURCE_DIR}/CHTL/CMODSystem/CMODSystem.cpp
+)
+
+# CHTL JS源文件
+set(CHTLJS_SOURCES
+    # CHTL JS词法分析
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSLexer/CHTLJSLexer.cpp
+    
+    # CHTL JS节点系统
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSNode/CHTLJSNode.cpp
+    
+    # CHTL JS解析器
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSParser/CHTLJSParser.cpp
+    
+    # CHTL JS生成器
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSGenerator/CHTLJSGenerator.cpp
+    
+    # CHTL JS状态机
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSState/CHTLJSState.cpp
+    
+    # CHTL JS管理器
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSManage/CHTLJSManage.cpp
+    
+    # CHTL JS上下文
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSContext/CHTLJSContext.cpp
+    
+    # CHTL JS加载器
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSLoader/CHTLJSLoader.cpp
+    
+    # CJMOD系统
+    ${CHTL_SOURCE_DIR}/CHTLJS/CJMODSystem/CJMODSystem.cpp
+)
+
+# CSS和JavaScript编译器
+set(CSS_JS_SOURCES
+    ${CHTL_SOURCE_DIR}/CSS/CSSCompiler.cpp
+    ${CHTL_SOURCE_DIR}/JS/JavaScriptCompiler.cpp
+)
+
+# 扫描器和调度器
+set(SCANNER_DISPATCHER_SOURCES
+    ${CHTL_SOURCE_DIR}/Scanner/CHTLUnifiedScanner.cpp
+    ${CHTL_SOURCE_DIR}/CompilerDispatcher/CompilerDispatcher.cpp
+)
+
+# 工具类
+set(UTIL_SOURCES
+    ${CHTL_SOURCE_DIR}/Util/FileSystem/FileSystem.cpp
+)
+
+# 测试文件
+set(TEST_SOURCES
+    ${CHTL_SOURCE_DIR}/Test/main.cpp
+)
+
+# ANTLR生成的文件
+set(ANTLR_SOURCES
+    css/css3Lexer.cpp
+    css/css3Parser.cpp
+    css/css3ParserBaseListener.cpp
+    css/css3ParserBaseVisitor.cpp
+    js/JavaScriptLexer.cpp
+    js/JavaScriptParser.cpp
+    js/JavaScriptParserBaseListener.cpp
+    js/JavaScriptParserBaseVisitor.cpp
+)
+
+# 头文件
+set(CHTL_HEADERS
+    # CHTL核心头文件
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/CHTLLexer.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/Token.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLexer/GlobalMap.h
+    
+    # CHTL节点头文件
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/BaseNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/ElementNode/ElementNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/BaseNode/TextNode/TextNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/CommentNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/TemplateNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/CustomNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/StyleNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ScriptNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/OriginNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ImportNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/ConfigNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/NamespaceNode.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLNode/OperatorNode.h
+    
+    # CHTL其他组件头文件
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLParser/CHTLParser.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLGenerator/CHTLGenerator.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLState/CHTLState.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLManage/CHTLManage.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLContext/CHTLContext.h
+    ${CHTL_SOURCE_DIR}/CHTL/CHTLLoader/CHTLLoader.h
+    ${CHTL_SOURCE_DIR}/CHTL/CMODSystem/CMODSystem.h
+    
+    # CHTL JS头文件
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSLexer/CHTLJSLexer.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSNode/CHTLJSNode.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSParser/CHTLJSParser.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSGenerator/CHTLJSGenerator.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSState/CHTLJSState.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSManage/CHTLJSManage.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSContext/CHTLJSContext.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CHTLJSLoader/CHTLJSLoader.h
+    ${CHTL_SOURCE_DIR}/CHTLJS/CJMODSystem/CJMODSystem.h
+    
+    # CSS和JS编译器头文件
+    ${CHTL_SOURCE_DIR}/CSS/CSSCompiler.h
+    ${CHTL_SOURCE_DIR}/JS/JavaScriptCompiler.h
+    
+    # 扫描器和调度器头文件
+    ${CHTL_SOURCE_DIR}/Scanner/CHTLUnifiedScanner.h
+    ${CHTL_SOURCE_DIR}/CompilerDispatcher/CompilerDispatcher.h
+    
+    # 工具头文件
+    ${CHTL_SOURCE_DIR}/Util/FileSystem/FileSystem.h
+)
+
+# 所有源文件
+set(ALL_SOURCES
+    ${CHTL_CORE_SOURCES}
+    ${CHTLJS_SOURCES}
+    ${CSS_JS_SOURCES}
+    ${SCANNER_DISPATCHER_SOURCES}
+    ${UTIL_SOURCES}
+    ${TEST_SOURCES}
+    # ${ANTLR_SOURCES}  # 暂时注释，等ANTLR集成完成
+)
+
+# 创建可执行文件
+add_executable(chtl_compiler ${ALL_SOURCES} ${CHTL_HEADERS})
+
+# 编译器特定设置
+target_compile_features(chtl_compiler PRIVATE cxx_std_17)
+
+# 编译选项
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    target_compile_options(chtl_compiler PRIVATE -Wall -Wextra -Wpedantic)
+endif()
+
+# 链接库（如果需要）
+# target_link_libraries(chtl_compiler PRIVATE some_library)
+
+# 安装规则
+install(TARGETS chtl_compiler DESTINATION bin)
+
+# 测试（如果有的话）
+enable_testing()
+# add_subdirectory(${CHTL_SOURCE_DIR}/Test)
+
+message(STATUS "CHTL Compiler - 新框架构建配置完成")
+message(STATUS "源文件目录: ${CHTL_SOURCE_DIR}")
+message(STATUS "CHTL核心源文件: ${CHTL_CORE_SOURCES}")
+message(STATUS "CHTL JS源文件: ${CHTLJS_SOURCES}")
