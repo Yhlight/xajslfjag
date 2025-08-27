@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_CHTLJS.a CMakeFiles/CHtml_CHTLJS.dir/CHTLJSLexer/Token.cpp.o CMakeFiles/CHtml_CHTLJS.dir/CHTLJSLexer/GlobalMap.cpp.o
+/usr/bin/ranlib libCHtml_CHTLJS.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_CSS.a CMakeFiles/CHtml_CSS.dir/css3Lexer.cpp.o CMakeFiles/CHtml_CSS.dir/css3Parser.cpp.o CMakeFiles/CHtml_CSS.dir/css3ParserBaseListener.cpp.o CMakeFiles/CHtml_CSS.dir/css3ParserListener.cpp.o
+/usr/bin/ranlib libCHtml_CSS.a
