@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libchtl_compiler_lib.a CMakeFiles/chtl_compiler_lib.dir/src/CHTL/AST/ASTNode.cpp.o CMakeFiles/chtl_compiler_lib.dir/src/CHTL/Lexer/Token.cpp.o
+/usr/bin/ranlib lib/libchtl_compiler_lib.a

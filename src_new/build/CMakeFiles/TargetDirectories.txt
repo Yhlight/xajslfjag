@@ -1,9 +1,0 @@
-/workspace/src_new/build/CMakeFiles/chtl_compiler.dir
-/workspace/src_new/build/CMakeFiles/test_cjmod.dir
-/workspace/src_new/build/CMakeFiles/clean-antlr.dir
-/workspace/src_new/build/CMakeFiles/edit_cache.dir
-/workspace/src_new/build/CMakeFiles/rebuild_cache.dir
-/workspace/src_new/build/CMakeFiles/list_install_components.dir
-/workspace/src_new/build/CMakeFiles/install.dir
-/workspace/src_new/build/CMakeFiles/install/local.dir
-/workspace/src_new/build/CMakeFiles/install/strip.dir
