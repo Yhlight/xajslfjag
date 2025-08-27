@@ -9,7 +9,8 @@ namespace CHTL {
 Scanner::Scanner() 
     : position(0), currentLine(1), currentColumn(1),
       debugMode(false), sliceSize(1024), state(ScannerState::NORMAL),
-      bufferType(FragmentType::UNKNOWN), bufferStartLine(1), bufferStartColumn(1) {
+      bufferType(FragmentType::UNKNOWN), bufferStartLine(1), bufferStartColumn(1),
+      frontPointer(0), backPointer(0), collectMode(false) {
 }
 
 Scanner::~Scanner() = default;
@@ -48,6 +49,13 @@ CodeFragment Scanner::NextFragment() {
                 if (ScanScript()) {
                     // 判断是否包含CHTL JS特征
                     if (ContainsCHTLJSFeatures(buffer)) {
+                        // 对CHTL JS代码进行精准切割
+                        auto fragments = SplitCHTLJSFragment(buffer);
+                        if (!fragments.empty()) {
+                            // 返回第一个片段，其余的放入缓冲区
+                            // TODO: 实现片段缓冲机制
+                            return fragments[0];
+                        }
                         return CreateFragment(FragmentType::CHTLJS, buffer);
                     }
                     return CreateFragment(FragmentType::JS, buffer);
@@ -474,6 +482,196 @@ void Scanner::ReportError(const std::string& message) {
     std::stringstream ss;
     ss << "Scanner错误 [" << currentLine << ":" << currentColumn << "]: " << message;
     errors.push_back(ss.str());
+}
+
+// 双指针扫描机制实现
+void Scanner::InitDoublePointer() {
+    frontPointer = position;
+    backPointer = position;
+    collectMode = false;
+}
+
+bool Scanner::ScanWithDoublePointer(const std::string& keyword) {
+    InitDoublePointer();
+    
+    while (frontPointer < source.length()) {
+        // 检查是否找到关键字
+        if (frontPointer + keyword.length() <= source.length()) {
+            std::string potential = source.substr(frontPointer, keyword.length());
+            if (potential == keyword) {
+                // 找到关键字，开始收集
+                collectMode = true;
+                return true;
+            }
+        }
+        
+        // 移动前指针
+        frontPointer++;
+        
+        // 如果没有在收集模式，同步移动后指针
+        if (!collectMode && frontPointer - backPointer > sliceSize) {
+            backPointer = frontPointer - sliceSize;
+        }
+    }
+    
+    return false;
+}
+
+std::string Scanner::CollectFragment(size_t start, size_t end) {
+    if (start >= source.length() || end > source.length() || start >= end) {
+        return "";
+    }
+    return source.substr(start, end - start);
+}
+
+// 前置截取机制实现
+bool Scanner::NeedPreCapture(const std::string& content, size_t pos) const {
+    // 检查是否需要前置截取
+    // 例如：对于 "arg ** arg2"，当扫描到 ** 时需要前置截取 arg
+    if (pos >= 2 && pos < content.length() - 1) {
+        // 检查CHTL JS操作符
+        if (content.substr(pos, 2) == "->") {
+            return pos > 0 && content[pos - 1] != ' ';
+        }
+        
+        // 检查其他需要前置截取的模式
+        if (content.substr(pos, 2) == "**") {
+            return pos > 0 && std::isalnum(content[pos - 1]);
+        }
+    }
+    
+    return false;
+}
+
+std::string Scanner::PreCaptureFragment(const std::string& content, size_t& pos) {
+    // 向前截取直到遇到分隔符
+    size_t start = pos;
+    while (start > 0 && !std::isspace(content[start - 1]) && 
+           content[start - 1] != '{' && content[start - 1] != '}' &&
+           content[start - 1] != ';' && content[start - 1] != ',') {
+        start--;
+    }
+    
+    std::string captured = content.substr(start, pos - start);
+    pos = start;
+    return captured;
+}
+
+// CHTL JS精准切割实现
+std::vector<CodeFragment> Scanner::SplitCHTLJSFragment(const std::string& content) {
+    std::vector<CodeFragment> fragments;
+    size_t pos = 0;
+    size_t fragmentStart = 0;
+    
+    while (pos < content.length()) {
+        // 检查是否是CHTL JS边界
+        if (IsCHTLJSBoundary(content, pos)) {
+            // 保存当前片段
+            if (pos > fragmentStart) {
+                CodeFragment fragment;
+                fragment.type = FragmentType::CHTLJS;
+                fragment.content = content.substr(fragmentStart, pos - fragmentStart);
+                fragment.startLine = bufferStartLine;
+                fragment.startColumn = bufferStartColumn;
+                fragment.context = GetCurrentContext();
+                fragments.push_back(fragment);
+            }
+            
+            // 处理特殊边界（如 -> 操作符）
+            if (pos + 2 <= content.length() && content.substr(pos, 2) == "->") {
+                CodeFragment fragment;
+                fragment.type = FragmentType::CHTLJS;
+                fragment.content = "->";
+                fragment.startLine = bufferStartLine;
+                fragment.startColumn = bufferStartColumn + (pos - fragmentStart);
+                fragment.context = GetCurrentContext();
+                fragments.push_back(fragment);
+                pos += 2;
+                fragmentStart = pos;
+            } else {
+                pos++;
+            }
+        } else {
+            pos++;
+        }
+    }
+    
+    // 保存最后的片段
+    if (fragmentStart < content.length()) {
+        CodeFragment fragment;
+        fragment.type = FragmentType::CHTLJS;
+        fragment.content = content.substr(fragmentStart);
+        fragment.startLine = bufferStartLine;
+        fragment.startColumn = bufferStartColumn + fragmentStart;
+        fragment.context = GetCurrentContext();
+        fragments.push_back(fragment);
+    }
+    
+    return fragments;
+}
+
+bool Scanner::IsCHTLJSBoundary(const std::string& content, size_t pos) const {
+    // 检查是否是CHTL JS的边界点
+    
+    // 1. -> 操作符前后
+    if (pos + 2 <= content.length() && content.substr(pos, 2) == "->") {
+        return true;
+    }
+    
+    // 2. {{ 或 }} 边界
+    if (pos + 2 <= content.length()) {
+        std::string twoChars = content.substr(pos, 2);
+        if (twoChars == "{{" || twoChars == "}}") {
+            return true;
+        }
+    }
+    
+    // 3. &-> 操作符
+    if (pos + 3 <= content.length() && content.substr(pos, 3) == "&->") {
+        return true;
+    }
+    
+    // 4. 在某些上下文中的特定分隔符
+    if (pos < content.length()) {
+        char c = content[pos];
+        // 在CHTL JS函数调用中的边界
+        if (GetCurrentContext().find("chtljs_function") != std::string::npos) {
+            return c == '{' || c == '}' || c == ':' || c == ',';
+        }
+    }
+    
+    return false;
+}
+
+// 局部样式块处理实现
+bool Scanner::IsLocalStyleBlock() const {
+    // 检查是否在元素内部的style块
+    return state == ScannerState::IN_STYLE && contextStack.size() > 1;
+}
+
+void Scanner::MarkAsLocalStyle() {
+    if (!contextStack.empty()) {
+        contextStack.back().type = "local:style";
+    }
+}
+
+std::string Scanner::ExtractSelectorFromStyle(const std::string& content) const {
+    // 提取样式内容中的选择器
+    // 查找类选择器 .classname
+    std::regex classRegex(R"(\.([a-zA-Z_][\w-]*))");
+    std::smatch match;
+    
+    if (std::regex_search(content, match, classRegex)) {
+        return match[1].str();  // 返回类名（不含点）
+    }
+    
+    // 查找ID选择器 #id
+    std::regex idRegex(R"(#([a-zA-Z_][\w-]*))");
+    if (std::regex_search(content, match, idRegex)) {
+        return match[1].str();  // 返回ID（不含#）
+    }
+    
+    return "";
 }
 
 } // namespace CHTL

@@ -16,6 +16,7 @@ enum class ScannerState {
     IN_STRING,      // 在字符串中
     IN_TEMPLATE,    // 在模板中
     IN_ORIGIN,      // 在原始嵌入中
+    IN_CHTLJS,      // 在CHTL JS代码中
 };
 
 // 上下文栈项
@@ -70,6 +71,11 @@ private:
     int bufferStartLine;
     int bufferStartColumn;
     
+    // 双指针扫描机制
+    size_t frontPointer;    // 前指针
+    size_t backPointer;     // 后指针
+    bool collectMode;       // 是否处于收集模式
+    
     // 内部方法
     char CurrentChar() const;
     char PeekChar(int offset = 1) const;
@@ -99,6 +105,19 @@ private:
     bool ContainsCHTLJSFeatures(const std::string& content) const;
     std::vector<std::pair<size_t, size_t>> FindCHTLJSBlocks(const std::string& content) const;
     
+    // 双指针扫描机制
+    void InitDoublePointer();
+    bool ScanWithDoublePointer(const std::string& keyword);
+    std::string CollectFragment(size_t start, size_t end);
+    
+    // 前置截取机制
+    bool NeedPreCapture(const std::string& content, size_t pos) const;
+    std::string PreCaptureFragment(const std::string& content, size_t& pos);
+    
+    // CHTL JS精准切割
+    std::vector<CodeFragment> SplitCHTLJSFragment(const std::string& content);
+    bool IsCHTLJSBoundary(const std::string& content, size_t pos) const;
+    
     // 上下文管理
     void PushContext(const std::string& type, const std::string& name);
     void PopContext();
@@ -106,6 +125,11 @@ private:
     
     // 创建片段
     CodeFragment CreateFragment(FragmentType type, const std::string& content);
+    
+    // 局部样式块处理
+    bool IsLocalStyleBlock() const;
+    void MarkAsLocalStyle();
+    std::string ExtractSelectorFromStyle(const std::string& content) const;
     
     // 错误处理
     void ReportError(const std::string& message);
