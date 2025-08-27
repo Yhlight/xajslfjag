@@ -2918,8 +2918,17 @@ bin/chtl_compiler: /lib/x86_64-linux-gnu/Scrt1.o \
   CMakeFiles/chtl_compiler.dir/CHTL/CHTLNode/BaseNode/ElementNode/ElementNode.cpp.o \
   CMakeFiles/chtl_compiler.dir/CHTL/CHTLNode/BaseNode/TextNode/TextNode.cpp.o \
   CMakeFiles/chtl_compiler.dir/CHTL/CHTLState/CHTLState.cpp.o \
+  CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/GlobalMap.cpp.o \
+  CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Lexer.cpp.o \
+  CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Token.cpp.o \
   CMakeFiles/chtl_compiler.dir/main.cpp.o
 
+
+CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Token.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Lexer.cpp.o:
+
+CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/GlobalMap.cpp.o:
 
 CMakeFiles/chtl_compiler.dir/CHTL/CHTLState/CHTLState.cpp.o:
 

@@ -49,23 +49,8 @@ enum class TokenType {
     ID_SELECTOR,                 // #idName
     TAG_SELECTOR,                // 标签选择器
     
-    // JavaScript关键字 (CHTL JS仍然支持基本的JS语法)
-    CONST,                       // const
-    LET,                         // let
-    VAR,                         // var
-    FUNCTION,                    // function
-    RETURN,                      // return
-    IF,                          // if
-    ELSE,                        // else
-    FOR,                         // for
-    WHILE,                       // while
-    TRUE,                        // true
-    FALSE,                       // false
-    JS_NULL,                     // null
-    UNDEFINED,                   // undefined
-
-    // 模板变量和自定义变量组 (CHTL JS中可以使用)
-    TEMPLATE_VAR,                // 模板变量引用
+    // CHTL语法中允许的变量引用 (只在CHTL JS中可以使用)
+    TEMPLATE_VAR,                // 模板变量引用 
     CUSTOM_VAR,                  // 自定义变量组引用
 
     // 特殊符号
@@ -142,9 +127,9 @@ public:
                type == TokenType::ANIMATE || type == TokenType::VIR;
     }
     
-    // 检查是否为JavaScript关键字
-    bool isJSKeyword() const {
-        return type >= TokenType::CONST && type <= TokenType::UNDEFINED;
+    // 检查是否为变量引用
+    bool isVariableReference() const {
+        return type == TokenType::TEMPLATE_VAR || type == TokenType::CUSTOM_VAR;
     }
     
     // 检查是否为选择器相关

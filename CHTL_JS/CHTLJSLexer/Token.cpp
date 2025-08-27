@@ -41,19 +41,7 @@ std::string tokenTypeToString(TokenType type) {
         case TokenType::ID_SELECTOR: return "ID_SELECTOR";
         case TokenType::TAG_SELECTOR: return "TAG_SELECTOR";
         
-        case TokenType::CONST: return "CONST";
-        case TokenType::LET: return "LET";
-        case TokenType::VAR: return "VAR";
-        case TokenType::FUNCTION: return "FUNCTION";
-        case TokenType::RETURN: return "RETURN";
-        case TokenType::IF: return "IF";
-        case TokenType::ELSE: return "ELSE";
-        case TokenType::FOR: return "FOR";
-        case TokenType::WHILE: return "WHILE";
-        case TokenType::TRUE: return "TRUE";
-        case TokenType::FALSE: return "FALSE";
-        case TokenType::JS_NULL: return "JS_NULL";
-        case TokenType::UNDEFINED: return "UNDEFINED";
+
         
         case TokenType::TEMPLATE_VAR: return "TEMPLATE_VAR";
         case TokenType::CUSTOM_VAR: return "CUSTOM_VAR";
@@ -123,20 +111,7 @@ TokenType getKeywordType(const std::string& str) {
         {"animate", TokenType::ANIMATE},
         {"vir", TokenType::VIR},
         
-        // JavaScript关键字
-        {"const", TokenType::CONST},
-        {"let", TokenType::LET},
-        {"var", TokenType::VAR},
-        {"function", TokenType::FUNCTION},
-        {"return", TokenType::RETURN},
-        {"if", TokenType::IF},
-        {"else", TokenType::ELSE},
-        {"for", TokenType::FOR},
-        {"while", TokenType::WHILE},
-        {"true", TokenType::TRUE},
-        {"false", TokenType::FALSE},
-        {"null", TokenType::JS_NULL},
-        {"undefined", TokenType::UNDEFINED}
+
     };
     
     auto it = keywords.find(str);

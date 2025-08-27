@@ -2931,5 +2931,8 @@ bin/chtl_compiler
  /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL/CHTLNode/BaseNode/ElementNode/ElementNode.cpp.o
  /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL/CHTLNode/BaseNode/TextNode/TextNode.cpp.o
  /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL/CHTLState/CHTLState.cpp.o
+ /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/GlobalMap.cpp.o
+ /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Lexer.cpp.o
+ /workspace/build/CMakeFiles/chtl_compiler.dir/CHTL_JS/CHTLJSLexer/Token.cpp.o
  /workspace/build/CMakeFiles/chtl_compiler.dir/main.cpp.o
 
