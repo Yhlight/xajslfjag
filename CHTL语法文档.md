@@ -1169,7 +1169,7 @@ div
 对于局部script来说，& 引用选择器优先选择id  
 
 ## CHTL JS
-CHTL JS是CHTL的扩展语法，并不是JS的超集，也不支持JS的语法  
+CHTL JS是CHTL项目的扩展语法(不是CHTL的JS，而是CHTL项目能够使用这一门编程语言)，并不是JS的超集，也不支持JS的语法  
 CHTL JS完全独立于JS，是一门独立的编程语言，与JS毫无关系，只是最终转变为JS代码  
 JS的语法由CHTL内置的JS编译器解析，CHTL JS的语法由CHTL JS编译器解析  
 两者之间并不兼容，CHTL JS的语法是CHTL JS编译器的扩展语法  
