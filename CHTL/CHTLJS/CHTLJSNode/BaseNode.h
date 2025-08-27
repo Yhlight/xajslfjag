@@ -43,6 +43,7 @@ enum class NodeType {
     DELEGATE_EXPRESSION,  // delegate表达式
     ARROW_ACCESS,         // ->访问
     BIND_EXPRESSION,      // &->绑定
+    INEVERAWAY_EXPRESSION,// iNeverAway表达式
     
     // 程序根节点
     PROGRAM              // 程序节点

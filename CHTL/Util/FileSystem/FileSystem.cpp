@@ -6,6 +6,12 @@
 #include <regex>
 #include <ctime>
 
+#ifdef _WIN32
+    #include <windows.h>
+#else
+    #include <unistd.h>
+#endif
+
 namespace fs = std::filesystem;
 
 namespace CHTL {
@@ -275,6 +281,9 @@ std::string FileSystem::getOfficialModulePath() {
         ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
         if (len != -1) {
             buffer[len] = '\0';
+        } else {
+            // 如果readlink失败，使用当前工作目录
+            getcwd(buffer, sizeof(buffer));
         }
     #endif
     

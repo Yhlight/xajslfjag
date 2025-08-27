@@ -35,6 +35,7 @@ private:
     Token scanMultiLineComment();
     Token scanGenerateComment();
     Token scanSymbol();
+    Token scanAtKeyword();  // 扫描@开头的关键字
     
     // 辅助判断方法
     bool isAtEnd() const;

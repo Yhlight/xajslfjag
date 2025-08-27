@@ -97,6 +97,11 @@ Token Lexer::getNextToken() {
         return scanIdentifierOrKeyword();
     }
     
+    // 处理@开头的关键字（如@Style, @Element等）
+    if (current == '@' && isAlpha(peekChar())) {
+        return scanAtKeyword();
+    }
+    
     // 处理方括号组合（如[Custom]）
     if (current == '[') {
         int startCol = column;
@@ -121,6 +126,12 @@ Token Lexer::getNextToken() {
         
         // 如果不是关键字，作为符号处理
         return makeToken(TokenType::LEFT_BRACKET, "[", startCol);
+    }
+    
+    // 在特定上下文中处理无引号字面量
+    // 如：属性值、text内容等
+    if (isValidUnquotedChar(current)) {
+        return scanUnquotedLiteral();
     }
     
     // 处理符号
@@ -190,9 +201,42 @@ Token Lexer::scanUnquotedLiteral() {
     int startCol = column;
     std::string value;
     
-    while (!isAtEnd() && isValidUnquotedChar(getCurrentChar())) {
-        value += getCurrentChar();
+    // 无引号字面量的结束条件：
+    // 1. 遇到分号、逗号、花括号等符号
+    // 2. 遇到换行
+    // 3. 文件结束
+    while (!isAtEnd()) {
+        char current = getCurrentChar();
+        
+        // 检查是否应该结束
+        if (current == ';' || current == ',' || current == '{' || current == '}' ||
+            current == '(' || current == ')' || current == '[' || current == ']' ||
+            current == '\n' || current == ':' || current == '=') {
+            break;
+        }
+        
+        // 跳过末尾空白
+        if (isWhitespace(current) && !value.empty()) {
+            // 向前查看是否后面还有有效字符
+            int i = 1;
+            while (position + i < source.length() && isWhitespace(source[position + i])) {
+                i++;
+            }
+            if (position + i >= source.length() || 
+                source[position + i] == ';' || source[position + i] == ',' ||
+                source[position + i] == '{' || source[position + i] == '}' ||
+                source[position + i] == '\n') {
+                break;
+            }
+        }
+        
+        value += current;
         advance();
+    }
+    
+    // 去除末尾空白
+    while (!value.empty() && isWhitespace(value.back())) {
+        value.pop_back();
     }
     
     return makeToken(TokenType::UNQUOTED_LITERAL, value, startCol);
@@ -296,6 +340,27 @@ Token Lexer::scanSymbol() {
     }
 }
 
+Token Lexer::scanAtKeyword() {
+    int startCol = column;
+    std::string value = "@";
+    advance(); // 跳过@
+    
+    // 扫描标识符部分
+    while (!isAtEnd() && (isAlphaNumeric(getCurrentChar()) || getCurrentChar() == '_')) {
+        value += getCurrentChar();
+        advance();
+    }
+    
+    // 检查是否为可配置关键字
+    TokenType type = globalMap->getKeywordType(value);
+    if (type != TokenType::UNKNOWN) {
+        return makeToken(type, value, startCol);
+    }
+    
+    // 如果不是已知的@关键字，作为标识符处理
+    return makeToken(TokenType::IDENTIFIER, value, startCol);
+}
+
 bool Lexer::isAtEnd() const {
     return position >= source.length();
 }
@@ -318,7 +383,15 @@ bool Lexer::isWhitespace(char c) const {
 
 bool Lexer::isValidUnquotedChar(char c) const {
     // 无引号字面量的有效字符
-    return isAlphaNumeric(c) || c == '_' || c == '-' || c == '.';
+    // 根据上下文，这个方法可能需要更复杂的逻辑
+    // 目前支持：字母、数字、下划线、连字符、点号、中文字符等
+    if (isAlphaNumeric(c) || c == '_' || c == '-' || c == '.') {
+        return true;
+    }
+    
+    // 支持中文等Unicode字符
+    unsigned char uc = static_cast<unsigned char>(c);
+    return uc >= 0x80;  // 非ASCII字符
 }
 
 Token Lexer::makeToken(TokenType type, const std::string& value, int startColumn) {

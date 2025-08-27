@@ -1,0 +1,290 @@
+// 高级CHTL语法展示
+use html5;
+
+// 配置组
+[Configuration] {
+    INDEX_INITIAL_COUNT = 0;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    DEBUG_MODE = true;
+    
+    [Name] {
+        CUSTOM_STYLE = [@Style, @style, @CSS];
+        OPTION_COUNT = 3;
+    }
+}
+
+// 命名空间
+[Namespace] UIComponents {
+    // 自定义样式组（无值属性）
+    [Custom] @Style FlexCenter {
+        display,
+        justify-content,
+        align-items;
+    }
+    
+    // 模板样式组
+    [Template] @Style ButtonBase {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    // 自定义元素with特例化
+    [Custom] @Element Button {
+        button {
+            style {
+                @Style ButtonBase;
+                @Style FlexCenter {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                
+                .btn-primary {
+                    background-color: #007bff;
+                    color: white;
+                }
+                
+                &:hover {
+                    background-color: #0056b3;
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+                
+                &:active {
+                    transform: translateY(0);
+                    box-shadow: none;
+                }
+            }
+            
+            script {
+                const btn = {{.btn-primary}};
+                
+                btn->listen {
+                    click: (e) => {
+                        console.log('Button clicked:', e.target);
+                    },
+                    
+                    mouseenter: () => {
+                        btn->classList.add('hovering');
+                    },
+                    
+                    mouseleave: () => {
+                        btn->classList.remove('hovering');
+                    }
+                };
+            }
+        }
+    }
+}
+
+// 导入
+[Import] [Custom] @Element Button from UIComponents;
+[Import] @Chtl from chtholly;
+
+// 原始嵌入
+[Origin] @Html header {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+}
+
+// 变量组模板
+[Template] @Var Theme {
+    primary: #007bff;
+    secondary: #6c757d;
+    success: #28a745;
+    danger: #dc3545;
+    warning: #ffc107;
+    info: #17a2b8;
+    light: #f8f9fa;
+    dark: #343a40;
+    
+    // 间距
+    spacing-xs: 4px;
+    spacing-sm: 8px;
+    spacing-md: 16px;
+    spacing-lg: 24px;
+    spacing-xl: 32px;
+}
+
+html {
+    head {
+        [Origin] @Html header;
+        
+        title {
+            text {
+                高级CHTL功能演示
+            }
+        }
+        
+        style {
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                background-color: Theme(light);
+                color: Theme(dark);
+            }
+        }
+    }
+    
+    body {
+        div {
+            style {
+                .container {
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: Theme(spacing-lg);
+                }
+            }
+            
+            // 使用自定义元素
+            @Element Button {
+                text {
+                    点击测试
+                }
+            }
+            
+            // 元素with索引访问和特例化
+            @Element Button {
+                // 删除默认的hover效果
+                button {
+                    style {
+                        &:hover {
+                            delete background-color, transform;
+                        }
+                    }
+                }
+                
+                text {
+                    自定义按钮
+                }
+            }
+            
+            // 插入操作
+            @Element Button {
+                insert after button {
+                    span {
+                        style {
+                            .badge {
+                                background-color: Theme(danger);
+                                color: white;
+                                padding: 2px 6px;
+                                border-radius: 12px;
+                                font-size: 12px;
+                                margin-left: 8px;
+                            }
+                        }
+                        
+                        text {
+                            New
+                        }
+                    }
+                }
+            }
+        }
+        
+        // 动画示例
+        div {
+            style {
+                .animated-card {
+                    width: 300px;
+                    height: 200px;
+                    background: linear-gradient(135deg, Theme(primary), Theme(info));
+                    border-radius: 12px;
+                    margin: Theme(spacing-md) auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    font-size: 24px;
+                    font-weight: bold;
+                    cursor: pointer;
+                }
+            }
+            
+            text {
+                动画卡片
+            }
+            
+            script {
+                const card = {{.animated-card}};
+                
+                const cardAnimation = animate {
+                    target: card,
+                    duration: 3000,
+                    easing: ease-in-out,
+                    
+                    begin: {
+                        transform: 'scale(1) rotate(0deg)',
+                        opacity: 0.8
+                    },
+                    
+                    when: [
+                        {
+                            at: 0.25,
+                            transform: 'scale(1.1) rotate(90deg)',
+                            opacity: 1
+                        },
+                        {
+                            at: 0.5,
+                            transform: 'scale(1.2) rotate(180deg)',
+                            opacity: 1
+                        },
+                        {
+                            at: 0.75,
+                            transform: 'scale(1.1) rotate(270deg)',
+                            opacity: 1
+                        }
+                    ],
+                    
+                    end: {
+                        transform: 'scale(1) rotate(360deg)',
+                        opacity: 0.8
+                    },
+                    
+                    loop: -1,
+                    direction: normal
+                };
+                
+                // 事件委托示例
+                {{.container}}->delegate {
+                    target: [{{button}}, {{.animated-card}}],
+                    
+                    click: (e) => {
+                        console.log('Delegated click:', e.target);
+                        
+                        if (e.target.matches('.animated-card')) {
+                            cardAnimation.pause();
+                            setTimeout(() => cardAnimation.play(), 1000);
+                        }
+                    }
+                };
+            }
+        }
+        
+        // 约束示例
+        div {
+            except [Template], script;  // 禁止使用模板和script
+            
+            style {
+                .restricted-area {
+                    border: 2px dashed Theme(warning);
+                    padding: Theme(spacing-md);
+                    margin-top: Theme(spacing-lg);
+                }
+            }
+            
+            text {
+                这是一个受约束的区域
+            }
+        }
+    }
+}
