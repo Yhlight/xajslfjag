@@ -55,7 +55,8 @@ void GlobalMap::InitializeSymbols() {
         {"+", TokenType::PLUS},
         {"-", TokenType::MINUS},
         {"*", TokenType::STAR},
-        {"/", TokenType::SLASH}
+        {"/", TokenType::SLASH},
+        {">", TokenType::GREATER_THAN}
     };
 }
 

@@ -76,7 +76,7 @@ void Lexer::Analyze() {
             }
             else if (c == '{' || c == '}' || c == '(' || c == ')' || c == ']' || 
                      c == ';' || c == ':' || c == '=' || c == ',' || c == '.' || 
-                     c == '#' || c == '&' || c == '+' || c == '-' || c == '*') {
+                     c == '#' || c == '&' || c == '+' || c == '-' || c == '*' || c == '>') {
                 AddToken(ReadSymbol());
             }
             else if (IsValidUnquotedChar(c)) {
@@ -146,7 +146,7 @@ std::vector<std::string> Lexer::GetErrors() const {
 }
 
 void Lexer::SkipWhitespace() {
-    while (!IsEOF() && IsWhitespace(PeekChar()) && !IsNewline(PeekChar())) {
+    while (!IsEOF() && (IsWhitespace(PeekChar()) || IsNewline(PeekChar()))) {
         GetChar();
     }
 }

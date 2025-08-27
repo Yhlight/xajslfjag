@@ -68,6 +68,7 @@ enum class TokenType {
     MINUS,              // -
     STAR,               // *
     SLASH,              // /
+    GREATER_THAN,       // >
     
     // 特殊
     COMMENT_LINE,       // //

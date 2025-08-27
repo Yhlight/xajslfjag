@@ -249,23 +249,19 @@ void Parser::ParseElementContent(std::shared_ptr<ElementNode> element) {
     while (!IsAtEnd() && !IsCurrentToken(TokenType::RIGHT_BRACE)) {
         std::shared_ptr<BaseNode> child = nullptr;
         
-        if (IsCurrentToken(TokenType::IDENTIFIER) || 
-            IsCurrentToken(TokenType::STYLE) ||
-            IsCurrentToken(TokenType::SCRIPT) ||
-            IsCurrentToken(TokenType::TEXT)) {
-            
+        if (IsCurrentToken(TokenType::STYLE)) {
+            child = ParseStyleBlock();
+        }
+        else if (IsCurrentToken(TokenType::SCRIPT)) {
+            child = std::static_pointer_cast<BaseNode>(ParseScriptBlock());
+        }
+        else if (IsCurrentToken(TokenType::TEXT)) {
+            child = ParseTextNode();
+        }
+        else if (IsCurrentToken(TokenType::IDENTIFIER)) {
             std::string identifier = CurrentToken().value;
             
-            if (identifier == "style" || IsCurrentToken(TokenType::STYLE)) {
-                child = ParseStyleBlock();
-            }
-            else if (identifier == "script" || IsCurrentToken(TokenType::SCRIPT)) {
-                child = std::static_pointer_cast<BaseNode>(ParseScriptBlock());
-            }
-            else if (identifier == "text" || IsCurrentToken(TokenType::TEXT)) {
-                child = ParseTextNode();
-            }
-            else if (HtmlElementValidator::IsValidElement(identifier)) {
+            if (HtmlElementValidator::IsValidElement(identifier)) {
                 child = ParseElement();
             }
             else {
