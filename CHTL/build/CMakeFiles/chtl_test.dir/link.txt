@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Wextra -pedantic -Xlinker --dependency-file=CMakeFiles/chtl_test.dir/link.d CMakeFiles/chtl_test.dir/Test/SimpleTestMain.cpp.o -o chtl_test  libchtl_core.a
