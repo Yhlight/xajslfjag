@@ -37,6 +37,9 @@ public:
     // 设置配置
     void SetDebugMode(bool debug) { debugMode = debug; }
     
+    // 应用配置节点（用于自定义关键字）
+    void ApplyConfiguration(std::shared_ptr<ConfigNode> config);
+    
 private:
     std::string source;
     std::shared_ptr<GlobalMap> globalMap;

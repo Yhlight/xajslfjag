@@ -1,4 +1,5 @@
 #include "Lexer.h"
+#include "../CHTLNode/ConfigNode.h"
 #include <cctype>
 #include <sstream>
 #include <algorithm>
@@ -452,6 +453,45 @@ Token Lexer::HandleAtKeyword() {
     
     // 不是 "at top" 或 "at bottom"，只是普通的标识符
     return Token(TokenType::IDENTIFIER, "at", startLine, startColumn, startPosition);
+}
+
+void Lexer::ApplyConfiguration(std::shared_ptr<ConfigNode> config) {
+    if (!config) return;
+    
+    // 检查是否禁用了Name配置组
+    std::string disableNameGroup = config->GetConfigValue("DISABLE_NAME_GROUP");
+    if (disableNameGroup == "true") {
+        return;  // 不应用自定义关键字
+    }
+    
+    // 应用Name配置中的自定义关键字
+    auto nameConfigs = config->GetAllNameConfigs();
+    
+    for (const auto& [key, item] : nameConfigs) {
+        if (item.isArray && !item.arrayValues.empty()) {
+            // 组选项 - 第一个值作为主要映射
+            std::string primaryValue = item.arrayValues[0];
+            
+            // 根据key更新对应的关键字映射
+            if (key == "KEYWORD_TEXT") {
+                TokenUtils::keywordMap["text"] = TokenUtils::StringToTokenType(primaryValue);
+            } else if (key == "KEYWORD_STYLE") {
+                TokenUtils::keywordMap["style"] = TokenUtils::StringToTokenType(primaryValue);
+            } else if (key == "KEYWORD_SCRIPT") {
+                TokenUtils::keywordMap["script"] = TokenUtils::StringToTokenType(primaryValue);
+            }
+            // TODO: 处理其他关键字映射
+            
+            // 处理组选项中的其他值
+            for (size_t i = 1; i < item.arrayValues.size(); ++i) {
+                // 添加额外的映射
+                // TODO: 实现组选项的完整支持
+            }
+        } else if (!item.value.empty()) {
+            // 单一值
+            // TODO: 处理单一值的关键字映射
+        }
+    }
 }
 
 } // namespace CHTL
