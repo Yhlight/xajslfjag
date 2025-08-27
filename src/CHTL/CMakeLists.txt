@@ -12,6 +12,18 @@ set(CHTL_SOURCES
     
     # CHTLContext
     CHTLContext/Context.cpp
+    
+    # CHTLNode
+    CHTLNode/BaseNode.cpp
+    CHTLNode/StyleNode.cpp
+    CHTLNode/ScriptNode.cpp
+    CHTLNode/NodeVisitor.cpp
+    
+    # CHTLParser
+    CHTLParser/Parser.cpp
+    
+    # CHTLGenerator
+    CHTLGenerator/HtmlGenerator.cpp
 )
 
 # 设置头文件
@@ -26,6 +38,18 @@ set(CHTL_HEADERS
     
     # CHTLContext
     CHTLContext/Context.h
+    
+    # CHTLNode
+    CHTLNode/BaseNode.h
+    CHTLNode/NodeVisitor.h
+    CHTLNode/StyleNode.h
+    CHTLNode/ScriptNode.h
+    
+    # CHTLParser
+    CHTLParser/Parser.h
+    
+    # CHTLGenerator
+    CHTLGenerator/HtmlGenerator.h
 )
 
 # 创建CHTL静态库
@@ -37,6 +61,9 @@ target_include_directories(CHtml_CHTL PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
     ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
     ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+    ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+    ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+    ${CMAKE_CURRENT_SOURCE_DIR}/CHTLGenerator
 )
 
 # 设置编译选项

@@ -1,5 +1,7 @@
 #include "CompilerDispatcher.h"
 #include "../CHTL/CHTLContext/Context.h"
+#include "../CHTL/CHTLParser/Parser.h"
+#include "../CHTL/CHTLGenerator/HtmlGenerator.h"
 #include "../Util/FileSystem/FileSystem.h"
 #include <algorithm>
 #include <thread>
@@ -431,9 +433,75 @@ CHTLCompiler::~CHTLCompiler() = default;
 CompilationResult CHTLCompiler::Compile(const std::string& source, std::shared_ptr<Context> context) {
     CompilationResult result(CompilerType::CHTL);
     
-    // 临时实现：直接返回源代码作为HTML
-    result.content = "<div><!-- CHTL内容 -->\n" + source + "\n</div>";
-    result.success = true;
+    try {
+        // 创建解析器
+        auto parser = ParserFactory::CreateCHTLParser();
+        
+        // 解析CHTL源代码
+        auto rootNode = parser->Parse(source);
+        
+        if (!rootNode || parser->HasErrors()) {
+            result.success = false;
+            for (const auto& error : parser->GetErrors()) {
+                result.errors.push_back(error);
+            }
+            
+            // 生成错误页面
+            std::ostringstream html;
+            html << "<div style=\"color: red; border: 1px solid red; padding: 10px; margin: 10px;\">\n";
+            html << "<h3>CHTL编译错误</h3>\n";
+            for (const auto& error : result.errors) {
+                html << "<p>" << error << "</p>\n";
+            }
+            html << "</div>\n";
+            result.content = html.str();
+            return result;
+        }
+        
+        // 创建HTML生成器
+        auto generator = HtmlGeneratorFactory::CreateStandardGenerator();
+        
+        // 生成HTML
+        auto generationResult = generator->Generate(rootNode);
+        
+        if (generationResult.success) {
+            result.success = true;
+            result.content = generationResult.htmlContent;
+            
+            // 添加警告信息
+            for (const auto& warning : generationResult.warnings) {
+                result.warnings.push_back(warning);
+            }
+        } else {
+            result.success = false;
+            for (const auto& error : generationResult.errors) {
+                result.errors.push_back(error);
+            }
+            
+            // 生成错误页面
+            std::ostringstream html;
+            html << "<div style=\"color: red; border: 1px solid red; padding: 10px; margin: 10px;\">\n";
+            html << "<h3>CHTL生成错误</h3>\n";
+            for (const auto& error : result.errors) {
+                html << "<p>" << error << "</p>\n";
+            }
+            html << "</div>\n";
+            result.content = html.str();
+        }
+        
+    } catch (const std::exception& e) {
+        result.success = false;
+        result.errors.push_back("CHTL编译异常: " + std::string(e.what()));
+        
+        // 生成异常页面
+        std::ostringstream html;
+        html << "<div style=\"color: red; border: 1px solid red; padding: 10px; margin: 10px;\">\n";
+        html << "<h3>CHTL编译异常</h3>\n";
+        html << "<p>" << e.what() << "</p>\n";
+        html << "<pre>" << source << "</pre>\n";
+        html << "</div>\n";
+        result.content = html.str();
+    }
     
     return result;
 }

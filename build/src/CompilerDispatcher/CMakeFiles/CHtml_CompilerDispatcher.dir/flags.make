@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/workspace/ANTLR4/include -I/workspace/src -I/workspace/css -I/workspace/js -I/workspace/src/CompilerDispatcher -I/workspace/src/Scanner -I/workspace/src/CHTL -I/workspace/src/CHTL/CHTLLexer -I/workspace/src/CHTL/CHTLState -I/workspace/src/CHTL/CHTLContext
+CXX_INCLUDES = -I/workspace/ANTLR4/include -I/workspace/src -I/workspace/css -I/workspace/js -I/workspace/src/CompilerDispatcher -I/workspace/src/Scanner -I/workspace/src/CHTL -I/workspace/src/CHTL/CHTLLexer -I/workspace/src/CHTL/CHTLState -I/workspace/src/CHTL/CHTLContext -I/workspace/src/CHTL/CHTLNode -I/workspace/src/CHTL/CHTLParser -I/workspace/src/CHTL/CHTLGenerator
 
 CXX_FLAGS = -std=c++17 -Wall -Wextra -finput-charset=UTF-8 -fexec-charset=UTF-8
 

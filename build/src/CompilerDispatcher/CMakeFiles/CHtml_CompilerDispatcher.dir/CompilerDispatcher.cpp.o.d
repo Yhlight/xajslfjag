@@ -219,8 +219,8 @@ src/CompilerDispatcher/CMakeFiles/CHtml_CompilerDispatcher.dir/CompilerDispatche
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
   /workspace/src/CompilerDispatcher/../CHTL/CHTLContext/../CHTLLexer/Token.h \
-  /workspace/src/CompilerDispatcher/../Util/FileSystem/FileSystem.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/fstream \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/Parser.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLLexer/Lexer.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ios \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ios_base.h \
@@ -244,6 +244,22 @@ src/CompilerDispatcher/CMakeFiles/CHtml_CompilerDispatcher.dir/CompilerDispatche
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLLexer/Token.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLLexer/GlobalMap.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLState/State.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLContext/Context.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLNode/BaseNode.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLNode/StyleNode.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLParser/../CHTLNode/ScriptNode.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLGenerator/HtmlGenerator.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLGenerator/../CHTLNode/BaseNode.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLGenerator/../CHTLNode/NodeVisitor.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLGenerator/../CHTLNode/StyleNode.h \
+  /workspace/src/CompilerDispatcher/../CHTL/CHTLGenerator/../CHTLNode/ScriptNode.h \
+  /workspace/src/CompilerDispatcher/../Util/FileSystem/FileSystem.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/fstream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/codecvt.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/basic_file.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/c++io.h \
@@ -269,6 +285,4 @@ src/CompilerDispatcher/CMakeFiles/CHtml_CompilerDispatcher.dir/CompilerDispatche
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unique_lock.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/condition_variable \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/atomic_futex.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/atomic \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/atomic
