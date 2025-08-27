@@ -117,11 +117,20 @@ private:
     /// 读取类型标识符（如@Style）
     Token ReadTypeIdentifier();
     
+    /// 读取颜色值（如#f5f5f5）
+    Token ReadColorValue();
+    
+    /// 检查是否为十六进制颜色的开始
+    bool IsHexColorStart() const;
+    
     /// 检查是否为字母或下划线
     bool IsAlpha(char c) const;
     
     /// 检查是否为数字
     bool IsDigit(char c) const;
+    
+    /// 检查是否为十六进制数字
+    bool IsHexDigit(char c) const;
     
     /// 检查是否为字母数字或下划线
     bool IsAlphaNumeric(char c) const;

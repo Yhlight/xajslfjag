@@ -1,0 +1,15 @@
+div
+{
+    style
+    {
+        .main-content
+        {
+            width: 100%;
+        }
+        
+        &:hover
+        {
+            background-color: #f5f5f5;
+        }
+    }
+}

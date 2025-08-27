@@ -157,7 +157,7 @@ std::shared_ptr<BaseNode> Parser::ParseDocument() {
             continue;
         }
         else {
-            AddError("意外的Token类型");
+            AddError("意外的Token类型: " + TokenTypeToString(CurrentToken().type) + " (" + CurrentToken().value + ")");
             SkipToken();
             continue;
         }
@@ -286,7 +286,7 @@ void Parser::ParseElementContent(std::shared_ptr<ElementNode> element) {
             continue;
         }
         else {
-            AddError("元素内容中的意外Token");
+            AddError("元素内容中的意外Token: " + TokenTypeToString(CurrentToken().type) + " (" + CurrentToken().value + ")");
             SkipToken();
             continue;
         }
@@ -566,6 +566,33 @@ void Parser::SkipWhitespace() {
 
 bool Parser::IsAttributeAssignment() const {
     return IsCurrentToken(TokenType::COLON) || IsCurrentToken(TokenType::EQUALS);
+}
+
+std::string Parser::TokenTypeToString(TokenType type) const {
+    switch (type) {
+        case TokenType::IDENTIFIER: return "IDENTIFIER";
+        case TokenType::STRING_LITERAL: return "STRING_LITERAL";
+        case TokenType::UNQUOTED_LITERAL: return "UNQUOTED_LITERAL";
+        case TokenType::NUMBER: return "NUMBER";
+        case TokenType::COLOR_VALUE: return "COLOR_VALUE";
+        case TokenType::TEXT: return "TEXT";
+        case TokenType::STYLE: return "STYLE";
+        case TokenType::SCRIPT: return "SCRIPT";
+        case TokenType::USE: return "USE";
+        case TokenType::LEFT_BRACE: return "LEFT_BRACE";
+        case TokenType::RIGHT_BRACE: return "RIGHT_BRACE";
+        case TokenType::LEFT_PAREN: return "LEFT_PAREN";
+        case TokenType::RIGHT_PAREN: return "RIGHT_PAREN";
+        case TokenType::SEMICOLON: return "SEMICOLON";
+        case TokenType::COLON: return "COLON";
+        case TokenType::EQUALS: return "EQUALS";
+        case TokenType::COMMA: return "COMMA";
+        case TokenType::DOT: return "DOT";
+        case TokenType::HASH: return "HASH";
+        case TokenType::AMPERSAND: return "AMPERSAND";
+        case TokenType::EOF_TOKEN: return "EOF_TOKEN";
+        default: return "UNKNOWN(" + std::to_string(static_cast<int>(type)) + ")";
+    }
 }
 
 // HtmlElementValidator实现

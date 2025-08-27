@@ -1,1 +1,15 @@
 use html5;
+
+html
+{
+    body
+    {
+        div
+        {
+            style
+            {
+                color: red;
+            }
+        }
+    }
+}

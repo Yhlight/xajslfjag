@@ -71,6 +71,9 @@ void Lexer::Analyze() {
             else if (c == '@') {
                 AddToken(ReadTypeIdentifier());
             }
+            else if (c == '#' && IsHexColorStart()) {
+                AddToken(ReadColorValue());
+            }
             else if (c == '{' || c == '}' || c == '(' || c == ')' || c == ']' || 
                      c == ';' || c == ':' || c == '=' || c == ',' || c == '.' || 
                      c == '#' || c == '&' || c == '+' || c == '-' || c == '*') {
@@ -356,12 +359,40 @@ Token Lexer::ReadTypeIdentifier() {
     return Token(type, value, startPos);
 }
 
+Token Lexer::ReadColorValue() {
+    std::string value;
+    TokenPosition startPos(currentLine, currentColumn, position);
+    
+    value += GetChar(); // 添加'#'
+    
+    // 读取十六进制数字
+    while (!IsEOF() && IsHexDigit(PeekChar())) {
+        value += GetChar();
+    }
+    
+    return Token(TokenType::COLOR_VALUE, value, startPos);
+}
+
+bool Lexer::IsHexColorStart() const {
+    // 检查#后面是否跟着有效的十六进制字符
+    if (position + 1 >= source.length()) {
+        return false;
+    }
+    
+    char next = source[position + 1];
+    return IsHexDigit(next);
+}
+
 bool Lexer::IsAlpha(char c) const {
     return std::isalpha(static_cast<unsigned char>(c));
 }
 
 bool Lexer::IsDigit(char c) const {
     return std::isdigit(static_cast<unsigned char>(c));
+}
+
+bool Lexer::IsHexDigit(char c) const {
+    return IsDigit(c) || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
 }
 
 bool Lexer::IsAlphaNumeric(char c) const {
@@ -377,8 +408,11 @@ bool Lexer::IsNewline(char c) const {
 }
 
 bool Lexer::IsValidUnquotedChar(char c) const {
-    // 无修饰字面量允许的字符
-    return IsAlphaNumeric(c) || c == '-' || c == '.' || c == '/' || c == '?' || c == '!' || c == '%';
+    // 无修饰字面量允许的字符：基本字母数字和一些特殊字符
+    return IsAlphaNumeric(c) || 
+           c == '-' || c == '.' || c == '/' || c == '?' || c == '!' || c == '%' ||
+           // 支持中文字符 (UTF-8)
+           (static_cast<unsigned char>(c) >= 0x80);
 }
 
 void Lexer::UpdatePosition(char c) {

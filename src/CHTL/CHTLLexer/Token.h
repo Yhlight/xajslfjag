@@ -12,6 +12,7 @@ enum class TokenType {
     STRING_LITERAL,     // 字符串字面量  
     UNQUOTED_LITERAL,   // 无修饰字面量
     NUMBER,             // 数字
+    COLOR_VALUE,        // 颜色值 (#rrggbb)
     
     // 关键字
     TEXT,               // text

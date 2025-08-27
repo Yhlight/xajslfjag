@@ -142,6 +142,9 @@ private:
     /// 处理CE对等式（冒号和等号等价）
     bool IsAttributeAssignment() const;
     
+    /// 将Token类型转换为字符串（用于调试）
+    std::string TokenTypeToString(TokenType type) const;
+    
     /// 解析块内容（通用）
     void ParseBlockContent(std::shared_ptr<BaseNode> parent, 
                           std::function<bool()> shouldContinue,

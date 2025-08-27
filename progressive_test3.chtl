@@ -1,0 +1,52 @@
+use html5;
+
+html
+{
+    body
+    {
+        div
+        {
+            id: container;
+            class: main-content;
+
+            style
+            {
+                .main-content
+                {
+                    width: 100%;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                }
+
+                &:hover
+                {
+                    background-color: #f5f5f5;
+                }
+            }
+
+            h1
+            {
+                text
+                {
+                    "欢迎使用CHTL"
+                }
+
+                style
+                {
+                    color: #333;
+                    text-align: center;
+                }
+            }
+
+            p
+            {
+                text
+                {
+                    "这是一个CHTL编译器的测试页面。"
+                }
+            }
+        }
+    }
+}
