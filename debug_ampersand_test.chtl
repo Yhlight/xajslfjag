@@ -1,0 +1,12 @@
+use html5;
+
+div
+{
+    style
+    {
+        &:hover
+        {
+            background-color: #f5f5f5;
+        }
+    }
+}

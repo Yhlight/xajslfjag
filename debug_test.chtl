@@ -1,0 +1,20 @@
+use html5;
+
+html
+{
+    body
+    {
+        div
+        {
+            id: container;
+            
+            h1
+            {
+                text
+                {
+                    "测试"
+                }
+            }
+        }
+    }
+}

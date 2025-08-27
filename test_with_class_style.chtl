@@ -1,0 +1,14 @@
+use html5;
+
+div
+{
+    class: container;
+    
+    style
+    {
+        .container
+        {
+            color: red;
+        }
+    }
+}

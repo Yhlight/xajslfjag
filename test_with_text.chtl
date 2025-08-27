@@ -1,0 +1,12 @@
+use html5;
+
+html
+{
+    head
+    {
+        text
+        {
+            "CHTL测试页面"
+        }
+    }
+}

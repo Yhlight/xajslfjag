@@ -107,6 +107,24 @@ private:
     /// 解析脚本块
     std::shared_ptr<ScriptBlockNode> ParseScriptBlock();
     
+    /// 解析Template语法
+    std::shared_ptr<BaseNode> ParseTemplate();
+    
+    /// 解析Custom语法
+    std::shared_ptr<BaseNode> ParseCustom();
+    
+    /// 解析Origin语法
+    std::shared_ptr<BaseNode> ParseOrigin();
+    
+    /// 解析Import语法
+    std::shared_ptr<BaseNode> ParseImport();
+    
+    /// 解析Namespace语法
+    std::shared_ptr<BaseNode> ParseNamespace();
+    
+    /// 解析Configuration语法
+    std::shared_ptr<BaseNode> ParseConfiguration();
+    
     // === 辅助方法 ===
     
     /// 解析字符串值（处理引号和无修饰字面量）

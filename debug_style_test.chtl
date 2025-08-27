@@ -1,0 +1,15 @@
+use html5;
+
+div
+{
+    class: main-content;
+    
+    style
+    {
+        .main-content
+        {
+            width: 100%;
+            max-width: 800px;
+        }
+    }
+}

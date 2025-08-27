@@ -1,7 +1,1 @@
-div
-{
-    text
-    {
-        Hello World
-    }
-}
+use html5;

@@ -128,6 +128,24 @@ std::shared_ptr<BaseNode> Parser::ParseDocument() {
                 continue;
             }
         }
+        else if (IsCurrentToken(TokenType::TEMPLATE)) {
+            child = ParseTemplate();
+        }
+        else if (IsCurrentToken(TokenType::CUSTOM)) {
+            child = ParseCustom();
+        }
+        else if (IsCurrentToken(TokenType::ORIGIN)) {
+            child = ParseOrigin();
+        }
+        else if (IsCurrentToken(TokenType::IMPORT)) {
+            child = ParseImport();
+        }
+        else if (IsCurrentToken(TokenType::NAMESPACE)) {
+            child = ParseNamespace();
+        }
+        else if (IsCurrentToken(TokenType::CONFIGURATION)) {
+            child = ParseConfiguration();
+        }
         else if (IsCurrentToken(TokenType::COMMENT_LINE) || 
                  IsCurrentToken(TokenType::COMMENT_BLOCK) ||
                  IsCurrentToken(TokenType::COMMENT_GENERATOR)) {
@@ -186,7 +204,7 @@ std::shared_ptr<BaseNode> Parser::ParseUseStatement() {
     // 创建一个注释节点来记录use语句
     auto useComment = std::make_shared<CommentNode>(
         "USE: " + useType, 
-        CommentNode::CommentType::GENERATOR
+        CommentNode::CommentNode::CommentType::GENERATOR
     );
     
     return useComment;
@@ -388,7 +406,7 @@ std::shared_ptr<CommentNode> Parser::ParseComment() {
     } else if (IsCurrentToken(TokenType::COMMENT_BLOCK)) {
         commentType = CommentNode::CommentType::BLOCK;
     } else {
-        commentType = CommentNode::CommentType::GENERATOR;
+        commentType = CommentNode::CommentNode::CommentType::GENERATOR;
     }
     
     std::string content = CurrentToken().value;
@@ -614,6 +632,114 @@ std::unique_ptr<Parser> ParserFactory::CreateCHTLParser() {
     auto context = std::make_shared<Context>();
     
     return std::make_unique<Parser>(lexer, stateManager, context);
+}
+
+// === 高级语法解析方法实现 ===
+
+std::shared_ptr<BaseNode> Parser::ParseTemplate() {
+    // 消费 [Template] token
+    ConsumeToken(TokenType::TEMPLATE);
+    
+    std::string templateType = "@Style"; // 默认值
+    std::string templateName = "UnknownTemplate"; // 默认值
+    
+    // 尝试解析类型标识符，如 @Style
+    if (IsCurrentToken(TokenType::AT_STYLE) || 
+        IsCurrentToken(TokenType::AT_ELEMENT) || 
+        IsCurrentToken(TokenType::AT_VAR)) {
+        templateType = CurrentToken().value;
+        NextToken();
+        
+        // 尝试解析模板名称
+        if (IsCurrentToken(TokenType::IDENTIFIER)) {
+            templateName = CurrentToken().value;
+            NextToken();
+        }
+    }
+    
+    // 寻找 { 开始
+    while (!IsAtEnd() && !IsCurrentToken(TokenType::LEFT_BRACE)) {
+        NextToken();
+    }
+    
+    // 如果找到 {，则跳过它
+    if (IsCurrentToken(TokenType::LEFT_BRACE)) {
+        NextToken();
+        
+        // 跳过所有内容直到匹配的 }
+        int braceLevel = 1;
+        while (!IsAtEnd() && braceLevel > 0) {
+            if (IsCurrentToken(TokenType::LEFT_BRACE)) {
+                braceLevel++;
+            } else if (IsCurrentToken(TokenType::RIGHT_BRACE)) {
+                braceLevel--;
+            }
+            
+            if (braceLevel > 0) {
+                NextToken();
+            }
+        }
+        
+        // 消费最后的右大括号
+        if (IsCurrentToken(TokenType::RIGHT_BRACE)) {
+            NextToken();
+        }
+    }
+    
+    // 创建一个CommentNode来表示Template（临时实现）
+    std::string templateContent = "TEMPLATE " + templateType + " " + templateName;
+    auto templateNode = std::make_shared<CommentNode>(templateContent, CommentNode::CommentType::GENERATOR);
+    
+    return templateNode;
+}
+
+std::shared_ptr<BaseNode> Parser::ParseCustom() {
+    // 类似Template的实现，但为Custom语法
+    ConsumeToken(TokenType::CUSTOM);
+    
+    auto customNode = std::make_shared<CommentNode>("CUSTOM 语法（未完全实现）", CommentNode::CommentType::GENERATOR);
+    
+    // 简单跳过到结束
+    while (!IsAtEnd() && !IsCurrentToken(TokenType::RIGHT_BRACE)) {
+        NextToken();
+    }
+    if (IsCurrentToken(TokenType::RIGHT_BRACE)) {
+        NextToken();
+    }
+    
+    return customNode;
+}
+
+std::shared_ptr<BaseNode> Parser::ParseOrigin() {
+    ConsumeToken(TokenType::ORIGIN);
+    
+    auto originNode = std::make_shared<CommentNode>("ORIGIN 原始嵌入（未完全实现）", CommentNode::CommentType::GENERATOR);
+    
+    return originNode;
+}
+
+std::shared_ptr<BaseNode> Parser::ParseImport() {
+    ConsumeToken(TokenType::IMPORT);
+    
+    auto importNode = std::make_shared<CommentNode>("IMPORT 导入语法（未完全实现）", CommentNode::CommentType::GENERATOR);
+    
+    return importNode;
+}
+
+std::shared_ptr<BaseNode> Parser::ParseNamespace() {
+    ConsumeToken(TokenType::NAMESPACE);
+    
+    auto namespaceNode = std::make_shared<CommentNode>("NAMESPACE 命名空间（未完全实现）", CommentNode::CommentType::GENERATOR);
+    
+    return namespaceNode;
+}
+
+std::shared_ptr<BaseNode> Parser::ParseConfiguration() {
+    ConsumeToken(TokenType::CONFIGURATION);
+    
+    auto configNode = std::make_shared<CommentNode>("CONFIGURATION 配置组（未完全实现）", CommentNode::CommentType::GENERATOR);
+    
+    return configNode;
 }
 
 } // namespace CHTL
