@@ -1,0 +1,14 @@
+use html5;
+html {
+    body {
+        button {
+            script {
+                {{.btn-primary}}->listen {
+                    click: () => {
+                        console.log('clicked');
+                    }
+                };
+            }
+        }
+    }
+}

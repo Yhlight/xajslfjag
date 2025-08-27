@@ -1,0 +1,24 @@
+use html5;
+html {
+    body {
+        div {
+            style {
+                .main-content {
+                    width: 100%;
+                }
+            }
+            
+            h1 {
+                style {
+                    color: #333;
+                }
+            }
+            
+            p {
+                text {
+                    "测试文本"
+                }
+            }
+        }
+    }
+}

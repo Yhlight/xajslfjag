@@ -438,32 +438,44 @@ std::shared_ptr<StyleBlockNode> Parser::ParseStyleBlock() {
     
     SkipWhitespace();
     
-    while (!IsAtEnd() && !IsCurrentToken(TokenType::RIGHT_BRACE)) {
-        // 简化实现：暂时将样式内容作为原始内容保存
-        std::string styleContent;
-        int braceCount = 0;
-        
-        while (!IsAtEnd()) {
-            if (IsCurrentToken(TokenType::LEFT_BRACE)) {
-                braceCount++;
-                styleContent += CurrentToken().value;
-            } else if (IsCurrentToken(TokenType::RIGHT_BRACE)) {
-                if (braceCount == 0) {
-                    break; // 这是结束的右大括号
-                }
-                braceCount--;
-                styleContent += CurrentToken().value;
-            } else {
-                styleContent += CurrentToken().value;
+    // 简化实现：读取整个style块的原始内容
+    std::string styleContent;
+    int braceCount = 0;
+    size_t startPosition = currentTokenIndex; // 记录开始位置，防止无限循环
+    
+    while (!IsAtEnd()) {
+        if (IsCurrentToken(TokenType::LEFT_BRACE)) {
+            braceCount++;
+            styleContent += CurrentToken().value;
+        } else if (IsCurrentToken(TokenType::RIGHT_BRACE)) {
+            if (braceCount == 0) {
+                break; // 这是结束的右大括号
             }
-            SkipToken();
+            braceCount--;
+            styleContent += CurrentToken().value;
+        } else {
+            styleContent += CurrentToken().value;
+            if (IsCurrentToken(TokenType::NEWLINE)) {
+                styleContent += "\n";
+            } else if (IsCurrentToken(TokenType::WHITESPACE)) {
+                styleContent += " ";
+            }
         }
         
-        // 创建一个内联样式属性来保存内容
+        SkipToken();
+        
+        // 安全检查：防止无限循环
+        if (currentTokenIndex == startPosition) {
+            AddError("style块解析陷入无限循环，强制退出");
+            break;
+        }
+        startPosition = currentTokenIndex;
+    }
+    
+    // 创建一个内联样式属性来保存内容
+    if (!styleContent.empty()) {
         auto inlineProperty = std::make_shared<StylePropertyNode>("_raw_content", styleContent);
         styleBlock->AddInlineProperty(inlineProperty);
-        
-        break; // 简化处理，一次读取所有内容
     }
     
     if (!ConsumeToken(TokenType::RIGHT_BRACE)) {
@@ -495,6 +507,7 @@ std::shared_ptr<ScriptBlockNode> Parser::ParseScriptBlock() {
     // 简化实现：读取原始脚本内容
     std::string scriptContent;
     int braceCount = 0;
+    size_t startPosition = currentTokenIndex; // 记录开始位置，防止无限循环
     
     while (!IsAtEnd()) {
         if (IsCurrentToken(TokenType::LEFT_BRACE)) {
@@ -508,8 +521,21 @@ std::shared_ptr<ScriptBlockNode> Parser::ParseScriptBlock() {
             scriptContent += CurrentToken().value;
         } else {
             scriptContent += CurrentToken().value;
+            if (IsCurrentToken(TokenType::NEWLINE)) {
+                scriptContent += "\n";
+            } else if (IsCurrentToken(TokenType::WHITESPACE)) {
+                scriptContent += " ";
+            }
         }
+        
         SkipToken();
+        
+        // 安全检查：防止无限循环
+        if (currentTokenIndex == startPosition) {
+            AddError("script块解析陷入无限循环，强制退出");
+            break;
+        }
+        startPosition = currentTokenIndex;
     }
     
     scriptBlock->SetRawContent(scriptContent);

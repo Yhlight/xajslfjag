@@ -1,0 +1,11 @@
+use html5;
+html {
+    body {
+        div {
+            style {
+                width: 100px;
+                height: 200px;
+            }
+        }
+    }
+}
