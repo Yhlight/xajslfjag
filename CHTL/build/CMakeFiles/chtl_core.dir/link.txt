@@ -1,0 +1,2 @@
+/usr/bin/ar qc libchtl_core.a CMakeFiles/chtl_core.dir/CHTL/CHTLLexer/Token.cpp.o CMakeFiles/chtl_core.dir/CHTL/CHTLLexer/GlobalMap.cpp.o CMakeFiles/chtl_core.dir/CHTL/CHTLLexer/Lexer.cpp.o CMakeFiles/chtl_core.dir/CHTL/CHTLState/CHTLState.cpp.o CMakeFiles/chtl_core.dir/CHTL/CHTLNode/BaseNode.cpp.o CMakeFiles/chtl_core.dir/CHTL/CHTLNode/CommentNode.cpp.o
+/usr/bin/ranlib libchtl_core.a
