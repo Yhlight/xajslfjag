@@ -1,0 +1,93 @@
+// 基础CHTL测试文件
+use html5;
+
+[Template] @Style DefaultText {
+    color: black;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+[Custom] @Element Card {
+    div {
+        style {
+            .card {
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+        }
+        
+        div {
+            style {
+                .card-header {
+                    font-size: 24px;
+                    font-weight: bold;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+        
+        div {
+            style {
+                .card-content {
+                    @Style DefaultText;
+                }
+            }
+        }
+    }
+}
+
+html {
+    head {
+        title {
+            text {
+                "CHTL测试页面"
+            }
+        }
+    }
+    
+    body {
+        @Element Card {
+            div[0] {
+                text {
+                    "欢迎使用CHTL"
+                }
+            }
+            
+            div[1] {
+                text {
+                    "这是一个使用CHTL编写的示例页面。CHTL让HTML编写更加优雅和模块化。"
+                }
+            }
+        }
+        
+        div {
+            style {
+                .button {
+                    padding: 10px 20px;
+                    background-color: #007bff;
+                    color: white;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                }
+                
+                &:hover {
+                    background-color: #0056b3;
+                }
+            }
+            
+            script {
+                {{.button}}->listen {
+                    click: () => {
+                        alert('按钮被点击了！');
+                    }
+                };
+            }
+            
+            text {
+                "点击我"
+            }
+        }
+    }
+}

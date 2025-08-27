@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLContext/CHTLContext.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLContext/CHTLContext.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/GlobalMap.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/GlobalMap.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/Lexer.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/Lexer.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/Token.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLLexer/Token.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/BaseNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/BaseNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/CommentNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/CommentNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ConfigNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ConfigNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/CustomNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/CustomNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ImportNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ImportNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NamespaceNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NamespaceNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/OperatorNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/OperatorNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/OriginNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/OriginNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ScriptNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/ScriptNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/StyleNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/StyleNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/TemplateNode.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/TemplateNode.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/CHTLState.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/CHTLState.cpp.o.d"
+  "lib/libCHTLCore.a"
+  "lib/libCHTLCore.pdb"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/CHTLCore.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

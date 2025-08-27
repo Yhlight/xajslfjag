@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -Xlinker --dependency-file=CMakeFiles/test_unquoted_literals.dir/link.d CMakeFiles/test_unquoted_literals.dir/test_unquoted_literals.cpp.o -o ../bin/test_unquoted_literals  ../lib/libCHTLCore.a ../lib/libCHTLUtil.a
