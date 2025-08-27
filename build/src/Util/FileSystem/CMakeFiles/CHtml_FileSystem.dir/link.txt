@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_FileSystem.a CMakeFiles/CHtml_FileSystem.dir/FileSystem.cpp.o
+/usr/bin/ranlib libCHtml_FileSystem.a

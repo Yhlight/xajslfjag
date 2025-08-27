@@ -1,0 +1,16 @@
+button
+{
+    text
+    {
+        "Click me"
+    }
+    
+    script
+    {
+        {{.btn-primary}}->listen {
+            click: () => {
+                console.log('Button clicked!');
+            }
+        };
+    }
+}

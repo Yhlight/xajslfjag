@@ -1,0 +1,13 @@
+h1
+{
+    text
+    {
+        "欢迎使用CHTL"
+    }
+
+    style
+    {
+        color: #333;
+        text-align: center;
+    }
+}

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_JS.a CMakeFiles/CHtml_JS.dir/JavaScriptLexer.cpp.o CMakeFiles/CHtml_JS.dir/JavaScriptLexerBase.cpp.o CMakeFiles/CHtml_JS.dir/JavaScriptParser.cpp.o CMakeFiles/CHtml_JS.dir/JavaScriptParserBase.cpp.o CMakeFiles/CHtml_JS.dir/JavaScriptParserBaseListener.cpp.o CMakeFiles/CHtml_JS.dir/JavaScriptParserListener.cpp.o
+/usr/bin/ranlib libCHtml_JS.a

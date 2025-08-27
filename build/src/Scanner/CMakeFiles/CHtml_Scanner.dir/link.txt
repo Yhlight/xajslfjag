@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_Scanner.a CMakeFiles/CHtml_Scanner.dir/CHTLUnifiedScanner.cpp.o
+/usr/bin/ranlib libCHtml_Scanner.a

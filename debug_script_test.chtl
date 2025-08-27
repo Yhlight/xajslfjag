@@ -1,0 +1,9 @@
+use html5;
+
+button
+{
+    script
+    {
+        console.log('test');
+    }
+}

@@ -1,0 +1,10 @@
+div
+{
+    id: container;
+    
+    style
+    {
+        width: 100px;
+        color: red;
+    }
+}

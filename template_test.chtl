@@ -1,0 +1,14 @@
+[Template] @Style DefaultButton
+{
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid transparent;
+}
+
+div
+{
+    text
+    {
+        "Hello"
+    }
+}

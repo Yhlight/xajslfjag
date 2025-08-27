@@ -1,0 +1,112 @@
+use html5;
+
+html
+{
+    head
+    {
+        text
+        {
+            "CHTL测试页面"
+        }
+    }
+
+    body
+    {
+        div
+        {
+            id: container;
+            class: main-content;
+
+            style
+            {
+                .main-content
+                {
+                    width: 100%;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    font-family: Arial, sans-serif;
+                }
+
+                &:hover
+                {
+                    background-color: #f5f5f5;
+                }
+            }
+
+            h1
+            {
+                text
+                {
+                    "欢迎使用CHTL"
+                }
+
+                style
+                {
+                    color: #333;
+                    text-align: center;
+                }
+            }
+
+            p
+            {
+                text
+                {
+                    "这是一个CHTL编译器的测试页面。CHTL是一种现代化的超文本标记语言，支持模块化开发和强大的语法特性。"
+                }
+            }
+
+            button
+            {
+                id: test-button;
+                class: btn-primary;
+
+                text
+                {
+                    "点击测试"
+                }
+
+                style
+                {
+                    .btn-primary
+                    {
+                        background-color: #007bff;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        font-size: 16px;
+                    }
+
+                    &:hover
+                    {
+                        background-color: #0056b3;
+                    }
+                }
+
+                script
+                {
+                    {{.btn-primary}}->listen {
+                        click: () => {
+                            console.log('CHTL按钮被点击了！');
+                            alert('Hello from CHTL!');
+                        }
+                    };
+                }
+            }
+        }
+    }
+}
+
+[Template] @Style DefaultButton
+{
+    background-color: #6c757d;
+    color: white;
+    border: 1px solid transparent;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+-- 这是一个生成器注释，会根据上下文生成相应的注释类型

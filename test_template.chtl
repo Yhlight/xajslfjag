@@ -1,0 +1,7 @@
+use html5;
+
+[Template] @Style DefaultButton
+{
+    background-color: #6c757d;
+    color: white;
+}

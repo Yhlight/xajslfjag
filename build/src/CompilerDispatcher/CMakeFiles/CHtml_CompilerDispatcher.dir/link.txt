@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHtml_CompilerDispatcher.a CMakeFiles/CHtml_CompilerDispatcher.dir/CompilerDispatcher.cpp.o
+/usr/bin/ranlib libCHtml_CompilerDispatcher.a
