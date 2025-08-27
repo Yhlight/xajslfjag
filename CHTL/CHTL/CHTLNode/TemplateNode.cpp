@@ -1,4 +1,5 @@
 #include "TemplateNode.h"
+#include "StyleNode.h"
 #include <sstream>
 
 namespace CHTL {
@@ -58,7 +59,7 @@ NodePtr TemplateNode::Instantiate(const std::unordered_map<std::string, std::str
     switch (templateType) {
         case TemplateType::STYLE: {
             // 对于样式组模板，返回一个包含所有样式属性的节点
-            auto styleNode = std::make_shared<BaseNode>(NodeType::STYLE);
+            auto styleNode = std::make_shared<StyleNode>();
             
             // 先应用继承的模板的属性
             // TODO: 从GlobalMap获取继承的模板并应用

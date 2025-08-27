@@ -396,7 +396,7 @@ NodePtr CHTLParser::ParseInsert() {
     // 解析插入内容
     Consume(TokenType::LEFT_BRACE, "期望 '{'");
     
-    auto contentNode = std::make_shared<BaseNode>(NodeType::ELEMENT);
+    auto contentNode = std::make_shared<ElementNode>("div");
     
     while (!Check(TokenType::RIGHT_BRACE) && !Check(TokenType::EOF_TOKEN)) {
         if (Check(TokenType::HTML_TAG) || Check(TokenType::IDENTIFIER)) {

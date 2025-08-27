@@ -342,4 +342,51 @@ NodePtr ObjectLiteralNode::Clone() const {
     return clone;
 }
 
+// ProgramNode实现
+ProgramNode::ProgramNode()
+    : CHTLJSNode(NodeType::PROGRAM) {
+}
+
+std::string ProgramNode::GenerateJS() const {
+    std::stringstream ss;
+    for (const auto& child : children) {
+        ss << child->GenerateJS();
+        if (child->GetType() == NodeType::STATEMENT) {
+            ss << ";\n";
+        }
+    }
+    return ss.str();
+}
+
+NodePtr ProgramNode::Clone() const {
+    auto clone = std::make_shared<ProgramNode>();
+    for (const auto& child : children) {
+        clone->AddChild(child->Clone());
+    }
+    clone->SetPosition(line, column);
+    return clone;
+}
+
+// StatementNode实现
+StatementNode::StatementNode()
+    : CHTLJSNode(NodeType::STATEMENT) {
+}
+
+std::string StatementNode::GenerateJS() const {
+    std::stringstream ss;
+    for (const auto& child : children) {
+        ss << child->GenerateJS();
+    }
+    return ss.str();
+}
+
+NodePtr StatementNode::Clone() const {
+    auto clone = std::make_shared<StatementNode>();
+    for (const auto& child : children) {
+        clone->AddChild(child->Clone());
+    }
+    clone->SetPosition(line, column);
+    return clone;
+}
+
 } // namespace CHTLJS

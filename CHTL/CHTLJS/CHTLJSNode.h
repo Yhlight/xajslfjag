@@ -269,4 +269,22 @@ private:
     std::vector<std::string> propertyOrder; // 保持属性顺序
 };
 
+// 程序节点 - 用于根节点
+class ProgramNode : public CHTLJSNode {
+public:
+    ProgramNode();
+    
+    std::string GenerateJS() const override;
+    NodePtr Clone() const override;
+};
+
+// 语句节点
+class StatementNode : public CHTLJSNode {
+public:
+    StatementNode();
+    
+    std::string GenerateJS() const override;
+    NodePtr Clone() const override;
+};
+
 } // namespace CHTLJS

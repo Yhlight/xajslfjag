@@ -119,6 +119,9 @@ public:
     static bool IsPrefixKeyword(const std::string& str);
     static bool IsTypeIdentifier(const std::string& str);
     
+    // 更新关键字映射（用于配置）
+    static void UpdateKeywordMapping(const std::string& keyword, TokenType type);
+    
 private:
     static std::unordered_map<std::string, TokenType> keywordMap;
     static std::unordered_map<std::string, TokenType> prefixKeywordMap;

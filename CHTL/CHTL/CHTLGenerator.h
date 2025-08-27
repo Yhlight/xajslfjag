@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <sstream>
+#include <set>
 #include "CHTLNode/BaseNode.h"
 #include "CHTLContext.h"
 #include "CHTLLexer/GlobalMap.h"

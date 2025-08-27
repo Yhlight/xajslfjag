@@ -103,7 +103,7 @@ void CHTLParser::Synchronize() {
 }
 
 NodePtr CHTLParser::ParseDocument() {
-    auto root = std::make_shared<BaseNode>(NodeType::ELEMENT);
+    auto root = std::make_shared<ElementNode>("html");
     
     // 处理可能的use语句
     if (Check(TokenType::USE)) {
@@ -662,6 +662,28 @@ bool CHTLParser::IsTopLevelKeyword() {
            Check(TokenType::HTML_TAG);
 }
 
-// TODO: 实现其他解析方法...
+NodePtr CHTLParser::ParseNameBlock() {
+    // TODO: 实现[Name]块的解析
+    // 暂时跳过内容直到遇到右大括号
+    while (!Check(TokenType::RIGHT_BRACE) && !lexer->IsEOF()) {
+        Advance();
+    }
+    return nullptr;
+}
+
+NodePtr CHTLParser::ParseOriginTypeBlock() {
+    // TODO: 实现[OriginType]块的解析
+    // 暂时跳过内容直到遇到右大括号
+    while (!Check(TokenType::RIGHT_BRACE) && !lexer->IsEOF()) {
+        Advance();
+    }
+    return nullptr;
+}
+
+
+
+
+
+
 
 } // namespace CHTL

@@ -109,7 +109,7 @@ private:
     
     // 元素解析
     NodePtr ParseElement();
-    NodePtr ParseElementBody();
+    void ParseElementBody(NodePtr elementNode);
     NodePtr ParseAttribute();
     
     // 文本解析
@@ -119,7 +119,7 @@ private:
     NodePtr ParseStyle();
     NodePtr ParseStyleBody();
     NodePtr ParseStyleRule();
-    NodePtr ParseSelector();
+    std::string ParseSelector();
     
     // 脚本解析
     NodePtr ParseScript();

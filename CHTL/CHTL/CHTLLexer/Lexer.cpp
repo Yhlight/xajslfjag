@@ -474,11 +474,11 @@ void Lexer::ApplyConfiguration(std::shared_ptr<ConfigNode> config) {
             
             // 根据key更新对应的关键字映射
             if (key == "KEYWORD_TEXT") {
-                TokenUtils::keywordMap["text"] = TokenUtils::StringToTokenType(primaryValue);
+                TokenUtils::UpdateKeywordMapping("text", TokenUtils::StringToTokenType(primaryValue));
             } else if (key == "KEYWORD_STYLE") {
-                TokenUtils::keywordMap["style"] = TokenUtils::StringToTokenType(primaryValue);
+                TokenUtils::UpdateKeywordMapping("style", TokenUtils::StringToTokenType(primaryValue));
             } else if (key == "KEYWORD_SCRIPT") {
-                TokenUtils::keywordMap["script"] = TokenUtils::StringToTokenType(primaryValue);
+                TokenUtils::UpdateKeywordMapping("script", TokenUtils::StringToTokenType(primaryValue));
             }
             // TODO: 处理其他关键字映射
             

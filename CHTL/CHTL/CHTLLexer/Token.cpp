@@ -1,5 +1,6 @@
 #include "Token.h"
 #include <algorithm>
+#include <vector>
 #include <cctype>
 
 namespace CHTL {
@@ -181,6 +182,11 @@ bool TokenUtils::IsPrefixKeyword(const std::string& str) {
 bool TokenUtils::IsTypeIdentifier(const std::string& str) {
     InitializeMaps();
     return typeIdentifierMap.find(str) != typeIdentifierMap.end();
+}
+
+void TokenUtils::UpdateKeywordMapping(const std::string& keyword, TokenType type) {
+    InitializeMaps();
+    keywordMap[keyword] = type;
 }
 
 } // namespace CHTL

@@ -10,9 +10,15 @@ namespace CHTL {
 // 前向声明
 class Scanner;
 class CHTLCompiler;
-class CHTLJSCompiler;
 class CSSCompiler;
 class JSCompiler;
+}
+
+namespace CHTLJS {
+class CHTLJSCompiler;
+}
+
+namespace CHTL {
 
 // 代码片段类型
 enum class FragmentType {
@@ -57,7 +63,7 @@ private:
     // 编译器实例
     std::unique_ptr<Scanner> scanner;
     std::unique_ptr<CHTLCompiler> chtlCompiler;
-    std::unique_ptr<CHTLJSCompiler> chtljsCompiler;
+    std::unique_ptr<CHTLJS::CHTLJSCompiler> chtljsCompiler;
     std::unique_ptr<CSSCompiler> cssCompiler;
     std::unique_ptr<JSCompiler> jsCompiler;
     

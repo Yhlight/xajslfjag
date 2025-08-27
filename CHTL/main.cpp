@@ -81,7 +81,7 @@ int main(int argc, char* argv[]) {
         }
 
         // 创建编译器调度器
-        auto dispatcher = std::make_unique<CompilerDispatcher>();
+        auto dispatcher = std::make_unique<CHTL::CompilerDispatcher>();
         dispatcher->SetDebugMode(debugMode);
 
         // 设置模块目录
@@ -103,14 +103,14 @@ int main(int argc, char* argv[]) {
         }
 
         // 读取输入文件
-        std::string content = FileSystem::ReadFile(inputFile);
+        std::string content = CHTL::FileSystem::ReadFile(inputFile);
         
         // 编译文件
         std::cout << "正在编译: " << inputFile << "\n";
         std::string result = dispatcher->Compile(content, inputFile);
 
         // 写入输出文件
-        FileSystem::WriteFile(outputFile, result);
+        CHTL::FileSystem::WriteFile(outputFile, result);
         std::cout << "编译成功，输出文件: " << outputFile << "\n";
 
         return 0;

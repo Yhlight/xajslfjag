@@ -120,8 +120,8 @@ void CHTLGenerator::VisitStyleNode(StyleNode* node) {
         Indent();
         
         // 获取样式内容
-        auto [inline, global] = node->SeparateStyles();
-        Write(global);
+        auto separated = node->SeparateStyles();
+        Write(separated.second);
         
         Dedent();
         WriteIndent();
@@ -294,6 +294,27 @@ void CHTLGenerator::ReportError(const std::string& message) {
     errors.push_back(message);
 }
 
-// TODO: 实现其他方法...
+void CHTLGenerator::ProcessDeleteOperator(OperatorNode* node) {
+    // TODO: 实现删除操作符处理
+    // 这应该修改当前上下文中的元素或属性
+}
+
+void CHTLGenerator::ProcessInsertOperator(OperatorNode* node) {
+    // TODO: 实现插入操作符处理
+    // 这应该在当前上下文中插入新的元素或属性
+}
+
+void CHTLGenerator::ProcessTemplateUsage(const std::string& type, const std::string& name,
+                                        const std::unordered_map<std::string, std::string>& params) {
+    // TODO: 实现模板使用处理
+}
+
+void CHTLGenerator::ProcessCustomUsage(const std::string& type, const std::string& name,
+                                      const std::unordered_map<std::string, std::string>& params,
+                                      const std::set<std::string>& deletions) {
+    // TODO: 实现自定义使用处理
+}
+
+
 
 } // namespace CHTL

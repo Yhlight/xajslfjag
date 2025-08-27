@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../lib/libcompiler_dispatcher.a CMakeFiles/compiler_dispatcher.dir/CompilerDispatcher.cpp.o
+/usr/bin/ranlib ../lib/libcompiler_dispatcher.a

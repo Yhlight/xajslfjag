@@ -1,4 +1,5 @@
 #include "CustomNode.h"
+#include <algorithm>
 
 namespace CHTL {
 
@@ -60,7 +61,7 @@ void CustomNode::DeleteInheritance(const std::string& type, const std::string& n
     // 从继承列表中移除
     inheritedCustoms.erase(
         std::remove_if(inheritedCustoms.begin(), inheritedCustoms.end(),
-            [&](const auto& pair) {
+            [&](const std::pair<std::string, std::string>& pair) {
                 return pair.first == type && pair.second == name;
             }),
         inheritedCustoms.end()

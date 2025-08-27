@@ -14,7 +14,7 @@ CompilerDispatcher::CompilerDispatcher()
     // 创建编译器实例
     scanner = std::make_unique<Scanner>();
     chtlCompiler = std::make_unique<CHTLCompiler>();
-    chtljsCompiler = std::make_unique<CHTLJSCompiler>();
+    chtljsCompiler = std::make_unique<CHTLJS::CHTLJSCompiler>();
     cssCompiler = std::make_unique<CSSCompiler>();
     jsCompiler = std::make_unique<JSCompiler>();
 }
@@ -60,7 +60,7 @@ void CompilerDispatcher::AddModulePath(const std::string& path) {
     
     // 通知各编译器新的模块路径
     chtlCompiler->AddModulePath(path);
-    chtljsCompiler->AddModulePath(path);
+    // CHTL JS编译器暂不支持模块路径
 }
 
 bool CompilerDispatcher::HasErrors() const {
@@ -93,7 +93,8 @@ std::vector<std::string> CompilerDispatcher::GetErrors() const {
 void CompilerDispatcher::ClearErrors() {
     errors.clear();
     chtlCompiler->ClearErrors();
-    chtljsCompiler->ClearErrors();
+    // CHTL JS编译器使用Reset()来清除错误
+    chtljsCompiler->Reset();
     cssCompiler->ClearErrors();
     jsCompiler->ClearErrors();
 }
@@ -121,7 +122,7 @@ std::string CompilerDispatcher::DispatchFragment(const CodeFragment& fragment) {
             return chtlCompiler->Compile(fragment.content, fragment.context);
             
         case FragmentType::CHTLJS:
-            return chtljsCompiler->Compile(fragment.content, fragment.context);
+            return chtljsCompiler->Compile(fragment.content);
             
         case FragmentType::CSS:
             // 判断是否是局部样式
@@ -189,7 +190,8 @@ std::string CompilerDispatcher::ProcessLocalScript(const std::string& content, c
     // 可能包含CHTLJS语法
     if (content.find("{{") != std::string::npos || 
         content.find("->") != std::string::npos) {
-        return chtljsCompiler->ProcessLocalScript(content, elementContext);
+        // 局部脚本直接通过CHTL JS编译器处理
+        return chtljsCompiler->Compile(content);
     }
     return jsCompiler->Compile(content);
 }

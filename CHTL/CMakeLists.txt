@@ -35,12 +35,12 @@ add_executable(chtl_compiler
 
 # 链接库
 target_link_libraries(chtl_compiler
+    compiler_dispatcher
     chtl_core
     chtljs_core
     css_compiler
     js_compiler
     scanner
-    compiler_dispatcher
     util
 )
 
