@@ -1,0 +1,15 @@
+// 由比滨结衣模块信息文件
+// 严格按照语法文档：开发者只需要写[Info]，[Export]由系统生成
+
+[Info]
+{
+    name = "yuigahama";
+    version = "1.0.0";
+    description = "由比滨结衣主题模块 - 充满活力的女孩";
+    author = "CHTL Team";
+    license = "MIT";
+    dependencies = "";
+    category = "theme";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+}

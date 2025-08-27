@@ -1,0 +1,224 @@
+// 珂朵莉四叶窗相册 - 如四叶草般的幸运展示
+[Custom] @Element ChthollyFourLeafGallery
+{
+    div {
+        position: relative,
+        width: 100%,
+        max-width: 800px,
+        margin: 0 auto,
+        border-radius: 20px,
+        overflow: hidden,
+        box-shadow: 0 20px 60px rgba(255, 182, 193, 0.3),
+        background: white
+    }
+    
+    .gallery-container {
+        position: relative,
+        width: 100%,
+        height: 500px,
+        overflow: hidden
+    }
+    
+    .leaf-panel {
+        position: absolute,
+        width: 50%,
+        height: 50%,
+        overflow: hidden,
+        cursor: pointer,
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+        border: 2px solid rgba(255, 182, 193, 0.3),
+        box-sizing: border-box
+    }
+    
+    // 四叶草的四个叶片位置
+    .leaf-panel.top-left {
+        top: 0,
+        left: 0,
+        border-radius: 20px 0 0 0
+    }
+    
+    .leaf-panel.top-right {
+        top: 0,
+        right: 0,
+        border-radius: 0 20px 0 0
+    }
+    
+    .leaf-panel.bottom-left {
+        bottom: 0,
+        left: 0,
+        border-radius: 0 0 0 20px
+    }
+    
+    .leaf-panel.bottom-right {
+        bottom: 0,
+        right: 0,
+        border-radius: 0 0 20px 0
+    }
+    
+    .leaf-panel img {
+        width: 100%,
+        height: 100%,
+        object-fit: cover,
+        transition: transform 0.6s ease,
+        filter: sepia(10%) saturate(120%)  // 珂朵莉风格的温暖滤镜
+    }
+    
+    .leaf-panel:hover img {
+        transform: scale(1.1)
+    }
+    
+    // 展开状态 - 占满整个容器
+    .leaf-panel.expanded {
+        width: 100%,
+        height: 100%,
+        top: 0,
+        left: 0,
+        z-index: 10,
+        border-radius: 20px
+    }
+    
+    // 其他叶片在展开时隐藏
+    .gallery-container.has-expanded .leaf-panel:not(.expanded) {
+        opacity: 0,
+        transform: scale(0.8)
+    }
+    
+    .leaf-overlay {
+        position: absolute,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: linear-gradient(transparent, rgba(255, 182, 193, 0.8)),
+        color: white,
+        padding: $(ChthollySpacing.lg),
+        transform: translateY(100%),
+        transition: transform 0.4s ease
+    }
+    
+    .leaf-panel:hover .leaf-overlay,
+    .leaf-panel.expanded .leaf-overlay {
+        transform: translateY(0)
+    }
+    
+    .leaf-title {
+        font-size: 1.2em,
+        font-weight: bold,
+        margin-bottom: $(ChthollySpacing.sm)
+    }
+    
+    .leaf-description {
+        font-size: 0.9em,
+        opacity: 0.9,
+        line-height: 1.4
+    }
+    
+    // 控制按钮
+    .gallery-controls {
+        position: absolute,
+        top: $(ChthollySpacing.md),
+        right: $(ChthollySpacing.md),
+        z-index: 20
+    }
+    
+    .close-btn {
+        background: rgba(255, 182, 193, 0.9),
+        border: none,
+        border-radius: 50%,
+        width: 40px,
+        height: 40px,
+        color: white,
+        font-size: 1.2em,
+        cursor: pointer,
+        display: none,
+        transition: all 0.3s ease,
+        backdrop-filter: blur(10px)
+    }
+    
+    .close-btn:hover {
+        background: rgba(255, 182, 193, 1),
+        transform: scale(1.1)
+    }
+    
+    .gallery-container.has-expanded .close-btn {
+        display: block
+    }
+    
+    // 四叶草中心装饰
+    .center-decoration {
+        position: absolute,
+        top: 50%,
+        left: 50%,
+        transform: translate(-50%, -50%),
+        width: 60px,
+        height: 60px,
+        background: radial-gradient(circle, $(ChthollyColors.primary) 0%, $(ChthollyColors.secondary) 100%),
+        border-radius: 50%,
+        display: flex,
+        align-items: center,
+        justify-content: center,
+        color: white,
+        font-size: 1.5em,
+        box-shadow: 0 4px 20px rgba(255, 182, 193, 0.5),
+        z-index: 5,
+        transition: all 0.6s ease
+    }
+    
+    .center-decoration::before {
+        content: "🍀"  // 四叶草图标
+    }
+    
+    .gallery-container.has-expanded .center-decoration {
+        opacity: 0,
+        transform: translate(-50%, -50%) scale(0)
+    }
+}
+
+script {
+    // 四叶窗相册控制逻辑
+    {{.leaf-panel}}->listen {
+        click: function() {
+            const panel = this;
+            const container = panel.closest('.gallery-container');
+            const isExpanded = panel.classList.contains('expanded');
+            
+            if (isExpanded) {
+                // 如果已经展开，则收起
+                panel.classList.remove('expanded');
+                container.classList.remove('has-expanded');
+            } else {
+                // 收起所有其他面板
+                {{.leaf-panel}}.forEach(p => p.classList.remove('expanded'));
+                container.classList.remove('has-expanded');
+                
+                // 展开当前面板
+                setTimeout(() => {
+                    panel.classList.add('expanded');
+                    container.classList.add('has-expanded');
+                }, 100);
+            }
+        }
+    };
+    
+    // 关闭按钮控制
+    {{.close-btn}}->listen {
+        click: function(e) {
+            e.stopPropagation();
+            const container = this.closest('.gallery-container');
+            {{.leaf-panel}}.forEach(p => p.classList.remove('expanded'));
+            container.classList.remove('has-expanded');
+        }
+    };
+    
+    // 键盘ESC关闭
+    document->listen {
+        keydown: function(e) {
+            if (e.key === 'Escape') {
+                const container = {{.gallery-container}};
+                if (container && container.classList.contains('has-expanded')) {
+                    {{.leaf-panel}}.forEach(p => p.classList.remove('expanded'));
+                    container.classList.remove('has-expanded');
+                }
+            }
+        }
+    };
+}

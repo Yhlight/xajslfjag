@@ -1,0 +1,97 @@
+// 珂朵莉CJMOD部分信息文件
+// 严格按照语法文档：CJMOD不使用[Export]，只有[Info]
+
+[Info]
+{
+    name = "chtholly-cjmod";
+    version = "1.0.0";
+    description = "珂朵莉模块的CJMOD部分 - 提供printMylove和iNeverAway两个强大的CHTL JS扩展功能。这些功能通过C++实现，为CHTL JS提供了图片处理和虚对象管理的高级能力。";
+    author = "CHTL Team";
+    license = "MIT";
+    dependencies = "";
+    category = "cjmod-extensions";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+    
+    // CJMOD特有配置
+    moduleType = "cjmod";
+    cppStandard = "c++17";
+    isParentModule = true;  // 这是包含子模块的父级CJMOD
+    
+    // 扩展信息
+    homepage = "https://chtl.dev/modules/chtholly/cjmod";
+    repository = "https://github.com/chtl/chtholly-module/tree/main/CJMOD";
+    keywords = "chtholly, cjmod, image-processing, virtual-objects, extensions";
+    
+    // 子模块列表
+    subModules = [
+        {
+            name: "printmylove",
+            description: "图片转字符像素块功能",
+            category: "image-processing"
+        },
+        {
+            name: "ineveraway", 
+            description: "虚对象标记函数系统",
+            category: "virtual-object"
+        }
+    ];
+    
+    // 整合功能特性
+    features = {
+        imageProcessing: true,      // 图片处理（printMylove）
+        virtualObjects: true,       // 虚对象支持（iNeverAway）
+        asciiArt: true,            // ASCII艺术
+        pixelConversion: true,      // 像素转换
+        stateManagement: true,      // 状态管理
+        globalFunctions: true,      // 全局函数生成
+        compileTimeProcessing: true // 编译时处理
+    };
+    
+    // 编译配置
+    compilation = {
+        requiresCppCompiler: true,
+        linkLibraries: ["image-processing", "console-utils", "virtual-object-registry"],
+        includeDirectories: ["./PrintMyLove/src", "./INeverAway/src"],
+        compilerFlags: ["-std=c++17", "-O2"],
+        platformSupport: ["windows", "linux", "macos"]
+    };
+    
+    // 与CMOD部分的集成
+    cmodIntegration = {
+        parentModule: "chtholly",
+        cmodPath: "../CMOD",
+        sharedResources: ["themes", "colors", "animations"],
+        crossModuleDependencies: false  // CJMOD独立运行
+    };
+    
+    // 使用指南
+    usage = {
+        importSyntax: "[Import] @CJmod from Chtholly",
+        separateFromCmod: true,  // 严格按照文档：不推荐@Chtl同时管理CMOD和CJMOD
+        requiresVirtualObjects: true,  // iNeverAway需要虚对象
+        compilationRequired: true
+    };
+    
+    // 性能和限制
+    performance = {
+        imageProcessingLimits: {
+            maxWidth: 1920,
+            maxHeight: 1080,
+            supportedFormats: ["jpg", "png", "gif", "bmp"]
+        },
+        virtualObjectLimits: {
+            maxVirtualObjects: 100,
+            maxFunctionsPerObject: 50,
+            maxStateVariants: 10
+        }
+    };
+    
+    // 安全性
+    security = {
+        urlValidation: true,        // URL安全验证
+        filePathSanitization: true, // 文件路径清理
+        memoryManagement: "RAII",   // 内存管理策略
+        inputValidation: true       // 输入验证
+    };
+}
