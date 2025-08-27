@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHtml_CHTL.dir/CHTLContext/Context.cpp.o.d"
   "CMakeFiles/CHtml_CHTL.dir/CHTLGenerator/HtmlGenerator.cpp.o"
   "CMakeFiles/CHtml_CHTL.dir/CHTLGenerator/HtmlGenerator.cpp.o.d"
+  "CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.o"
+  "CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.o.d"
   "CMakeFiles/CHtml_CHTL.dir/CHTLLexer/GlobalMap.cpp.o"
   "CMakeFiles/CHtml_CHTL.dir/CHTLLexer/GlobalMap.cpp.o.d"
   "CMakeFiles/CHtml_CHTL.dir/CHTLLexer/Lexer.cpp.o"

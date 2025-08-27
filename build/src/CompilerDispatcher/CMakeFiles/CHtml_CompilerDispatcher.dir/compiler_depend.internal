@@ -287,6 +287,20 @@ src/CompilerDispatcher/CMakeFiles/CHtml_CompilerDispatcher.dir/CompilerDispatche
  /workspace/src/CHTL/CHTLLexer/Token.h
  /workspace/src/CHTL/CHTLState/State.h
  /workspace/src/CHTL/CHTLContext/Context.h
+ /workspace/src/CHTL/CHTLNode/BaseNode.h
+ /workspace/src/CHTL/CHTLNode/NodeVisitor.h
+ /workspace/src/CHTL/CHTLNode/ScriptNode.h
+ /workspace/src/CHTL/CHTLNode/StyleNode.h
+ /workspace/src/CHTL/CHTLGenerator/HtmlGenerator.h
+ /workspace/src/CHTL/CHTLContext/Context.h
+ /workspace/src/CHTL/CHTLLexer/GlobalMap.h
+ /workspace/src/CHTL/CHTLLexer/Lexer.h
+ /workspace/src/CHTL/CHTLLexer/Token.h
+ /workspace/src/CHTL/CHTLNode/BaseNode.h
+ /workspace/src/CHTL/CHTLNode/ScriptNode.h
+ /workspace/src/CHTL/CHTLNode/StyleNode.h
+ /workspace/src/CHTL/CHTLState/State.h
+ /workspace/src/CHTL/CHTLParser/Parser.h
  /workspace/src/Scanner/CHTLUnifiedScanner.h
  /workspace/src/Util/FileSystem/FileSystem.h
  /workspace/src/CompilerDispatcher/CompilerDispatcher.h

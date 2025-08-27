@@ -249,6 +249,7 @@ src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLParser/Parser.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_function.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/array \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/compare \
+  /workspace/src/CHTL/CHTLParser/../CHTLLexer/EnhancedLexer.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/algorithm \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/algorithmfwd.h \

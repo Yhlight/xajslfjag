@@ -6,6 +6,7 @@ set(CHTL_SOURCES
     CHTLLexer/Token.cpp
     CHTLLexer/GlobalMap.cpp
     CHTLLexer/Lexer.cpp
+    CHTLLexer/EnhancedLexer.cpp
     
     # CHTLState
     CHTLState/State.cpp
@@ -32,6 +33,7 @@ set(CHTL_HEADERS
     CHTLLexer/Token.h
     CHTLLexer/GlobalMap.h
     CHTLLexer/Lexer.h
+    CHTLLexer/EnhancedLexer.h
     
     # CHTLState
     CHTLState/State.h

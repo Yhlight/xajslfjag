@@ -178,6 +178,30 @@ CHTLGenerator/HtmlGenerator.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/CHTL/CMakeFiles/CHtml_CHTL.dir/build.make src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLGenerator/HtmlGenerator.cpp.s
 .PHONY : CHTLGenerator/HtmlGenerator.cpp.s
 
+CHTLLexer/EnhancedLexer.o: CHTLLexer/EnhancedLexer.cpp.o
+.PHONY : CHTLLexer/EnhancedLexer.o
+
+# target to build an object file
+CHTLLexer/EnhancedLexer.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/CHTL/CMakeFiles/CHtml_CHTL.dir/build.make src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.o
+.PHONY : CHTLLexer/EnhancedLexer.cpp.o
+
+CHTLLexer/EnhancedLexer.i: CHTLLexer/EnhancedLexer.cpp.i
+.PHONY : CHTLLexer/EnhancedLexer.i
+
+# target to preprocess a source file
+CHTLLexer/EnhancedLexer.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/CHTL/CMakeFiles/CHtml_CHTL.dir/build.make src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.i
+.PHONY : CHTLLexer/EnhancedLexer.cpp.i
+
+CHTLLexer/EnhancedLexer.s: CHTLLexer/EnhancedLexer.cpp.s
+.PHONY : CHTLLexer/EnhancedLexer.s
+
+# target to generate assembly for a file
+CHTLLexer/EnhancedLexer.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f src/CHTL/CMakeFiles/CHtml_CHTL.dir/build.make src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.s
+.PHONY : CHTLLexer/EnhancedLexer.cpp.s
+
 CHTLLexer/GlobalMap.o: CHTLLexer/GlobalMap.cpp.o
 .PHONY : CHTLLexer/GlobalMap.o
 
@@ -409,6 +433,9 @@ help:
 	@echo "... CHTLGenerator/HtmlGenerator.o"
 	@echo "... CHTLGenerator/HtmlGenerator.i"
 	@echo "... CHTLGenerator/HtmlGenerator.s"
+	@echo "... CHTLLexer/EnhancedLexer.o"
+	@echo "... CHTLLexer/EnhancedLexer.i"
+	@echo "... CHTLLexer/EnhancedLexer.s"
 	@echo "... CHTLLexer/GlobalMap.o"
 	@echo "... CHTLLexer/GlobalMap.i"
 	@echo "... CHTLLexer/GlobalMap.s"

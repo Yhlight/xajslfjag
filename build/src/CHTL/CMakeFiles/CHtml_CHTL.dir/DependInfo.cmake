@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/CHTL/CHTLContext/Context.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLContext/Context.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLContext/Context.cpp.o.d"
   "/workspace/src/CHTL/CHTLGenerator/HtmlGenerator.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLGenerator/HtmlGenerator.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLGenerator/HtmlGenerator.cpp.o.d"
+  "/workspace/src/CHTL/CHTLLexer/EnhancedLexer.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/EnhancedLexer.cpp.o.d"
   "/workspace/src/CHTL/CHTLLexer/GlobalMap.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/GlobalMap.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/GlobalMap.cpp.o.d"
   "/workspace/src/CHTL/CHTLLexer/Lexer.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/Lexer.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/Lexer.cpp.o.d"
   "/workspace/src/CHTL/CHTLLexer/Token.cpp" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/Token.cpp.o" "gcc" "src/CHTL/CMakeFiles/CHtml_CHTL.dir/CHTLLexer/Token.cpp.o.d"

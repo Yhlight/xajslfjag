@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include "../CHTLLexer/EnhancedLexer.h"
 #include <algorithm>
 #include <cctype>
 #include <functional>
@@ -22,10 +23,19 @@ std::shared_ptr<BaseNode> Parser::Parse(const std::string& source) {
     currentTokenIndex = 0;
     errorMessages.clear();
     
-    // 词法分析
-    lexer->SetSource(source);
-    lexer->Analyze();
-    tokens = lexer->GetTokens();
+    // 使用增强型词法分析器
+    auto enhancedLexer = std::make_shared<EnhancedLexer>(lexer->GetGlobalMap());
+    enhancedLexer->SetSource(source);
+    enhancedLexer->Analyze();
+    
+    if (enhancedLexer->HasErrors()) {
+        for (const auto& error : enhancedLexer->GetErrors()) {
+            AddError("词法分析错误: " + error);
+        }
+        return nullptr;
+    }
+    
+    tokens = enhancedLexer->GetTokens();
     
     if (tokens.empty()) {
         AddError("输入为空或词法分析失败");
@@ -204,16 +214,20 @@ void Parser::ParseElementContent(std::shared_ptr<ElementNode> element) {
     while (!IsAtEnd() && !IsCurrentToken(TokenType::RIGHT_BRACE)) {
         std::shared_ptr<BaseNode> child = nullptr;
         
-        if (IsCurrentToken(TokenType::IDENTIFIER)) {
+        if (IsCurrentToken(TokenType::IDENTIFIER) || 
+            IsCurrentToken(TokenType::STYLE) ||
+            IsCurrentToken(TokenType::SCRIPT) ||
+            IsCurrentToken(TokenType::TEXT)) {
+            
             std::string identifier = CurrentToken().value;
             
-            if (identifier == "style") {
+            if (identifier == "style" || IsCurrentToken(TokenType::STYLE)) {
                 child = ParseStyleBlock();
             }
-            else if (identifier == "script") {
+            else if (identifier == "script" || IsCurrentToken(TokenType::SCRIPT)) {
                 child = std::static_pointer_cast<BaseNode>(ParseScriptBlock());
             }
-            else if (identifier == "text") {
+            else if (identifier == "text" || IsCurrentToken(TokenType::TEXT)) {
                 child = ParseTextNode();
             }
             else if (HtmlElementValidator::IsValidElement(identifier)) {
@@ -279,7 +293,16 @@ void Parser::ParseAttribute(std::shared_ptr<ElementNode> element) {
 }
 
 std::shared_ptr<TextNode> Parser::ParseTextNode() {
-    ConsumeToken(TokenType::IDENTIFIER); // "text"
+    // 消费text关键字（可能是IDENTIFIER或TEXT类型）
+    if (IsCurrentToken(TokenType::TEXT)) {
+        ConsumeToken(TokenType::TEXT);
+    } else if (IsCurrentToken(TokenType::IDENTIFIER) && CurrentToken().value == "text") {
+        ConsumeToken(TokenType::IDENTIFIER);
+    } else {
+        AddError("期望text关键字");
+        return nullptr;
+    }
+    
     SkipWhitespace();
     
     if (!ConsumeToken(TokenType::LEFT_BRACE)) {
@@ -289,10 +312,49 @@ std::shared_ptr<TextNode> Parser::ParseTextNode() {
     
     SkipWhitespace();
     
-    std::string content = ParseStringValue();
-    auto textNode = std::make_shared<TextNode>(content);
+    // 收集text块中的所有内容
+    std::string content;
+    bool hasContent = false;
     
-    SkipWhitespace();
+    while (!IsAtEnd() && !IsCurrentToken(TokenType::RIGHT_BRACE)) {
+        if (IsCurrentToken(TokenType::WHITESPACE) || IsCurrentToken(TokenType::NEWLINE)) {
+            if (hasContent) {
+                content += " "; // 将换行和空白转换为空格
+            }
+            SkipToken();
+            continue;
+        }
+        
+        // 收集所有非结构Token作为文本内容
+        if (IsCurrentToken(TokenType::STRING_LITERAL) ||
+            IsCurrentToken(TokenType::IDENTIFIER) ||
+            IsCurrentToken(TokenType::NUMBER) ||
+            IsCurrentToken(TokenType::UNQUOTED_LITERAL)) {
+            
+            if (hasContent) {
+                content += " "; // 在Token之间添加空格
+            }
+            
+            std::string tokenValue = CurrentToken().value;
+            
+            // 处理字符串字面量，移除引号
+            if (IsCurrentToken(TokenType::STRING_LITERAL) && tokenValue.size() >= 2) {
+                if ((tokenValue.front() == '"' && tokenValue.back() == '"') ||
+                    (tokenValue.front() == '\'' && tokenValue.back() == '\'')) {
+                    tokenValue = tokenValue.substr(1, tokenValue.size() - 2);
+                }
+            }
+            
+            content += tokenValue;
+            hasContent = true;
+            SkipToken();
+        } else {
+            // 遇到不认识的Token，跳过
+            SkipToken();
+        }
+    }
+    
+    auto textNode = std::make_shared<TextNode>(content);
     
     if (!ConsumeToken(TokenType::RIGHT_BRACE)) {
         AddError("text块期望 '}'");
@@ -420,7 +482,9 @@ std::string Parser::ParseStringValue() {
         }
         return value;
     }
-    else if (IsCurrentToken(TokenType::IDENTIFIER) || IsCurrentToken(TokenType::NUMBER)) {
+    else if (IsCurrentToken(TokenType::IDENTIFIER) || 
+             IsCurrentToken(TokenType::NUMBER) ||
+             IsCurrentToken(TokenType::UNQUOTED_LITERAL)) {
         // 无修饰字面量
         std::string value = CurrentToken().value;
         SkipToken();

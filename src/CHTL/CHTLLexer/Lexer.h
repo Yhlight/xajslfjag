@@ -67,6 +67,9 @@ public:
     
     /// 获取错误信息
     std::vector<std::string> GetErrors() const;
+    
+    /// 获取全局映射表
+    std::shared_ptr<GlobalMap> GetGlobalMap() const { return globalMap; }
 
 private:
     /// 跳过空白字符
