@@ -40,6 +40,12 @@ add_library(CHTLCore STATIC
     CHTL/CHTLNode/ConfigNode.cpp
     CHTL/CHTLNode/NamespaceNode.cpp
     CHTL/CHTLNode/OperatorNode.cpp
+    
+    # State
+    CHTL/CHTLState/CHTLState.cpp
+    
+    # Context
+    CHTL/CHTLContext/CHTLContext.cpp
 )
 
 # CHTL JS 库
@@ -51,6 +57,12 @@ add_library(CHTLJSCore STATIC
     
     # Nodes
     CHTLJS/CHTLJSNode/BaseNode.cpp
+    
+    # State
+    CHTLJS/CHTLJSState/CHTLJSState.cpp
+    
+    # Context
+    CHTLJS/CHTLJSContext/CHTLJSContext.cpp
 )
 
 # 工具库
@@ -58,12 +70,10 @@ add_library(CHTLUtil STATIC
     Util/FileSystem/FileSystem.cpp
 )
 
-# 链接文件系统库
-target_link_libraries(CHTLUtil
-    PRIVATE
-        $<$<CXX_COMPILER_ID:GNU>:stdc++fs>
-        $<$<CXX_COMPILER_ID:Clang>:c++fs>
-)
+# 链接文件系统库 (Clang 20.1 默认支持C++17 filesystem，不需要额外链接)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS "9.0")
+    target_link_libraries(CHTLUtil PRIVATE stdc++fs)
+endif()
 
 # 主编译器可执行文件
 add_executable(chtlc

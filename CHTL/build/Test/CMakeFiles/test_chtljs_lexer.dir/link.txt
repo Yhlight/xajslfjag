@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -Xlinker --dependency-file=CMakeFiles/test_chtljs_lexer.dir/link.d CMakeFiles/test_chtljs_lexer.dir/test_chtljs_lexer.cpp.o -o ../bin/test_chtljs_lexer  ../lib/libCHTLJSCore.a ../lib/libCHTLUtil.a

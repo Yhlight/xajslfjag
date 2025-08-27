@@ -155,7 +155,7 @@ std::vector<std::string> FileSystem::findFiles(const std::string& directory, con
     std::vector<std::string> matches;
     std::regex regex(pattern);
     
-    auto search = [&](const fs::path& dir) {
+    std::function<void(const fs::path&)> search = [&](const fs::path& dir) {
         for (const auto& entry : fs::directory_iterator(dir)) {
             if (fs::is_regular_file(entry.status())) {
                 std::string filename = entry.path().filename().string();
@@ -182,7 +182,7 @@ std::vector<std::string> FileSystem::findFilesByExtension(const std::string& dir
         ext = "." + ext;
     }
     
-    auto search = [&](const fs::path& dir) {
+    std::function<void(const fs::path&)> search = [&](const fs::path& dir) {
         for (const auto& entry : fs::directory_iterator(dir)) {
             if (fs::is_regular_file(entry.status())) {
                 if (entry.path().extension() == ext) {
@@ -266,7 +266,9 @@ size_t FileSystem::getFileSize(const std::string& path) {
 time_t FileSystem::getLastModifiedTime(const std::string& path) {
     if (exists(path)) {
         auto ftime = fs::last_write_time(path);
-        return decltype(ftime)::clock::to_time_t(ftime);
+        // C++17/20 兼容性处理
+        auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(ftime - fs::file_time_type::clock::now() + std::chrono::system_clock::now());
+        return std::chrono::system_clock::to_time_t(sctp);
     }
     return 0;
 }
@@ -348,21 +350,29 @@ bool FileSystem::packCMOD(const std::string& sourceDir, const std::string& outpu
     // TODO: 实现CMOD打包逻辑
     // 这里需要实现将目录打包成.cmod文件的逻辑
     // 可能需要使用zip库或自定义的打包格式
+    (void)sourceDir;
+    (void)outputPath;
     return false;
 }
 
 bool FileSystem::unpackCMOD(const std::string& cmodPath, const std::string& outputDir) {
     // TODO: 实现CMOD解包逻辑
+    (void)cmodPath;
+    (void)outputDir;
     return false;
 }
 
 bool FileSystem::packCJMOD(const std::string& sourceDir, const std::string& outputPath) {
     // TODO: 实现CJMOD打包逻辑
+    (void)sourceDir;
+    (void)outputPath;
     return false;
 }
 
 bool FileSystem::unpackCJMOD(const std::string& cjmodPath, const std::string& outputDir) {
     // TODO: 实现CJMOD解包逻辑
+    (void)cjmodPath;
+    (void)outputDir;
     return false;
 }
 
@@ -401,6 +411,7 @@ bool FileSystem::writeTextFile(const std::string& path, const std::string& conte
 
 std::vector<std::string> FileSystem::glob(const std::string& pattern) {
     // TODO: 实现glob模式匹配
+    (void)pattern;
     return {};
 }
 

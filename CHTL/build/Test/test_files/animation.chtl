@@ -1,0 +1,77 @@
+// CHTL动画测试文件
+
+[Custom] @Style AnimatedBox {
+    width: 100px;
+    height: 100px;
+    background-color: #ff6b6b;
+    position: relative;
+}
+
+body {
+    div {
+        style {
+            .animated-box {
+                @Style AnimatedBox;
+            }
+        }
+        
+        script {
+            const box = {{.animated-box}};
+            
+            const slideAnimation = animate {
+                target: box,
+                duration: 2000,
+                easing: ease-in-out,
+                
+                begin: {
+                    left: 0,
+                    opacity: 0.3
+                },
+                
+                when: [
+                    {
+                        at: 0.5,
+                        left: '200px',
+                        opacity: 1,
+                        transform: 'scale(1.2)'
+                    }
+                ],
+                
+                end: {
+                    left: '400px',
+                    opacity: 0.3,
+                    transform: 'scale(1)'
+                },
+                
+                loop: -1,
+                direction: alternate
+            };
+        }
+    }
+    
+    button {
+        style {
+            .control-btn {
+                margin-top: 20px;
+                padding: 10px 20px;
+            }
+        }
+        
+        text {
+            "暂停/播放"
+        }
+        
+        script {
+            let isPaused = false;
+            
+            {{.control-btn}} &-> click {
+                if (isPaused) {
+                    slideAnimation.play();
+                } else {
+                    slideAnimation.pause();
+                }
+                isPaused = !isPaused;
+            }
+        }
+    }
+}
