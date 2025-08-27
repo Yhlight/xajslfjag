@@ -82,13 +82,8 @@ void GlobalMap::initializeCHTLJSFunctions() {
     chtljsFunctions.insert("animate");
     chtljsFunctions.insert("delegate");
     
-    // 选择器相关
-    chtljsFunctions.insert("textContent");
-    chtljsFunctions.insert("addEventListener");
-    
-    // 模块函数（如Chtholly模块）
-    chtljsFunctions.insert("printMylove");
-    chtljsFunctions.insert("iNeverAway");
+    // 注意：printMylove和iNeverAway不是内置函数
+    // 它们是Chtholly模块通过CJMOD提供的扩展功能
 }
 
 void GlobalMap::initializeEasingFunctions() {
