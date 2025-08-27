@@ -1,0 +1,9 @@
+use html5;
+
+div
+{
+    text
+    {
+        Hello
+    }
+}

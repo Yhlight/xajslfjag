@@ -104,7 +104,10 @@ std::shared_ptr<BaseNode> Parser::ParseDocument() {
         std::shared_ptr<BaseNode> child = nullptr;
         
         // 检查当前Token类型
-        if (IsCurrentToken(TokenType::IDENTIFIER)) {
+        if (IsCurrentToken(TokenType::USE)) {
+            child = ParseUseStatement();
+        }
+        else if (IsCurrentToken(TokenType::IDENTIFIER)) {
             std::string identifier = CurrentToken().value;
             
             // 检查是否为use语句
@@ -152,27 +155,41 @@ std::shared_ptr<BaseNode> Parser::ParseDocument() {
 }
 
 std::shared_ptr<BaseNode> Parser::ParseUseStatement() {
-    // 暂时跳过use语句的实现
-    ConsumeToken(TokenType::IDENTIFIER); // "use"
+    // 消费use关键字
+    if (IsCurrentToken(TokenType::USE)) {
+        ConsumeToken(TokenType::USE);
+    } else if (IsCurrentToken(TokenType::IDENTIFIER) && CurrentToken().value == "use") {
+        ConsumeToken(TokenType::IDENTIFIER);
+    } else {
+        AddError("期望use关键字");
+        return nullptr;
+    }
     
     SkipWhitespace();
     
-    if (IsCurrentToken(TokenType::IDENTIFIER)) {
-        std::string useType = CurrentToken().value;
-        SkipToken();
-        
-        // 创建一个注释节点来记录use语句
-        auto useComment = std::make_shared<CommentNode>(
-            "USE: " + useType, 
-            CommentNode::CommentType::GENERATOR
-        );
-        
-        ConsumeToken(TokenType::SEMICOLON);
-        return useComment;
+    // 检查use类型
+    std::string useType;
+    if (IsCurrentToken(TokenType::HTML5)) {
+        useType = CurrentToken().value;
+        ConsumeToken(TokenType::HTML5);
+    } else if (IsCurrentToken(TokenType::IDENTIFIER)) {
+        useType = CurrentToken().value;
+        ConsumeToken(TokenType::IDENTIFIER);
+    } else {
+        AddError("use语句后面需要跟类型");
+        return nullptr;
     }
     
-    AddError("use语句后面需要跟类型");
-    return nullptr;
+    SkipWhitespace();
+    ConsumeToken(TokenType::SEMICOLON);
+    
+    // 创建一个注释节点来记录use语句
+    auto useComment = std::make_shared<CommentNode>(
+        "USE: " + useType, 
+        CommentNode::CommentType::GENERATOR
+    );
+    
+    return useComment;
 }
 
 std::shared_ptr<ElementNode> Parser::ParseElement() {
@@ -382,7 +399,16 @@ std::shared_ptr<CommentNode> Parser::ParseComment() {
 }
 
 std::shared_ptr<StyleBlockNode> Parser::ParseStyleBlock() {
-    ConsumeToken(TokenType::IDENTIFIER); // "style"
+    // 消费style关键字
+    if (IsCurrentToken(TokenType::STYLE)) {
+        ConsumeToken(TokenType::STYLE);
+    } else if (IsCurrentToken(TokenType::IDENTIFIER) && CurrentToken().value == "style") {
+        ConsumeToken(TokenType::IDENTIFIER);
+    } else {
+        AddError("期望style关键字");
+        return nullptr;
+    }
+    
     SkipWhitespace();
     
     if (!ConsumeToken(TokenType::LEFT_BRACE)) {
@@ -430,7 +456,15 @@ std::shared_ptr<StyleBlockNode> Parser::ParseStyleBlock() {
 }
 
 std::shared_ptr<ScriptBlockNode> Parser::ParseScriptBlock() {
-    ConsumeToken(TokenType::IDENTIFIER); // "script"
+    // 消费script关键字
+    if (IsCurrentToken(TokenType::SCRIPT)) {
+        ConsumeToken(TokenType::SCRIPT);
+    } else if (IsCurrentToken(TokenType::IDENTIFIER) && CurrentToken().value == "script") {
+        ConsumeToken(TokenType::IDENTIFIER);
+    } else {
+        AddError("期望script关键字");
+        return nullptr;
+    }
     SkipWhitespace();
     
     if (!ConsumeToken(TokenType::LEFT_BRACE)) {

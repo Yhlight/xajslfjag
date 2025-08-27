@@ -146,6 +146,12 @@ private:
     /// 读取符号
     Token ReadSymbol();
     
+    /// 读取括号类型 [Template], [Custom] 等
+    Token ReadBracketType();
+    
+    /// 读取类型标识符 @Style, @Element 等
+    Token ReadTypeIdentifier();
+    
     // === 字符分类方法 ===
     
     /// 检查是否为字母

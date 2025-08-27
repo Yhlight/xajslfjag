@@ -1,0 +1,26 @@
+div
+{
+    class: main-content;
+    
+    style
+    {
+        .main-content
+        {
+            width: 100%;
+            color: red;
+        }
+        
+        &:hover
+        {
+            background-color: #f5f5f5;
+        }
+    }
+    
+    h1
+    {
+        text
+        {
+            Hello CHTL
+        }
+    }
+}

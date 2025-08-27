@@ -188,6 +188,16 @@ Token EnhancedLexer::ReadGlobalToken() {
         return ReadIdentifier();
     }
     
+    // 处理括号类型 [Template], [Custom] 等
+    if (c == '[') {
+        return ReadBracketType();
+    }
+    
+    // 处理类型标识符 @Style, @Element 等
+    if (c == '@') {
+        return ReadTypeIdentifier();
+    }
+    
     // 处理符号
     return ReadSymbol();
 }
@@ -543,6 +553,56 @@ Token EnhancedLexer::ReadSymbol() {
     }
     
     return Token(type, symbol, startPos);
+}
+
+Token EnhancedLexer::ReadBracketType() {
+    std::string value;
+    TokenPosition startPos = GetCurrentPosition();
+    
+    // 读取整个[xxx]结构
+    while (!IsEOF() && PeekChar() != ']') {
+        value += GetChar();
+    }
+    
+    if (!IsEOF() && PeekChar() == ']') {
+        value += GetChar(); // 添加']'
+    }
+    
+    // 查找对应的Token类型
+    TokenType type = globalMap->LookupBracketType(value);
+    if (type == TokenType::UNKNOWN) {
+        type = TokenType::LEFT_BRACKET; // 如果不是预定义的括号类型，当作普通左括号处理
+        // 回退除了第一个'['之外的所有字符
+        for (int i = value.length() - 1; i > 0; --i) {
+            position--;
+            if (currentColumn > 1) {
+                currentColumn--;
+            }
+        }
+        value = "[";
+    }
+    
+    return Token(type, value, startPos);
+}
+
+Token EnhancedLexer::ReadTypeIdentifier() {
+    std::string value;
+    TokenPosition startPos = GetCurrentPosition();
+    
+    value += GetChar(); // 添加'@'
+    
+    // 读取类型名称
+    while (!IsEOF() && IsAlphaNumeric(PeekChar())) {
+        value += GetChar();
+    }
+    
+    // 查找对应的Token类型
+    TokenType type = globalMap->LookupTypeIdentifier(value);
+    if (type == TokenType::UNKNOWN) {
+        type = TokenType::UNKNOWN; // @开头但不是预定义类型
+    }
+    
+    return Token(type, value, startPos);
 }
 
 // === 字符分类方法 ===
