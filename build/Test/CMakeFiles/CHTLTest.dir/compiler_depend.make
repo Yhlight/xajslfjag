@@ -215,7 +215,6 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
-  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
@@ -256,15 +255,6 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
   /workspace/CHTL/CHTLContext/NamespaceManager.h \
-  /workspace/CHTL/CHTLState/CHTLState.h \
-  /workspace/CHTL/CHTLContext/CHTLContext.h \
-  /workspace/CHTL/CHTLNode/BaseNode.h \
-  /workspace/CHTL/CHTLGenerator/CHTLGenerator.h \
-  /workspace/CHTL/CHTLLexer/CHTLGlobalMap.h \
-  /workspace/CHTL/CHTLLexer/CHTLLexer.h \
-  /workspace/CHTL/CHTLLexer/CHTLToken.h \
-  /workspace/CHTL/CHTLNode/BaseNode.h \
-  /workspace/CHTL/CHTLParser/CHTLParser.h \
   /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/CompilerDispatcher/CompilerDispatcher.h \
   /workspace/Scanner/CHTLUnifiedScanner.h \
@@ -323,19 +313,13 @@ lib/libCHTLContext.a:
 
 /workspace/ThirdParty/CJMODAPI/Syntax.h:
 
-/workspace/ThirdParty/CJMODAPI/Arg.h:
-
-/workspace/CompilerDispatcher/CompilerDispatcher.h:
-
-/workspace/Scanner/CHTLUnifiedScanner.h:
-
-/workspace/CHTL/CHTLGenerator/CHTLGenerator.h:
-
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/c++/14/bits/exception.h:
 
 /usr/include/c++/14/cctype:
+
+/workspace/Scanner/CHTLUnifiedScanner.h:
 
 /usr/include/c++/14/bits/erase_if.h:
 
@@ -346,8 +330,6 @@ lib/libCHTLContext.a:
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
 
 /usr/include/pthread.h:
-
-/workspace/CHTL/CHTLLexer/CHTLGlobalMap.h:
 
 /usr/include/c++/14/stdexcept:
 
@@ -422,8 +404,6 @@ lib/libCHTLLexer.a:
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
 /usr/include/c++/14/bits/string_view.tcc:
-
-/workspace/CHTL/CHTLNode/BaseNode.h:
 
 /usr/include/c++/14/streambuf:
 
@@ -525,6 +505,8 @@ lib/libCHTLLexer.a:
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
+/workspace/ThirdParty/CJMODAPI/Arg.h:
+
 /usr/include/linux/types.h:
 
 /usr/include/alloca.h:
@@ -532,8 +514,6 @@ lib/libCHTLLexer.a:
 /usr/include/c++/14/bits/char_traits.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types.h:
-
-/workspace/CHTL/CHTLLexer/CHTLToken.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 
@@ -627,8 +607,6 @@ lib/libCHTLLexer.a:
 
 /usr/include/c++/14/vector:
 
-/usr/include/c++/14/optional:
-
 /usr/include/c++/14/bits/atomic_base.h:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
@@ -693,8 +671,6 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/workspace/CHTL/CHTLParser/CHTLParser.h:
-
 /usr/include/c++/14/bits/memory_resource.h:
 
 /usr/include/c++/14/bits/memoryfwd.h:
@@ -704,6 +680,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 /usr/include/c++/14/bits/stl_uninitialized.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_nullptr_t.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_offsetof.h:
 
 /usr/include/features.h:
 
@@ -742,8 +720,6 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 /usr/include/c++/14/bits/stl_construct.h:
 
 /usr/include/c++/14/bits/stl_map.h:
-
-/workspace/CHTL/CHTLLexer/CHTLLexer.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
@@ -797,10 +773,6 @@ lib/libScanner.a:
 
 /usr/include/c++/14/ext/concurrence.h:
 
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_offsetof.h:
-
-/workspace/CHTL/CHTLContext/CHTLContext.h:
-
 /usr/include/c++/14/ext/string_conversions.h:
 
 /usr/include/c++/14/ext/type_traits.h:
@@ -828,6 +800,8 @@ lib/libScanner.a:
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/c++/14/pstl/execution_defs.h:
+
+/usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
 
@@ -873,6 +847,4 @@ lib/libScanner.a:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
 
-/usr/include/c++/14/string:
-
-/workspace/CHTL/CHTLState/CHTLState.h:
+/workspace/CompilerDispatcher/CompilerDispatcher.h:

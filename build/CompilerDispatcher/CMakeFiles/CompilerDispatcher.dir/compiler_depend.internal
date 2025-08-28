@@ -215,7 +215,6 @@ CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/CompilerDispatcher.cpp.o
  /usr/include/c++/14/map
  /usr/include/c++/14/memory
  /usr/include/c++/14/new
- /usr/include/c++/14/optional
  /usr/include/c++/14/ostream
  /usr/include/c++/14/pstl/execution_defs.h
  /usr/include/c++/14/pstl/glue_algorithm_defs.h
@@ -256,15 +255,6 @@ CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/CompilerDispatcher.cpp.o
  /usr/lib/llvm-20/lib/clang/20/include/stdarg.h
  /usr/lib/llvm-20/lib/clang/20/include/stddef.h
  /usr/lib/llvm-20/lib/clang/20/include/stdint.h
- /workspace/CHTL/CHTLState/CHTLState.h
- /workspace/CHTL/CHTLContext/CHTLContext.h
- /workspace/CHTL/CHTLNode/BaseNode.h
- /workspace/CHTL/CHTLGenerator/CHTLGenerator.h
- /workspace/CHTL/CHTLLexer/CHTLGlobalMap.h
- /workspace/CHTL/CHTLLexer/CHTLLexer.h
- /workspace/CHTL/CHTLLexer/CHTLToken.h
- /workspace/CHTL/CHTLNode/BaseNode.h
- /workspace/CHTL/CHTLParser/CHTLParser.h
  /workspace/Scanner/CHTLUnifiedScanner.h
  /workspace/CompilerDispatcher/CompilerDispatcher.h
 
