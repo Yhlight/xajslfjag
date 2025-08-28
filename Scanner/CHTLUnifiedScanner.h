@@ -64,7 +64,12 @@ public:
     
     // 获取源代码
     const std::string& getSource() const { return source_; }
-    
+
+    // CJMOD扫描占位接口
+    struct CJMODScanResult { std::vector<std::string> tokens; };
+    CJMODScanResult scanCJMODByTwoPointers(size_t startPos, size_t endPos);
+    CJMODScanResult preCaptureForCJMOD(size_t startPos, size_t endPos);
+
 private:
     std::string source_;
     std::vector<CodeFragment> fragments_;

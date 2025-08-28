@@ -3,6 +3,7 @@
 # 设置CHTLJSLexer源文件
 set(CHTLJSLEXER_SOURCES
     CHTLJSToken.cpp
+    CHTLJSLexer.cpp
 )
 
 # 创建CHTLJSLexer静态库
