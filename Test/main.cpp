@@ -158,84 +158,89 @@ script
 
     // 测试Import增强功能
     std::cout << "\n测试Import增强功能:" << std::endl;
-    CHTL::ImportManager importManager;
+    auto configManager = std::make_shared<CHTL::ConfigurationManager>();
+    CHTL::ImportManager importManager(configManager, "/workspace");
     
-    // 测试别名功能
-    importManager.addAlias("UI", "./modules/ui");
-    importManager.addAlias("Core", "./modules/core");
-    std::cout << "UI别名解析: " << importManager.resolveAlias("UI") << std::endl;
-    std::cout << "Core别名解析: " << importManager.resolveAlias("Core") << std::endl;
+    // 测试基础路径设置
+    importManager.setBasePath("/workspace");
+    std::cout << "基础路径: " << importManager.getBasePath() << std::endl;
     
-    // 测试多根目录搜索
-    importManager.addSearchPath("./modules");
-    importManager.addSearchPath("./libs");
-    importManager.addSearchPath("./vendor");
+    // 测试通配符路径解析
+    std::vector<std::string> wildcardResults = importManager.resolveWildcardPath("*.chtl", "./modules");
+    std::cout << "通配符路径解析结果数量: " << wildcardResults.size() << std::endl;
     
-    std::cout << "搜索路径数量: " << importManager.getSearchPaths().size() << std::endl;
-    for (const auto& path : importManager.getSearchPaths()) {
-        std::cout << "  - " << path << std::endl;
-    }
-    
-    // 测试相对路径解析
-    std::string baseFile = "/workspace/src/main.chtl";
-    std::string relativePath = "./components/Button.chtl";
-    std::string resolvedPath = importManager.resolveRelativePath(relativePath, baseFile);
-    std::cout << "相对路径解析: " << relativePath << " -> " << resolvedPath << std::endl;
-    
-    // 测试通配符扩展
-    std::vector<std::string> wildcardResults = importManager.expandWildcard("*.chtl", "./modules");
-    std::cout << "通配符扩展结果数量: " << wildcardResults.size() << std::endl;
+    // 测试子模块路径解析
+    std::vector<std::string> subModuleResults = importManager.resolveSubModulePath("Chtholly.Space", "./modules");
+    std::cout << "子模块路径解析结果数量: " << subModuleResults.size() << std::endl;
     
     // 测试循环依赖检测
-    CHTL::ImportInfo info1{CHTL::ImportType::CHTL, "", "file2.chtl", "", false};
-    CHTL::ImportInfo info2{CHTL::ImportType::CHTL, "", "file3.chtl", "", false};
-    CHTL::ImportInfo info3{CHTL::ImportType::CHTL, "", "file1.chtl", "", false};
-    
-    importManager.addImport("file1.chtl", info1);
-    importManager.addImport("file2.chtl", info2);
-    importManager.addImport("file3.chtl", info3);
-    
-    bool hasCircular = importManager.hasCircularDependency("file1.chtl", "file3.chtl");
+    bool hasCircular = importManager.checkCircularDependency("file1.chtl", "file3.chtl");
     std::cout << "循环依赖检测: " << (hasCircular ? "检测到" : "未检测到") << std::endl;
+    
+    // 测试重复导入检测
+    bool hasDuplicate = importManager.checkDuplicateImport("file1.chtl", "file2.chtl");
+    std::cout << "重复导入检测: " << (hasDuplicate ? "检测到" : "未检测到") << std::endl;
 
     // 测试命名空间管理
     std::cout << "\n测试命名空间管理:" << std::endl;
-    NamespaceManager nsManager;
+    CHTL::NamespaceManager nsManager(configManager);
     
     // 创建嵌套命名空间
-    nsManager.createNamespace("Core");
-    nsManager.createNamespace("UI", "Core");
-    nsManager.createNamespace("Components", "UI");
+    nsManager.createNamespace("Core", "test.chtl");
+    nsManager.createNestedNamespace("Core", "UI", "test.chtl");
+    nsManager.createNestedNamespace("UI", "Components", "test.chtl");
     
-    // 添加符号
-    nsManager.addSymbol("Core", "version", "1.0.0");
-    nsManager.addSymbol("UI", "theme", "dark");
-    nsManager.addSymbol("Components", "button", "ButtonComponent");
+    // 添加命名空间项
+    auto versionItem = std::make_shared<CHTL::NamespaceItem>();
+    versionItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+    versionItem->name = "version";
+    versionItem->sourceFile = "test.chtl";
+    versionItem->lineNumber = 1;
+    versionItem->content = "1.0.0";
+    nsManager.addNamespaceItem("Core", versionItem);
     
-    // 测试符号查找
-    std::cout << "Core::version: " << nsManager.findSymbol("Core", "version") << std::endl;
-    std::cout << "UI::theme: " << nsManager.findSymbol("UI", "theme") << std::endl;
-    std::cout << "Components::button: " << nsManager.findSymbol("Components", "button") << std::endl;
+    auto themeItem = std::make_shared<CHTL::NamespaceItem>();
+    themeItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+    themeItem->name = "theme";
+    themeItem->sourceFile = "test.chtl";
+    themeItem->lineNumber = 2;
+    themeItem->content = "dark";
+    nsManager.addNamespaceItem("UI", themeItem);
     
-    // 测试继承查找
-    std::cout << "Components继承Core::version: " << nsManager.findSymbol("Components", "version") << std::endl;
+    auto buttonItem = std::make_shared<CHTL::NamespaceItem>();
+    buttonItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+    buttonItem->name = "button";
+    buttonItem->sourceFile = "test.chtl";
+    buttonItem->lineNumber = 3;
+    buttonItem->content = "ButtonComponent";
+    nsManager.addNamespaceItem("Components", buttonItem);
+    
+    // 测试命名空间项查找
+    auto versionFound = nsManager.getNamespaceItem("Core", "version", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    std::cout << "Core::version: " << (versionFound ? versionFound->content : "not found") << std::endl;
+    
+    auto themeFound = nsManager.getNamespaceItem("UI", "theme", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    std::cout << "UI::theme: " << (themeFound ? themeFound->content : "not found") << std::endl;
+    
+    auto buttonFound = nsManager.getNamespaceItem("Components", "button", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    std::cout << "Components::button: " << (buttonFound ? buttonFound->content : "not found") << std::endl;
     
     // 测试冲突检测
-    nsManager.addSymbol("Core", "conflict", "CoreValue");
-    nsManager.addSymbol("UI", "conflict", "UIValue");
-    auto conflicts = nsManager.detectConflicts("Core", "UI");
-    std::cout << "检测到冲突: ";
-    for (const auto& conflict : conflicts) {
-        std::cout << conflict << " ";
-    }
-    std::cout << std::endl;
+    auto conflicts = nsManager.detectConflicts();
+    std::cout << "检测到冲突数量: " << conflicts.size() << std::endl;
     
     // 测试命名空间合并
-    nsManager.createNamespace("Utils");
-    nsManager.addSymbol("Utils", "helper", "HelperFunction");
-    bool merged = nsManager.mergeNamespace("Core", "Utils");
-    std::cout << "合并Utils到Core: " << (merged ? "成功" : "失败") << std::endl;
-    std::cout << "Core::helper: " << nsManager.findSymbol("Core", "helper") << std::endl;
+    nsManager.createNamespace("Utils", "test.chtl");
+    auto helperItem = std::make_shared<CHTL::NamespaceItem>();
+    helperItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+    helperItem->name = "helper";
+    helperItem->sourceFile = "test.chtl";
+    helperItem->lineNumber = 4;
+    helperItem->content = "HelperFunction";
+    nsManager.addNamespaceItem("Utils", helperItem);
+    
+    bool merged = nsManager.mergeNamespaces("Utils");
+    std::cout << "命名空间合并: " << (merged ? "成功" : "失败") << std::endl;
 
     // 测试编译器调度器
     std::cout << "\n测试编译器调度器:" << std::endl;

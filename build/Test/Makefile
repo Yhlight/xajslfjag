@@ -228,6 +228,20 @@ CHTLJSContextTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/build
 .PHONY : CHTLJSContextTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/ZipUtilTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/ZipUtilTest.dir/rule
+.PHONY : Test/CMakeFiles/ZipUtilTest.dir/rule
+
+# Convenience name for target.
+ZipUtilTest: Test/CMakeFiles/ZipUtilTest.dir/rule
+.PHONY : ZipUtilTest
+
+# fast build rule for target.
+ZipUtilTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ZipUtilTest.dir/build.make Test/CMakeFiles/ZipUtilTest.dir/build
+.PHONY : ZipUtilTest/fast
+
 chtljs_context_test.o: chtljs_context_test.cpp.o
 .PHONY : chtljs_context_test.o
 
@@ -257,7 +271,6 @@ configuration_manager_test.o: configuration_manager_test.cpp.o
 
 # target to build an object file
 configuration_manager_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.o
 .PHONY : configuration_manager_test.cpp.o
 
@@ -266,7 +279,6 @@ configuration_manager_test.i: configuration_manager_test.cpp.i
 
 # target to preprocess a source file
 configuration_manager_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.i
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.i
 .PHONY : configuration_manager_test.cpp.i
 
@@ -275,7 +287,6 @@ configuration_manager_test.s: configuration_manager_test.cpp.s
 
 # target to generate assembly for a file
 configuration_manager_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.s
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.s
 .PHONY : configuration_manager_test.cpp.s
 
@@ -284,7 +295,6 @@ constraint_parser_test.o: constraint_parser_test.cpp.o
 
 # target to build an object file
 constraint_parser_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.o
 .PHONY : constraint_parser_test.cpp.o
 
@@ -293,7 +303,6 @@ constraint_parser_test.i: constraint_parser_test.cpp.i
 
 # target to preprocess a source file
 constraint_parser_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.i
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.i
 .PHONY : constraint_parser_test.cpp.i
 
@@ -302,7 +311,6 @@ constraint_parser_test.s: constraint_parser_test.cpp.s
 
 # target to generate assembly for a file
 constraint_parser_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.s
 .PHONY : constraint_parser_test.cpp.s
 
@@ -311,7 +319,6 @@ import_manager_test.o: import_manager_test.cpp.o
 
 # target to build an object file
 import_manager_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.o
 .PHONY : import_manager_test.cpp.o
 
@@ -320,7 +327,6 @@ import_manager_test.i: import_manager_test.cpp.i
 
 # target to preprocess a source file
 import_manager_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.i
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.i
 .PHONY : import_manager_test.cpp.i
 
@@ -329,33 +335,8 @@ import_manager_test.s: import_manager_test.cpp.s
 
 # target to generate assembly for a file
 import_manager_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.s
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.s
 .PHONY : import_manager_test.cpp.s
-
-io_stream_test.o: io_stream_test.cpp.o
-.PHONY : io_stream_test.o
-
-# target to build an object file
-io_stream_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o
-.PHONY : io_stream_test.cpp.o
-
-io_stream_test.i: io_stream_test.cpp.i
-.PHONY : io_stream_test.i
-
-# target to preprocess a source file
-io_stream_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.i
-.PHONY : io_stream_test.cpp.i
-
-io_stream_test.s: io_stream_test.cpp.s
-.PHONY : io_stream_test.s
-
-# target to generate assembly for a file
-io_stream_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.s
-.PHONY : io_stream_test.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -434,7 +415,6 @@ use_statement_test.o: use_statement_test.cpp.o
 
 # target to build an object file
 use_statement_test.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o
 .PHONY : use_statement_test.cpp.o
 
@@ -443,7 +423,6 @@ use_statement_test.i: use_statement_test.cpp.i
 
 # target to preprocess a source file
 use_statement_test.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.i
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.i
 .PHONY : use_statement_test.cpp.i
 
@@ -452,9 +431,32 @@ use_statement_test.s: use_statement_test.cpp.s
 
 # target to generate assembly for a file
 use_statement_test.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.s
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.s
 .PHONY : use_statement_test.cpp.s
+
+zip_util_test.o: zip_util_test.cpp.o
+.PHONY : zip_util_test.o
+
+# target to build an object file
+zip_util_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ZipUtilTest.dir/build.make Test/CMakeFiles/ZipUtilTest.dir/zip_util_test.cpp.o
+.PHONY : zip_util_test.cpp.o
+
+zip_util_test.i: zip_util_test.cpp.i
+.PHONY : zip_util_test.i
+
+# target to preprocess a source file
+zip_util_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ZipUtilTest.dir/build.make Test/CMakeFiles/ZipUtilTest.dir/zip_util_test.cpp.i
+.PHONY : zip_util_test.cpp.i
+
+zip_util_test.s: zip_util_test.cpp.s
+.PHONY : zip_util_test.s
+
+# target to generate assembly for a file
+zip_util_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ZipUtilTest.dir/build.make Test/CMakeFiles/ZipUtilTest.dir/zip_util_test.cpp.s
+.PHONY : zip_util_test.cpp.s
 
 # Help Target
 help:
@@ -472,6 +474,7 @@ help:
 	@echo "... NamespaceManagerTest"
 	@echo "... SelectorAutomationTest"
 	@echo "... UseStatementTest"
+	@echo "... ZipUtilTest"
 	@echo "... chtljs_context_test.o"
 	@echo "... chtljs_context_test.i"
 	@echo "... chtljs_context_test.s"
@@ -484,9 +487,6 @@ help:
 	@echo "... import_manager_test.o"
 	@echo "... import_manager_test.i"
 	@echo "... import_manager_test.s"
-	@echo "... io_stream_test.o"
-	@echo "... io_stream_test.i"
-	@echo "... io_stream_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -499,6 +499,9 @@ help:
 	@echo "... use_statement_test.o"
 	@echo "... use_statement_test.i"
 	@echo "... use_statement_test.s"
+	@echo "... zip_util_test.o"
+	@echo "... zip_util_test.i"
+	@echo "... zip_util_test.s"
 .PHONY : help
 
 

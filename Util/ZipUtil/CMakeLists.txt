@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 # ZipUtil模块
 set(ZIPUTIL_SOURCES
-    ZipUtil.cpp
+    ../ZipUtil.cpp
 )
 
 # 创建静态库

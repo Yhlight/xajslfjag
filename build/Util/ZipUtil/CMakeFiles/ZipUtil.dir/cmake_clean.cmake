@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "../../lib/libZipUtil.a"
   "../../lib/libZipUtil.pdb"
-  "CMakeFiles/ZipUtil.dir/ZipUtil.cpp.o"
-  "CMakeFiles/ZipUtil.dir/ZipUtil.cpp.o.d"
+  "CMakeFiles/ZipUtil.dir/__/ZipUtil.cpp.o"
+  "CMakeFiles/ZipUtil.dir/__/ZipUtil.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.

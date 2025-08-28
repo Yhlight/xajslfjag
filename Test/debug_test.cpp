@@ -89,36 +89,62 @@ void testNamespaceManager() {
     std::cout << "测试命名空间管理..." << std::endl;
     
     try {
-        CHTL::NamespaceManager nsManager;
+        auto configManager = std::make_shared<CHTL::ConfigurationManager>();
+        CHTL::NamespaceManager nsManager(configManager);
         std::cout << "命名空间管理器创建成功" << std::endl;
         
         // 创建嵌套命名空间
-        nsManager.createNamespace("Core");
+        nsManager.createNamespace("Core", "test.chtl");
         std::cout << "Core命名空间创建成功" << std::endl;
         
-        nsManager.createNamespace("UI", "Core");
+        nsManager.createNestedNamespace("Core", "UI", "test.chtl");
         std::cout << "UI命名空间创建成功" << std::endl;
         
-        nsManager.createNamespace("Components", "UI");
+        nsManager.createNestedNamespace("UI", "Components", "test.chtl");
         std::cout << "Components命名空间创建成功" << std::endl;
         
-        // 添加符号
-        nsManager.addSymbol("Core", "version", "1.0.0");
+        // 添加命名空间项
+        auto versionItem = std::make_shared<CHTL::NamespaceItem>();
+        versionItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+        versionItem->name = "version";
+        versionItem->sourceFile = "test.chtl";
+        versionItem->lineNumber = 1;
+        versionItem->content = "1.0.0";
+        nsManager.addNamespaceItem("Core", versionItem);
         std::cout << "Core::version添加成功" << std::endl;
         
-        nsManager.addSymbol("UI", "theme", "dark");
+        auto themeItem = std::make_shared<CHTL::NamespaceItem>();
+        themeItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+        themeItem->name = "theme";
+        themeItem->sourceFile = "test.chtl";
+        themeItem->lineNumber = 2;
+        themeItem->content = "dark";
+        nsManager.addNamespaceItem("UI", themeItem);
         std::cout << "UI::theme添加成功" << std::endl;
         
-        nsManager.addSymbol("Components", "button", "ButtonComponent");
+        auto buttonItem = std::make_shared<CHTL::NamespaceItem>();
+        buttonItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
+        buttonItem->name = "button";
+        buttonItem->sourceFile = "test.chtl";
+        buttonItem->lineNumber = 3;
+        buttonItem->content = "ButtonComponent";
+        nsManager.addNamespaceItem("Components", buttonItem);
         std::cout << "Components::button添加成功" << std::endl;
         
-        // 测试符号查找
-        std::cout << "Core::version: " << nsManager.findSymbol("Core", "version") << std::endl;
-        std::cout << "UI::theme: " << nsManager.findSymbol("UI", "theme") << std::endl;
-        std::cout << "Components::button: " << nsManager.findSymbol("Components", "button") << std::endl;
+        // 测试命名空间项查找
+        auto versionFound = nsManager.getNamespaceItem("Core", "version", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+        std::cout << "Core::version: " << (versionFound ? versionFound->content : "not found") << std::endl;
         
-        // 测试继承查找
-        std::cout << "Components继承Core::version: " << nsManager.findSymbol("Components", "version") << std::endl;
+        auto themeFound = nsManager.getNamespaceItem("UI", "theme", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+        std::cout << "UI::theme: " << (themeFound ? themeFound->content : "not found") << std::endl;
+        
+        auto buttonFound = nsManager.getNamespaceItem("Components", "button", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+        std::cout << "Components::button: " << (buttonFound ? buttonFound->content : "not found") << std::endl;
+        
+        // 测试命名空间存在性
+        std::cout << "Core命名空间存在: " << (nsManager.namespaceExists("Core") ? "是" : "否") << std::endl;
+        std::cout << "UI命名空间存在: " << (nsManager.namespaceExists("UI") ? "是" : "否") << std::endl;
+        std::cout << "Components命名空间存在: " << (nsManager.namespaceExists("Components") ? "是" : "否") << std::endl;
         
         std::cout << "命名空间管理测试完成" << std::endl;
         

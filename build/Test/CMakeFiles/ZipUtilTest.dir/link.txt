@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/ZipUtilTest.dir/link.d CMakeFiles/ZipUtilTest.dir/zip_util_test.cpp.o -o ../bin/ZipUtilTest  ../lib/libZipUtil.a

@@ -9,6 +9,10 @@
   ../lib/libCHTLParser.a \
   ../lib/libCHTLJSLexer.a \
   ../lib/libCHTLJSParser.a \
+  ../lib/libCHTLIOStream.a \
+  ../lib/libCHTLJSIOStream.a \
+  ../lib/libFileStream.a \
+  ../lib/libZipUtil.a \
   ../lib/libScanner.a \
   ../lib/libCHTLContext.a \
   ../lib/libCHTLLexer.a \
@@ -60,6 +64,14 @@ CMakeFiles/CHTLTest.dir/main.cpp.o:
 ../lib/libCHTLJSLexer.a:
 
 ../lib/libCHTLJSParser.a:
+
+../lib/libCHTLIOStream.a:
+
+../lib/libCHTLJSIOStream.a:
+
+../lib/libFileStream.a:
+
+../lib/libZipUtil.a:
 
 ../lib/libScanner.a:
 

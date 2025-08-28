@@ -86,94 +86,14 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/main.cpp.s"
 	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/main.cpp -o CMakeFiles/CHTLTest.dir/main.cpp.s
 
-Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/flags.make
-Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o: /workspace/Test/io_stream_test.cpp
-Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o -MF CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o.d -o CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o -c /workspace/Test/io_stream_test.cpp
-
-Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLTest.dir/io_stream_test.cpp.i"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/Test/io_stream_test.cpp > CMakeFiles/CHTLTest.dir/io_stream_test.cpp.i
-
-Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/io_stream_test.cpp.s"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/io_stream_test.cpp -o CMakeFiles/CHTLTest.dir/io_stream_test.cpp.s
-
-Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/flags.make
-Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o: /workspace/Test/configuration_manager_test.cpp
-Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o -MF CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o.d -o CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o -c /workspace/Test/configuration_manager_test.cpp
-
-Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.i"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/Test/configuration_manager_test.cpp > CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.i
-
-Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.s"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/configuration_manager_test.cpp -o CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.s
-
-Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/flags.make
-Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o: /workspace/Test/use_statement_test.cpp
-Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o -MF CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o.d -o CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o -c /workspace/Test/use_statement_test.cpp
-
-Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLTest.dir/use_statement_test.cpp.i"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/Test/use_statement_test.cpp > CMakeFiles/CHTLTest.dir/use_statement_test.cpp.i
-
-Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/use_statement_test.cpp.s"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/use_statement_test.cpp -o CMakeFiles/CHTLTest.dir/use_statement_test.cpp.s
-
-Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/flags.make
-Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o: /workspace/Test/constraint_parser_test.cpp
-Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o -MF CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o.d -o CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o -c /workspace/Test/constraint_parser_test.cpp
-
-Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.i"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/Test/constraint_parser_test.cpp > CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.i
-
-Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/constraint_parser_test.cpp -o CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s
-
-Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/flags.make
-Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o: /workspace/Test/import_manager_test.cpp
-Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o -MF CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o.d -o CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o -c /workspace/Test/import_manager_test.cpp
-
-Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLTest.dir/import_manager_test.cpp.i"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/Test/import_manager_test.cpp > CMakeFiles/CHTLTest.dir/import_manager_test.cpp.i
-
-Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLTest.dir/import_manager_test.cpp.s"
-	cd /workspace/build/Test && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/Test/import_manager_test.cpp -o CMakeFiles/CHTLTest.dir/import_manager_test.cpp.s
-
 # Object files for target CHTLTest
 CHTLTest_OBJECTS = \
-"CMakeFiles/CHTLTest.dir/main.cpp.o" \
-"CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o" \
-"CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o" \
-"CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o" \
-"CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o" \
-"CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o"
+"CMakeFiles/CHTLTest.dir/main.cpp.o"
 
 # External object files for target CHTLTest
 CHTLTest_EXTERNAL_OBJECTS =
 
 bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/main.cpp.o
-bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o
-bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o
-bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o
-bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o
-bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o
 bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/build.make
 bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/compiler_depend.ts
 bin/CHTLTest: lib/libScanner.a
@@ -191,7 +111,7 @@ bin/CHTLTest: lib/libCHTLContext.a
 bin/CHTLTest: lib/libCHTLLexer.a
 bin/CHTLTest: lib/libCHTLJSLexer.a
 bin/CHTLTest: Test/CMakeFiles/CHTLTest.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ../bin/CHTLTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable ../bin/CHTLTest"
 	cd /workspace/build/Test && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLTest.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

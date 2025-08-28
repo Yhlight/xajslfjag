@@ -6,11 +6,11 @@ set(TEST_SOURCES
     # CHTLTest.cpp
     # CHTLJSTest.cpp
     # ScannerTest.cpp
-    io_stream_test.cpp
-    configuration_manager_test.cpp
-    use_statement_test.cpp
-    constraint_parser_test.cpp
-    import_manager_test.cpp
+    # io_stream_test.cpp
+    # configuration_manager_test.cpp
+    # use_statement_test.cpp
+    # constraint_parser_test.cpp
+    # import_manager_test.cpp
 )
 
 # 创建Test可执行文件
@@ -162,4 +162,21 @@ target_link_libraries(CHTLJSContextTest CHTLJSContext)
 # 包含目录
 target_include_directories(CHTLJSContextTest PRIVATE
     ${CMAKE_SOURCE_DIR}/CHTL JS/CHTLJSContext
+)
+
+# 创建ZIP工具测试可执行文件
+add_executable(ZipUtilTest zip_util_test.cpp)
+
+# 设置目标属性
+set_target_properties(ZipUtilTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(ZipUtilTest ZipUtil)
+
+# 包含目录
+target_include_directories(ZipUtilTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/Util
 )

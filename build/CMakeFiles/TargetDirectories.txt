@@ -23,6 +23,7 @@
 /workspace/build/Test/CMakeFiles/NamespaceManagerTest.dir
 /workspace/build/Test/CMakeFiles/SelectorAutomationTest.dir
 /workspace/build/Test/CMakeFiles/CHTLJSContextTest.dir
+/workspace/build/Test/CMakeFiles/ZipUtilTest.dir
 /workspace/build/Test/CMakeFiles/edit_cache.dir
 /workspace/build/Test/CMakeFiles/rebuild_cache.dir
 /workspace/build/CHTL/CMakeFiles/edit_cache.dir

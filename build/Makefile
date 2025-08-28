@@ -390,6 +390,19 @@ CHTLJSContextTest/fast:
 .PHONY : CHTLJSContextTest/fast
 
 #=============================================================================
+# Target rules for targets named ZipUtilTest
+
+# Build rule for target.
+ZipUtilTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ZipUtilTest
+.PHONY : ZipUtilTest
+
+# fast build rule for target.
+ZipUtilTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ZipUtilTest.dir/build.make Test/CMakeFiles/ZipUtilTest.dir/build
+.PHONY : ZipUtilTest/fast
+
+#=============================================================================
 # Target rules for targets named CompilerDispatcher
 
 # Build rule for target.
@@ -944,6 +957,7 @@ help:
 	@echo "... SimpleTest"
 	@echo "... UseStatementTest"
 	@echo "... ZipUtil"
+	@echo "... ZipUtilTest"
 	@echo "... CHTL/CHTLContext/ConfigurationManager.o"
 	@echo "... CHTL/CHTLContext/ConfigurationManager.i"
 	@echo "... CHTL/CHTLContext/ConfigurationManager.s"
