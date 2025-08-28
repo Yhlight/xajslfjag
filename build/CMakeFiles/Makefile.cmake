@@ -45,6 +45,12 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/workspace/CompilerDispatcher/CMakeLists.txt"
   "/workspace/Scanner/CMakeLists.txt"
   "/workspace/Test/CMakeLists.txt"
+  "/workspace/Util/CHTLIOStream/CMakeLists.txt"
+  "/workspace/Util/CHTLJSIOStream/CMakeLists.txt"
+  "/workspace/Util/CMakeLists.txt"
+  "/workspace/Util/FileStream/CMakeLists.txt"
+  "/workspace/Util/FileSystem/CMakeLists.txt"
+  "/workspace/Util/ZipUtil/CMakeLists.txt"
   "CMakeFiles/3.31.6/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
@@ -68,6 +74,12 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "JS/CHTLLexer/CMakeFiles/CMakeDirectoryInformation.cmake"
   "JS/CHTLContext/CMakeFiles/CMakeDirectoryInformation.cmake"
   "CompilerDispatcher/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/FileSystem/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/CHTLIOStream/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/CHTLJSIOStream/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/FileStream/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/ZipUtil/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
@@ -75,6 +87,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/DebugTest.dir/DependInfo.cmake"
   "CMakeFiles/SimpleTest.dir/DependInfo.cmake"
   "CMakeFiles/GeneratorTest.dir/DependInfo.cmake"
+  "CMakeFiles/IOStreamTest.dir/DependInfo.cmake"
   "CMakeFiles/CHTLLexer.dir/DependInfo.cmake"
   "CMakeFiles/CHTLContext.dir/DependInfo.cmake"
   "CMakeFiles/CHTLParser.dir/DependInfo.cmake"
@@ -85,4 +98,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "Scanner/CMakeFiles/Scanner.dir/DependInfo.cmake"
   "Test/CMakeFiles/CHTLTest.dir/DependInfo.cmake"
   "CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/DependInfo.cmake"
+  "Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/DependInfo.cmake"
+  "Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/DependInfo.cmake"
+  "Util/FileStream/CMakeFiles/FileStream.dir/DependInfo.cmake"
+  "Util/ZipUtil/CMakeFiles/ZipUtil.dir/DependInfo.cmake"
   )

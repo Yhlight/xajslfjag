@@ -2,6 +2,8 @@ file(REMOVE_RECURSE
   "../bin/CHTLTest"
   "../bin/CHTLTest.pdb"
   "CMakeFiles/CHTLTest.dir/link.d"
+  "CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o"
+  "CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o.d"
   "CMakeFiles/CHTLTest.dir/main.cpp.o"
   "CMakeFiles/CHTLTest.dir/main.cpp.o.d"
 )

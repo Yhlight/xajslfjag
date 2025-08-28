@@ -130,6 +130,30 @@ CHTLTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/build
 .PHONY : CHTLTest/fast
 
+io_stream_test.o: io_stream_test.cpp.o
+.PHONY : io_stream_test.o
+
+# target to build an object file
+io_stream_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o
+.PHONY : io_stream_test.cpp.o
+
+io_stream_test.i: io_stream_test.cpp.i
+.PHONY : io_stream_test.i
+
+# target to preprocess a source file
+io_stream_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.i
+.PHONY : io_stream_test.cpp.i
+
+io_stream_test.s: io_stream_test.cpp.s
+.PHONY : io_stream_test.s
+
+# target to generate assembly for a file
+io_stream_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.s
+.PHONY : io_stream_test.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -163,6 +187,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLTest"
+	@echo "... io_stream_test.o"
+	@echo "... io_stream_test.i"
+	@echo "... io_stream_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

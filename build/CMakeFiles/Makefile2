@@ -66,6 +66,7 @@ CMAKE_BINARY_DIR = /workspace/build
 all: CMakeFiles/DebugTest.dir/all
 all: CMakeFiles/SimpleTest.dir/all
 all: CMakeFiles/GeneratorTest.dir/all
+all: CMakeFiles/IOStreamTest.dir/all
 all: CMakeFiles/CHTLLexer.dir/all
 all: CMakeFiles/CHTLContext.dir/all
 all: CMakeFiles/CHTLParser.dir/all
@@ -78,12 +79,14 @@ all: Test/all
 all: CHTL/all
 all: JS/all
 all: CompilerDispatcher/all
+all: Util/all
 .PHONY : all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/DebugTest.dir/codegen
 codegen: CMakeFiles/SimpleTest.dir/codegen
 codegen: CMakeFiles/GeneratorTest.dir/codegen
+codegen: CMakeFiles/IOStreamTest.dir/codegen
 codegen: CMakeFiles/CHTLLexer.dir/codegen
 codegen: CMakeFiles/CHTLContext.dir/codegen
 codegen: CMakeFiles/CHTLParser.dir/codegen
@@ -96,6 +99,7 @@ codegen: Test/codegen
 codegen: CHTL/codegen
 codegen: JS/codegen
 codegen: CompilerDispatcher/codegen
+codegen: Util/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
@@ -104,12 +108,14 @@ preinstall: Test/preinstall
 preinstall: CHTL/preinstall
 preinstall: JS/preinstall
 preinstall: CompilerDispatcher/preinstall
+preinstall: Util/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/DebugTest.dir/clean
 clean: CMakeFiles/SimpleTest.dir/clean
 clean: CMakeFiles/GeneratorTest.dir/clean
+clean: CMakeFiles/IOStreamTest.dir/clean
 clean: CMakeFiles/CHTLLexer.dir/clean
 clean: CMakeFiles/CHTLContext.dir/clean
 clean: CMakeFiles/CHTLParser.dir/clean
@@ -122,6 +128,7 @@ clean: Test/clean
 clean: CHTL/clean
 clean: JS/clean
 clean: CompilerDispatcher/clean
+clean: Util/clean
 .PHONY : clean
 
 #=============================================================================
@@ -304,6 +311,136 @@ Test/clean: Test/CMakeFiles/CHTLTest.dir/clean
 .PHONY : Test/clean
 
 #=============================================================================
+# Directory level rules for directory Util
+
+# Recursive "all" directory target.
+Util/all: Util/FileSystem/all
+Util/all: Util/CHTLIOStream/all
+Util/all: Util/CHTLJSIOStream/all
+Util/all: Util/FileStream/all
+Util/all: Util/ZipUtil/all
+.PHONY : Util/all
+
+# Recursive "codegen" directory target.
+Util/codegen: Util/FileSystem/codegen
+Util/codegen: Util/CHTLIOStream/codegen
+Util/codegen: Util/CHTLJSIOStream/codegen
+Util/codegen: Util/FileStream/codegen
+Util/codegen: Util/ZipUtil/codegen
+.PHONY : Util/codegen
+
+# Recursive "preinstall" directory target.
+Util/preinstall: Util/FileSystem/preinstall
+Util/preinstall: Util/CHTLIOStream/preinstall
+Util/preinstall: Util/CHTLJSIOStream/preinstall
+Util/preinstall: Util/FileStream/preinstall
+Util/preinstall: Util/ZipUtil/preinstall
+.PHONY : Util/preinstall
+
+# Recursive "clean" directory target.
+Util/clean: Util/FileSystem/clean
+Util/clean: Util/CHTLIOStream/clean
+Util/clean: Util/CHTLJSIOStream/clean
+Util/clean: Util/FileStream/clean
+Util/clean: Util/ZipUtil/clean
+.PHONY : Util/clean
+
+#=============================================================================
+# Directory level rules for directory Util/CHTLIOStream
+
+# Recursive "all" directory target.
+Util/CHTLIOStream/all: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all
+.PHONY : Util/CHTLIOStream/all
+
+# Recursive "codegen" directory target.
+Util/CHTLIOStream/codegen: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/codegen
+.PHONY : Util/CHTLIOStream/codegen
+
+# Recursive "preinstall" directory target.
+Util/CHTLIOStream/preinstall:
+.PHONY : Util/CHTLIOStream/preinstall
+
+# Recursive "clean" directory target.
+Util/CHTLIOStream/clean: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/clean
+.PHONY : Util/CHTLIOStream/clean
+
+#=============================================================================
+# Directory level rules for directory Util/CHTLJSIOStream
+
+# Recursive "all" directory target.
+Util/CHTLJSIOStream/all: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all
+.PHONY : Util/CHTLJSIOStream/all
+
+# Recursive "codegen" directory target.
+Util/CHTLJSIOStream/codegen: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/codegen
+.PHONY : Util/CHTLJSIOStream/codegen
+
+# Recursive "preinstall" directory target.
+Util/CHTLJSIOStream/preinstall:
+.PHONY : Util/CHTLJSIOStream/preinstall
+
+# Recursive "clean" directory target.
+Util/CHTLJSIOStream/clean: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/clean
+.PHONY : Util/CHTLJSIOStream/clean
+
+#=============================================================================
+# Directory level rules for directory Util/FileStream
+
+# Recursive "all" directory target.
+Util/FileStream/all: Util/FileStream/CMakeFiles/FileStream.dir/all
+.PHONY : Util/FileStream/all
+
+# Recursive "codegen" directory target.
+Util/FileStream/codegen: Util/FileStream/CMakeFiles/FileStream.dir/codegen
+.PHONY : Util/FileStream/codegen
+
+# Recursive "preinstall" directory target.
+Util/FileStream/preinstall:
+.PHONY : Util/FileStream/preinstall
+
+# Recursive "clean" directory target.
+Util/FileStream/clean: Util/FileStream/CMakeFiles/FileStream.dir/clean
+.PHONY : Util/FileStream/clean
+
+#=============================================================================
+# Directory level rules for directory Util/FileSystem
+
+# Recursive "all" directory target.
+Util/FileSystem/all:
+.PHONY : Util/FileSystem/all
+
+# Recursive "codegen" directory target.
+Util/FileSystem/codegen:
+.PHONY : Util/FileSystem/codegen
+
+# Recursive "preinstall" directory target.
+Util/FileSystem/preinstall:
+.PHONY : Util/FileSystem/preinstall
+
+# Recursive "clean" directory target.
+Util/FileSystem/clean:
+.PHONY : Util/FileSystem/clean
+
+#=============================================================================
+# Directory level rules for directory Util/ZipUtil
+
+# Recursive "all" directory target.
+Util/ZipUtil/all: Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
+.PHONY : Util/ZipUtil/all
+
+# Recursive "codegen" directory target.
+Util/ZipUtil/codegen: Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen
+.PHONY : Util/ZipUtil/codegen
+
+# Recursive "preinstall" directory target.
+Util/ZipUtil/preinstall:
+.PHONY : Util/ZipUtil/preinstall
+
+# Recursive "clean" directory target.
+Util/ZipUtil/clean: Util/ZipUtil/CMakeFiles/ZipUtil.dir/clean
+.PHONY : Util/ZipUtil/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/DebugTest.dir
 
 # All Build rule for target.
@@ -316,7 +453,7 @@ CMakeFiles/DebugTest.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 CMakeFiles/DebugTest.dir/all: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=23,24 "Built target DebugTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=28,29 "Built target DebugTest"
 .PHONY : CMakeFiles/DebugTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -333,7 +470,7 @@ DebugTest: CMakeFiles/DebugTest.dir/rule
 # codegen rule for target.
 CMakeFiles/DebugTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=23,24 "Finished codegen for target DebugTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=28,29 "Finished codegen for target DebugTest"
 .PHONY : CMakeFiles/DebugTest.dir/codegen
 
 # clean rule for target.
@@ -354,7 +491,7 @@ CMakeFiles/SimpleTest.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 CMakeFiles/SimpleTest.dir/all: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=29,30 "Built target SimpleTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=38,39 "Built target SimpleTest"
 .PHONY : CMakeFiles/SimpleTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -371,7 +508,7 @@ SimpleTest: CMakeFiles/SimpleTest.dir/rule
 # codegen rule for target.
 CMakeFiles/SimpleTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=29,30 "Finished codegen for target SimpleTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=38,39 "Finished codegen for target SimpleTest"
 .PHONY : CMakeFiles/SimpleTest.dir/codegen
 
 # clean rule for target.
@@ -394,7 +531,7 @@ CMakeFiles/GeneratorTest.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 CMakeFiles/GeneratorTest.dir/all: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=25,26 "Built target GeneratorTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=32,33 "Built target GeneratorTest"
 .PHONY : CMakeFiles/GeneratorTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -411,7 +548,7 @@ GeneratorTest: CMakeFiles/GeneratorTest.dir/rule
 # codegen rule for target.
 CMakeFiles/GeneratorTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=25,26 "Finished codegen for target GeneratorTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=32,33 "Finished codegen for target GeneratorTest"
 .PHONY : CMakeFiles/GeneratorTest.dir/codegen
 
 # clean rule for target.
@@ -420,13 +557,48 @@ CMakeFiles/GeneratorTest.dir/clean:
 .PHONY : CMakeFiles/GeneratorTest.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/IOStreamTest.dir
+
+# All Build rule for target.
+CMakeFiles/IOStreamTest.dir/all: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all
+CMakeFiles/IOStreamTest.dir/all: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all
+CMakeFiles/IOStreamTest.dir/all: Util/FileStream/CMakeFiles/FileStream.dir/all
+CMakeFiles/IOStreamTest.dir/all: Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=34,35 "Built target IOStreamTest"
+.PHONY : CMakeFiles/IOStreamTest.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/IOStreamTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 10
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/IOStreamTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : CMakeFiles/IOStreamTest.dir/rule
+
+# Convenience name for target.
+IOStreamTest: CMakeFiles/IOStreamTest.dir/rule
+.PHONY : IOStreamTest
+
+# codegen rule for target.
+CMakeFiles/IOStreamTest.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=34,35 "Finished codegen for target IOStreamTest"
+.PHONY : CMakeFiles/IOStreamTest.dir/codegen
+
+# clean rule for target.
+CMakeFiles/IOStreamTest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/clean
+.PHONY : CMakeFiles/IOStreamTest.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/CHTLLexer.dir
 
 # All Build rule for target.
 CMakeFiles/CHTLLexer.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=13,14,15,16 "Built target CHTLLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=17,18,19,20 "Built target CHTLLexer"
 .PHONY : CMakeFiles/CHTLLexer.dir/all
 
 # Build rule for subdir invocation for target.
@@ -443,7 +615,7 @@ CHTLLexer: CMakeFiles/CHTLLexer.dir/rule
 # codegen rule for target.
 CMakeFiles/CHTLLexer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=13,14,15,16 "Finished codegen for target CHTLLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=17,18,19,20 "Finished codegen for target CHTLLexer"
 .PHONY : CMakeFiles/CHTLLexer.dir/codegen
 
 # clean rule for target.
@@ -490,7 +662,7 @@ CMakeFiles/CHTLContext.dir/clean:
 CMakeFiles/CHTLParser.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=17,18 "Built target CHTLParser"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=21,22 "Built target CHTLParser"
 .PHONY : CMakeFiles/CHTLParser.dir/all
 
 # Build rule for subdir invocation for target.
@@ -507,7 +679,7 @@ CHTLParser: CMakeFiles/CHTLParser.dir/rule
 # codegen rule for target.
 CMakeFiles/CHTLParser.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=17,18 "Finished codegen for target CHTLParser"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=21,22 "Finished codegen for target CHTLParser"
 .PHONY : CMakeFiles/CHTLParser.dir/codegen
 
 # clean rule for target.
@@ -522,7 +694,7 @@ CMakeFiles/CHTLParser.dir/clean:
 CMakeFiles/CHTLJSLexer.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=9,10 "Built target CHTLJSLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=13,14 "Built target CHTLJSLexer"
 .PHONY : CMakeFiles/CHTLJSLexer.dir/all
 
 # Build rule for subdir invocation for target.
@@ -539,7 +711,7 @@ CHTLJSLexer: CMakeFiles/CHTLJSLexer.dir/rule
 # codegen rule for target.
 CMakeFiles/CHTLJSLexer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=9,10 "Finished codegen for target CHTLJSLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=13,14 "Finished codegen for target CHTLJSLexer"
 .PHONY : CMakeFiles/CHTLJSLexer.dir/codegen
 
 # clean rule for target.
@@ -554,7 +726,7 @@ CMakeFiles/CHTLJSLexer.dir/clean:
 CMakeFiles/CHTLJSParser.dir/all: CMakeFiles/CHTLJSLexer.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=11,12 "Built target CHTLJSParser"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=15,16 "Built target CHTLJSParser"
 .PHONY : CMakeFiles/CHTLJSParser.dir/all
 
 # Build rule for subdir invocation for target.
@@ -571,7 +743,7 @@ CHTLJSParser: CMakeFiles/CHTLJSParser.dir/rule
 # codegen rule for target.
 CMakeFiles/CHTLJSParser.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=11,12 "Finished codegen for target CHTLJSParser"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=15,16 "Finished codegen for target CHTLJSParser"
 .PHONY : CMakeFiles/CHTLJSParser.dir/codegen
 
 # clean rule for target.
@@ -618,7 +790,7 @@ CMakeFiles/CHTLGenerator.dir/clean:
 CMakeFiles/CHTLJSGenerator.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=7,8 "Built target CHTLJSGenerator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=9,10 "Built target CHTLJSGenerator"
 .PHONY : CMakeFiles/CHTLJSGenerator.dir/all
 
 # Build rule for subdir invocation for target.
@@ -635,7 +807,7 @@ CHTLJSGenerator: CMakeFiles/CHTLJSGenerator.dir/rule
 # codegen rule for target.
 CMakeFiles/CHTLJSGenerator.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=7,8 "Finished codegen for target CHTLJSGenerator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=9,10 "Finished codegen for target CHTLJSGenerator"
 .PHONY : CMakeFiles/CHTLJSGenerator.dir/codegen
 
 # clean rule for target.
@@ -650,7 +822,7 @@ CMakeFiles/CHTLJSGenerator.dir/clean:
 Scanner/CMakeFiles/Scanner.dir/all:
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/depend
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=27,28 "Built target Scanner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=36,37 "Built target Scanner"
 .PHONY : Scanner/CMakeFiles/Scanner.dir/all
 
 # Build rule for subdir invocation for target.
@@ -667,7 +839,7 @@ Scanner: Scanner/CMakeFiles/Scanner.dir/rule
 # codegen rule for target.
 Scanner/CMakeFiles/Scanner.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=27,28 "Finished codegen for target Scanner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=36,37 "Finished codegen for target Scanner"
 .PHONY : Scanner/CMakeFiles/Scanner.dir/codegen
 
 # clean rule for target.
@@ -686,14 +858,18 @@ Test/CMakeFiles/CHTLTest.dir/all: CMakeFiles/CHTLJSLexer.dir/all
 Test/CMakeFiles/CHTLTest.dir/all: CMakeFiles/CHTLJSParser.dir/all
 Test/CMakeFiles/CHTLTest.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 Test/CMakeFiles/CHTLTest.dir/all: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
+Test/CMakeFiles/CHTLTest.dir/all: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all
+Test/CMakeFiles/CHTLTest.dir/all: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all
+Test/CMakeFiles/CHTLTest.dir/all: Util/FileStream/CMakeFiles/FileStream.dir/all
+Test/CMakeFiles/CHTLTest.dir/all: Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=19,20 "Built target CHTLTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=23,24,25 "Built target CHTLTest"
 .PHONY : Test/CMakeFiles/CHTLTest.dir/all
 
 # Build rule for subdir invocation for target.
 Test/CMakeFiles/CHTLTest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 20
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 29
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/CHTLTest.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
 .PHONY : Test/CMakeFiles/CHTLTest.dir/rule
@@ -705,7 +881,7 @@ CHTLTest: Test/CMakeFiles/CHTLTest.dir/rule
 # codegen rule for target.
 Test/CMakeFiles/CHTLTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=19,20 "Finished codegen for target CHTLTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=23,24,25 "Finished codegen for target CHTLTest"
 .PHONY : Test/CMakeFiles/CHTLTest.dir/codegen
 
 # clean rule for target.
@@ -722,7 +898,7 @@ CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all: CMakeFiles/CHTLContext
 CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/depend
 	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=21,22 "Built target CompilerDispatcher"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=26,27 "Built target CompilerDispatcher"
 .PHONY : CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
 
 # Build rule for subdir invocation for target.
@@ -739,13 +915,141 @@ CompilerDispatcher: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/rule
 # codegen rule for target.
 CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=21,22 "Finished codegen for target CompilerDispatcher"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=26,27 "Finished codegen for target CompilerDispatcher"
 .PHONY : CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/codegen
 
 # clean rule for target.
 CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/clean
 .PHONY : CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/clean
+
+#=============================================================================
+# Target rules for target Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir
+
+# All Build rule for target.
+Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=7,8 "Built target CHTLIOStream"
+.PHONY : Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all
+
+# Build rule for subdir invocation for target.
+Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/rule
+
+# Convenience name for target.
+CHTLIOStream: Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/rule
+.PHONY : CHTLIOStream
+
+# codegen rule for target.
+Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=7,8 "Finished codegen for target CHTLIOStream"
+.PHONY : Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/codegen
+
+# clean rule for target.
+Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/clean
+.PHONY : Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/clean
+
+#=============================================================================
+# Target rules for target Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir
+
+# All Build rule for target.
+Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build.make Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build.make Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=11,12 "Built target CHTLJSIOStream"
+.PHONY : Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all
+
+# Build rule for subdir invocation for target.
+Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/rule
+
+# Convenience name for target.
+CHTLJSIOStream: Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/rule
+.PHONY : CHTLJSIOStream
+
+# codegen rule for target.
+Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build.make Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=11,12 "Finished codegen for target CHTLJSIOStream"
+.PHONY : Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/codegen
+
+# clean rule for target.
+Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build.make Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/clean
+.PHONY : Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/clean
+
+#=============================================================================
+# Target rules for target Util/FileStream/CMakeFiles/FileStream.dir
+
+# All Build rule for target.
+Util/FileStream/CMakeFiles/FileStream.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/FileStream/CMakeFiles/FileStream.dir/build.make Util/FileStream/CMakeFiles/FileStream.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/FileStream/CMakeFiles/FileStream.dir/build.make Util/FileStream/CMakeFiles/FileStream.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=30,31 "Built target FileStream"
+.PHONY : Util/FileStream/CMakeFiles/FileStream.dir/all
+
+# Build rule for subdir invocation for target.
+Util/FileStream/CMakeFiles/FileStream.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/FileStream/CMakeFiles/FileStream.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : Util/FileStream/CMakeFiles/FileStream.dir/rule
+
+# Convenience name for target.
+FileStream: Util/FileStream/CMakeFiles/FileStream.dir/rule
+.PHONY : FileStream
+
+# codegen rule for target.
+Util/FileStream/CMakeFiles/FileStream.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/FileStream/CMakeFiles/FileStream.dir/build.make Util/FileStream/CMakeFiles/FileStream.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=30,31 "Finished codegen for target FileStream"
+.PHONY : Util/FileStream/CMakeFiles/FileStream.dir/codegen
+
+# clean rule for target.
+Util/FileStream/CMakeFiles/FileStream.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/FileStream/CMakeFiles/FileStream.dir/build.make Util/FileStream/CMakeFiles/FileStream.dir/clean
+.PHONY : Util/FileStream/CMakeFiles/FileStream.dir/clean
+
+#=============================================================================
+# Target rules for target Util/ZipUtil/CMakeFiles/ZipUtil.dir
+
+# All Build rule for target.
+Util/ZipUtil/CMakeFiles/ZipUtil.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=40,41 "Built target ZipUtil"
+.PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
+
+# Build rule for subdir invocation for target.
+Util/ZipUtil/CMakeFiles/ZipUtil.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/rule
+
+# Convenience name for target.
+ZipUtil: Util/ZipUtil/CMakeFiles/ZipUtil.dir/rule
+.PHONY : ZipUtil
+
+# codegen rule for target.
+Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=40,41 "Finished codegen for target ZipUtil"
+.PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen
+
+# clean rule for target.
+Util/ZipUtil/CMakeFiles/ZipUtil.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/clean
+.PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

@@ -156,6 +156,19 @@ GeneratorTest/fast:
 .PHONY : GeneratorTest/fast
 
 #=============================================================================
+# Target rules for targets named IOStreamTest
+
+# Build rule for target.
+IOStreamTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 IOStreamTest
+.PHONY : IOStreamTest
+
+# fast build rule for target.
+IOStreamTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/build
+.PHONY : IOStreamTest/fast
+
+#=============================================================================
 # Target rules for targets named CHTLLexer
 
 # Build rule for target.
@@ -284,6 +297,58 @@ CompilerDispatcher: cmake_check_build_system
 CompilerDispatcher/fast:
 	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build
 .PHONY : CompilerDispatcher/fast
+
+#=============================================================================
+# Target rules for targets named CHTLIOStream
+
+# Build rule for target.
+CHTLIOStream: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLIOStream
+.PHONY : CHTLIOStream
+
+# fast build rule for target.
+CHTLIOStream/fast:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build
+.PHONY : CHTLIOStream/fast
+
+#=============================================================================
+# Target rules for targets named CHTLJSIOStream
+
+# Build rule for target.
+CHTLJSIOStream: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSIOStream
+.PHONY : CHTLJSIOStream
+
+# fast build rule for target.
+CHTLJSIOStream/fast:
+	$(MAKE) $(MAKESILENT) -f Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build.make Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/build
+.PHONY : CHTLJSIOStream/fast
+
+#=============================================================================
+# Target rules for targets named FileStream
+
+# Build rule for target.
+FileStream: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 FileStream
+.PHONY : FileStream
+
+# fast build rule for target.
+FileStream/fast:
+	$(MAKE) $(MAKESILENT) -f Util/FileStream/CMakeFiles/FileStream.dir/build.make Util/FileStream/CMakeFiles/FileStream.dir/build
+.PHONY : FileStream/fast
+
+#=============================================================================
+# Target rules for targets named ZipUtil
+
+# Build rule for target.
+ZipUtil: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ZipUtil
+.PHONY : ZipUtil
+
+# fast build rule for target.
+ZipUtil/fast:
+	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/build
+.PHONY : ZipUtil/fast
 
 CHTL/CHTLContext/ImportManager.o: CHTL/CHTLContext/ImportManager.cpp.o
 .PHONY : CHTL/CHTLContext/ImportManager.o
@@ -597,6 +662,30 @@ Test/generator_test.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/Test/generator_test.cpp.s
 .PHONY : Test/generator_test.cpp.s
 
+Test/io_stream_test.o: Test/io_stream_test.cpp.o
+.PHONY : Test/io_stream_test.o
+
+# target to build an object file
+Test/io_stream_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/Test/io_stream_test.cpp.o
+.PHONY : Test/io_stream_test.cpp.o
+
+Test/io_stream_test.i: Test/io_stream_test.cpp.i
+.PHONY : Test/io_stream_test.i
+
+# target to preprocess a source file
+Test/io_stream_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/Test/io_stream_test.cpp.i
+.PHONY : Test/io_stream_test.cpp.i
+
+Test/io_stream_test.s: Test/io_stream_test.cpp.s
+.PHONY : Test/io_stream_test.s
+
+# target to generate assembly for a file
+Test/io_stream_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/IOStreamTest.dir/build.make CMakeFiles/IOStreamTest.dir/Test/io_stream_test.cpp.s
+.PHONY : Test/io_stream_test.cpp.s
+
 Test/simple_test.o: Test/simple_test.cpp.o
 .PHONY : Test/simple_test.o
 
@@ -631,7 +720,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CHTLContext"
 	@echo "... CHTLGenerator"
+	@echo "... CHTLIOStream"
 	@echo "... CHTLJSGenerator"
+	@echo "... CHTLJSIOStream"
 	@echo "... CHTLJSLexer"
 	@echo "... CHTLJSParser"
 	@echo "... CHTLLexer"
@@ -639,9 +730,12 @@ help:
 	@echo "... CHTLTest"
 	@echo "... CompilerDispatcher"
 	@echo "... DebugTest"
+	@echo "... FileStream"
 	@echo "... GeneratorTest"
+	@echo "... IOStreamTest"
 	@echo "... Scanner"
 	@echo "... SimpleTest"
+	@echo "... ZipUtil"
 	@echo "... CHTL/CHTLContext/ImportManager.o"
 	@echo "... CHTL/CHTLContext/ImportManager.i"
 	@echo "... CHTL/CHTLContext/ImportManager.s"
@@ -681,6 +775,9 @@ help:
 	@echo "... Test/generator_test.o"
 	@echo "... Test/generator_test.i"
 	@echo "... Test/generator_test.s"
+	@echo "... Test/io_stream_test.o"
+	@echo "... Test/io_stream_test.i"
+	@echo "... Test/io_stream_test.s"
 	@echo "... Test/simple_test.o"
 	@echo "... Test/simple_test.i"
 	@echo "... Test/simple_test.s"

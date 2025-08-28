@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/Test/io_stream_test.cpp" "Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o" "gcc" "Test/CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o.d"
   "/workspace/Test/main.cpp" "Test/CMakeFiles/CHTLTest.dir/main.cpp.o" "gcc" "Test/CMakeFiles/CHTLTest.dir/main.cpp.o.d"
   "" "bin/CHTLTest" "gcc" "Test/CMakeFiles/CHTLTest.dir/link.d"
   )

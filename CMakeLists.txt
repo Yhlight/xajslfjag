@@ -23,6 +23,7 @@ add_subdirectory(Test)
 add_subdirectory(CHTL)
 add_subdirectory(CHTL JS)
 add_subdirectory(CompilerDispatcher)
+add_subdirectory(Util)
 
 # 添加调试测试
 add_executable(DebugTest Test/debug_test.cpp)
@@ -50,6 +51,15 @@ set_target_properties(GeneratorTest PROPERTIES
 )
 target_link_libraries(GeneratorTest CHTLParser CHTLLexer CHTLJSParser CHTLJSLexer CHTLContext Scanner CompilerDispatcher CHTLGenerator CHTLJSGenerator)
 target_include_directories(GeneratorTest PRIVATE ${CMAKE_SOURCE_DIR})
+
+# 添加I/O流测试
+add_executable(IOStreamTest Test/io_stream_test.cpp)
+set_target_properties(IOStreamTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+target_link_libraries(IOStreamTest CHTLIOStream CHTLJSIOStream FileStream ZipUtil)
+target_include_directories(IOStreamTest PRIVATE ${CMAKE_SOURCE_DIR})
 
 # 创建CHTLLexer静态库
 set(CHTLLEXER_SOURCES

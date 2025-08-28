@@ -6,6 +6,7 @@ set(TEST_SOURCES
     # CHTLTest.cpp
     # CHTLJSTest.cpp
     # ScannerTest.cpp
+    io_stream_test.cpp
 )
 
 # 创建Test可执行文件
@@ -25,6 +26,10 @@ target_link_libraries(CHTLTest
     CHTLParser
     CHTLJSLexer
     CHTLJSParser
+    CHTLIOStream
+    CHTLJSIOStream
+    FileStream
+    ZipUtil
 )
 
 # 包含目录
