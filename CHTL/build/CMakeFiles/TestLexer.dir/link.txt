@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/TestLexer.dir/link.d CMakeFiles/TestLexer.dir/Test/TestLexer.cpp.o -o bin/TestLexer  libCHTLLexer.a
