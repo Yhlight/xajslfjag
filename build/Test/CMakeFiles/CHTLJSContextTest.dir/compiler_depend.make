@@ -102,7 +102,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
-  /usr/include/c++/14/array \
   /usr/include/c++/14/backward/auto_ptr.h \
   /usr/include/c++/14/backward/binders.h \
   /usr/include/c++/14/bit \
@@ -122,6 +121,7 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
   /usr/include/c++/14/bits/cxxabi_init_exception.h \
+  /usr/include/c++/14/bits/deque.tcc \
   /usr/include/c++/14/bits/enable_special_members.h \
   /usr/include/c++/14/bits/erase_if.h \
   /usr/include/c++/14/bits/exception.h \
@@ -148,7 +148,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/bits/node_handle.h \
   /usr/include/c++/14/bits/ostream.tcc \
   /usr/include/c++/14/bits/ostream_insert.h \
-  /usr/include/c++/14/bits/parse_numbers.h \
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
@@ -159,16 +158,17 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
   /usr/include/c++/14/bits/std_abs.h \
-  /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
+  /usr/include/c++/14/bits/stl_deque.h \
   /usr/include/c++/14/bits/stl_function.h \
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
@@ -178,7 +178,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
-  /usr/include/c++/14/bits/unordered_set.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -188,7 +187,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
-  /usr/include/c++/14/compare \
   /usr/include/c++/14/concepts \
   /usr/include/c++/14/cstddef \
   /usr/include/c++/14/cstdio \
@@ -197,6 +195,7 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
   /usr/include/c++/14/debug/debug.h \
+  /usr/include/c++/14/deque \
   /usr/include/c++/14/exception \
   /usr/include/c++/14/ext/aligned_buffer.h \
   /usr/include/c++/14/ext/alloc_traits.h \
@@ -205,7 +204,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/ext/numeric_traits.h \
   /usr/include/c++/14/ext/string_conversions.h \
   /usr/include/c++/14/ext/type_traits.h \
-  /usr/include/c++/14/functional \
   /usr/include/c++/14/initializer_list \
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
@@ -217,6 +215,7 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
+  /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -226,8 +225,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
-  /usr/include/c++/14/unordered_set \
-  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -253,6 +250,7 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o: /workspace/Test
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
+  /workspace/CHTL\ JS/CHTLJSState/CHTLJSState.h \
   /workspace/CHTL\ JS/CHTLJSContext/CHTLJSContext.h
 
 bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
@@ -289,8 +287,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /lib/x86_64-linux-gnu/libgcc_s.so.1:
 
-/lib/x86_64-linux-gnu/libc.so:
-
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/c++/14/bits/exception.h:
@@ -309,15 +305,13 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/pthread.h:
 
+/workspace/CHTL\ JS/CHTLJSState/CHTLJSState.h:
+
 /usr/include/c++/14/stdexcept:
 
 /usr/include/c++/14/bits/charconv.h:
 
 /usr/include/c++/14/bits/basic_ios.tcc:
-
-/lib/x86_64-linux-gnu/libc.so.6:
-
-/usr/include/c++/14/pstl/glue_memory_defs.h:
 
 /usr/include/c++/14/bits/alloc_traits.h:
 
@@ -348,6 +342,10 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 /usr/include/c++/14/bits/stl_iterator_base_types.h:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/c++/14/pstl/glue_memory_defs.h:
+
+/lib/x86_64-linux-gnu/libc.so.6:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
@@ -385,10 +383,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
-/usr/include/c++/14/bits/exception_defines.h:
-
-/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
-
 /usr/include/c++/14/cstdlib:
 
 /usr/include/c++/14/system_error:
@@ -411,9 +405,13 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/c++/14/bits/allocated_ptr.h:
 
+/usr/include/c++/14/stack:
+
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
 /usr/include/c++/14/bits/cxxabi_forced.h:
+
+/usr/include/c++/14/bits/enable_special_members.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
@@ -427,9 +425,15 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/stdio.h:
 
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/c++/14/bits/locale_facets.tcc:
+
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
+
+/lib/x86_64-linux-gnu/libc.so:
 
 /usr/include/ctype.h:
 
@@ -462,8 +466,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/c++/14/functional:
 
 /usr/include/c++/14/bits/ios_base.h:
 
@@ -499,10 +501,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
-/usr/include/c++/14/bits/enable_special_members.h:
-
-/usr/include/c++/14/bits/std_function.h:
-
 /workspace/CHTL\ JS/CHTLJSContext/CHTLJSContext.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
@@ -532,6 +530,10 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
+
+/usr/include/c++/14/ostream:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /lib/x86_64-linux-gnu/libm.so:
 
@@ -585,6 +587,14 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/x86_64-linux-gnu/bits/select.h:
 
+/usr/include/c++/14/bits/exception_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
+
+/usr/include/c++/14/bits/deque.tcc:
+
+/usr/include/c++/14/bits/stringfwd.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/c++/14/bits/basic_string.h:
@@ -613,8 +623,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/c++/14/iostream:
 
-/usr/include/c++/14/array:
-
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
 /usr/include/c++/14/bits/functional_hash.h:
@@ -625,11 +633,7 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/usr/include/c++/14/unordered_set:
-
 /usr/include/c++/14/bits/memory_resource.h:
-
-/usr/include/c++/14/bits/unordered_set.h:
 
 /usr/include/c++/14/bits/memoryfwd.h:
 
@@ -663,14 +667,6 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
 
-/usr/include/c++/14/compare:
-
-/usr/include/c++/14/ostream:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/14/bits/parse_numbers.h:
-
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
@@ -685,11 +681,19 @@ bin/CHTLJSContextTest: lib/libCHTLJSContext.a \
 
 /usr/include/c++/14/bits/stl_construct.h:
 
+/usr/include/c++/14/bits/stl_stack.h:
+
+/usr/include/c++/14/deque:
+
+/usr/include/c++/14/clocale:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
+
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
-/usr/include/c++/14/bits/stringfwd.h:
+/usr/include/c++/14/bits/stl_deque.h:
 
 /usr/include/c++/14/bits/unique_ptr.h:
 
@@ -767,14 +771,6 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o:
 
 /usr/include/c++/14/unordered_map:
 
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/c++/14/bits/locale_facets.tcc:
-
-/usr/include/c++/14/variant:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
-
 /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
@@ -783,15 +779,13 @@ Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
 
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
+
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/cpu_defines.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
-
-/usr/include/c++/14/clocale:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 

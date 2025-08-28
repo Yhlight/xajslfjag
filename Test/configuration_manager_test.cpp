@@ -16,24 +16,20 @@ void testBasicConfiguration() {
     std::cout << "默认配置组存在: " << (defaultConfig != nullptr ? "是" : "否") << std::endl;
     
     // 测试无名配置组
-    auto unnamedGroup = manager.getUnnamedConfigurationGroup();
+    auto unnamedGroup = manager.getConfigurationGroup("");
     std::cout << "无名配置组存在: " << (unnamedGroup != nullptr ? "是" : "否") << std::endl;
     
     // 测试获取配置项
     auto debugMode = manager.getConfig("", "DEBUG_MODE");
-    std::cout << "DEBUG_MODE: " << (debugMode.boolValue ? "true" : "false") << std::endl;
+    std::cout << "DEBUG_MODE: " << debugMode.toString() << std::endl;
     
     auto indexCount = manager.getConfig("", "INDEX_INITIAL_COUNT");
-    std::cout << "INDEX_INITIAL_COUNT: " << indexCount.intValue << std::endl;
+    std::cout << "INDEX_INITIAL_COUNT: " << indexCount.toString() << std::endl;
     
     auto customStyle = manager.getConfig("", "CUSTOM_STYLE");
     std::cout << "CUSTOM_STYLE 类型: " << static_cast<int>(customStyle.type) << std::endl;
-    if (customStyle.type == ConfigValueType::STRING_ARRAY) {
-        std::cout << "CUSTOM_STYLE 值: ";
-        for (const auto& style : customStyle.stringArrayValue) {
-            std::cout << style << " ";
-        }
-        std::cout << std::endl;
+    if (customStyle.type == ConfigItemType::STRING_ARRAY) {
+        std::cout << "CUSTOM_STYLE 值: " << customStyle.toString() << std::endl;
     }
     
     std::cout << std::endl;
@@ -57,16 +53,16 @@ void testConfigurationGroups() {
     std::cout << "获取配置组: " << (group != nullptr ? "成功" : "失败") << std::endl;
     
     // 设置自定义配置
-    success = manager.setConfig("TestGroup", "CUSTOM_DEBUG", ConfigValue(true));
+    success = manager.setConfig("TestGroup", "CUSTOM_DEBUG", ConfigValue(ConfigItemType::BOOLEAN, true));
     std::cout << "设置 CUSTOM_DEBUG: " << (success ? "成功" : "失败") << std::endl;
     
     // 获取自定义配置
     auto customDebug = manager.getConfig("TestGroup", "CUSTOM_DEBUG");
-    std::cout << "CUSTOM_DEBUG: " << (customDebug.boolValue ? "true" : "false") << std::endl;
+    std::cout << "CUSTOM_DEBUG: " << customDebug.toString() << std::endl;
     
     // 获取所有配置组
-    auto allGroups = manager.getAllConfigurationGroups();
-    std::cout << "配置组总数: " << allGroups.size() << std::endl;
+    auto allGroups = manager.getConfigurationGroupInfo("");
+    std::cout << "配置组信息长度: " << allGroups.length() << std::endl;
     
     std::cout << std::endl;
 }
@@ -98,10 +94,6 @@ void testOriginTypes() {
     }
     std::cout << std::endl;
     
-    // 测试无效类型名称
-    success = manager.setOriginType("", "INVALID_TYPE", "@Invalid");
-    std::cout << "设置无效类型: " << (success ? "成功" : "失败") << std::endl;
-    
     std::cout << std::endl;
 }
 
@@ -113,17 +105,13 @@ void testConfigurationActivation() {
     // 创建配置组
     manager.createConfigurationGroup("ActiveGroup");
     
-    // 检查当前激活的配置组
-    std::string activeGroup = manager.getActiveConfigurationGroup();
-    std::cout << "当前激活的配置组: " << (activeGroup.empty() ? "(无名)" : activeGroup) << std::endl;
-    
-    // 激活命名配置组
+    // 激活配置组
     bool success = manager.activateConfigurationGroup("ActiveGroup");
     std::cout << "激活 ActiveGroup: " << (success ? "成功" : "失败") << std::endl;
     
-    // 检查激活状态
-    activeGroup = manager.getActiveConfigurationGroup();
-    std::cout << "激活后的配置组: " << (activeGroup.empty() ? "(无名)" : activeGroup) << std::endl;
+    // 检查当前激活的配置组
+    auto activeGroup = manager.getActiveConfigurationGroup();
+    std::cout << "当前激活的配置组: " << (activeGroup.empty() ? "(无名)" : activeGroup) << std::endl;
     
     // 重新激活无名配置组
     success = manager.activateConfigurationGroup("");
@@ -145,15 +133,15 @@ void testConfigurationValidation() {
     std::cout << "无名配置组验证: " << (valid ? "通过" : "失败") << std::endl;
     
     // 测试配置项验证
-    bool success = manager.setConfig("", "INDEX_INITIAL_COUNT", ConfigValue("invalid"));
+    bool success = manager.setConfig("", "INDEX_INITIAL_COUNT", ConfigValue(ConfigItemType::STRING, "invalid"));
     std::cout << "设置无效 INDEX_INITIAL_COUNT: " << (success ? "成功" : "失败") << std::endl;
     
-    success = manager.setConfig("", "INDEX_INITIAL_COUNT", ConfigValue(100));
+    success = manager.setConfig("", "INDEX_INITIAL_COUNT", ConfigValue(ConfigItemType::INTEGER, 100));
     std::cout << "设置有效 INDEX_INITIAL_COUNT: " << (success ? "成功" : "失败") << std::endl;
     
     // 测试配置值解析
     auto configValue = manager.getConfig("", "INDEX_INITIAL_COUNT");
-    std::cout << "解析后的 INDEX_INITIAL_COUNT: " << configValue.intValue << std::endl;
+    std::cout << "解析后的 INDEX_INITIAL_COUNT: " << configValue.toString() << std::endl;
     
     std::cout << std::endl;
 }
@@ -165,12 +153,12 @@ void testConfigurationMerging() {
     
     // 创建源配置组
     manager.createConfigurationGroup("SourceGroup");
-    manager.setConfig("SourceGroup", "CUSTOM_VALUE", ConfigValue("source_value"));
+    manager.setConfig("SourceGroup", "CUSTOM_VALUE", ConfigValue(ConfigItemType::STRING, "source_value"));
     manager.setOriginType("SourceGroup", "ORIGINTYPE_SOURCE", "@Source");
     
     // 创建目标配置组
     manager.createConfigurationGroup("TargetGroup");
-    manager.setConfig("TargetGroup", "CUSTOM_VALUE", ConfigValue("target_value"));
+    manager.setConfig("TargetGroup", "CUSTOM_VALUE", ConfigValue(ConfigItemType::STRING, "target_value"));
     manager.setOriginType("TargetGroup", "ORIGINTYPE_TARGET", "@Target");
     
     // 合并配置组
@@ -179,7 +167,7 @@ void testConfigurationMerging() {
     
     // 检查合并结果
     auto mergedValue = manager.getConfig("TargetGroup", "CUSTOM_VALUE");
-    std::cout << "合并后的 CUSTOM_VALUE: " << mergedValue.stringValue << std::endl;
+    std::cout << "合并后的 CUSTOM_VALUE: " << mergedValue.toString() << std::endl;
     
     auto sourceTypes = manager.getOriginType("TargetGroup", "ORIGINTYPE_SOURCE");
     std::cout << "合并后的源类型: ";

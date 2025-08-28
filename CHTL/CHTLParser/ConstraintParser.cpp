@@ -6,390 +6,319 @@
 
 namespace CHTL {
 
-ConstraintParser::ConstraintParser(std::shared_ptr<ConfigurationManager> configManager)
-    : configManager_(configManager) {
+ConstraintParser::ConstraintParser() {
+    clearStatistics();
 }
 
-ConstraintParser::~ConstraintParser() {
-}
-
-std::vector<std::shared_ptr<ConstraintStatement>> ConstraintParser::parse(const std::string& source, const std::string& scope) {
+std::vector<ConstraintGroup> ConstraintParser::parse(const std::string& source, const std::string& sourceFile) {
     clearErrors();
-    std::vector<std::shared_ptr<ConstraintStatement>> statements;
+    clearStatistics();
+    
+    std::vector<ConstraintGroup> groups;
     
     if (source.empty()) {
-        return statements;
+        return groups;
     }
     
     std::istringstream iss(source);
     std::string line;
-    int lineNumber = 1;
+    size_t lineNumber = 1;
     
     while (std::getline(iss, line)) {
-        // 查找except语句
-        if (line.find("except") != std::string::npos) {
-            auto statement = parseExceptStatement(line, lineNumber, scope);
-            if (statement) {
-                statements.push_back(statement);
+        if (isConstraintStatement(line)) {
+            auto group = parseSingleConstraintStatement(line, lineNumber, 1, sourceFile);
+            if (!group.constraints.empty()) {
+                groups.push_back(group);
+                statistics_.totalConstraints += group.constraints.size();
             }
         }
         lineNumber++;
     }
     
-    return statements;
+    return groups;
 }
 
-std::shared_ptr<ConstraintStatement> ConstraintParser::parseExceptStatement(const std::string& line, int lineNumber, const std::string& scope) {
-    auto statement = std::make_shared<ConstraintStatement>();
-    statement->lineNumber = lineNumber;
-    statement->columnNumber = 1;
-    statement->scope = scope;
+ConstraintGroup ConstraintParser::parseSingleConstraintStatement(const std::string& line, size_t lineNumber,
+                                                               size_t columnNumber, const std::string& sourceFile) {
+    ConstraintGroup group(lineNumber, columnNumber, sourceFile);
     
-    size_t position = 0;
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "except"
-    if (!matchKeyword(line, position, "except")) {
-        addError("期望关键字 'except'");
-        return nullptr;
+    if (isExceptClause(line)) {
+        auto constraints = parseExceptClause(line, lineNumber, columnNumber, sourceFile);
+        group.constraints = constraints;
+        
+        // 更新统计
+        for (const auto& constraint : constraints) {
+            switch (constraint.type) {
+                case ConstraintType::ELEMENT:
+                    statistics_.elementConstraints++;
+                    break;
+                case ConstraintType::TYPE:
+                    statistics_.typeConstraints++;
+                    break;
+                case ConstraintType::GLOBAL:
+                    statistics_.globalConstraints++;
+                    break;
+            }
+        }
     }
     
-    // 跳过空白字符
-    skipWhitespace(line, position);
+    return group;
+}
+
+std::vector<ConstraintInfo> ConstraintParser::parseExceptClause(const std::string& text, size_t line,
+                                                               size_t column, const std::string& sourceFile) {
+    std::vector<ConstraintInfo> constraints;
     
-    // 解析约束目标列表
-    while (position < line.length()) {
-        // 跳过空白字符
-        skipWhitespace(line, position);
+    // 查找 "except" 关键字
+    size_t pos = text.find("except");
+    if (pos == std::string::npos) {
+        return constraints;
+    }
+    
+    pos += 6; // 跳过 "except"
+    
+    // 跳过空白字符
+    while (pos < text.length() && std::isspace(text[pos])) {
+        pos++;
+    }
+    
+    // 解析约束列表
+    std::string currentConstraint;
+    while (pos < text.length()) {
+        char ch = text[pos];
         
-        if (position >= line.length()) {
-            break;
+        if (ch == ',' || ch == ';' || ch == '{') {
+            // 处理当前约束
+            if (!currentConstraint.empty()) {
+                auto constraint = parseConstraintText(currentConstraint, line, column, sourceFile);
+                if (constraint.type != ConstraintType::GLOBAL) {
+                    constraints.push_back(constraint);
+                }
+                currentConstraint.clear();
+            }
+            
+            if (ch == ';' || ch == '{') {
+                break;
+            }
+        } else {
+            currentConstraint += ch;
         }
         
-        // 检查是否到达语句结束
-        if (line[position] == ';' || line[position] == '{') {
-            break;
+        pos++;
+    }
+    
+    // 处理最后一个约束
+    if (!currentConstraint.empty()) {
+        auto constraint = parseConstraintText(currentConstraint, line, column, sourceFile);
+        if (constraint.type != ConstraintType::GLOBAL) {
+            constraints.push_back(constraint);
         }
-        
-        // 提取目标文本
-        std::string targetText;
-        while (position < line.length() && line[position] != ',' && line[position] != ';' && line[position] != '{') {
-            targetText += line[position];
-            position++;
-        }
-        
-        // 去除首尾空白字符
-        targetText.erase(0, targetText.find_first_not_of(" \t"));
-        targetText.erase(targetText.find_last_not_of(" \t") + 1);
-        
-        if (!targetText.empty()) {
-            auto target = parseConstraintTarget(targetText, lineNumber);
-            statement->targets.push_back(target);
-        }
-        
-        // 跳过逗号
-        if (position < line.length() && line[position] == ',') {
-            position++;
-        }
+    }
+    
+    return constraints;
+}
+
+ConstraintInfo ConstraintParser::parseConstraintText(const std::string& text, size_t line, size_t column, const std::string& sourceFile) {
+    std::string cleanText = text;
+    
+    // 去除首尾空白字符
+    cleanText.erase(0, cleanText.find_first_not_of(" \t"));
+    cleanText.erase(cleanText.find_last_not_of(" \t") + 1);
+    
+    if (cleanText.empty()) {
+        return ConstraintInfo(ConstraintType::GLOBAL, "", line, column, sourceFile);
     }
     
     // 确定约束类型
-    if (scope.empty()) {
-        statement->type = ConstraintType::GLOBAL;
-    } else if (statement->targets.size() > 0) {
-        // 根据第一个目标的类型确定约束类型
-        auto& firstTarget = statement->targets[0];
-        if (firstTarget.type == ConstraintTargetType::HTML_ELEMENT || 
-            firstTarget.type == ConstraintTargetType::CUSTOM_ELEMENT ||
-            firstTarget.type == ConstraintTargetType::TEMPLATE_VAR ||
-            firstTarget.type == ConstraintTargetType::TEMPLATE_ELEMENT ||
-            firstTarget.type == ConstraintTargetType::TEMPLATE_STYLE) {
-            statement->type = ConstraintType::EXACT;
-        } else {
-            statement->type = ConstraintType::TYPE;
-        }
-    }
+    ConstraintType type = getConstraintType(cleanText);
+    std::string value = extractConstraintValue(cleanText, type);
     
-    return statement;
+    return ConstraintInfo(type, value, line, column, sourceFile);
 }
 
-ConstraintTarget ConstraintParser::parseConstraintTarget(const std::string& targetText, int lineNumber) {
-    ConstraintTarget target;
-    target.lineNumber = lineNumber;
-    target.fullPath = targetText;
+bool ConstraintParser::validateConstraint(const ConstraintInfo& constraint) {
+    if (constraint.value.empty()) {
+        return false;
+    }
+    
+    switch (constraint.type) {
+        case ConstraintType::ELEMENT:
+            // 验证HTML元素名称
+            return isValidHTMLElement(constraint.value);
+        case ConstraintType::TYPE:
+            // 验证类型名称
+            return isValidTypeName(constraint.value);
+        case ConstraintType::GLOBAL:
+            // 全局约束总是有效的
+            return true;
+        default:
+            return false;
+    }
+}
+
+std::vector<std::string> ConstraintParser::getValidationErrors(const ConstraintInfo& constraint) {
+    std::vector<std::string> errors;
+    
+    if (constraint.value.empty()) {
+        errors.push_back("约束值不能为空");
+        return errors;
+    }
+    
+    switch (constraint.type) {
+        case ConstraintType::ELEMENT:
+            if (!isValidHTMLElement(constraint.value)) {
+                errors.push_back("无效的HTML元素名称: " + constraint.value);
+            }
+            break;
+        case ConstraintType::TYPE:
+            if (!isValidTypeName(constraint.value)) {
+                errors.push_back("无效的类型名称: " + constraint.value);
+            }
+            break;
+        case ConstraintType::GLOBAL:
+            // 全局约束不需要特殊验证
+            break;
+        default:
+            errors.push_back("未知的约束类型");
+            break;
+    }
+    
+    return errors;
+}
+
+ConstraintType ConstraintParser::getConstraintType(const std::string& text) {
+    if (text.empty()) {
+        return ConstraintType::GLOBAL;
+    }
+    
+    // 检查是否为HTML元素
+    if (isValidHTMLElement(text)) {
+        return ConstraintType::ELEMENT;
+    }
+    
+    // 检查是否为类型名称
+    if (isValidTypeName(text)) {
+        return ConstraintType::TYPE;
+    }
+    
+    // 默认为全局约束
+    return ConstraintType::GLOBAL;
+}
+
+bool ConstraintParser::isConstraintStatement(const std::string& text) {
+    return text.find("except") != std::string::npos;
+}
+
+bool ConstraintParser::isExceptClause(const std::string& text) {
+    std::string cleanText = text;
+    cleanText.erase(0, cleanText.find_first_not_of(" \t"));
+    return cleanText.substr(0, 6) == "except";
+}
+
+std::string ConstraintParser::extractConstraintValue(const std::string& text, ConstraintType type) {
+    std::string cleanText = text;
     
     // 去除首尾空白字符
-    std::string trimmedText = targetText;
-    trimmedText.erase(0, trimmedText.find_first_not_of(" \t"));
-    trimmedText.erase(trimmedText.find_last_not_of(" \t") + 1);
+    cleanText.erase(0, cleanText.find_first_not_of(" \t"));
+    cleanText.erase(cleanText.find_last_not_of(" \t") + 1);
     
-    if (trimmedText.empty()) {
-        target.type = ConstraintTargetType::HTML_ELEMENT;
-        target.name = "";
-        return target;
+    switch (type) {
+        case ConstraintType::ELEMENT:
+            // 对于HTML元素，直接返回名称
+            return cleanText;
+        case ConstraintType::TYPE:
+            // 对于类型，检查是否有前缀
+            if (cleanText[0] == '@') {
+                return cleanText.substr(1);
+            }
+            return cleanText;
+        case ConstraintType::GLOBAL:
+            // 对于全局约束，返回原始文本
+            return cleanText;
+        default:
+            return cleanText;
     }
-    
-    // 检查是否是HTML元素（纯标识符）
-    if (trimmedText.find('[') == std::string::npos && trimmedText.find('@') == std::string::npos) {
-        return parseHTMLElement(trimmedText, lineNumber);
-    }
-    
-    // 检查是否是自定义元素
-    if (trimmedText.find("[Custom]") != std::string::npos) {
-        return parseCustomElement(trimmedText, lineNumber);
-    }
-    
-    // 检查是否是模板对象
-    if (trimmedText.find("[Template]") != std::string::npos) {
-        return parseTemplateObject(trimmedText, lineNumber);
-    }
-    
-    // 检查是否是类型约束
-    if (trimmedText.find("@Html") != std::string::npos || 
-        trimmedText.find("[Custom]") != std::string::npos ||
-        trimmedText.find("[Template]") != std::string::npos) {
-        return parseTypeConstraint(trimmedText, lineNumber);
-    }
-    
-    // 默认为HTML元素
-    return parseHTMLElement(trimmedText, lineNumber);
 }
 
-ConstraintTarget ConstraintParser::parseHTMLElement(const std::string& elementName, int lineNumber) {
-    ConstraintTarget target;
-    target.type = ConstraintTargetType::HTML_ELEMENT;
-    target.name = elementName;
-    target.fullPath = elementName;
-    target.lineNumber = lineNumber;
-    target.columnNumber = 1;
-    return target;
-}
-
-ConstraintTarget ConstraintParser::parseCustomElement(const std::string& customText, int lineNumber) {
-    ConstraintTarget target;
-    target.type = ConstraintTargetType::CUSTOM_ELEMENT;
-    target.fullPath = customText;
-    target.lineNumber = lineNumber;
-    target.columnNumber = 1;
+std::shared_ptr<ConstraintNode> ConstraintParser::createConstraintNode(const ConstraintGroup& group) {
+    auto node = std::make_shared<ConstraintNode>();
+    // 注意：ConstraintNode可能没有这些成员，需要根据实际定义调整
     
-    // 提取元素名称
-    size_t pos = customText.find("@Element");
-    if (pos != std::string::npos) {
-        pos += 8; // "@Element" 的长度
-        while (pos < customText.length() && std::isspace(customText[pos])) {
-            pos++;
-        }
-        size_t endPos = pos;
-        while (endPos < customText.length() && 
-               (std::isalnum(customText[endPos]) || customText[endPos] == '_' || customText[endPos] == '-')) {
-            endPos++;
-        }
-        target.name = customText.substr(pos, endPos - pos);
-    } else {
-        target.name = customText;
+    for (const auto& constraint : group.constraints) {
+        // 这里需要根据实际的ConstraintNode结构来创建子节点
+        // 暂时跳过，因为ConstraintInfoNode可能不存在
     }
     
-    return target;
-}
-
-ConstraintTarget ConstraintParser::parseTemplateObject(const std::string& templateText, int lineNumber) {
-    ConstraintTarget target;
-    target.fullPath = templateText;
-    target.lineNumber = lineNumber;
-    target.columnNumber = 1;
-    
-    // 确定模板对象类型
-    if (templateText.find("@Var") != std::string::npos) {
-        target.type = ConstraintTargetType::TEMPLATE_VAR;
-        target.name = "@Var";
-    } else if (templateText.find("@Element") != std::string::npos) {
-        target.type = ConstraintTargetType::TEMPLATE_ELEMENT;
-        target.name = "@Element";
-    } else if (templateText.find("@Style") != std::string::npos) {
-        target.type = ConstraintTargetType::TEMPLATE_STYLE;
-        target.name = "@Style";
-    } else {
-        target.type = ConstraintTargetType::TEMPLATE_BLOCK;
-        target.name = "[Template]";
-    }
-    
-    return target;
-}
-
-ConstraintTarget ConstraintParser::parseTypeConstraint(const std::string& typeText, int lineNumber) {
-    ConstraintTarget target;
-    target.fullPath = typeText;
-    target.lineNumber = lineNumber;
-    target.columnNumber = 1;
-    
-    if (typeText.find("@Html") != std::string::npos) {
-        target.type = ConstraintTargetType::ORIGIN_HTML;
-        target.name = "@Html";
-    } else if (typeText.find("[Custom]") != std::string::npos) {
-        target.type = ConstraintTargetType::CUSTOM_BLOCK;
-        target.name = "[Custom]";
-    } else if (typeText.find("[Template]") != std::string::npos) {
-        target.type = ConstraintTargetType::TEMPLATE_BLOCK;
-        target.name = "[Template]";
-    } else {
-        target.type = ConstraintTargetType::HTML_ELEMENT;
-        target.name = typeText;
-    }
-    
-    return target;
-}
-
-bool ConstraintParser::validateConstraintStatement(const std::shared_ptr<ConstraintStatement>& statement) {
-    if (!statement) {
-        addError("约束语句为空");
-        return false;
-    }
-    
-    if (statement->targets.empty()) {
-        addError("约束语句必须包含至少一个目标");
-        return false;
-    }
-    
-    // 验证每个约束目标
-    for (const auto& target : statement->targets) {
-        if (target.name.empty() && target.type != ConstraintTargetType::TEMPLATE_BLOCK) {
-            addError("约束目标名称不能为空");
-            return false;
-        }
-    }
-    
-    return true;
-}
-
-bool ConstraintParser::applyConstraintStatement(const std::shared_ptr<ConstraintStatement>& statement) {
-    if (!validateConstraintStatement(statement)) {
-        return false;
-    }
-    
-    std::string normalizedScope = normalizeScope(statement->scope);
-    
-    for (const auto& target : statement->targets) {
-        switch (target.type) {
-            case ConstraintTargetType::HTML_ELEMENT:
-            case ConstraintTargetType::CUSTOM_ELEMENT:
-            case ConstraintTargetType::TEMPLATE_VAR:
-            case ConstraintTargetType::TEMPLATE_ELEMENT:
-            case ConstraintTargetType::TEMPLATE_STYLE:
-                elementConstraints_[normalizedScope].insert(target.fullPath);
-                break;
-                
-            case ConstraintTargetType::ORIGIN_HTML:
-            case ConstraintTargetType::CUSTOM_BLOCK:
-            case ConstraintTargetType::TEMPLATE_BLOCK:
-                typeConstraints_[normalizedScope].insert(target.fullPath);
-                break;
-        }
-    }
-    
-    return true;
-}
-
-bool ConstraintParser::isElementConstrained(const std::string& elementName, const std::string& scope) const {
-    std::string normalizedScope = normalizeScope(scope);
-    
-    // 检查全局约束
-    auto globalIt = elementConstraints_.find("");
-    if (globalIt != elementConstraints_.end()) {
-        if (globalIt->second.find(elementName) != globalIt->second.end()) {
-            return true;
-        }
-    }
-    
-    // 检查作用域约束
-    auto scopeIt = elementConstraints_.find(normalizedScope);
-    if (scopeIt != elementConstraints_.end()) {
-        if (scopeIt->second.find(elementName) != scopeIt->second.end()) {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-bool ConstraintParser::isTypeConstrained(const std::string& typeName, const std::string& scope) const {
-    std::string normalizedScope = normalizeScope(scope);
-    
-    // 检查全局约束
-    auto globalIt = typeConstraints_.find("");
-    if (globalIt != typeConstraints_.end()) {
-        if (globalIt->second.find(typeName) != globalIt->second.end()) {
-            return true;
-        }
-    }
-    
-    // 检查作用域约束
-    auto scopeIt = typeConstraints_.find(normalizedScope);
-    if (scopeIt != typeConstraints_.end()) {
-        if (scopeIt->second.find(typeName) != scopeIt->second.end()) {
-            return true;
-        }
-    }
-    
-    return false;
-}
-
-std::vector<std::string> ConstraintParser::getErrors() const {
-    return errors_;
+    return node;
 }
 
 void ConstraintParser::clearErrors() {
     errors_.clear();
 }
 
-void ConstraintParser::addError(const std::string& error) {
-    errors_.push_back(error);
+void ConstraintParser::clearStatistics() {
+    statistics_ = ParseStatistics();
 }
 
-void ConstraintParser::skipWhitespace(const std::string& line, size_t& position) {
-    while (position < line.length() && std::isspace(line[position])) {
-        position++;
-    }
-}
-
-std::string ConstraintParser::extractIdentifier(const std::string& line, size_t& position) {
-    std::string identifier;
+std::string ConstraintParser::getDebugInfo() const {
+    std::ostringstream oss;
+    oss << "ConstraintParser Debug Info:\n";
+    oss << "  Total Constraints: " << statistics_.totalConstraints << "\n";
+    oss << "  Element Constraints: " << statistics_.elementConstraints << "\n";
+    oss << "  Type Constraints: " << statistics_.typeConstraints << "\n";
+    oss << "  Global Constraints: " << statistics_.globalConstraints << "\n";
+    oss << "  Parsing Errors: " << statistics_.parsingErrors << "\n";
+    oss << "  Current Errors: " << errors_.size() << "\n";
     
-    while (position < line.length() && 
-           (std::isalnum(line[position]) || line[position] == '_' || line[position] == '-')) {
-        identifier += line[position];
-        position++;
+    if (!errors_.empty()) {
+        oss << "  Error Details:\n";
+        for (const auto& error : errors_) {
+            oss << "    - " << error << "\n";
+        }
     }
     
-    return identifier;
+    return oss.str();
 }
 
-bool ConstraintParser::matchKeyword(const std::string& line, size_t& position, const std::string& keyword) {
-    if (position + keyword.length() > line.length()) {
+void ConstraintParser::reset() {
+    clearErrors();
+    clearStatistics();
+}
+
+// 私有辅助方法
+bool ConstraintParser::isValidHTMLElement(const std::string& name) {
+    // 简单的HTML元素名称验证
+    static const std::vector<std::string> validElements = {
+        "html", "head", "body", "div", "span", "p", "h1", "h2", "h3", "h4", "h5", "h6",
+        "ul", "ol", "li", "a", "img", "table", "tr", "td", "th", "form", "input", "button",
+        "textarea", "select", "option", "label", "fieldset", "legend", "section", "article",
+        "header", "footer", "nav", "aside", "main", "figure", "figcaption", "blockquote",
+        "code", "pre", "em", "strong", "i", "b", "u", "s", "mark", "small", "del", "ins"
+    };
+    
+    std::string lowerName = name;
+    std::transform(lowerName.begin(), lowerName.end(), lowerName.begin(), ::tolower);
+    
+    return std::find(validElements.begin(), validElements.end(), lowerName) != validElements.end();
+}
+
+bool ConstraintParser::isValidTypeName(const std::string& name) {
+    // 验证类型名称（如 @Html, @Style, @JavaScript 等）
+    if (name.empty()) {
         return false;
     }
     
-    std::string substr = line.substr(position, keyword.length());
-    if (substr == keyword) {
-        position += keyword.length();
-        return true;
+    // 检查是否为有效的类型名称
+    static const std::vector<std::string> validTypes = {
+        "Html", "Style", "JavaScript", "Chtl", "CJmod", "Config", "Custom", "Template"
+    };
+    
+    std::string cleanName = name;
+    if (cleanName[0] == '@') {
+        cleanName = cleanName.substr(1);
     }
     
-    return false;
-}
-
-std::string ConstraintParser::normalizeScope(const std::string& scope) const {
-    if (scope.empty()) {
-        return "";
-    }
-    
-    // 去除首尾空白字符
-    std::string normalized = scope;
-    normalized.erase(0, normalized.find_first_not_of(" \t"));
-    normalized.erase(normalized.find_last_not_of(" \t") + 1);
-    
-    return normalized;
+    return std::find(validTypes.begin(), validTypes.end(), cleanName) != validTypes.end();
 }
 
 } // namespace CHTL

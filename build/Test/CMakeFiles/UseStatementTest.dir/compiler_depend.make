@@ -146,6 +146,7 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/bits/node_handle.h \
   /usr/include/c++/14/bits/ostream.tcc \
   /usr/include/c++/14/bits/ostream_insert.h \
+  /usr/include/c++/14/bits/parse_numbers.h \
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
@@ -155,6 +156,7 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
+  /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
@@ -163,12 +165,9 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -176,7 +175,7 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/bits/string_view.tcc \
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/unique_ptr.h \
-  /usr/include/c++/14/bits/unordered_set.h \
+  /usr/include/c++/14/bits/unordered_map.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -206,13 +205,14 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/iostream \
   /usr/include/c++/14/istream \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
+  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
+  /usr/include/c++/14/sstream \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -221,7 +221,8 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/include/c++/14/tuple \
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
-  /usr/include/c++/14/unordered_set \
+  /usr/include/c++/14/unordered_map \
+  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -248,7 +249,7 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o: /workspace/Test/u
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
   /workspace/CHTL/CHTLContext/ConfigurationManager.h \
-  /workspace/CHTL/CHTLContext/ConfigurationManager.h \
+  /workspace/CHTL/CHTLNode/CHTLNode.h \
   /workspace/CHTL/CHTLParser/UseStatementParser.h
 
 bin/UseStatementTest: lib/libCHTLContext.a \
@@ -285,6 +286,8 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
 /lib64/ld-linux-x86-64.so.2:
+
+/lib/x86_64-linux-gnu/libgcc_s.so.1:
 
 /usr/include/c++/14/bits/char_traits.h:
 
@@ -436,10 +439,6 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/stdio.h:
 
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/c++/14/bits/locale_facets.tcc:
-
 /usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
 
 /usr/include/locale.h:
@@ -471,6 +470,8 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 /usr/include/stdlib.h:
 
 /usr/include/c++/14/istream:
+
+/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
 /usr/include/linux/errno.h:
 
@@ -522,11 +523,19 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
+/lib/x86_64-linux-gnu/libm.so:
+
+/usr/include/linux/sched/types.h:
+
+/usr/include/c++/14/bits/std_abs.h:
+
 /usr/include/c++/14/pstl/pstl_config.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
 /usr/include/c++/14/bits/hashtable_policy.h:
+
+/workspace/CHTL/CHTLNode/CHTLNode.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
@@ -548,10 +557,6 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/c++/14/new:
 
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/14/ostream:
-
 /usr/include/c++/14/bits/exception_ptr.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types_64.h:
@@ -561,6 +566,8 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 /usr/include/c++/14/bits/shared_ptr_base.h:
 
 /usr/include/c++/14/vector:
+
+/usr/include/c++/14/optional:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -614,11 +621,7 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/usr/include/c++/14/unordered_set:
-
 /usr/include/c++/14/bits/memory_resource.h:
-
-/usr/include/c++/14/bits/unordered_set.h:
 
 /usr/include/c++/14/bits/memoryfwd.h:
 
@@ -652,9 +655,17 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
 
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/14/ostream:
+
+/usr/include/c++/14/bits/parse_numbers.h:
+
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
+
+/usr/include/c++/14/bits/sstream.tcc:
 
 /usr/include/c++/14/bits/new_allocator.h:
 
@@ -666,21 +677,15 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/c++/14/bits/stl_construct.h:
 
-/usr/include/c++/14/bits/stl_map.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
-
-/usr/include/c++/14/bits/stl_multimap.h:
-
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
-
-/usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
 /usr/include/c++/14/bits/stringfwd.h:
 
 /usr/include/c++/14/bits/unique_ptr.h:
+
+/usr/include/c++/14/bits/unordered_map.h:
 
 /usr/include/c++/14/bits/uses_allocator.h:
 
@@ -712,8 +717,6 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/c++/14/ext/atomicity.h:
 
-/usr/include/c++/14/map:
-
 /usr/include/c++/14/ext/concurrence.h:
 
 /usr/include/c++/14/ext/string_conversions.h:
@@ -742,11 +745,23 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 
 /usr/include/c++/14/pstl/execution_defs.h:
 
+/usr/include/c++/14/sstream:
+
 /usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
 
 /usr/include/c++/14/typeinfo:
+
+/usr/include/c++/14/unordered_map:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/c++/14/bits/locale_facets.tcc:
+
+/usr/include/c++/14/variant:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
 
@@ -755,8 +770,6 @@ Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o:
 /usr/include/c++/14/cerrno:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
@@ -797,11 +810,3 @@ lib/libCHTLParser.a:
 /lib/x86_64-linux-gnu/crti.o:
 
 /lib/x86_64-linux-gnu/crtn.o:
-
-/lib/x86_64-linux-gnu/libgcc_s.so.1:
-
-/usr/include/linux/sched/types.h:
-
-/usr/include/c++/14/bits/std_abs.h:
-
-/lib/x86_64-linux-gnu/libm.so:

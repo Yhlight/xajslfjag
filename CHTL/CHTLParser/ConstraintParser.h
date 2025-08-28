@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "CHTLNode.h"
+#include "../CHTLNode/CHTLNode.h"
 
 namespace CHTL {
 
@@ -116,6 +116,8 @@ private:
                                      size_t column, const std::string& sourceFile);
     ConstraintInfo parseGlobalConstraint(const std::string& text, size_t line,
                                        size_t column, const std::string& sourceFile);
+    ConstraintInfo parseConstraintText(const std::string& text, size_t line,
+                                     size_t column, const std::string& sourceFile);
     
     // 验证函数
     bool validateElementConstraint(const ConstraintInfo& constraint);
@@ -139,6 +141,7 @@ private:
     bool isValidElementName(const std::string& name);
     bool isValidTypeName(const std::string& name);
     bool isValidGlobalConstraint(const std::string& constraint);
+    bool isValidHTMLElement(const std::string& name);
     
     // 关键字检测
     bool isKeyword(const std::string& text, const std::vector<std::string>& keywords);

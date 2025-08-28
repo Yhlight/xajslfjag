@@ -67,7 +67,6 @@ enum class CHTLTokenType {
     
     // 配置类型
     CONFIGURATION_CONFIG,
-    IMPORT_CONFIG,
     
     // 分隔符
     LEFT_BRACE,      // {

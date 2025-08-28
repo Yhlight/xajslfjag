@@ -103,7 +103,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/x86_64-linux-gnu/sys/single_threaded.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/include/c++/14/algorithm \
-  /usr/include/c++/14/array \
   /usr/include/c++/14/backward/auto_ptr.h \
   /usr/include/c++/14/backward/binders.h \
   /usr/include/c++/14/bit \
@@ -155,7 +154,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/c++/14/bits/node_handle.h \
   /usr/include/c++/14/bits/ostream.tcc \
   /usr/include/c++/14/bits/ostream_insert.h \
-  /usr/include/c++/14/bits/parse_numbers.h \
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
@@ -205,7 +203,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/c++/14/bits/uniform_int_dist.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
-  /usr/include/c++/14/bits/unordered_set.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -215,7 +212,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
-  /usr/include/c++/14/compare \
   /usr/include/c++/14/concepts \
   /usr/include/c++/14/cstddef \
   /usr/include/c++/14/cstdio \
@@ -234,7 +230,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/c++/14/ext/numeric_traits.h \
   /usr/include/c++/14/ext/string_conversions.h \
   /usr/include/c++/14/ext/type_traits.h \
-  /usr/include/c++/14/functional \
   /usr/include/c++/14/initializer_list \
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
@@ -260,8 +255,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
-  /usr/include/c++/14/unordered_set \
-  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -289,10 +282,13 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
+  /workspace/CHTL\ JS/CHTLJSState/CHTLJSState.h \
   /workspace/CHTL\ JS/CHTLJSContext/CHTLJSContext.h
 
 
 /workspace/CHTL\ JS/CHTLJSContext/CHTLJSContext.h:
+
+/workspace/CHTL\ JS/CHTLJSState/CHTLJSState.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/stdint.h:
 
@@ -326,17 +322,9 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
+/usr/include/c++/14/bits/exception.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
-
-/usr/include/c++/14/vector:
-
-/usr/include/c++/14/unordered_set:
-
-/usr/include/c++/14/unordered_map:
-
-/usr/include/c++/14/typeinfo:
+/usr/include/c++/14/cctype:
 
 /usr/include/c++/14/bits/erase_if.h:
 
@@ -455,8 +443,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/stdio.h:
-
-/usr/include/c++/14/variant:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
@@ -604,7 +590,9 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 
 /usr/include/c++/14/clocale:
 
-/usr/include/c++/14/functional:
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/14/ostream:
 
 /usr/include/linux/posix_types.h:
 
@@ -623,6 +611,8 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
 /usr/include/c++/14/bits/uniform_int_dist.h:
+
+/usr/include/c++/14/vector:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -676,13 +666,7 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 
 /usr/include/c++/14/iostream:
 
-/usr/include/c++/14/array:
-
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
-
-/usr/include/c++/14/bits/exception.h:
-
-/usr/include/c++/14/cctype:
 
 /usr/include/c++/14/bits/exception_ptr.h:
 
@@ -704,13 +688,13 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 
 /usr/include/c++/14/bits/locale_facets_nonio.h:
 
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
+
 /usr/include/c++/14/bits/ptr_traits.h:
 
 /usr/include/c++/14/bits/locale_facets_nonio.tcc:
 
 /usr/include/c++/14/bits/memory_resource.h:
-
-/usr/include/c++/14/bits/unordered_set.h:
 
 /usr/include/c++/14/bits/memoryfwd.h:
 
@@ -729,14 +713,6 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 /usr/include/c++/14/bits/stl_pair.h:
 
 /usr/include/c++/14/bits/ostream_insert.h:
-
-/usr/include/c++/14/compare:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/14/ostream:
-
-/usr/include/c++/14/bits/parse_numbers.h:
 
 /usr/include/c++/14/bits/regex_compiler.h:
 
@@ -869,3 +845,9 @@ CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o: /workspa
 /usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
+
+/usr/include/c++/14/typeinfo:
+
+/usr/include/c++/14/unordered_map:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:

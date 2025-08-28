@@ -10,6 +10,7 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/asm-generic/int-ll64.h
  /usr/include/asm-generic/posix_types.h
  /usr/include/asm-generic/types.h
+ /usr/include/assert.h
  /usr/include/ctype.h
  /usr/include/endian.h
  /usr/include/errno.h
@@ -147,6 +148,7 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/bits/node_handle.h
  /usr/include/c++/14/bits/ostream.tcc
  /usr/include/c++/14/bits/ostream_insert.h
+ /usr/include/c++/14/bits/parse_numbers.h
  /usr/include/c++/14/bits/postypes.h
  /usr/include/c++/14/bits/predefined_ops.h
  /usr/include/c++/14/bits/ptr_traits.h
@@ -156,6 +158,7 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/bits/shared_ptr.h
  /usr/include/c++/14/bits/shared_ptr_atomic.h
  /usr/include/c++/14/bits/shared_ptr_base.h
+ /usr/include/c++/14/bits/sstream.tcc
  /usr/include/c++/14/bits/std_abs.h
  /usr/include/c++/14/bits/stl_algobase.h
  /usr/include/c++/14/bits/stl_bvector.h
@@ -166,10 +169,8 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/bits/stl_iterator_base_types.h
  /usr/include/c++/14/bits/stl_map.h
  /usr/include/c++/14/bits/stl_multimap.h
- /usr/include/c++/14/bits/stl_multiset.h
  /usr/include/c++/14/bits/stl_pair.h
  /usr/include/c++/14/bits/stl_raw_storage_iter.h
- /usr/include/c++/14/bits/stl_set.h
  /usr/include/c++/14/bits/stl_tempbuf.h
  /usr/include/c++/14/bits/stl_tree.h
  /usr/include/c++/14/bits/stl_uninitialized.h
@@ -186,6 +187,7 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/bits/utility.h
  /usr/include/c++/14/bits/vector.tcc
  /usr/include/c++/14/bits/version.h
+ /usr/include/c++/14/cassert
  /usr/include/c++/14/cctype
  /usr/include/c++/14/cerrno
  /usr/include/c++/14/clocale
@@ -213,11 +215,12 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/map
  /usr/include/c++/14/memory
  /usr/include/c++/14/new
+ /usr/include/c++/14/optional
  /usr/include/c++/14/ostream
  /usr/include/c++/14/pstl/execution_defs.h
  /usr/include/c++/14/pstl/glue_memory_defs.h
  /usr/include/c++/14/pstl/pstl_config.h
- /usr/include/c++/14/set
+ /usr/include/c++/14/sstream
  /usr/include/c++/14/stdexcept
  /usr/include/c++/14/streambuf
  /usr/include/c++/14/string
@@ -228,6 +231,7 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /usr/include/c++/14/typeinfo
  /usr/include/c++/14/unordered_map
  /usr/include/c++/14/unordered_set
+ /usr/include/c++/14/variant
  /usr/include/c++/14/vector
  /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h
  /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h
@@ -257,7 +261,9 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
  /workspace/CHTL JS/CHTLJSNode/CHTLJSBaseNode.h
  /workspace/CHTL JS/CHTLJSParser/CHTLJSParser.h
  /workspace/CHTL/CHTLContext/ConfigurationManager.h
+ /workspace/CHTL/CHTLContext/ImportManager.h
  /workspace/CHTL/CHTLContext/NamespaceManager.h
+ /workspace/CHTL/CHTLContext/SelectorAutomation.h
  /workspace/CHTL/CHTLLexer/CHTLLexer.h
  /workspace/CHTL/CHTLNode/BaseNode.h
  /workspace/CHTL/CHTLParser/CHTLParser.h

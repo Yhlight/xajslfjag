@@ -148,6 +148,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspa
   /usr/include/c++/14/bits/node_handle.h \
   /usr/include/c++/14/bits/ostream.tcc \
   /usr/include/c++/14/bits/ostream_insert.h \
+  /usr/include/c++/14/bits/parse_numbers.h \
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
@@ -168,12 +169,9 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspa
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -182,7 +180,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspa
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/uniform_int_dist.h \
   /usr/include/c++/14/bits/unique_ptr.h \
-  /usr/include/c++/14/bits/unordered_set.h \
+  /usr/include/c++/14/bits/unordered_map.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -211,9 +209,9 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspa
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/istream \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
+  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
@@ -228,7 +226,8 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspa
   /usr/include/c++/14/tuple \
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
-  /usr/include/c++/14/unordered_set \
+  /usr/include/c++/14/unordered_map \
+  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -380,7 +379,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
   /usr/include/c++/14/bits/cxxabi_init_exception.h \
-  /usr/include/c++/14/bits/deque.tcc \
   /usr/include/c++/14/bits/enable_special_members.h \
   /usr/include/c++/14/bits/erase_if.h \
   /usr/include/c++/14/bits/exception.h \
@@ -390,7 +388,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/bits/fs_fwd.h \
   /usr/include/c++/14/bits/fs_ops.h \
   /usr/include/c++/14/bits/fs_path.h \
-  /usr/include/c++/14/bits/fstream.tcc \
   /usr/include/c++/14/bits/functexcept.h \
   /usr/include/c++/14/bits/functional_hash.h \
   /usr/include/c++/14/bits/hash_bytes.h \
@@ -422,42 +419,24 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/bits/quoted_string.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
-  /usr/include/c++/14/bits/regex.h \
-  /usr/include/c++/14/bits/regex.tcc \
-  /usr/include/c++/14/bits/regex_automaton.h \
-  /usr/include/c++/14/bits/regex_automaton.tcc \
-  /usr/include/c++/14/bits/regex_compiler.h \
-  /usr/include/c++/14/bits/regex_compiler.tcc \
-  /usr/include/c++/14/bits/regex_constants.h \
-  /usr/include/c++/14/bits/regex_error.h \
-  /usr/include/c++/14/bits/regex_executor.h \
-  /usr/include/c++/14/bits/regex_executor.tcc \
-  /usr/include/c++/14/bits/regex_scanner.h \
-  /usr/include/c++/14/bits/regex_scanner.tcc \
   /usr/include/c++/14/bits/requires_hosted.h \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
   /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
-  /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/stl_algo.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
-  /usr/include/c++/14/bits/stl_deque.h \
   /usr/include/c++/14/bits/stl_function.h \
   /usr/include/c++/14/bits/stl_heap.h \
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -473,7 +452,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/bits/utility.h \
   /usr/include/c++/14/bits/vector.tcc \
   /usr/include/c++/14/bits/version.h \
-  /usr/include/c++/14/bitset \
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
@@ -488,7 +466,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
   /usr/include/c++/14/debug/debug.h \
-  /usr/include/c++/14/deque \
   /usr/include/c++/14/exception \
   /usr/include/c++/14/ext/aligned_buffer.h \
   /usr/include/c++/14/ext/alloc_traits.h \
@@ -498,7 +475,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/ext/string_conversions.h \
   /usr/include/c++/14/ext/type_traits.h \
   /usr/include/c++/14/filesystem \
-  /usr/include/c++/14/fstream \
   /usr/include/c++/14/initializer_list \
   /usr/include/c++/14/iomanip \
   /usr/include/c++/14/ios \
@@ -506,18 +482,16 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/istream \
   /usr/include/c++/14/limits \
   /usr/include/c++/14/locale \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
+  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/ratio \
-  /usr/include/c++/14/regex \
   /usr/include/c++/14/sstream \
-  /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -528,12 +502,11 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
   /usr/include/c++/14/unordered_set \
+  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/c++io.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/cpu_defines.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h \
@@ -573,7 +546,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/errno.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
-  /usr/include/libintl.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/posix_types.h \
   /usr/include/linux/sched/types.h \
@@ -678,8 +650,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/bits/basic_string.tcc \
   /usr/include/c++/14/bits/char_traits.h \
   /usr/include/c++/14/bits/charconv.h \
-  /usr/include/c++/14/bits/chrono.h \
-  /usr/include/c++/14/bits/codecvt.h \
   /usr/include/c++/14/bits/concept_check.h \
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
@@ -689,10 +659,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/bits/exception.h \
   /usr/include/c++/14/bits/exception_defines.h \
   /usr/include/c++/14/bits/exception_ptr.h \
-  /usr/include/c++/14/bits/fs_dir.h \
-  /usr/include/c++/14/bits/fs_fwd.h \
-  /usr/include/c++/14/bits/fs_ops.h \
-  /usr/include/c++/14/bits/fs_path.h \
   /usr/include/c++/14/bits/functexcept.h \
   /usr/include/c++/14/bits/functional_hash.h \
   /usr/include/c++/14/bits/hash_bytes.h \
@@ -703,11 +669,8 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/bits/istream.tcc \
   /usr/include/c++/14/bits/locale_classes.h \
   /usr/include/c++/14/bits/locale_classes.tcc \
-  /usr/include/c++/14/bits/locale_conv.h \
   /usr/include/c++/14/bits/locale_facets.h \
   /usr/include/c++/14/bits/locale_facets.tcc \
-  /usr/include/c++/14/bits/locale_facets_nonio.h \
-  /usr/include/c++/14/bits/locale_facets_nonio.tcc \
   /usr/include/c++/14/bits/localefwd.h \
   /usr/include/c++/14/bits/memory_resource.h \
   /usr/include/c++/14/bits/memoryfwd.h \
@@ -721,7 +684,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
-  /usr/include/c++/14/bits/quoted_string.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
   /usr/include/c++/14/bits/requires_hosted.h \
@@ -739,14 +701,9 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
-  /usr/include/c++/14/bits/stl_multiset.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/14/bits/stl_set.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -765,13 +722,10 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
-  /usr/include/c++/14/codecvt \
   /usr/include/c++/14/concepts \
   /usr/include/c++/14/cstddef \
-  /usr/include/c++/14/cstdint \
   /usr/include/c++/14/cstdio \
   /usr/include/c++/14/cstdlib \
-  /usr/include/c++/14/ctime \
   /usr/include/c++/14/cwchar \
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
@@ -784,24 +738,18 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/ext/numeric_traits.h \
   /usr/include/c++/14/ext/string_conversions.h \
   /usr/include/c++/14/ext/type_traits.h \
-  /usr/include/c++/14/filesystem \
   /usr/include/c++/14/initializer_list \
-  /usr/include/c++/14/iomanip \
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/istream \
-  /usr/include/c++/14/limits \
-  /usr/include/c++/14/locale \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
+  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
-  /usr/include/c++/14/ratio \
-  /usr/include/c++/14/set \
   /usr/include/c++/14/sstream \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
@@ -813,6 +761,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
   /usr/include/c++/14/unordered_set \
+  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -824,9 +773,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/C
   /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h \
@@ -856,7 +803,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/errno.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
-  /usr/include/libintl.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/posix_types.h \
   /usr/include/linux/sched/types.h \
@@ -961,12 +907,10 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/bits/basic_string.tcc \
   /usr/include/c++/14/bits/char_traits.h \
   /usr/include/c++/14/bits/charconv.h \
-  /usr/include/c++/14/bits/codecvt.h \
   /usr/include/c++/14/bits/concept_check.h \
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
   /usr/include/c++/14/bits/cxxabi_init_exception.h \
-  /usr/include/c++/14/bits/deque.tcc \
   /usr/include/c++/14/bits/enable_special_members.h \
   /usr/include/c++/14/bits/erase_if.h \
   /usr/include/c++/14/bits/exception.h \
@@ -982,11 +926,8 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/bits/istream.tcc \
   /usr/include/c++/14/bits/locale_classes.h \
   /usr/include/c++/14/bits/locale_classes.tcc \
-  /usr/include/c++/14/bits/locale_conv.h \
   /usr/include/c++/14/bits/locale_facets.h \
   /usr/include/c++/14/bits/locale_facets.tcc \
-  /usr/include/c++/14/bits/locale_facets_nonio.h \
-  /usr/include/c++/14/bits/locale_facets_nonio.tcc \
   /usr/include/c++/14/bits/localefwd.h \
   /usr/include/c++/14/bits/memory_resource.h \
   /usr/include/c++/14/bits/memoryfwd.h \
@@ -1001,42 +942,24 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/bits/ptr_traits.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
-  /usr/include/c++/14/bits/regex.h \
-  /usr/include/c++/14/bits/regex.tcc \
-  /usr/include/c++/14/bits/regex_automaton.h \
-  /usr/include/c++/14/bits/regex_automaton.tcc \
-  /usr/include/c++/14/bits/regex_compiler.h \
-  /usr/include/c++/14/bits/regex_compiler.tcc \
-  /usr/include/c++/14/bits/regex_constants.h \
-  /usr/include/c++/14/bits/regex_error.h \
-  /usr/include/c++/14/bits/regex_executor.h \
-  /usr/include/c++/14/bits/regex_executor.tcc \
-  /usr/include/c++/14/bits/regex_scanner.h \
-  /usr/include/c++/14/bits/regex_scanner.tcc \
   /usr/include/c++/14/bits/requires_hosted.h \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
   /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
-  /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/stl_algo.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
-  /usr/include/c++/14/bits/stl_deque.h \
   /usr/include/c++/14/bits/stl_function.h \
   /usr/include/c++/14/bits/stl_heap.h \
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -1046,13 +969,11 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/bits/uniform_int_dist.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
-  /usr/include/c++/14/bits/unordered_set.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
   /usr/include/c++/14/bits/vector.tcc \
   /usr/include/c++/14/bits/version.h \
-  /usr/include/c++/14/bitset \
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
@@ -1060,12 +981,10 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/cstddef \
   /usr/include/c++/14/cstdio \
   /usr/include/c++/14/cstdlib \
-  /usr/include/c++/14/ctime \
   /usr/include/c++/14/cwchar \
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
   /usr/include/c++/14/debug/debug.h \
-  /usr/include/c++/14/deque \
   /usr/include/c++/14/exception \
   /usr/include/c++/14/ext/aligned_buffer.h \
   /usr/include/c++/14/ext/alloc_traits.h \
@@ -1078,8 +997,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/istream \
-  /usr/include/c++/14/locale \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
   /usr/include/c++/14/ostream \
@@ -1087,9 +1004,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
-  /usr/include/c++/14/regex \
   /usr/include/c++/14/sstream \
-  /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -1099,7 +1014,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
-  /usr/include/c++/14/unordered_set \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -1111,9 +1025,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
-  /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h \
@@ -1127,7 +1039,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
-  /workspace/CHTL/CHTLContext/ConfigurationManager.h \
   /workspace/CHTL/CHTLContext/SelectorAutomation.h
 
 
@@ -1137,8 +1048,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /workspace/CHTL/CHTLContext/NamespaceManager.h:
 
-/usr/include/c++/14/bits/stl_multiset.h:
-
 /workspace/CHTL/CHTLContext/NamespaceManager.cpp:
 
 /workspace/CHTL/CHTLContext/ImportManager.h:
@@ -1147,41 +1056,11 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++io.h:
-
-/usr/include/c++/14/unordered_map:
-
-/usr/include/c++/14/stack:
-
-/usr/include/c++/14/regex:
-
-/usr/include/c++/14/fstream:
-
-/usr/include/c++/14/deque:
+/usr/include/c++/14/unordered_set:
 
 /usr/include/c++/14/cstdint:
 
 /usr/include/c++/14/codecvt:
-
-/usr/include/c++/14/bitset:
-
-/usr/include/c++/14/bits/unordered_map.h:
-
-/usr/include/c++/14/bits/regex_executor.h:
-
-/usr/include/c++/14/bits/regex_error.h:
-
-/usr/include/c++/14/bits/regex_compiler.tcc:
-
-/usr/include/c++/14/bits/regex_compiler.h:
-
-/usr/include/c++/14/bits/regex_automaton.h:
-
-/usr/include/c++/14/bits/regex_scanner.h:
-
-/usr/include/c++/14/bits/regex.tcc:
-
-/usr/include/c++/14/bits/regex.h:
 
 /usr/include/c++/14/bits/quoted_string.h:
 
@@ -1189,15 +1068,11 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/bits/locale_conv.h:
 
-/usr/include/c++/14/bits/fstream.tcc:
-
 /usr/include/c++/14/bits/fs_path.h:
 
 /usr/include/c++/14/bits/fs_ops.h:
 
 /usr/include/c++/14/bits/fs_fwd.h:
-
-/usr/include/c++/14/bits/codecvt.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
@@ -1216,8 +1091,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/bits/cpp_type_traits.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
-
-/usr/include/c++/14/set:
 
 /usr/include/c++/14/bits/functexcept.h:
 
@@ -1240,6 +1113,8 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/stdlib.h:
 
 /usr/include/c++/14/istream:
+
+/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
@@ -1279,8 +1154,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
-/usr/include/c++/14/bits/regex_automaton.tcc:
-
 /usr/include/c++/14/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/14/backward/auto_ptr.h:
@@ -1302,8 +1175,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/streambuf:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
-
-/usr/include/c++/14/bits/deque.tcc:
 
 /usr/include/c++/14/bits/exception_defines.h:
 
@@ -1337,11 +1208,7 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/bits/cxxabi_forced.h:
 
-/usr/include/c++/14/bits/std_function.h:
-
 /usr/include/c++/14/bits/enable_special_members.h:
-
-/usr/include/c++/14/bits/regex_constants.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
@@ -1356,10 +1223,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /workspace/CHTL/CHTLContext/ConfigurationManager.cpp:
 
 /usr/include/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/c++/14/bits/locale_facets.tcc:
 
 /usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
 
@@ -1390,8 +1253,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/c++/14/bits/regex_executor.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
@@ -1489,14 +1350,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/new:
 
-/usr/include/c++/14/bits/parse_numbers.h:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/14/ostream:
-
-/usr/include/c++/14/bits/stl_stack.h:
-
 /usr/include/c++/14/bits/stl_heap.h:
 
 /usr/include/c++/14/bits/exception_ptr.h:
@@ -1514,6 +1367,8 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/bits/uniform_int_dist.h:
 
 /usr/include/c++/14/vector:
+
+/usr/include/c++/14/optional:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -1573,8 +1428,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/usr/include/c++/14/unordered_set:
-
 /usr/include/c++/14/bits/memory_resource.h:
 
 /usr/include/c++/14/bits/unordered_set.h:
@@ -1603,11 +1456,15 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
 
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/14/ostream:
+
+/usr/include/c++/14/bits/parse_numbers.h:
+
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
-
-/usr/include/c++/14/bits/stl_set.h:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
@@ -1621,23 +1478,15 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/bits/stl_construct.h:
 
-/usr/include/c++/14/bits/stl_map.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
-
-/usr/include/c++/14/bits/stl_multimap.h:
-
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
-
-/usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
 /usr/include/c++/14/bits/stringfwd.h:
 
-/usr/include/c++/14/bits/stl_deque.h:
-
 /usr/include/c++/14/bits/unique_ptr.h:
+
+/usr/include/c++/14/bits/unordered_map.h:
 
 /usr/include/c++/14/bits/uses_allocator.h:
 
@@ -1669,8 +1518,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/ext/atomicity.h:
 
-/usr/include/c++/14/map:
-
 /usr/include/c++/14/ext/concurrence.h:
 
 /usr/include/c++/14/ext/string_conversions.h:
@@ -1682,8 +1529,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/bits/postypes.h:
 
 /usr/include/c++/14/initializer_list:
-
-/usr/include/c++/14/bits/regex_scanner.tcc:
 
 /usr/include/c++/14/iosfwd:
 
@@ -1713,6 +1558,16 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 
 /usr/include/c++/14/typeinfo:
 
+/usr/include/c++/14/unordered_map:
+
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/c++/14/bits/locale_facets.tcc:
+
+/usr/include/c++/14/variant:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
+
 /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
@@ -1720,8 +1575,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/cerrno:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
@@ -1732,8 +1585,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/clocale:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/basic_file.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
@@ -1752,3 +1603,5 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace
 /usr/include/c++/14/cwchar:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
+
+/usr/include/c++/14/bits/codecvt.h:

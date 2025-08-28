@@ -147,6 +147,7 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o: /workspac
   /usr/include/c++/14/bits/node_handle.h \
   /usr/include/c++/14/bits/ostream.tcc \
   /usr/include/c++/14/bits/ostream_insert.h \
+  /usr/include/c++/14/bits/parse_numbers.h \
   /usr/include/c++/14/bits/postypes.h \
   /usr/include/c++/14/bits/predefined_ops.h \
   /usr/include/c++/14/bits/ptr_traits.h \
@@ -156,6 +157,7 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o: /workspac
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
+  /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
@@ -164,14 +166,9 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o: /workspac
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
-  /usr/include/c++/14/bits/stl_map.h \
-  /usr/include/c++/14/bits/stl_multimap.h \
-  /usr/include/c++/14/bits/stl_multiset.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
-  /usr/include/c++/14/bits/stl_set.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
-  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -211,14 +208,14 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o: /workspac
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/iostream \
   /usr/include/c++/14/istream \
-  /usr/include/c++/14/map \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
+  /usr/include/c++/14/optional \
   /usr/include/c++/14/ostream \
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
-  /usr/include/c++/14/set \
+  /usr/include/c++/14/sstream \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -229,6 +226,7 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o: /workspac
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
   /usr/include/c++/14/unordered_set \
+  /usr/include/c++/14/variant \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -295,10 +293,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /lib/x86_64-linux-gnu/libc.so:
 
-/lib/x86_64-linux-gnu/crtn.o:
-
-/lib/x86_64-linux-gnu/crti.o:
-
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/c++/14/bits/exception.h:
@@ -312,6 +306,8 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/c++/14/bits/cpp_type_traits.h:
 
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
+
+/usr/include/c++/14/bits/functexcept.h:
 
 /usr/include/pthread.h:
 
@@ -417,10 +413,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/bits/allocated_ptr.h:
 
-/usr/include/c++/14/bits/functexcept.h:
-
-/usr/include/c++/14/set:
-
 /workspace/CHTL/CHTLContext/ConfigurationManager.h:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
@@ -433,8 +425,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
-/usr/include/c++/14/bits/stl_set.h:
-
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
 /usr/include/time.h:
@@ -442,10 +432,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h:
 
 /usr/include/stdio.h:
-
-/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
-
-/usr/include/c++/14/bits/locale_facets.tcc:
 
 /usr/include/c++/14/bits/cxxabi_init_exception.h:
 
@@ -473,6 +459,8 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/istream:
 
+/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
+
 /usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
@@ -480,8 +468,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
-
-/usr/include/c++/14/bits/atomic_base.h:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
@@ -498,6 +484,10 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/c++/14/bits/localefwd.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/include/c++/14/bits/atomic_base.h:
+
+/usr/include/c++/14/optional:
 
 /usr/include/c++/14/bits/stl_tempbuf.h:
 
@@ -533,6 +523,8 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/cassert:
 
+/lib/x86_64-linux-gnu/crti.o:
+
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
@@ -562,10 +554,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
-
-/usr/include/c++/14/ostream:
-
-/usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /lib/x86_64-linux-gnu/libm.so:
 
@@ -614,8 +602,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
 
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
-
-/usr/include/c++/14/bits/stl_multiset.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h:
 
@@ -677,9 +663,17 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
 
+/usr/include/c++/14/ostream:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
+/usr/include/c++/14/bits/parse_numbers.h:
+
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
+
+/usr/include/c++/14/bits/sstream.tcc:
 
 /usr/include/c++/14/bits/new_allocator.h:
 
@@ -691,15 +685,7 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/bits/stl_construct.h:
 
-/usr/include/c++/14/bits/stl_map.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
-
-/usr/include/c++/14/bits/stl_multimap.h:
-
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
-
-/usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
@@ -739,8 +725,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/ext/atomicity.h:
 
-/usr/include/c++/14/map:
-
 /usr/include/c++/14/ext/concurrence.h:
 
 /usr/include/c++/14/ext/string_conversions.h:
@@ -771,6 +755,8 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/pstl/execution_defs.h:
 
+/usr/include/c++/14/sstream:
+
 /usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
@@ -779,6 +765,14 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 
 /usr/include/c++/14/unordered_map:
 
+/usr/include/x86_64-linux-gnu/bits/floatn-common.h:
+
+/usr/include/c++/14/bits/locale_facets.tcc:
+
+/usr/include/c++/14/variant:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
+
 /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
@@ -786,8 +780,6 @@ Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o:
 /usr/include/c++/14/cerrno:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
@@ -822,3 +814,5 @@ lib/libCHTLContext.a:
 /usr/include/c++/14/bits/locale_classes.h:
 
 /lib/x86_64-linux-gnu/Scrt1.o:
+
+/lib/x86_64-linux-gnu/crtn.o:

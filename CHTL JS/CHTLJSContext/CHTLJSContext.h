@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "CHTLJSState.h"
+#include "../CHTLJSState/CHTLJSState.h"
 
 namespace CHTLJS {
 

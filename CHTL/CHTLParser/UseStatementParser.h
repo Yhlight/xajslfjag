@@ -4,7 +4,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "CHTLNode.h"
+#include "../CHTLNode/CHTLNode.h"
 
 namespace CHTL {
 

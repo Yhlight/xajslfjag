@@ -5,7 +5,8 @@
 #include <memory>
 #include <unordered_map>
 #include <optional>
-#include <variant> // Added for std::variant
+#include <variant>
+#include <sstream>
 
 namespace CHTL {
 
@@ -13,24 +14,30 @@ namespace CHTL {
 enum class ConfigItemType {
     BOOLEAN,
     STRING,
+    INTEGER,
     NUMBER,
+    STRING_ARRAY,
     ARRAY,
-    GROUP
+    GROUP,
+    UNKNOWN
 };
 
 // 配置项值
 struct ConfigValue {
     ConfigItemType type;
-    std::variant<bool, std::string, double, std::vector<std::string>> value;
+    std::variant<bool, std::string, int, double, std::vector<std::string>> value;
     
     ConfigValue() : type(ConfigItemType::STRING), value(std::string("")) {}
     ConfigValue(ConfigItemType t) : type(t) {
         switch (t) {
             case ConfigItemType::BOOLEAN: value = false; break;
             case ConfigItemType::STRING: value = std::string(""); break;
+            case ConfigItemType::INTEGER: value = 0; break;
             case ConfigItemType::NUMBER: value = 0.0; break;
+            case ConfigItemType::STRING_ARRAY: value = std::vector<std::string>(); break;
             case ConfigItemType::ARRAY: value = std::vector<std::string>(); break;
             case ConfigItemType::GROUP: value = std::vector<std::string>(); break;
+            case ConfigItemType::UNKNOWN: value = std::string(""); break;
         }
     }
     
@@ -45,6 +52,34 @@ struct ConfigValue {
     template<typename T>
     void set(const T& v) {
         value = v;
+    }
+    
+    std::string toString() const {
+        switch (type) {
+            case ConfigItemType::BOOLEAN:
+                return std::get<bool>(value) ? "true" : "false";
+            case ConfigItemType::STRING:
+                return std::get<std::string>(value);
+            case ConfigItemType::INTEGER:
+                return std::to_string(std::get<int>(value));
+            case ConfigItemType::NUMBER:
+                return std::to_string(std::get<double>(value));
+            case ConfigItemType::STRING_ARRAY: {
+                const auto& arr = std::get<std::vector<std::string>>(value);
+                std::ostringstream oss;
+                for (size_t i = 0; i < arr.size(); ++i) {
+                    if (i > 0) oss << ", ";
+                    oss << arr[i];
+                }
+                return oss.str();
+            }
+            case ConfigItemType::ARRAY:
+                return std::get<std::vector<std::string>>(value).empty() ? "[]" : "[...]";
+            case ConfigItemType::GROUP:
+                return std::get<std::vector<std::string>>(value).empty() ? "{}" : "{...}";
+            default:
+                return "unknown";
+        }
     }
 };
 
@@ -69,85 +104,52 @@ public:
     ConfigurationManager();
     ~ConfigurationManager() = default;
     
+    // 基本配置管理
+    bool setConfig(const std::string& groupName, const std::string& key, const ConfigValue& value);
+    ConfigValue getConfig(const std::string& groupName, const std::string& key) const;
+    bool hasConfig(const std::string& groupName, const std::string& key) const;
+    
     // 配置组管理
-    bool addConfigurationGroup(const std::string& name, const ConfigurationGroup& config);
-    std::shared_ptr<ConfigurationGroup> getConfigurationGroup(const std::string& name);
-    bool removeConfigurationGroup(const std::string& name);
-    
-    // 配置项管理
-    bool setConfigItem(const std::string& groupName, const std::string& key, const ConfigValue& value);
-    std::optional<ConfigValue> getConfigItem(const std::string& groupName, const std::string& key);
-    
-    // 名称组管理
-    bool setNameGroup(const std::string& groupName, const std::string& key, 
-                     const std::vector<std::string>& values);
-    std::optional<std::vector<std::string>> getNameGroup(const std::string& groupName, const std::string& key);
+    bool createConfigurationGroup(const std::string& name);
+    std::shared_ptr<ConfigurationGroup> getConfigurationGroup(const std::string& name) const;
+    bool hasConfigurationGroup(const std::string& name) const;
     
     // 原始类型管理
-    bool setOriginType(const std::string& groupName, const std::string& key, const std::string& value);
-    std::optional<std::string> getOriginType(const std::string& groupName, const std::string& key);
+    bool setOriginType(const std::string& groupName, const std::string& typeName, const std::string& typeValue);
+    std::vector<std::string> getOriginType(const std::string& groupName, const std::string& typeName) const;
     
-    // 默认配置组
-    void setDefaultConfigurationGroup(const std::string& name);
-    std::string getDefaultConfigurationGroup() const { return defaultGroup_; }
+    // 配置组激活
+    bool activateConfigurationGroup(const std::string& name);
+    std::string getActiveConfigurationGroup() const;
     
-    // 配置组查询
-    std::vector<std::string> getConfigurationGroupNames() const;
-    bool hasConfigurationGroup(const std::string& name) const;
-    size_t getConfigurationGroupCount() const { return configurationGroups_.size(); }
-    
-    // 配置验证
-    bool validateConfiguration(const std::string& groupName);
-    std::vector<std::string> getValidationErrors(const std::string& groupName);
+    // 配置组删除
+    bool deleteConfigurationGroup(const std::string& name);
     
     // 配置合并
-    bool mergeConfigurationGroups(const std::string& target, const std::string& source);
+    bool mergeConfigurationGroups(const std::string& targetName, const std::string& sourceName);
     
-    // 配置继承
-    bool inheritConfiguration(const std::string& child, const std::string& parent);
+    // 默认配置
+    std::shared_ptr<ConfigurationGroup> getDefaultConfiguration() const;
+    void resetToDefault();
     
-    // 配置导出
-    std::string exportConfiguration(const std::string& groupName) const;
-    bool importConfiguration(const std::string& configText, const std::string& groupName = "");
+    // 配置验证
+    bool validateConfigurationGroup(const std::string& groupName) const;
+    std::string getConfigurationGroupInfo(const std::string& groupName) const;
     
-    // 配置重置
-    void resetConfiguration(const std::string& groupName);
-    void resetAllConfigurations();
-    
-    // 配置备份和恢复
-    bool backupConfiguration(const std::string& groupName);
-    bool restoreConfiguration(const std::string& groupName);
-    
-    // 调试信息
-    std::string getDebugInfo() const;
-    std::string getConfigurationInfo(const std::string& groupName) const;
-    
-private:
-    std::unordered_map<std::string, ConfigurationGroup> configurationGroups_;
-    std::string defaultGroup_;
-    std::unordered_map<std::string, ConfigurationGroup> backupGroups_;
-    
-    // 辅助函数
-    bool isValidConfigKey(const std::string& key) const;
-    bool isValidConfigValue(const ConfigValue& value) const;
-    std::string generateConfigKey(const std::string& prefix, const std::string& suffix) const;
+    // 配置值验证
+    bool validateConfigValue(const std::string& key, const ConfigValue& value) const;
     
     // 配置解析
-    bool parseConfigText(const std::string& configText, ConfigurationGroup& config);
-    std::vector<std::string> parseNameGroup(const std::string& text);
+    ConfigValue parseConfigValue(const std::string& value) const;
     
-    // 配置验证
-    bool validateConfigItem(const std::string& key, const ConfigValue& value);
-    bool validateNameGroup(const std::string& key, const std::vector<std::string>& values);
-    bool validateOriginType(const std::string& key, const std::string& value);
+private:
+    std::unordered_map<std::string, std::shared_ptr<ConfigurationGroup>> configurationGroups_;
+    std::shared_ptr<ConfigurationGroup> defaultConfiguration_;
+    std::string activeGroupName_;
     
-    // 配置合并
-    void mergeConfigItems(std::unordered_map<std::string, ConfigValue>& target, 
-                         const std::unordered_map<std::string, ConfigValue>& source);
-    void mergeNameGroups(std::unordered_map<std::string, std::vector<std::string>>& target,
-                        const std::unordered_map<std::string, std::vector<std::string>>& source);
-    void mergeOriginTypes(std::unordered_map<std::string, std::string>& target,
-                         const std::unordered_map<std::string, std::string>& source);
+    // 辅助函数
+    void initializeDefaultConfiguration();
+    void createStandardConfigs(std::shared_ptr<ConfigurationGroup> group);
 };
 
 } // namespace CHTL

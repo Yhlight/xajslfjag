@@ -79,7 +79,7 @@ public:
     bool removeNamespaceItem(const std::string& namespaceName, const std::string& itemName);
     
     // 命名空间查询
-    std::shared_ptr<Namespace> getNamespace(const std::string& name);
+    std::shared_ptr<Namespace> getNamespace(const std::string& name) const;
     std::vector<std::string> getNamespaceNames() const;
     bool hasNamespace(const std::string& name) const;
     size_t getNamespaceCount() const { return namespaces_.size(); }

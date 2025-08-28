@@ -4,8 +4,8 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
-#include "CHTLState.h"
-#include "CHTLGlobalMap.h"
+#include "../CHTLState/CHTLState.h"
+#include "../CHTLLexer/CHTLGlobalMap.h"
 
 namespace CHTL {
 

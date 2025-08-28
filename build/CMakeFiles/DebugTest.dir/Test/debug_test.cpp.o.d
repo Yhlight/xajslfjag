@@ -215,13 +215,13 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/glue_memory_defs.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/execution_defs.h \
-  /workspace/Test/../CHTL/CHTLParser/CHTLParser.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/vector \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_vector.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_bvector.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/vector.tcc \
-  /workspace/Test/../CHTL/CHTLParser/../CHTLLexer/CHTLLexer.h \
-  /workspace/Test/../CHTL/CHTLParser/../CHTLNode/BaseNode.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cassert \
+  /usr/include/assert.h \
+  /workspace/Test/../CHTL/CHTLContext/ConfigurationManager.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_map \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_map.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/hashtable.h \
@@ -229,20 +229,26 @@ CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/enable_special_members.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/node_handle.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/erase_if.h \
-  /workspace/Test/../CHTL\ JS/CHTLJSParser/CHTLJSParser.h \
-  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSLexer/CHTLJSLexer.h \
-  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSNode/CHTLJSBaseNode.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/optional \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/variant \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
   /workspace/Test/../CHTL/CHTLContext/NamespaceManager.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/set \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_set.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multiset.h \
-  /workspace/Test/../CHTL/CHTLContext/ConfigurationManager.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multimap.h \
+  /workspace/Test/../CHTL/CHTLContext/ImportManager.h \
+  /workspace/Test/../CHTL/CHTLContext/SelectorAutomation.h \
+  /workspace/Test/../CHTL/CHTLParser/CHTLParser.h \
+  /workspace/Test/../CHTL/CHTLParser/../CHTLLexer/CHTLLexer.h \
+  /workspace/Test/../CHTL/CHTLParser/../CHTLNode/BaseNode.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/CHTLJSParser.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSLexer/CHTLJSLexer.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSNode/CHTLJSBaseNode.h \
   /workspace/Test/../Scanner/CHTLUnifiedScanner.h \
   /workspace/Test/../CompilerDispatcher/CompilerDispatcher.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multimap.h \
   /workspace/Test/../CompilerDispatcher/../Scanner/CHTLUnifiedScanner.h

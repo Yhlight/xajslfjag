@@ -5,6 +5,7 @@
 #include "../ThirdParty/CJMODAPI/Arg.h"
 #include "../ThirdParty/CJMODAPI/CJMODScannerAPI.h"
 #include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
+#include "../CHTL/CHTLContext/ConfigurationManager.h"
 #include "../CHTL/CHTLContext/NamespaceManager.h"
 #include "../CHTL/CHTLContext/ImportManager.h"
 #include "../CHTL/CHTLParser/CHTLParser.h"
@@ -150,80 +151,110 @@ script
     std::cout << "局部script: {{.box}}->click()" << std::endl;
     std::cout << "引用选择器: &:hover { background: blue; }" << std::endl;
 
-    // 测试Import路径解析
-    std::cout << "\n测试Import路径解析:" << std::endl;
-    std::cout << "[Import] @Chtl from Chtholly.*" << std::endl;
-    std::cout << "[Import] @CJmod from Box" << std::endl;
-    std::cout << "[Import] @Html from index.html as mainPage" << std::endl;
-
-    // 测试Import增强功能
-    std::cout << "\n测试Import增强功能:" << std::endl;
-    auto configManager = std::make_shared<CHTL::ConfigurationManager>();
-    CHTL::ImportManager importManager(configManager, "/workspace");
+    // 测试导入管理器
+    std::cout << "\n测试导入管理器..." << std::endl;
+    auto importConfigManager = std::make_shared<CHTL::ConfigurationManager>();
+    CHTL::ImportManager importManager(importConfigManager, "/workspace");
     
-    // 测试基础路径设置
-    importManager.setBasePath("/workspace");
-    std::cout << "基础路径: " << importManager.getBasePath() << std::endl;
+    // 测试基本导入功能
+    CHTL::ImportInfo htmlImport(CHTL::ImportType::HTML, "test.html");
+    CHTL::ImportInfo styleImport(CHTL::ImportType::STYLE, "test.css");
+    CHTL::ImportInfo jsImport(CHTL::ImportType::JAVASCRIPT, "test.js");
     
-    // 测试通配符路径解析
-    std::vector<std::string> wildcardResults = importManager.resolveWildcardPath("*.chtl", "./modules");
-    std::cout << "通配符路径解析结果数量: " << wildcardResults.size() << std::endl;
+    importManager.addImport(htmlImport);
+    importManager.addImport(styleImport);
+    importManager.addImport(jsImport);
+    
+    // 获取导入列表
+    auto imports = importManager.getImports();
+    std::cout << "添加了 " << imports.size() << " 个导入" << std::endl;
+    
+    // 测试路径解析
+    auto resolvedPath = importManager.resolvePath("test.html", ImportType::HTML);
+    std::cout << "test.html 解析路径: " << (resolvedPath.resolvedPaths.empty() ? "无" : resolvedPath.resolvedPaths[0]) << std::endl;
+    
+    // 测试通配符展开
+    auto wildcardResults = importManager.expandWildcard("*.chtl", ImportType::CHTL);
+    std::cout << "*.chtl 通配符展开结果数量: " << wildcardResults.size() << std::endl;
     
     // 测试子模块路径解析
-    std::vector<std::string> subModuleResults = importManager.resolveSubModulePath("Chtholly.Space", "./modules");
-    std::cout << "子模块路径解析结果数量: " << subModuleResults.size() << std::endl;
+    auto subModuleResults = importManager.resolveSubModulePath("Chtholly.Space", ImportType::CHTL);
+    std::cout << "Chtholly.Space 子模块路径解析结果数量: " << subModuleResults.size() << std::endl;
     
     // 测试循环依赖检测
-    bool hasCircular = importManager.checkCircularDependency("file1.chtl", "file3.chtl");
-    std::cout << "循环依赖检测: " << (hasCircular ? "检测到" : "未检测到") << std::endl;
+    bool hasCircular = importManager.checkCircularDependency("file1.chtl");
+    std::cout << "file1.chtl 循环依赖检查: " << (hasCircular ? "发现循环依赖" : "无循环依赖") << std::endl;
     
-    // 测试重复导入检测
-    bool hasDuplicate = importManager.checkDuplicateImport("file1.chtl", "file2.chtl");
-    std::cout << "重复导入检测: " << (hasDuplicate ? "检测到" : "未检测到") << std::endl;
+    // 测试别名功能
+    importManager.addAlias("UI", "ui.chtl");
+    std::cout << "UI 别名解析: " << importManager.resolveAlias("UI") << std::endl;
 
     // 测试命名空间管理
     std::cout << "\n测试命名空间管理:" << std::endl;
-    CHTL::NamespaceManager nsManager(configManager);
+    CHTL::NamespaceManager nsManager(importConfigManager);
     
-    // 创建嵌套命名空间
+    // 创建命名空间
     nsManager.createNamespace("Core", "test.chtl");
-    nsManager.createNestedNamespace("Core", "UI", "test.chtl");
-    nsManager.createNestedNamespace("UI", "Components", "test.chtl");
+    nsManager.createNamespace("UI", "test.chtl");
+    nsManager.createNamespace("Components", "test.chtl");
     
     // 添加命名空间项
-    auto versionItem = std::make_shared<CHTL::NamespaceItem>();
-    versionItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
-    versionItem->name = "version";
-    versionItem->sourceFile = "test.chtl";
-    versionItem->lineNumber = 1;
+    auto versionItem = std::make_shared<CHTL::NamespaceItem>("version", CHTL::NamespaceItemType::CUSTOM_ELEMENT, "test.chtl", 1, 5);
     versionItem->content = "1.0.0";
     nsManager.addNamespaceItem("Core", versionItem);
     
-    auto themeItem = std::make_shared<CHTL::NamespaceItem>();
-    themeItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
-    themeItem->name = "theme";
-    themeItem->sourceFile = "test.chtl";
-    themeItem->lineNumber = 2;
+    auto themeItem = std::make_shared<CHTL::NamespaceItem>("theme", CHTL::NamespaceItemType::CUSTOM_STYLE, "test.chtl", 2, 5);
     themeItem->content = "dark";
     nsManager.addNamespaceItem("UI", themeItem);
     
-    auto buttonItem = std::make_shared<CHTL::NamespaceItem>();
-    buttonItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
-    buttonItem->name = "button";
-    buttonItem->sourceFile = "test.chtl";
-    buttonItem->lineNumber = 3;
+    auto buttonItem = std::make_shared<CHTL::NamespaceItem>("button", CHTL::NamespaceItemType::CUSTOM_ELEMENT, "test.chtl", 3, 5);
     buttonItem->content = "ButtonComponent";
     nsManager.addNamespaceItem("Components", buttonItem);
     
     // 测试命名空间项查找
-    auto versionFound = nsManager.getNamespaceItem("Core", "version", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    auto versionFound = nsManager.getNamespaceItem("Core", "version");
     std::cout << "Core::version: " << (versionFound ? versionFound->content : "not found") << std::endl;
     
-    auto themeFound = nsManager.getNamespaceItem("UI", "theme", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    auto themeFound = nsManager.getNamespaceItem("UI", "theme");
     std::cout << "UI::theme: " << (themeFound ? themeFound->content : "not found") << std::endl;
     
-    auto buttonFound = nsManager.getNamespaceItem("Components", "button", CHTL::NamespaceItemType::CUSTOM_ELEMENT);
+    auto buttonFound = nsManager.getNamespaceItem("Components", "button");
     std::cout << "Components::button: " << (buttonFound ? buttonFound->content : "not found") << std::endl;
+    
+    // 测试命名空间存在性
+    std::cout << "Core命名空间存在: " << (nsManager.hasNamespace("Core") ? "是" : "否") << std::endl;
+    std::cout << "UI命名空间存在: " << (nsManager.hasNamespace("UI") ? "是" : "否") << std::endl;
+    std::cout << "Components命名空间存在: " << (nsManager.hasNamespace("Components") ? "是" : "否") << std::endl;
+    
+    // 测试命名空间项内容
+    std::cout << "version项内容: " << versionFound->content << std::endl;
+    std::cout << "theme项内容: " << themeFound->content << std::endl;
+    std::cout << "button项内容: " << buttonFound->content << std::endl;
+    
+    // 测试辅助函数
+    std::cout << "\n测试辅助函数..." << std::endl;
+    
+    // 创建配置组
+    importConfigManager->createConfigurationGroup("TestGroup");
+    
+    // 设置配置
+    importConfigManager->setConfig("TestGroup", "TEST_VALUE", ConfigValue(ConfigItemType::STRING, "test"));
+    importConfigManager->setConfig("TestGroup", "TEST_NUMBER", ConfigValue(ConfigItemType::INTEGER, 42));
+    importConfigManager->setConfig("TestGroup", "TEST_BOOL", ConfigValue(ConfigItemType::BOOLEAN, true));
+    
+    // 获取配置
+    auto testValue = importConfigManager->getConfig("TestGroup", "TEST_VALUE");
+    auto testNumber = importConfigManager->getConfig("TestGroup", "TEST_NUMBER");
+    auto testBool = importConfigManager->getConfig("TestGroup", "TEST_BOOL");
+    
+    std::cout << "TEST_VALUE: " << testValue.toString() << std::endl;
+    std::cout << "TEST_NUMBER: " << testNumber.toString() << std::endl;
+    std::cout << "TEST_BOOL: " << testBool.toString() << std::endl;
+    
+    // 激活配置组
+    importConfigManager->activateConfigurationGroup("TestGroup");
+    auto activeGroup = importConfigManager->getActiveConfigurationGroup();
+    std::cout << "当前激活的配置组: " << (activeGroup.empty() ? "(无名)" : activeGroup) << std::endl;
     
     // 测试冲突检测
     auto conflicts = nsManager.detectConflicts();
@@ -231,12 +262,7 @@ script
     
     // 测试命名空间合并
     nsManager.createNamespace("Utils", "test.chtl");
-    auto helperItem = std::make_shared<CHTL::NamespaceItem>();
-    helperItem->type = CHTL::NamespaceItemType::CUSTOM_ELEMENT;
-    helperItem->name = "helper";
-    helperItem->sourceFile = "test.chtl";
-    helperItem->lineNumber = 4;
-    helperItem->content = "HelperFunction";
+    auto helperItem = std::make_shared<CHTL::NamespaceItem>("helper", CHTL::NamespaceItemType::CUSTOM_ELEMENT, "test.chtl", 4, 5, "HelperFunction");
     nsManager.addNamespaceItem("Utils", helperItem);
     
     bool merged = nsManager.mergeNamespaces("Utils");

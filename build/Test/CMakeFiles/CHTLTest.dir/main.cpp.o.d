@@ -236,40 +236,14 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
   /workspace/Test/../ThirdParty/CJMODAPI/CJMODGenerator.h \
+  /workspace/Test/../CHTL/CHTLContext/ConfigurationManager.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/optional \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/variant \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
   /workspace/Test/../CHTL/CHTLContext/NamespaceManager.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/set \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_set.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multiset.h \
-  /workspace/Test/../CHTL/CHTLContext/ConfigurationManager.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multimap.h \
   /workspace/Test/../CHTL/CHTLContext/ImportManager.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/filesystem \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_fwd.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cstdint \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/chrono.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ratio \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/limits \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ctime \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_path.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/locale \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets_nonio.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/time_members.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
-  /usr/include/libintl.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/codecvt.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets_nonio.tcc \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_conv.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iomanip \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/quoted_string.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/codecvt \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_dir.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_ops.h \
   /workspace/Test/../CHTL/CHTLParser/CHTLParser.h \
   /workspace/Test/../CHTL/CHTLParser/../CHTLLexer/CHTLLexer.h \
   /workspace/Test/../CHTL/CHTLParser/../CHTLNode/BaseNode.h \
@@ -279,4 +253,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSNode/CHTLJSBaseNode.h \
   /workspace/Test/../CHTL\ JS/CHTLJSNode/CHTLJSBaseNode.h \
   /workspace/Test/../CompilerDispatcher/CompilerDispatcher.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multimap.h \
   /workspace/Test/../CompilerDispatcher/../Scanner/CHTLUnifiedScanner.h
