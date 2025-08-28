@@ -744,6 +744,8 @@ body
         KEYWORD_FROM = from;
         KEYWORD_AS = as;
         KEYWORD_EXCEPT = except;
+        KEYWORD_USE = use;
+        KEYWORD_HTML5 = html5;
         KEYWORD_TEXT = text;
         KEYWORD_STYLE = style;  // 局部样式块
         KEYWORD_SCRIPT = script;  // 局部脚本块
@@ -775,49 +777,10 @@ body
 ```chtl
 [Configuration] @Config Basic
 {
-    INDEX_INITIAL_COUNT = 0;
-    DISABLE_NAME_GROUP = true;
-    DISABLE_CUSTOM_ORIGIN_TYPE = false;
-    DEBUG_MODE = false;
-
     [Name]
     {
-        CUSTOM_STYLE = [@Style, @style, @CSS, @Css, @css];
-        CUSTOM_ELEMENT = @Element;
-        CUSTOM_VAR = @Var;
-        TEMPLATE_STYLE = @Style;
-        TEMPLATE_ELEMENT = @Element;
-        TEMPLATE_VAR = @Var;
-        ORIGIN_HTML = @Html;
-        ORIGIN_STYLE = @Style;
-        ORIGIN_JAVASCRIPT = @JavaScript;
         CONFIGURATION_CONFIG = @Config;  // 新增
-        IMPORT_HTML = @Html;
-        IMPORT_STYLE = @Style;
-        IMPORT_JAVASCRIPT = @JavaScript;
-        IMPORT_CHTL = @Chtl;
-        IMPORT_CRMOD = @CJmod;
         IMPORT_CONFIG = @Config;  // 新增
-        KEYWORD_INHERIT = inherit;
-        KEYWORD_DELETE = delete;
-        KEYWORD_INSERT = insert;
-        KEYWORD_AFTER = after;
-        KEYWORD_BEFORE = before;
-        KEYWORD_REPLACE = replace;
-        KEYWORD_ATTOP = at top;
-        KEYWORD_ATBOTTOM = at bottom;
-        KEYWORD_FROM = from;
-        KEYWORD_AS = as;
-        KEYWORD_EXCEPT = except;
-        KEYWORD_TEXT = text;
-        KEYWORD_STYLE = style;
-        KEYWORD_SCRIPT = script;
-        KEYWORD_CUSTOM = [Custom];
-        KEYWORD_TEMPLATE = [Template];
-        KEYWORD_ORIGIN = [Origin];
-        KEYWORD_IMPORT = [Import]
-        KEYWORD_NAMESPACE = [Namespace]
-        OPTION_COUNT = 3;
     }
 
     [OriginType]
@@ -828,55 +791,7 @@ body
 
 [Configuration] @Config Std
 {
-    INDEX_INITIAL_COUNT = 0;
-    DISABLE_NAME_GROUP = true;
-    DISABLE_CUSTOM_ORIGIN_TYPE = false;
-    DEBUG_MODE = false;
-
-    [Name]
-    {
-        CUSTOM_STYLE = [@Style, @style, @CSS, @Css, @css];
-        CUSTOM_ELEMENT = @Element;
-        CUSTOM_VAR = @Var;
-        TEMPLATE_STYLE = @Style;
-        TEMPLATE_ELEMENT = @Element;
-        TEMPLATE_VAR = @Var;
-        ORIGIN_HTML = @Html;
-        ORIGIN_STYLE = @Style;
-        ORIGIN_JAVASCRIPT = @JavaScript;
-        CONFIGURATION_CONFIG = @Config;
-        IMPORT_HTML = @Html;
-        IMPORT_STYLE = @Style;
-        IMPORT_JAVASCRIPT = @JavaScript;
-        IMPORT_CHTL = @Chtl;
-        IMPORT_CRMOD = @CJmod;
-        IMPORT_CONFIG = @Config;
-        KEYWORD_INHERIT = inherit;
-        KEYWORD_DELETE = delete;
-        KEYWORD_INSERT = insert;
-        KEYWORD_AFTER = after;
-        KEYWORD_BEFORE = before;
-        KEYWORD_REPLACE = replace;
-        KEYWORD_ATTOP = at top;
-        KEYWORD_ATBOTTOM = at bottom;
-        KEYWORD_FROM = from;
-        KEYWORD_AS = as;
-        KEYWORD_EXCEPT = except;
-        KEYWORD_TEXT = text;
-        KEYWORD_STYLE = style;
-        KEYWORD_SCRIPT = script;
-        KEYWORD_CUSTOM = [Custom];
-        KEYWORD_TEMPLATE = [Template];
-        KEYWORD_ORIGIN = [Origin];
-        KEYWORD_IMPORT = [Import]
-        KEYWORD_NAMESPACE = [Namespace]
-        OPTION_COUNT = 3;
-    }
-
-    [OriginType]
-    {
-        ORIGINTYPE_VUE = @Vue;
-    }
+    
 }
 ```
 
@@ -889,7 +804,7 @@ body
 导入CSS文件  
 [Import] @Style from css文件路径 as(必须) 命名为  
 
-导入JS文件  
+导入JS / CJJS文件  
 [Import] @JavaScript from js文件路径 as(必须) 命名为  // 如果不具有as，直接跳过，具有as，则是创建命名原始嵌入节点  
 
 对于上述三种类型  
@@ -915,21 +830,24 @@ body
 导入另一个chtl文件之中的变量组模板  
 [Import] [Template] @Var 需要导入的变量组名称 from chtl文件路径 as(可选) 命名为  
 
-导入一个chtl文件  
-[Import] @Chtl from chtl文件路径  
+导入一个chtl文件  /  cmod模块  
+[Import] @Chtl from chtl / cmod文件路径  
 
 导入CJmod文件  
 [Import] @CJmod from cjmod文件路径  
 
-[Import] @Config 导入的配置组名称(可选，不写默认导入无名配置组，如果没有则是第一个有名) from chtl文件路径 as(无用选项) 命名为  
+[Import] @Config 导入的配置组名称(可选，不写默认导入无名配置组，如果没有则是第一个有名) from chtl文件路径 as(如果使用as，需要与use搭配使用) 命名为  
 
 全缀名写法  
-[Import] [Configuration] @Config 导入的配置组名称(可选，不写默认导入无名配置组，如果没有则是第一个有名) from chtl文件路径 as(无用选项) 命名为  
+[Import] [Configuration] @Config 导入的配置组名称(可选，不写默认导入无名配置组，如果没有则是第一个有名) from chtl文件路径 as(如果使用as，需要与use搭配使用) 命名为  
 
 导入原始嵌入  
 [Import] [Origin] @Html 名称 from chtl文件路径 as(可选) 命名为  
 [Import] [Origin] @Style 名称 from chtl文件路径 as(可选) 命名为  
 [Import] [Origin] @Javascript 名称 from chtl文件路径 as(可选) 命名为  
+
+导入自定义类型的原始嵌入  
+[Import] [Origin] @Vue 名称 from chtl文件路径 as(可选) 命名为  
 
 导入所有模板  
 [Import] [Template] from chtl文件路径 as(无效) 命名为  
@@ -958,10 +876,13 @@ body
 导入另一个chtl文件之中所有的变量组模板  
 [Import] [Template] @Var from chtl文件路径 as(无效) 命名为  
 
+导入另一个Chtl文件之中所有的命名配置组  
+[Import] [Configuration] from chtl文件路径 as(无效) 命名为  
+
 可以使用'.'来表示'/'  
 
 对于@Chtl类型来说  
-名称（不带后缀）：优先搜索官方模块目录(源码编译后生成的module文件夹，通常和编译器同一个文件夹，含cmod，chtl和cjmod文件），其次搜索编译文件所在的目录module文件夹，最后搜索编译文件所在目录，优先匹配cmod文件，其次chtl，不匹配cjmod文件)
+名称（不带后缀）：优先搜索官方模块目录(源码编译后生成的module文件夹，通常和编译器同一个文件夹，含cmod，chtl和cjmod文件，module文件夹可能分为两种情况，一种是乱序结构，cmod，chtl，cjmod的文件混杂在一起，一种是有序结构，使用cmod / Cmod / CMOD + cjmod / CJmod / CJMOD两个文件夹进行分类），其次搜索编译文件所在的目录module(module文件夹可能分为两种情况，一种是乱序结构，cmod，chtl，cjmod的文件混杂在一起，一种是有序结构，使用cmod / Cmod / CMOD + cjmod / CJmod / CJMOD两个文件夹进行分类)文件夹，最后搜索编译文件所在目录，优先匹配cmod文件，其次chtl，不匹配cjmod文件)
 具体名称（带后缀）：按官方模块目录→当前目录module文件夹→当前目录顺序搜索指定文件
 具体路径（含文件信息）：直接按路径查找，未找到则报错
 具体路径（不含文件信息）：触发报错
