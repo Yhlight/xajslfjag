@@ -1,0 +1,94 @@
+#include <iostream>
+#include <string>
+#include "../Scanner/CHTLUnifiedScanner.h"
+
+using namespace Scanner;
+
+int main() {
+    std::cout << "CHTL项目测试开始..." << std::endl;
+    
+    // 测试统一扫描器
+    CHTLUnifiedScanner scanner;
+    
+    // 测试CHTL代码
+    std::string chtlCode = R"(
+[Template] @Style DefaultText
+{
+    color: "black";
+    line-height: 1.6;
+}
+
+div
+{
+    style
+    {
+        @Style DefaultText;
+    }
+}
+)";
+    
+    std::cout << "测试CHTL代码扫描..." << std::endl;
+    scanner.setSource(chtlCode);
+    auto fragments = scanner.scan();
+    
+    std::cout << "扫描到 " << fragments.size() << " 个代码片段:" << std::endl;
+    for (const auto& fragment : fragments) {
+        std::string typeStr;
+        switch (fragment.type) {
+            case CodeFragmentType::CHTL: typeStr = "CHTL"; break;
+            case CodeFragmentType::CHTL_JS: typeStr = "CHTL_JS"; break;
+            case CodeFragmentType::CSS: typeStr = "CSS"; break;
+            case CodeFragmentType::JAVASCRIPT: typeStr = "JAVASCRIPT"; break;
+            default: typeStr = "UNKNOWN"; break;
+        }
+        
+        std::cout << "类型: " << typeStr 
+                  << ", 位置: [" << fragment.startPos << ", " << fragment.endPos << "]"
+                  << ", 行: " << fragment.line << ", 列: " << fragment.column << std::endl;
+        std::cout << "内容: " << fragment.content.substr(0, 100) 
+                  << (fragment.content.length() > 100 ? "..." : "") << std::endl;
+        std::cout << "---" << std::endl;
+    }
+    
+    // 测试CHTL JS代码
+    std::string chtlJSCode = R"(
+script
+{
+    vir test = listen {
+        click: () => {
+            console.log('Clicked!');
+        }
+    };
+    
+    {{.box}}->addEventListener('click', () => {
+        console.log('Box clicked!');
+    });
+}
+)";
+    
+    std::cout << "\n测试CHTL JS代码扫描..." << std::endl;
+    scanner.setSource(chtlJSCode);
+    fragments = scanner.scan();
+    
+    std::cout << "扫描到 " << fragments.size() << " 个代码片段:" << std::endl;
+    for (const auto& fragment : fragments) {
+        std::string typeStr;
+        switch (fragment.type) {
+            case CodeFragmentType::CHTL: typeStr = "CHTL"; break;
+            case CodeFragmentType::CHTL_JS: typeStr = "CHTL_JS"; break;
+            case CodeFragmentType::CSS: typeStr = "CSS"; break;
+            case CodeFragmentType::JAVASCRIPT: typeStr = "JAVASCRIPT"; break;
+            default: typeStr = "UNKNOWN"; break;
+        }
+        
+        std::cout << "类型: " << typeStr 
+                  << ", 位置: [" << fragment.startPos << ", " << fragment.endPos << "]"
+                  << ", 行: " << fragment.line << ", 列: " << fragment.column << std::endl;
+        std::cout << "内容: " << fragment.content.substr(0, 100) 
+                  << (fragment.content.length() > 100 ? "..." : "") << std::endl;
+        std::cout << "---" << std::endl;
+    }
+    
+    std::cout << "测试完成!" << std::endl;
+    return 0;
+}
