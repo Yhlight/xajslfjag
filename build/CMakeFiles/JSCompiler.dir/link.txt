@@ -1,0 +1,2 @@
+/usr/bin/ar qc libJSCompiler.a CMakeFiles/JSCompiler.dir/src/JS/JavaScriptLexer.cpp.o CMakeFiles/JSCompiler.dir/src/JS/JavaScriptParser.cpp.o CMakeFiles/JSCompiler.dir/src/JS/JavaScriptParserBaseListener.cpp.o CMakeFiles/JSCompiler.dir/src/JS/JavaScriptParserListener.cpp.o CMakeFiles/JSCompiler.dir/src/JS/JavaScriptLexerBase.cpp.o CMakeFiles/JSCompiler.dir/src/JS/JavaScriptParserBase.cpp.o
+/usr/bin/ranlib libJSCompiler.a
