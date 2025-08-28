@@ -181,6 +181,7 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/include/c++/14/bits/stringfwd.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
+  /usr/include/c++/14/bits/unordered_set.h \
   /usr/include/c++/14/bits/uses_allocator.h \
   /usr/include/c++/14/bits/uses_allocator_args.h \
   /usr/include/c++/14/bits/utility.h \
@@ -229,6 +230,7 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/include/c++/14/type_traits \
   /usr/include/c++/14/typeinfo \
   /usr/include/c++/14/unordered_map \
+  /usr/include/c++/14/unordered_set \
   /usr/include/c++/14/vector \
   /usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h \
@@ -254,6 +256,7 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
+  /workspace/CHTL/CHTLContext/ImportManager.h \
   /workspace/CHTL/CHTLContext/NamespaceManager.h \
   /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/CompilerDispatcher/CompilerDispatcher.h \
@@ -313,13 +316,17 @@ lib/libCHTLContext.a:
 
 /workspace/ThirdParty/CJMODAPI/Syntax.h:
 
+/workspace/ThirdParty/CJMODAPI/Arg.h:
+
+/workspace/CompilerDispatcher/CompilerDispatcher.h:
+
+/workspace/Scanner/CHTLUnifiedScanner.h:
+
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/c++/14/bits/exception.h:
 
 /usr/include/c++/14/cctype:
-
-/workspace/Scanner/CHTLUnifiedScanner.h:
 
 /usr/include/c++/14/bits/erase_if.h:
 
@@ -505,8 +512,6 @@ lib/libCHTLLexer.a:
 
 /usr/include/x86_64-linux-gnu/bits/stdio_lim.h:
 
-/workspace/ThirdParty/CJMODAPI/Arg.h:
-
 /usr/include/linux/types.h:
 
 /usr/include/alloca.h:
@@ -671,7 +676,11 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 /usr/include/c++/14/bits/istream.tcc:
 
+/usr/include/c++/14/unordered_set:
+
 /usr/include/c++/14/bits/memory_resource.h:
+
+/usr/include/c++/14/bits/unordered_set.h:
 
 /usr/include/c++/14/bits/memoryfwd.h:
 
@@ -847,4 +856,4 @@ lib/libScanner.a:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
 
-/workspace/CompilerDispatcher/CompilerDispatcher.h:
+/workspace/CHTL/CHTLContext/ImportManager.h:

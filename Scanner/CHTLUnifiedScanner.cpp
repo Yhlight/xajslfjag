@@ -2,6 +2,11 @@
 #include <algorithm>
 #include <iostream>
 #include <cctype>
+#include <sstream>
+#include "../ThirdParty/CJMODAPI/Syntax.h"
+#include "../ThirdParty/CJMODAPI/Arg.h"
+#include "../ThirdParty/CJMODAPI/CJMODScannerAPI.h"
+#include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
 
 namespace Scanner {
 
@@ -196,30 +201,73 @@ static bool isIdentChar(char c) {
 	return std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '.';
 }
 
-CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::scanCJMODByTwoPointers(size_t startPos, size_t endPos) {
-	CJMODScanResult r;
-	if (startPos >= source_.size()) return r;
-	endPos = std::min(endPos, source_.size());
-	size_t i = startPos;
-	while (i < endPos) {
-		// 跳过空白
-		while (i < endPos && std::isspace(static_cast<unsigned char>(source_[i]))) ++i;
-		if (i >= endPos) break;
-		// 标识符/数字
-		if (isIdentChar(source_[i])) {
-			size_t j = i;
-			while (j < endPos && isIdentChar(source_[j])) ++j;
-			r.tokens.emplace_back(source_.substr(i, j - i));
-			i = j;
-			continue;
-		}
-		// 连续操作符（如**, +=, => 等）
-		size_t j = i;
-		while (j < endPos && !std::isspace(static_cast<unsigned char>(source_[j])) && !isIdentChar(source_[j])) ++j;
-		r.tokens.emplace_back(source_.substr(i, j - i));
-		i = j;
+CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::scanCJMODByTwoPointers(size_t start, size_t end) {
+	CJMODScanResult result;
+	if (start >= source_.length() || end > source_.length() || start >= end) {
+		return result;
 	}
-	return r;
+	
+	std::string fragment = source_.substr(start, end - start);
+	
+	// 简化实现：基础词法分析
+	try {
+		// 简单的token分割
+		std::istringstream iss(fragment);
+		std::string token;
+		while (iss >> token) {
+			result.tokens.push_back(token);
+		}
+		
+		// 记录扫描位置
+		result.startPos = start;
+		result.endPos = end;
+		result.success = true;
+		
+	} catch (const std::exception& e) {
+		result.success = false;
+		result.error = "CJMOD扫描异常: " + std::string(e.what());
+	}
+	
+	return result;
+}
+
+std::string CHTLUnifiedScanner::preEmptiveTruncateCJMOD(const std::string& fragment) {
+	// 前置截取：根据CJMOD语法规则智能截取
+	try {
+		// 检测CJMOD关键字
+		std::vector<std::string> cjmodKeywords = {"vir", "listen", "delegate", "animate", "iNeverAway", "printMylove"};
+		
+		for (const auto& keyword : cjmodKeywords) {
+			size_t pos = fragment.find(keyword);
+			if (pos != std::string::npos) {
+				// 找到关键字，截取到下一个分号或大括号
+				size_t endPos = fragment.find(';', pos);
+				if (endPos == std::string::npos) {
+					endPos = fragment.find('{', pos);
+				}
+				if (endPos != std::string::npos) {
+					return fragment.substr(pos, endPos - pos + 1);
+				}
+			}
+		}
+		
+		// 如果没有找到关键字，尝试截取表达式
+		if (fragment.find("**") != std::string::npos || 
+			fragment.find("->") != std::string::npos ||
+			fragment.find("{{") != std::string::npos) {
+			
+			// 截取到表达式结束
+			size_t endPos = fragment.find(';');
+			if (endPos != std::string::npos) {
+				return fragment.substr(0, endPos + 1);
+			}
+		}
+		
+	} catch (const std::exception& e) {
+		// 截取失败，返回原片段
+	}
+	
+	return fragment;
 }
 
 CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::preCaptureForCJMOD(size_t startPos, size_t endPos) {

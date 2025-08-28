@@ -66,9 +66,16 @@ public:
     const std::string& getSource() const { return source_; }
 
     // CJMOD扫描占位接口
-    struct CJMODScanResult { std::vector<std::string> tokens; };
+    struct CJMODScanResult { 
+        std::vector<std::string> tokens;
+        size_t startPos{0};
+        size_t endPos{0};
+        bool success{false};
+        std::string error;
+    };
     CJMODScanResult scanCJMODByTwoPointers(size_t startPos, size_t endPos);
     CJMODScanResult preCaptureForCJMOD(size_t startPos, size_t endPos);
+    std::string preEmptiveTruncateCJMOD(const std::string& fragment);
 
 private:
     std::string source_;

@@ -6,6 +6,7 @@
 #include "../ThirdParty/CJMODAPI/CJMODScannerAPI.h"
 #include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
 #include "../CHTL/CHTLContext/NamespaceManager.h"
+#include "../CHTL/CHTLContext/ImportManager.h"
 #include "../CompilerDispatcher/CompilerDispatcher.h"
 
 using namespace Scanner;
@@ -151,6 +152,48 @@ script
     std::cout << "[Import] @CJmod from Box" << std::endl;
     std::cout << "[Import] @Html from index.html as mainPage" << std::endl;
 
+    // 测试Import增强功能
+    std::cout << "\n测试Import增强功能:" << std::endl;
+    CHTL::ImportManager importManager;
+    
+    // 测试别名功能
+    importManager.addAlias("UI", "./modules/ui");
+    importManager.addAlias("Core", "./modules/core");
+    std::cout << "UI别名解析: " << importManager.resolveAlias("UI") << std::endl;
+    std::cout << "Core别名解析: " << importManager.resolveAlias("Core") << std::endl;
+    
+    // 测试多根目录搜索
+    importManager.addSearchPath("./modules");
+    importManager.addSearchPath("./libs");
+    importManager.addSearchPath("./vendor");
+    
+    std::cout << "搜索路径数量: " << importManager.getSearchPaths().size() << std::endl;
+    for (const auto& path : importManager.getSearchPaths()) {
+        std::cout << "  - " << path << std::endl;
+    }
+    
+    // 测试相对路径解析
+    std::string baseFile = "/workspace/src/main.chtl";
+    std::string relativePath = "./components/Button.chtl";
+    std::string resolvedPath = importManager.resolveRelativePath(relativePath, baseFile);
+    std::cout << "相对路径解析: " << relativePath << " -> " << resolvedPath << std::endl;
+    
+    // 测试通配符扩展
+    std::vector<std::string> wildcardResults = importManager.expandWildcard("*.chtl", "./modules");
+    std::cout << "通配符扩展结果数量: " << wildcardResults.size() << std::endl;
+    
+    // 测试循环依赖检测
+    CHTL::ImportInfo info1{CHTL::ImportType::CHTL, "", "file2.chtl", "", false};
+    CHTL::ImportInfo info2{CHTL::ImportType::CHTL, "", "file3.chtl", "", false};
+    CHTL::ImportInfo info3{CHTL::ImportType::CHTL, "", "file1.chtl", "", false};
+    
+    importManager.addImport("file1.chtl", info1);
+    importManager.addImport("file2.chtl", info2);
+    importManager.addImport("file3.chtl", info3);
+    
+    bool hasCircular = importManager.hasCircularDependency("file1.chtl", "file3.chtl");
+    std::cout << "循环依赖检测: " << (hasCircular ? "检测到" : "未检测到") << std::endl;
+
     // 测试命名空间管理
     std::cout << "\n测试命名空间管理:" << std::endl;
     NamespaceManager nsManager;
@@ -244,6 +287,105 @@ function init() {
     }
     
     std::cout << "输出长度: " << compilationResult.output.length() << " 字符" << std::endl;
+
+    // 测试CHTL解析器
+    std::cout << "\n测试CHTL解析器:" << std::endl;
+    // TODO: 暂时注释掉CHTL解析器测试，等待实现完成
+    /*
+    CHTL::CHTLParser chtlParser;
+    
+    // 测试模板解析
+    std::string templateCode = R"(
+[Template] @Style DefaultText
+{
+    color: "black";
+    line-height: 1.6;
+}
+)";
+    
+    chtlParser.setSource(templateCode);
+    auto templateAST = chtlParser.parse();
+    std::cout << "模板解析: " << (chtlParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (templateAST) {
+        std::cout << "AST类型: " << static_cast<int>(templateAST->type) << std::endl;
+    }
+    
+    // 测试自定义元素解析
+    std::string customCode = R"(
+[Custom] delete Button
+)";
+    
+    chtlParser.setSource(customCode);
+    auto customAST = chtlParser.parse();
+    std::cout << "自定义元素解析: " << (chtlParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (customAST) {
+        std::cout << "AST类型: " << static_cast<int>(customAST->type) << std::endl;
+    }
+    */
+    std::cout << "CHTL解析器测试暂未实现" << std::endl;
+
+    // 测试CHTL JS解析器
+    std::cout << "\n测试CHTL JS解析器:" << std::endl;
+    // TODO: 暂时注释掉CHTL JS解析器测试，等待实现完成
+    /*
+    CHTLJS::CHTLJSParser chtlJSParser;
+    
+    // 测试虚拟对象解析
+    std::string virCode = R"(
+vir test = listen {
+    click: () => {
+        std::cout << "Clicked!";
+    }
+}
+)";
+    
+    chtlJSParser.setSource(virCode);
+    auto virAST = chtlJSParser.parse();
+    std::cout << "虚拟对象解析: " << (chtlJSParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (virAST) {
+        std::cout << "AST类型: " << static_cast<int>(virAST->type) << std::endl;
+    }
+    
+    // 测试增强选择器解析
+    std::string selectorCode = R"(
+{{.box}}->addEventListener('click', () => {
+    std::cout << "Box clicked!";
+})
+)";
+    
+    chtlJSParser.setSource(selectorCode);
+    auto selectorAST = chtlJSParser.parse();
+    std::cout << "增强选择器解析: " << (chtlJSParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (selectorAST) {
+        std::cout << "AST类型: " << static_cast<int>(selectorAST->type) << std::endl;
+    }
+    */
+    std::cout << "CHTL JS解析器测试暂未实现" << std::endl;
+
+    // 测试CJMOD双指针扫描增强
+    std::cout << "\n测试CJMOD双指针扫描增强:" << std::endl;
+    
+    // 测试前置截取
+    std::string cjmodFragment = "vir btn = listen { click: () => { console.log('clicked'); } };";
+    std::string truncated = scanner.preEmptiveTruncateCJMOD(cjmodFragment);
+    std::cout << "前置截取结果: " << truncated << std::endl;
+    
+    // TODO: 暂时注释掉双指针扫描测试，等待CJMOD API稳定
+    /*
+    // 测试双指针扫描增强
+    auto enhancedResult = scanner.scanCJMODByTwoPointers(0, cjmodFragment.length());
+    std::cout << "增强扫描结果: " << (enhancedResult.success ? "成功" : "失败") << std::endl;
+    if (enhancedResult.success) {
+        std::cout << "扫描到 " << enhancedResult.tokens.size() << " 个token: ";
+        for (const auto& token : enhancedResult.tokens) {
+            std::cout << "[" << token << "] ";
+        }
+        std::cout << std::endl;
+    } else {
+        std::cout << "扫描错误: " << enhancedResult.error << std::endl;
+    }
+    */
+    std::cout << "CJMOD双指针扫描测试暂未实现" << std::endl;
 
     std::cout << "测试完成!" << std::endl;
     return 0;

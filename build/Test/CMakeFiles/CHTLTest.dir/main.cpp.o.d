@@ -243,5 +243,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_set.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multiset.h \
+  /workspace/Test/../CHTL/CHTLContext/ImportManager.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
   /workspace/Test/../CompilerDispatcher/CompilerDispatcher.h \
   /workspace/Test/../CompilerDispatcher/../Scanner/CHTLUnifiedScanner.h

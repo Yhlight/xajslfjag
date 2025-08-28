@@ -232,4 +232,15 @@ Scanner/CMakeFiles/Scanner.dir/CHTLUnifiedScanner.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_ios.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
+  /workspace/Scanner/../ThirdParty/CJMODAPI/Syntax.h \
+  /workspace/Scanner/../ThirdParty/CJMODAPI/Arg.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/functional \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_function.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/array \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/compare \
+  /workspace/Scanner/../ThirdParty/CJMODAPI/CJMODScannerAPI.h \
+  /workspace/Scanner/../ThirdParty/CJMODAPI/../../Scanner/CHTLUnifiedScanner.h \
+  /workspace/Scanner/../ThirdParty/CJMODAPI/CJMODGenerator.h

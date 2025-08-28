@@ -149,4 +149,75 @@ void ImportManager::deduplicate(std::vector<std::string>& items) {
 	items.erase(std::unique(items.begin(), items.end()), items.end());
 }
 
+void ImportManager::addSearchPath(const std::string& path) {
+	auto normalized = normalizePath(path);
+	if (std::find(searchPaths_.begin(), searchPaths_.end(), normalized) == searchPaths_.end()) {
+		searchPaths_.push_back(normalized);
+	}
+}
+
+void ImportManager::removeSearchPath(const std::string& path) {
+	auto normalized = normalizePath(path);
+	searchPaths_.erase(std::remove(searchPaths_.begin(), searchPaths_.end(), normalized), searchPaths_.end());
+}
+
+std::vector<std::string> ImportManager::getSearchPaths() const {
+	return searchPaths_;
+}
+
+std::string ImportManager::resolveAlias(const std::string& alias) const {
+	auto it = aliases_.find(alias);
+	return it != aliases_.end() ? it->second : "";
+}
+
+void ImportManager::addAlias(const std::string& alias, const std::string& path) {
+	aliases_[alias] = normalizePath(path);
+}
+
+std::string ImportManager::resolveRelativePath(const std::string& relativePath, const std::string& baseFile) const {
+	if (relativePath.empty() || baseFile.empty()) return "";
+	
+	// 处理相对路径
+	if (relativePath[0] == '.' || relativePath[0] == '/') {
+		fs::path basePath(baseFile);
+		fs::path relative(relativePath);
+		
+		if (relativePath[0] == '.') {
+			// 相对路径
+			fs::path resolved = basePath.parent_path() / relative;
+			return resolved.string();
+		} else {
+			// 绝对路径
+			return relative.string();
+		}
+	}
+	
+	return relativePath;
+}
+
+std::string ImportManager::searchInMultiplePaths(const std::string& name, ImportType type) {
+	// 在多根目录中搜索
+	for (const auto& searchPath : searchPaths_) {
+		fs::path candidate = fs::path(searchPath) / name;
+		if (fs::exists(candidate)) {
+			return candidate.string();
+		}
+		
+		// 尝试添加后缀
+		for (const auto& ext : candidateExtensionsFor(type)) {
+			fs::path candidateWithExt = fs::path(searchPath) / (name + ext);
+			if (fs::exists(candidateWithExt)) {
+				return candidateWithExt.string();
+			}
+		}
+	}
+	
+	return "";
+}
+
+std::string ImportManager::normalizePath(const std::string& path) {
+	fs::path p(path);
+	return p.lexically_normal().string();
+}
+
 } // namespace CHTL
