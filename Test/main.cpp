@@ -135,6 +135,18 @@ script
     }
     std::cout << std::endl;
 
+    // 测试选择器自动化配置
+    std::cout << "\n测试选择器自动化配置:" << std::endl;
+    std::cout << "局部style: .box { color: red; }" << std::endl;
+    std::cout << "局部script: {{.box}}->click()" << std::endl;
+    std::cout << "引用选择器: &:hover { background: blue; }" << std::endl;
+
+    // 测试Import路径解析
+    std::cout << "\n测试Import路径解析:" << std::endl;
+    std::cout << "[Import] @Chtl from Chtholly.*" << std::endl;
+    std::cout << "[Import] @CJmod from Box" << std::endl;
+    std::cout << "[Import] @Html from index.html as mainPage" << std::endl;
+
     std::cout << "测试完成!" << std::endl;
     return 0;
 }
