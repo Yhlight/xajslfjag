@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o"
+  "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o.d"
   "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o"
   "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o.d"
   "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o"

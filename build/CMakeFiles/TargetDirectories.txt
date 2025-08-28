@@ -15,6 +15,9 @@
 /workspace/build/Scanner/CMakeFiles/edit_cache.dir
 /workspace/build/Scanner/CMakeFiles/rebuild_cache.dir
 /workspace/build/Test/CMakeFiles/CHTLTest.dir
+/workspace/build/Test/CMakeFiles/ConfigurationManagerTest.dir
+/workspace/build/Test/CMakeFiles/UseStatementTest.dir
+/workspace/build/Test/CMakeFiles/ConstraintParserTest.dir
 /workspace/build/Test/CMakeFiles/edit_cache.dir
 /workspace/build/Test/CMakeFiles/rebuild_cache.dir
 /workspace/build/CHTL/CMakeFiles/edit_cache.dir

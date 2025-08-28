@@ -7,6 +7,9 @@ set(TEST_SOURCES
     # CHTLJSTest.cpp
     # ScannerTest.cpp
     io_stream_test.cpp
+    configuration_manager_test.cpp
+    use_statement_test.cpp
+    constraint_parser_test.cpp
 )
 
 # 创建Test可执行文件
@@ -37,4 +40,57 @@ target_include_directories(CHTLTest PRIVATE
     ${CMAKE_SOURCE_DIR}/Scanner
     ${CMAKE_SOURCE_DIR}/ThirdParty/CJMODAPI
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+)
+
+# 创建配置管理器测试可执行文件
+add_executable(ConfigurationManagerTest configuration_manager_test.cpp)
+
+# 设置目标属性
+set_target_properties(ConfigurationManagerTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(ConfigurationManagerTest CHTLContext)
+
+# 包含目录
+target_include_directories(ConfigurationManagerTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+)
+
+# 创建use语句测试可执行文件
+add_executable(UseStatementTest use_statement_test.cpp)
+
+# 设置目标属性
+set_target_properties(UseStatementTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(UseStatementTest CHTLContext CHTLParser)
+
+# 包含目录
+target_include_directories(UseStatementTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLParser
+)
+
+# 创建约束解析器测试可执行文件
+add_executable(ConstraintParserTest constraint_parser_test.cpp)
+
+# 设置目标属性
+set_target_properties(ConstraintParserTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(ConstraintParserTest CHTLContext CHTLParser)
+
+# 包含目录
+target_include_directories(ConstraintParserTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLParser
 )

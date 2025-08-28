@@ -86,17 +86,49 @@ CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLParser/CHTLParser.cpp -o CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.s
 
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o: CMakeFiles/CHTLParser.dir/flags.make
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o: /workspace/CHTL/CHTLParser/UseStatementParser.cpp
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o: CMakeFiles/CHTLParser.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o -MF CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o.d -o CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o -c /workspace/CHTL/CHTLParser/UseStatementParser.cpp
+
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLParser/UseStatementParser.cpp > CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.i
+
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLParser/UseStatementParser.cpp -o CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.s
+
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o: CMakeFiles/CHTLParser.dir/flags.make
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o: /workspace/CHTL/CHTLParser/ConstraintParser.cpp
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o: CMakeFiles/CHTLParser.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o -MF CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o.d -o CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o -c /workspace/CHTL/CHTLParser/ConstraintParser.cpp
+
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLParser/ConstraintParser.cpp > CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.i
+
+CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLParser/ConstraintParser.cpp -o CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.s
+
 # Object files for target CHTLParser
 CHTLParser_OBJECTS = \
-"CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.o"
+"CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.o" \
+"CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o" \
+"CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o"
 
 # External object files for target CHTLParser
 CHTLParser_EXTERNAL_OBJECTS =
 
 lib/libCHTLParser.a: CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.o
+lib/libCHTLParser.a: CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o
+lib/libCHTLParser.a: CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o
 lib/libCHTLParser.a: CMakeFiles/CHTLParser.dir/build.make
 lib/libCHTLParser.a: CMakeFiles/CHTLParser.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library lib/libCHTLParser.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library lib/libCHTLParser.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/CHTLParser.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLParser.dir/link.txt --verbose=$(VERBOSE)
 

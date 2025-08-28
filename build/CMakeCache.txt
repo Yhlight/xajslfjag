@@ -14,6 +14,15 @@
 # EXTERNAL cache entries
 ########################
 
+//Value Computed by CMake
+CHTLContext_BINARY_DIR:STATIC=/workspace/build/JS/CHTLContext
+
+//Value Computed by CMake
+CHTLContext_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLContext_SOURCE_DIR:STATIC=/workspace/CHTL/CHTLContext
+
 //Dependencies for the target
 CHTLJSParser_LIB_DEPENDS:STATIC=general;CHTLJSLexer;
 

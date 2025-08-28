@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/UseStatementTest.dir/link.d CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o -o ../bin/UseStatementTest  ../lib/libCHTLContext.a ../lib/libCHTLParser.a

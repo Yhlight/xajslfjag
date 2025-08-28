@@ -81,6 +81,7 @@ set(CHTLCONTEXT_SOURCES
     CHTL/CHTLContext/ImportManager.cpp
     CHTL/CHTLContext/SelectorAutomation.cpp
     CHTL/CHTLContext/NamespaceManager.cpp
+    CHTL/CHTLContext/ConfigurationManager.cpp
 )
 
 add_library(CHTLContext STATIC ${CHTLCONTEXT_SOURCES})
@@ -97,6 +98,8 @@ target_compile_options(CHTLContext PRIVATE -finput-charset=UTF-8 -fexec-charset=
 # 创建CHTLParser静态库
 set(CHTLPARSER_SOURCES
     CHTL/CHTLParser/CHTLParser.cpp
+    CHTL/CHTLParser/UseStatementParser.cpp
+    CHTL/CHTLParser/ConstraintParser.cpp
 )
 
 add_library(CHTLParser STATIC ${CHTLPARSER_SOURCES})

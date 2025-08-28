@@ -286,6 +286,45 @@ CHTLTest/fast:
 .PHONY : CHTLTest/fast
 
 #=============================================================================
+# Target rules for targets named ConfigurationManagerTest
+
+# Build rule for target.
+ConfigurationManagerTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ConfigurationManagerTest
+.PHONY : ConfigurationManagerTest
+
+# fast build rule for target.
+ConfigurationManagerTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/build
+.PHONY : ConfigurationManagerTest/fast
+
+#=============================================================================
+# Target rules for targets named UseStatementTest
+
+# Build rule for target.
+UseStatementTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 UseStatementTest
+.PHONY : UseStatementTest
+
+# fast build rule for target.
+UseStatementTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/build
+.PHONY : UseStatementTest/fast
+
+#=============================================================================
+# Target rules for targets named ConstraintParserTest
+
+# Build rule for target.
+ConstraintParserTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ConstraintParserTest
+.PHONY : ConstraintParserTest
+
+# fast build rule for target.
+ConstraintParserTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/build
+.PHONY : ConstraintParserTest/fast
+
+#=============================================================================
 # Target rules for targets named CompilerDispatcher
 
 # Build rule for target.
@@ -349,6 +388,30 @@ ZipUtil: cmake_check_build_system
 ZipUtil/fast:
 	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/build
 .PHONY : ZipUtil/fast
+
+CHTL/CHTLContext/ConfigurationManager.o: CHTL/CHTLContext/ConfigurationManager.cpp.o
+.PHONY : CHTL/CHTLContext/ConfigurationManager.o
+
+# target to build an object file
+CHTL/CHTLContext/ConfigurationManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o
+.PHONY : CHTL/CHTLContext/ConfigurationManager.cpp.o
+
+CHTL/CHTLContext/ConfigurationManager.i: CHTL/CHTLContext/ConfigurationManager.cpp.i
+.PHONY : CHTL/CHTLContext/ConfigurationManager.i
+
+# target to preprocess a source file
+CHTL/CHTLContext/ConfigurationManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i
+.PHONY : CHTL/CHTLContext/ConfigurationManager.cpp.i
+
+CHTL/CHTLContext/ConfigurationManager.s: CHTL/CHTLContext/ConfigurationManager.cpp.s
+.PHONY : CHTL/CHTLContext/ConfigurationManager.s
+
+# target to generate assembly for a file
+CHTL/CHTLContext/ConfigurationManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s
+.PHONY : CHTL/CHTLContext/ConfigurationManager.cpp.s
 
 CHTL/CHTLContext/ImportManager.o: CHTL/CHTLContext/ImportManager.cpp.o
 .PHONY : CHTL/CHTLContext/ImportManager.o
@@ -542,6 +605,54 @@ CHTL/CHTLParser/CHTLParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.s
 .PHONY : CHTL/CHTLParser/CHTLParser.cpp.s
 
+CHTL/CHTLParser/ConstraintParser.o: CHTL/CHTLParser/ConstraintParser.cpp.o
+.PHONY : CHTL/CHTLParser/ConstraintParser.o
+
+# target to build an object file
+CHTL/CHTLParser/ConstraintParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.o
+.PHONY : CHTL/CHTLParser/ConstraintParser.cpp.o
+
+CHTL/CHTLParser/ConstraintParser.i: CHTL/CHTLParser/ConstraintParser.cpp.i
+.PHONY : CHTL/CHTLParser/ConstraintParser.i
+
+# target to preprocess a source file
+CHTL/CHTLParser/ConstraintParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.i
+.PHONY : CHTL/CHTLParser/ConstraintParser.cpp.i
+
+CHTL/CHTLParser/ConstraintParser.s: CHTL/CHTLParser/ConstraintParser.cpp.s
+.PHONY : CHTL/CHTLParser/ConstraintParser.s
+
+# target to generate assembly for a file
+CHTL/CHTLParser/ConstraintParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/ConstraintParser.cpp.s
+.PHONY : CHTL/CHTLParser/ConstraintParser.cpp.s
+
+CHTL/CHTLParser/UseStatementParser.o: CHTL/CHTLParser/UseStatementParser.cpp.o
+.PHONY : CHTL/CHTLParser/UseStatementParser.o
+
+# target to build an object file
+CHTL/CHTLParser/UseStatementParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.o
+.PHONY : CHTL/CHTLParser/UseStatementParser.cpp.o
+
+CHTL/CHTLParser/UseStatementParser.i: CHTL/CHTLParser/UseStatementParser.cpp.i
+.PHONY : CHTL/CHTLParser/UseStatementParser.i
+
+# target to preprocess a source file
+CHTL/CHTLParser/UseStatementParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.i
+.PHONY : CHTL/CHTLParser/UseStatementParser.cpp.i
+
+CHTL/CHTLParser/UseStatementParser.s: CHTL/CHTLParser/UseStatementParser.cpp.s
+.PHONY : CHTL/CHTLParser/UseStatementParser.s
+
+# target to generate assembly for a file
+CHTL/CHTLParser/UseStatementParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.s
+.PHONY : CHTL/CHTLParser/UseStatementParser.cpp.s
+
 CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o: CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
 .PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o
 
@@ -729,13 +840,19 @@ help:
 	@echo "... CHTLParser"
 	@echo "... CHTLTest"
 	@echo "... CompilerDispatcher"
+	@echo "... ConfigurationManagerTest"
+	@echo "... ConstraintParserTest"
 	@echo "... DebugTest"
 	@echo "... FileStream"
 	@echo "... GeneratorTest"
 	@echo "... IOStreamTest"
 	@echo "... Scanner"
 	@echo "... SimpleTest"
+	@echo "... UseStatementTest"
 	@echo "... ZipUtil"
+	@echo "... CHTL/CHTLContext/ConfigurationManager.o"
+	@echo "... CHTL/CHTLContext/ConfigurationManager.i"
+	@echo "... CHTL/CHTLContext/ConfigurationManager.s"
 	@echo "... CHTL/CHTLContext/ImportManager.o"
 	@echo "... CHTL/CHTLContext/ImportManager.i"
 	@echo "... CHTL/CHTLContext/ImportManager.s"
@@ -760,6 +877,12 @@ help:
 	@echo "... CHTL/CHTLParser/CHTLParser.o"
 	@echo "... CHTL/CHTLParser/CHTLParser.i"
 	@echo "... CHTL/CHTLParser/CHTLParser.s"
+	@echo "... CHTL/CHTLParser/ConstraintParser.o"
+	@echo "... CHTL/CHTLParser/ConstraintParser.i"
+	@echo "... CHTL/CHTLParser/ConstraintParser.s"
+	@echo "... CHTL/CHTLParser/UseStatementParser.o"
+	@echo "... CHTL/CHTLParser/UseStatementParser.i"
+	@echo "... CHTL/CHTLParser/UseStatementParser.s"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.i"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.s"

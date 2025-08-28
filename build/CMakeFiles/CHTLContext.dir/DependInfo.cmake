@@ -8,6 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/CHTL/CHTLContext/ConfigurationManager.cpp" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o" "gcc" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o.d"
   "/workspace/CHTL/CHTLContext/ImportManager.cpp" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o" "gcc" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o.d"
   "/workspace/CHTL/CHTLContext/NamespaceManager.cpp" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o" "gcc" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o.d"
   "/workspace/CHTL/CHTLContext/SelectorAutomation.cpp" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o" "gcc" "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o.d"

@@ -130,6 +130,102 @@ CHTLTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/build
 .PHONY : CHTLTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/ConfigurationManagerTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/ConfigurationManagerTest.dir/rule
+.PHONY : Test/CMakeFiles/ConfigurationManagerTest.dir/rule
+
+# Convenience name for target.
+ConfigurationManagerTest: Test/CMakeFiles/ConfigurationManagerTest.dir/rule
+.PHONY : ConfigurationManagerTest
+
+# fast build rule for target.
+ConfigurationManagerTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/build
+.PHONY : ConfigurationManagerTest/fast
+
+# Convenience name for target.
+Test/CMakeFiles/UseStatementTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/UseStatementTest.dir/rule
+.PHONY : Test/CMakeFiles/UseStatementTest.dir/rule
+
+# Convenience name for target.
+UseStatementTest: Test/CMakeFiles/UseStatementTest.dir/rule
+.PHONY : UseStatementTest
+
+# fast build rule for target.
+UseStatementTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/build
+.PHONY : UseStatementTest/fast
+
+# Convenience name for target.
+Test/CMakeFiles/ConstraintParserTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/ConstraintParserTest.dir/rule
+.PHONY : Test/CMakeFiles/ConstraintParserTest.dir/rule
+
+# Convenience name for target.
+ConstraintParserTest: Test/CMakeFiles/ConstraintParserTest.dir/rule
+.PHONY : ConstraintParserTest
+
+# fast build rule for target.
+ConstraintParserTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/build
+.PHONY : ConstraintParserTest/fast
+
+configuration_manager_test.o: configuration_manager_test.cpp.o
+.PHONY : configuration_manager_test.o
+
+# target to build an object file
+configuration_manager_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.o
+.PHONY : configuration_manager_test.cpp.o
+
+configuration_manager_test.i: configuration_manager_test.cpp.i
+.PHONY : configuration_manager_test.i
+
+# target to preprocess a source file
+configuration_manager_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.i
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.i
+.PHONY : configuration_manager_test.cpp.i
+
+configuration_manager_test.s: configuration_manager_test.cpp.s
+.PHONY : configuration_manager_test.s
+
+# target to generate assembly for a file
+configuration_manager_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.s
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConfigurationManagerTest.dir/build.make Test/CMakeFiles/ConfigurationManagerTest.dir/configuration_manager_test.cpp.s
+.PHONY : configuration_manager_test.cpp.s
+
+constraint_parser_test.o: constraint_parser_test.cpp.o
+.PHONY : constraint_parser_test.o
+
+# target to build an object file
+constraint_parser_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.o
+.PHONY : constraint_parser_test.cpp.o
+
+constraint_parser_test.i: constraint_parser_test.cpp.i
+.PHONY : constraint_parser_test.i
+
+# target to preprocess a source file
+constraint_parser_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.i
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.i
+.PHONY : constraint_parser_test.cpp.i
+
+constraint_parser_test.s: constraint_parser_test.cpp.s
+.PHONY : constraint_parser_test.s
+
+# target to generate assembly for a file
+constraint_parser_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.s
+.PHONY : constraint_parser_test.cpp.s
+
 io_stream_test.o: io_stream_test.cpp.o
 .PHONY : io_stream_test.o
 
@@ -178,6 +274,33 @@ main.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+use_statement_test.o: use_statement_test.cpp.o
+.PHONY : use_statement_test.o
+
+# target to build an object file
+use_statement_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.o
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.o
+.PHONY : use_statement_test.cpp.o
+
+use_statement_test.i: use_statement_test.cpp.i
+.PHONY : use_statement_test.i
+
+# target to preprocess a source file
+use_statement_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.i
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.i
+.PHONY : use_statement_test.cpp.i
+
+use_statement_test.s: use_statement_test.cpp.s
+.PHONY : use_statement_test.s
+
+# target to generate assembly for a file
+use_statement_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/use_statement_test.cpp.s
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/use_statement_test.cpp.s
+.PHONY : use_statement_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -187,12 +310,24 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLTest"
+	@echo "... ConfigurationManagerTest"
+	@echo "... ConstraintParserTest"
+	@echo "... UseStatementTest"
+	@echo "... configuration_manager_test.o"
+	@echo "... configuration_manager_test.i"
+	@echo "... configuration_manager_test.s"
+	@echo "... constraint_parser_test.o"
+	@echo "... constraint_parser_test.i"
+	@echo "... constraint_parser_test.s"
 	@echo "... io_stream_test.o"
 	@echo "... io_stream_test.i"
 	@echo "... io_stream_test.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... use_statement_test.o"
+	@echo "... use_statement_test.i"
+	@echo "... use_statement_test.s"
 .PHONY : help
 
 
