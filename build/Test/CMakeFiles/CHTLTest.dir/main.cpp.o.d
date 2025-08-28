@@ -234,4 +234,14 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/compare \
   /workspace/Test/../ThirdParty/CJMODAPI/CJMODScannerAPI.h \
   /workspace/Test/../ThirdParty/CJMODAPI/../../Scanner/CHTLUnifiedScanner.h \
-  /workspace/Test/../ThirdParty/CJMODAPI/CJMODGenerator.h
+  /workspace/Test/../ThirdParty/CJMODAPI/CJMODGenerator.h \
+  /workspace/Test/../CHTL/CHTLContext/NamespaceManager.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multimap.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/set \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_set.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_multiset.h \
+  /workspace/Test/../CompilerDispatcher/CompilerDispatcher.h \
+  /workspace/Test/../CompilerDispatcher/../Scanner/CHTLUnifiedScanner.h

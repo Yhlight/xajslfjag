@@ -117,6 +117,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named CHTLLexer
+
+# Build rule for target.
+CHTLLexer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLLexer
+.PHONY : CHTLLexer
+
+# fast build rule for target.
+CHTLLexer/fast:
+	$(MAKE) $(MAKESILENT) -f CHTL/CHTLLexer/CMakeFiles/CHTLLexer.dir/build.make CHTL/CHTLLexer/CMakeFiles/CHTLLexer.dir/build
+.PHONY : CHTLLexer/fast
+
+#=============================================================================
+# Target rules for targets named CHTLContext
+
+# Build rule for target.
+CHTLContext: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLContext
+.PHONY : CHTLContext
+
+# fast build rule for target.
+CHTLContext/fast:
+	$(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build
+.PHONY : CHTLContext/fast
+
+#=============================================================================
 # Target rules for targets named Scanner
 
 # Build rule for target.
@@ -128,6 +154,19 @@ Scanner: cmake_check_build_system
 Scanner/fast:
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/build
 .PHONY : Scanner/fast
+
+#=============================================================================
+# Target rules for targets named CompilerDispatcher
+
+# Build rule for target.
+CompilerDispatcher: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CompilerDispatcher
+.PHONY : CompilerDispatcher
+
+# fast build rule for target.
+CompilerDispatcher/fast:
+	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build
+.PHONY : CompilerDispatcher/fast
 
 #=============================================================================
 # Target rules for targets named CHTLTest
@@ -150,7 +189,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... CHTLContext"
+	@echo "... CHTLLexer"
 	@echo "... CHTLTest"
+	@echo "... CompilerDispatcher"
 	@echo "... Scanner"
 .PHONY : help
 

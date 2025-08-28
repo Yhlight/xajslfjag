@@ -17,13 +17,16 @@ set_target_properties(CHTLTest PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
-# 链接依赖库 - 暂时只链接Scanner
-target_link_libraries(CHTLTest
-    # CompilerDispatcher
+# 链接依赖库
+target_link_libraries(CHTLTest 
     Scanner
-    # CHTL
-    # CHTLJS
-    # CSS
-    # JS
-    # Util
+    CHTLContext
+    CompilerDispatcher
+)
+
+# 包含目录
+target_include_directories(CHTLTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/Scanner
+    ${CMAKE_SOURCE_DIR}/ThirdParty/CJMODAPI
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
 )

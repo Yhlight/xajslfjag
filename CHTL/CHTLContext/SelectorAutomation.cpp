@@ -142,7 +142,7 @@ bool SelectorAutomation::hasIdAttribute(const std::string& elementSelector) {
 
 std::string SelectorAutomation::extractClassAttribute(const std::string& elementSelector) {
 	// 简化实现：提取class值
-	std::regex classPattern(R"(class="([^"]*)")");
+	std::regex classPattern("class=\"([^\"]*)\"");
 	std::smatch match;
 	if (std::regex_search(elementSelector, match, classPattern)) {
 		return match[1].str();
@@ -152,7 +152,7 @@ std::string SelectorAutomation::extractClassAttribute(const std::string& element
 
 std::string SelectorAutomation::extractIdAttribute(const std::string& elementSelector) {
 	// 简化实现：提取id值
-	std::regex idPattern(R"(id="([^"]*)")");
+	std::regex idPattern("id=\"([^\"]*)\"");
 	std::smatch match;
 	if (std::regex_search(elementSelector, match, idPattern)) {
 		return match[1].str();

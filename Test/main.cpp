@@ -5,8 +5,12 @@
 #include "../ThirdParty/CJMODAPI/Arg.h"
 #include "../ThirdParty/CJMODAPI/CJMODScannerAPI.h"
 #include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
+#include "../CHTL/CHTLContext/NamespaceManager.h"
+#include "../CompilerDispatcher/CompilerDispatcher.h"
 
 using namespace Scanner;
+using namespace CHTL;
+using namespace CHTLCompiler;
 
 int main() {
     std::cout << "CHTL项目测试开始..." << std::endl;
@@ -146,6 +150,100 @@ script
     std::cout << "[Import] @Chtl from Chtholly.*" << std::endl;
     std::cout << "[Import] @CJmod from Box" << std::endl;
     std::cout << "[Import] @Html from index.html as mainPage" << std::endl;
+
+    // 测试命名空间管理
+    std::cout << "\n测试命名空间管理:" << std::endl;
+    NamespaceManager nsManager;
+    
+    // 创建嵌套命名空间
+    nsManager.createNamespace("Core");
+    nsManager.createNamespace("UI", "Core");
+    nsManager.createNamespace("Components", "UI");
+    
+    // 添加符号
+    nsManager.addSymbol("Core", "version", "1.0.0");
+    nsManager.addSymbol("UI", "theme", "dark");
+    nsManager.addSymbol("Components", "button", "ButtonComponent");
+    
+    // 测试符号查找
+    std::cout << "Core::version: " << nsManager.findSymbol("Core", "version") << std::endl;
+    std::cout << "UI::theme: " << nsManager.findSymbol("UI", "theme") << std::endl;
+    std::cout << "Components::button: " << nsManager.findSymbol("Components", "button") << std::endl;
+    
+    // 测试继承查找
+    std::cout << "Components继承Core::version: " << nsManager.findSymbol("Components", "version") << std::endl;
+    
+    // 测试冲突检测
+    nsManager.addSymbol("Core", "conflict", "CoreValue");
+    nsManager.addSymbol("UI", "conflict", "UIValue");
+    auto conflicts = nsManager.detectConflicts("Core", "UI");
+    std::cout << "检测到冲突: ";
+    for (const auto& conflict : conflicts) {
+        std::cout << conflict << " ";
+    }
+    std::cout << std::endl;
+    
+    // 测试命名空间合并
+    nsManager.createNamespace("Utils");
+    nsManager.addSymbol("Utils", "helper", "HelperFunction");
+    bool merged = nsManager.mergeNamespace("Core", "Utils");
+    std::cout << "合并Utils到Core: " << (merged ? "成功" : "失败") << std::endl;
+    std::cout << "Core::helper: " << nsManager.findSymbol("Core", "helper") << std::endl;
+
+    // 测试编译器调度器
+    std::cout << "\n测试编译器调度器:" << std::endl;
+    CHTLCompiler::CompilerDispatcher dispatcher;
+    
+    // 测试混合代码编译
+    std::string mixedCode = R"(
+[Template] @Style Button
+{
+    background: "blue";
+    color: "white";
+}
+
+button
+{
+    style
+    {
+        @Style Button;
+    }
+    
+    script
+    {
+        vir btn = listen {
+            click: () => {
+                std::cout << "Button clicked!";
+            }
+        };
+    }
+}
+
+<style>
+.button {
+    border-radius: 5px;
+}
+</style>
+
+<script>
+function init() {
+    console.log("Initialized");
+}
+</script>
+)";
+    
+    dispatcher.setSource(mixedCode);
+    auto compilationResult = dispatcher.compile();
+    
+    std::cout << "编译结果: " << (compilationResult.success ? "成功" : "失败") << std::endl;
+    if (!compilationResult.errors.empty()) {
+        std::cout << "编译错误:" << std::endl;
+        for (const auto& error : compilationResult.errors) {
+            std::cout << "  - " << error << std::endl;
+        }
+    }
+    
+    std::cout << "输出长度: " << compilationResult.output.length() << " 字符" << std::endl;
 
     std::cout << "测试完成!" << std::endl;
     return 0;

@@ -41,6 +41,8 @@ private:
 	std::string findFirstIdSelector(const std::vector<std::string>& selectors);
 	bool hasClassAttribute(const std::string& elementSelector);
 	bool hasIdAttribute(const std::string& elementSelector);
+	std::string extractClassAttribute(const std::string& elementSelector);
+	std::string extractIdAttribute(const std::string& elementSelector);
 };
 
 } // namespace CHTL

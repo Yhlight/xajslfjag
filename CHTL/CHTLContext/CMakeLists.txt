@@ -1,15 +1,18 @@
 # CHTLContext子模块
 
-# 设置CHTLContext源文件
-set(CHTLCONTEXT_SOURCES
-    # 这里将添加CHTLContext的源文件
-)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 创建CHTLContext静态库
-add_library(CHTLContext STATIC ${CHTLCONTEXT_SOURCES})
+# 设置UTF-8支持
+add_compile_options(-finput-charset=UTF-8 -fexec-charset=UTF-8)
 
-# 设置目标属性
-set_target_properties(CHTLContext PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
+# 查找源文件
+file(GLOB_RECURSE SOURCES "*.cpp")
+
+# 创建静态库
+add_library(CHTLContext STATIC ${SOURCES})
+
+# 包含目录
+target_include_directories(CHTLContext PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

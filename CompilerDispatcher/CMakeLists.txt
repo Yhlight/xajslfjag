@@ -1,26 +1,25 @@
-# CompilerDispatcher模块 - 编译器调度器
+# CompilerDispatcher子模块
 
-# 设置CompilerDispatcher源文件
-set(COMPILER_DISPATCHER_SOURCES
-    CompilerDispatcher.cpp
-    CompilerManager.cpp
-    ResultMerger.cpp
-)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# 创建CompilerDispatcher静态库
-add_library(CompilerDispatcher STATIC ${COMPILER_DISPATCHER_SOURCES})
+# 设置UTF-8支持
+add_compile_options(-finput-charset=UTF-8 -fexec-charset=UTF-8)
 
-# 设置目标属性
-set_target_properties(CompilerDispatcher PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
+# 查找源文件
+file(GLOB_RECURSE SOURCES "*.cpp")
+
+# 创建静态库
+add_library(CompilerDispatcher STATIC ${SOURCES})
+
+# 包含目录
+target_include_directories(CompilerDispatcher PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 # 链接依赖库
 target_link_libraries(CompilerDispatcher
     Scanner
-    CHTL
-    CHTLJS
-    CSS
-    JS
+    CHTLLexer
+    CHTLContext
 )

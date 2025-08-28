@@ -1,1 +1,1 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/CHTLTest.dir/link.d CMakeFiles/CHTLTest.dir/main.cpp.o -o ../bin/CHTLTest  ../lib/libScanner.a
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/CHTLTest.dir/link.d CMakeFiles/CHTLTest.dir/main.cpp.o -o ../bin/CHTLTest  ../lib/libScanner.a ../lib/libCHTLContext.a ../lib/libCompilerDispatcher.a ../lib/libScanner.a ../lib/libCHTLContext.a ../lib/libCHTLLexer.a
