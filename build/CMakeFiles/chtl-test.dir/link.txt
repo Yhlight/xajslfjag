@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -Xlinker --dependency-file=CMakeFiles/chtl-test.dir/link.d "CMakeFiles/chtl-test.dir/src/Test/test_main.cpp.o" -o chtl-test   -L/workspace/src/ThirdParty/lib  -Wl,-rpath,/workspace/src/ThirdParty/lib libCHTLCompiler.a libCHTLJSCompiler.a libCHTLScanner.a libCHTLDispatcher.a

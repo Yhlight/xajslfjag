@@ -1,0 +1,45 @@
+html {
+    head {
+        title {
+            text {
+                CHTL测试页面
+            }
+        }
+    }
+    
+    body {
+        div {
+            style {
+                .container {
+                    width: 100%;
+                    max-width: 800px;
+                    margin: 0 auto;
+                    background-color: #f0f0f0;
+                }
+                
+                &:hover {
+                    background-color: #e0e0e0;
+                }
+            }
+            
+            script {
+                {{container}}->addEventListener('click', () => {
+                    console.log('Container clicked');
+                });
+                
+                module {
+                    load: ./utils.js,
+                    load: ./components.js
+                }
+                
+                {{.container}} &-> mouseenter {
+                    console.log('Mouse entered');
+                }
+            }
+            
+            text {
+                欢迎使用CHTL编译器！这是一个完全模块化的项目架构。
+            }
+        }
+    }
+}
