@@ -146,3 +146,20 @@ target_link_libraries(SelectorAutomationTest CHTLContext)
 target_include_directories(SelectorAutomationTest PRIVATE
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
 )
+
+# 创建CHTL JS上下文测试可执行文件
+add_executable(CHTLJSContextTest chtljs_context_test.cpp)
+
+# 设置目标属性
+set_target_properties(CHTLJSContextTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(CHTLJSContextTest CHTLJSContext)
+
+# 包含目录
+target_include_directories(CHTLJSContextTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL JS/CHTLJSContext
+)

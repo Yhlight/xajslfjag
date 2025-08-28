@@ -5,6 +5,7 @@
 /workspace/build/CMakeFiles/CHTLLexer.dir
 /workspace/build/CMakeFiles/CHTLContext.dir
 /workspace/build/CMakeFiles/CHTLParser.dir
+/workspace/build/CMakeFiles/CHTLJSContext.dir
 /workspace/build/CMakeFiles/CHTLJSLexer.dir
 /workspace/build/CMakeFiles/CHTLJSParser.dir
 /workspace/build/CMakeFiles/CHTLGenerator.dir
@@ -21,6 +22,7 @@
 /workspace/build/Test/CMakeFiles/ImportManagerTest.dir
 /workspace/build/Test/CMakeFiles/NamespaceManagerTest.dir
 /workspace/build/Test/CMakeFiles/SelectorAutomationTest.dir
+/workspace/build/Test/CMakeFiles/CHTLJSContextTest.dir
 /workspace/build/Test/CMakeFiles/edit_cache.dir
 /workspace/build/Test/CMakeFiles/rebuild_cache.dir
 /workspace/build/CHTL/CMakeFiles/edit_cache.dir

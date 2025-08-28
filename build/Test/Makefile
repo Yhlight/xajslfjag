@@ -214,6 +214,44 @@ SelectorAutomationTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/build
 .PHONY : SelectorAutomationTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/CHTLJSContextTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/CHTLJSContextTest.dir/rule
+.PHONY : Test/CMakeFiles/CHTLJSContextTest.dir/rule
+
+# Convenience name for target.
+CHTLJSContextTest: Test/CMakeFiles/CHTLJSContextTest.dir/rule
+.PHONY : CHTLJSContextTest
+
+# fast build rule for target.
+CHTLJSContextTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/build
+.PHONY : CHTLJSContextTest/fast
+
+chtljs_context_test.o: chtljs_context_test.cpp.o
+.PHONY : chtljs_context_test.o
+
+# target to build an object file
+chtljs_context_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.o
+.PHONY : chtljs_context_test.cpp.o
+
+chtljs_context_test.i: chtljs_context_test.cpp.i
+.PHONY : chtljs_context_test.i
+
+# target to preprocess a source file
+chtljs_context_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.i
+.PHONY : chtljs_context_test.cpp.i
+
+chtljs_context_test.s: chtljs_context_test.cpp.s
+.PHONY : chtljs_context_test.s
+
+# target to generate assembly for a file
+chtljs_context_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/chtljs_context_test.cpp.s
+.PHONY : chtljs_context_test.cpp.s
+
 configuration_manager_test.o: configuration_manager_test.cpp.o
 .PHONY : configuration_manager_test.o
 
@@ -426,6 +464,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... CHTLJSContextTest"
 	@echo "... CHTLTest"
 	@echo "... ConfigurationManagerTest"
 	@echo "... ConstraintParserTest"
@@ -433,6 +472,9 @@ help:
 	@echo "... NamespaceManagerTest"
 	@echo "... SelectorAutomationTest"
 	@echo "... UseStatementTest"
+	@echo "... chtljs_context_test.o"
+	@echo "... chtljs_context_test.i"
+	@echo "... chtljs_context_test.s"
 	@echo "... configuration_manager_test.o"
 	@echo "... configuration_manager_test.i"
 	@echo "... configuration_manager_test.s"

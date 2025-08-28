@@ -208,6 +208,19 @@ CHTLParser/fast:
 .PHONY : CHTLParser/fast
 
 #=============================================================================
+# Target rules for targets named CHTLJSContext
+
+# Build rule for target.
+CHTLJSContext: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSContext
+.PHONY : CHTLJSContext
+
+# fast build rule for target.
+CHTLJSContext/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSContext.dir/build.make CMakeFiles/CHTLJSContext.dir/build
+.PHONY : CHTLJSContext/fast
+
+#=============================================================================
 # Target rules for targets named CHTLJSLexer
 
 # Build rule for target.
@@ -362,6 +375,19 @@ SelectorAutomationTest: cmake_check_build_system
 SelectorAutomationTest/fast:
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/build
 .PHONY : SelectorAutomationTest/fast
+
+#=============================================================================
+# Target rules for targets named CHTLJSContextTest
+
+# Build rule for target.
+CHTLJSContextTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSContextTest
+.PHONY : CHTLJSContextTest
+
+# fast build rule for target.
+CHTLJSContextTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLJSContextTest.dir/build.make Test/CMakeFiles/CHTLJSContextTest.dir/build
+.PHONY : CHTLJSContextTest/fast
 
 #=============================================================================
 # Target rules for targets named CompilerDispatcher
@@ -692,6 +718,30 @@ CHTL/CHTLParser/UseStatementParser.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/UseStatementParser.cpp.s
 .PHONY : CHTL/CHTLParser/UseStatementParser.cpp.s
 
+CHTL_JS/CHTLJSContext/CHTLJSContext.o: CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.o
+
+# target to build an object file
+CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSContext.dir/build.make CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o
+
+CHTL_JS/CHTLJSContext/CHTLJSContext.i: CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.i
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.i
+
+# target to preprocess a source file
+CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSContext.dir/build.make CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.i
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.i
+
+CHTL_JS/CHTLJSContext/CHTLJSContext.s: CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.s
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.s
+
+# target to generate assembly for a file
+CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSContext.dir/build.make CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.s
+.PHONY : CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.s
+
 CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o: CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
 .PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o
 
@@ -871,6 +921,8 @@ help:
 	@echo "... CHTLContext"
 	@echo "... CHTLGenerator"
 	@echo "... CHTLIOStream"
+	@echo "... CHTLJSContext"
+	@echo "... CHTLJSContextTest"
 	@echo "... CHTLJSGenerator"
 	@echo "... CHTLJSIOStream"
 	@echo "... CHTLJSLexer"
@@ -925,6 +977,9 @@ help:
 	@echo "... CHTL/CHTLParser/UseStatementParser.o"
 	@echo "... CHTL/CHTLParser/UseStatementParser.i"
 	@echo "... CHTL/CHTLParser/UseStatementParser.s"
+	@echo "... CHTL_JS/CHTLJSContext/CHTLJSContext.o"
+	@echo "... CHTL_JS/CHTLJSContext/CHTLJSContext.i"
+	@echo "... CHTL_JS/CHTLJSContext/CHTLJSContext.s"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.i"
 	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.s"

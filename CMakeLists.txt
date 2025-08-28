@@ -110,6 +110,19 @@ set_target_properties(CHTLParser PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+# 创建CHTLJSContext静态库
+set(CHTLJSCONTEXT_SOURCES
+    "CHTL JS/CHTLJSContext/CHTLJSContext.cpp"
+)
+
+add_library(CHTLJSContext STATIC ${CHTLJSCONTEXT_SOURCES})
+
+# 设置目标属性
+set_target_properties(CHTLJSContext PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 # 创建CHTLJSLexer静态库
 set(CHTLJSLEXER_SOURCES
     "CHTL JS/CHTLJSLexer/CHTLJSLexer.cpp"
