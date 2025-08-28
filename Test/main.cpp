@@ -121,6 +121,20 @@ script
     args.transform(std::string("pow(") + args[0].value + ", " + args[2].value + ")");
     std::cout << "导出: "; CJMODAPI::CJMODGenerator::exportResult(args);
 
+    // 测试占位符类型
+    std::cout << "\n测试占位符类型($! $? $_ $):" << std::endl;
+    auto placeholderTest = CJMODAPI::Syntax::analyze("$! ** $? $_");
+    placeholderTest.print();
+    std::cout << "占位符类型: ";
+    for (size_t i = 0; i < placeholderTest.size(); ++i) {
+        auto& atom = placeholderTest[i];
+        if (atom.isRequired()) std::cout << "Required ";
+        else if (atom.isOptional()) std::cout << "Optional ";
+        else if (atom.isUnordered()) std::cout << "Unordered ";
+        else std::cout << "Regular ";
+    }
+    std::cout << std::endl;
+
     std::cout << "测试完成!" << std::endl;
     return 0;
 }

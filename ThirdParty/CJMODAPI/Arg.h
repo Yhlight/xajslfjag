@@ -7,13 +7,26 @@
 
 namespace CJMODAPI {
 
+enum class PlaceholderType {
+	Required,    // $! 必须
+	Optional,    // $? 可选
+	Unordered,   // $_ 无序
+	Regular      // $  普通
+};
+
 struct AtomArg {
 	std::string value;
+	PlaceholderType type = PlaceholderType::Regular;
 	std::function<std::string(const std::string&)> getter;
 
 	void bind(std::function<std::string(const std::string&)> g) { getter = std::move(g); }
 	void fillValue(const std::string& v) { value = v; }
 	void fillValue(int v) { value = std::to_string(v); }
+	
+	// 占位符类型判断
+	bool isRequired() const { return type == PlaceholderType::Required; }
+	bool isOptional() const { return type == PlaceholderType::Optional; }
+	bool isUnordered() const { return type == PlaceholderType::Unordered; }
 };
 
 class Arg {
@@ -21,7 +34,16 @@ public:
 	Arg() = default;
 	explicit Arg(const std::vector<std::string>& toks) {
 		atoms_.reserve(toks.size());
-		for (auto& t : toks) { AtomArg a; a.value = t; atoms_.push_back(a); }
+		for (auto& t : toks) { 
+			AtomArg a; 
+			// 解析占位符类型
+			if (t == "$!") a.type = PlaceholderType::Required;
+			else if (t == "$?") a.type = PlaceholderType::Optional;
+			else if (t == "$_") a.type = PlaceholderType::Unordered;
+			else if (t == "$") a.type = PlaceholderType::Regular;
+			a.value = t; 
+			atoms_.push_back(a); 
+		}
 	}
 
 	void print() const {
