@@ -6,7 +6,7 @@
 
 namespace CHTL {
 
-    // Token类型枚举
+    // Token类型枚举 - 仅CHTL部分
     enum class TokenType {
         // 基础符号
         LEFT_BRACE,         // {
@@ -23,8 +23,6 @@ namespace CHTL {
         AMPERSAND,          // &
         HASH,               // #
         AT,                 // @
-        ARROW,              // ->
-        EVENT_BIND,         // &->
         
         // 字面量
         STRING,             // "string" 或 'string'
@@ -39,7 +37,6 @@ namespace CHTL {
         // 关键字 - 核心语法
         TEXT,               // text
         STYLE,              // style
-        SCRIPT,             // script
         HTML5,              // html5
         
         // 关键字 - 模板系统
@@ -63,7 +60,6 @@ namespace CHTL {
         CONFIG_TYPE,        // @Config
         CHTL_TYPE,          // @Chtl
         CJMOD_TYPE,         // @CJmod
-        VUE_TYPE,           // @Vue (自定义类型示例)
         
         // 关键字 - 操作符
         INHERIT,            // inherit
@@ -78,24 +74,6 @@ namespace CHTL {
         AS,                 // as
         EXCEPT,             // except
         USE,                // use
-        
-        // 关键字 - CHTL JS
-        MODULE,             // module
-        LOAD,               // load
-        LISTEN,             // listen
-        DELEGATE,           // delegate
-        ANIMATE,            // animate
-        TARGET,             // target
-        DURATION,           // duration
-        EASING,             // easing
-        BEGIN,              // begin
-        WHEN,               // when
-        END,                // end
-        LOOP,               // loop
-        DIRECTION,          // direction
-        DELAY,              // delay
-        CALLBACK,           // callback
-        VIR,                // vir
         
         // HTML标签 (常用的)
         HTML,               // html
@@ -117,10 +95,6 @@ namespace CHTL {
         OL,                 // ol
         LI,                 // li
         H1, H2, H3, H4, H5, H6, // h1-h6
-        
-        // CSS属性选择器增强
-        DOUBLE_LEFT_BRACE,  // {{
-        DOUBLE_RIGHT_BRACE, // }}
         
         // 特殊标识符
         IDENTIFIER,         // 标识符
