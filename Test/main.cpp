@@ -60,7 +60,7 @@ script
 {
     vir test = listen {
         click: () => {
-            console.log('Clicked!');
+            std::cout << "Clicked!";
         }
     };
     
@@ -101,15 +101,25 @@ script
     for (auto& t : r.tokens) std::cout << "[" << t << "]";
     std::cout << std::endl;
 
-    // 使用原始API头-only骨架进行端到端示例
+    // 使用原始API头-only骨架进行端到端示例（直接transform）
     std::cout << "\n测试CJMOD原始API端到端('3 ** 4' -> 'pow(3, 4)'):" << std::endl;
     auto pattern = CJMODAPI::Syntax::analyze("$ ** $");
     pattern.print();
     auto scanned = CJMODAPI::CJMODScannerAPI::scan(pattern, "**", cjmodSnippet);
     scanned.print();
-    // 直接使用扫描结果进行转换
     scanned.transform(std::string("pow(") + scanned[0].value + ", " + scanned[2].value + ")");
     CJMODAPI::CJMODGenerator::exportResult(scanned);
+
+    // 按文档流程：bind + fillValue + transform
+    std::cout << "\n测试CJMOD原始API流程(analyze→bind→scan→fillValue→transform):" << std::endl;
+    auto args = CJMODAPI::Syntax::analyze("$ ** $");
+    args.bind("$", [](const std::string& v){ return v; });
+    args.bind("**", [](const std::string& v){ return v; });
+    auto result = CJMODAPI::CJMODScannerAPI::scan(args, "**", cjmodSnippet);
+    args.fillValue(result);
+    std::cout << "args填充后: "; args.print();
+    args.transform(std::string("pow(") + args[0].value + ", " + args[2].value + ")");
+    std::cout << "导出: "; CJMODAPI::CJMODGenerator::exportResult(args);
 
     std::cout << "测试完成!" << std::endl;
     return 0;
