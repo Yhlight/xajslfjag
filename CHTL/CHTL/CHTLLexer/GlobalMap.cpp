@@ -1,6 +1,6 @@
 #include "GlobalMap.h"
+#include "../CHTLManage/ConfigurationManager.h"
 #include <iostream>
-#include <algorithm>
 
 namespace CHTL {
 
@@ -27,59 +27,67 @@ GlobalMap& GlobalMap::getInstance() {
 void GlobalMap::initializeKeywords() {
     keywords_.clear();
     
+    // 获取配置管理器中的名称配置
+    const auto& nameConfig = ConfigurationManager::getInstance().getNameConfig();
+    
     // 基础关键字 - 严格根据CHTL语法文档
-    keywords_[nameConfig_.KEYWORD_TEXT] = TokenType::TEXT;
-    keywords_[nameConfig_.KEYWORD_STYLE] = TokenType::STYLE;
-    keywords_[nameConfig_.KEYWORD_SCRIPT] = TokenType::SCRIPT;
+    keywords_[nameConfig.KEYWORD_TEXT] = TokenType::TEXT;
+    keywords_[nameConfig.KEYWORD_STYLE] = TokenType::STYLE;
+    keywords_[nameConfig.KEYWORD_SCRIPT] = TokenType::SCRIPT;
     keywords_["use"] = TokenType::USE;
-    keywords_[nameConfig_.KEYWORD_INHERIT] = TokenType::INHERIT;
-    keywords_[nameConfig_.KEYWORD_DELETE] = TokenType::DELETE_KW;
-    keywords_[nameConfig_.KEYWORD_INSERT] = TokenType::INSERT;
-    keywords_[nameConfig_.KEYWORD_AFTER] = TokenType::AFTER;
-    keywords_[nameConfig_.KEYWORD_BEFORE] = TokenType::BEFORE;
-    keywords_[nameConfig_.KEYWORD_REPLACE] = TokenType::REPLACE;
+    keywords_[nameConfig.KEYWORD_INHERIT] = TokenType::INHERIT;
+    keywords_[nameConfig.KEYWORD_DELETE] = TokenType::DELETE_KW;
+    keywords_[nameConfig.KEYWORD_INSERT] = TokenType::INSERT;
+    keywords_[nameConfig.KEYWORD_AFTER] = TokenType::AFTER;
+    keywords_[nameConfig.KEYWORD_BEFORE] = TokenType::BEFORE;
+    keywords_[nameConfig.KEYWORD_REPLACE] = TokenType::REPLACE;
     keywords_["at"] = TokenType::AT;
     keywords_["top"] = TokenType::TOP;
     keywords_["bottom"] = TokenType::BOTTOM;
-    keywords_[nameConfig_.KEYWORD_FROM] = TokenType::FROM;
-    keywords_[nameConfig_.KEYWORD_AS] = TokenType::AS;
-    keywords_[nameConfig_.KEYWORD_EXCEPT] = TokenType::EXCEPT;
+    keywords_[nameConfig.KEYWORD_FROM] = TokenType::FROM;
+    keywords_[nameConfig.KEYWORD_AS] = TokenType::AS;
+    keywords_[nameConfig.KEYWORD_EXCEPT] = TokenType::EXCEPT;
 }
 
 // 初始化方括号关键字映射表
 void GlobalMap::initializeBracketKeywords() {
     bracketKeywords_.clear();
     
-    bracketKeywords_[nameConfig_.KEYWORD_TEMPLATE] = TokenType::TEMPLATE;
-    bracketKeywords_[nameConfig_.KEYWORD_CUSTOM] = TokenType::CUSTOM;
-    bracketKeywords_[nameConfig_.KEYWORD_ORIGIN] = TokenType::ORIGIN;
-    bracketKeywords_[nameConfig_.KEYWORD_IMPORT] = TokenType::IMPORT;
-    bracketKeywords_[nameConfig_.KEYWORD_NAMESPACE] = TokenType::NAMESPACE;
-    bracketKeywords_["[Configuration]"] = TokenType::CONFIGURATION;
+    const auto& nameConfig = ConfigurationManager::getInstance().getNameConfig();
+    
+    bracketKeywords_[nameConfig.KEYWORD_TEMPLATE] = TokenType::TEMPLATE;
+    bracketKeywords_[nameConfig.KEYWORD_CUSTOM] = TokenType::CUSTOM;
+    bracketKeywords_[nameConfig.KEYWORD_ORIGIN] = TokenType::ORIGIN;
+    bracketKeywords_[nameConfig.KEYWORD_IMPORT] = TokenType::IMPORT;
+    bracketKeywords_[nameConfig.KEYWORD_NAMESPACE] = TokenType::NAMESPACE;
+    bracketKeywords_[nameConfig.KEYWORD_CONFIGURATION] = TokenType::CONFIGURATION;
 }
 
 // 初始化@前缀类型映射表
 void GlobalMap::initializeAtTypes() {
     atTypes_.clear();
     
+    const auto& nameConfig = ConfigurationManager::getInstance().getNameConfig();
+    const auto& config = ConfigurationManager::getInstance().getConfig();
+    
     // 处理CUSTOM_STYLE的组选项
-    if (!config_.DISABLE_NAME_GROUP) {
-        int count = std::min(static_cast<int>(nameConfig_.CUSTOM_STYLE.size()), 
-                            config_.OPTION_COUNT);
+    if (!config.DISABLE_NAME_GROUP) {
+        int count = std::min(static_cast<int>(nameConfig.CUSTOM_STYLE.size()), 
+                            config.OPTION_COUNT);
         for (int i = 0; i < count; ++i) {
-            atTypes_[nameConfig_.CUSTOM_STYLE[i]] = TokenType::AT_STYLE;
+            atTypes_[nameConfig.CUSTOM_STYLE[i]] = TokenType::AT_STYLE;
         }
     } else {
-        atTypes_[nameConfig_.TEMPLATE_STYLE] = TokenType::AT_STYLE;
+        atTypes_[nameConfig.TEMPLATE_STYLE] = TokenType::AT_STYLE;
     }
     
-    atTypes_[nameConfig_.CUSTOM_ELEMENT] = TokenType::AT_ELEMENT;
-    atTypes_[nameConfig_.CUSTOM_VAR] = TokenType::AT_VAR;
-    atTypes_[nameConfig_.ORIGIN_HTML] = TokenType::AT_HTML;
-    atTypes_[nameConfig_.ORIGIN_JAVASCRIPT] = TokenType::AT_JAVASCRIPT;
-    atTypes_[nameConfig_.IMPORT_CHTL] = TokenType::AT_CHTL;
-    atTypes_[nameConfig_.IMPORT_CJMOD] = TokenType::AT_CJMOD;
-    atTypes_[nameConfig_.CONFIGURATION_CONFIG] = TokenType::AT_CONFIG;
+    atTypes_[nameConfig.CUSTOM_ELEMENT] = TokenType::AT_ELEMENT;
+    atTypes_[nameConfig.CUSTOM_VAR] = TokenType::AT_VAR;
+    atTypes_[nameConfig.ORIGIN_HTML] = TokenType::AT_HTML;
+    atTypes_[nameConfig.ORIGIN_JAVASCRIPT] = TokenType::AT_JAVASCRIPT;
+    atTypes_[nameConfig.IMPORT_CHTL] = TokenType::AT_CHTL;
+    atTypes_[nameConfig.IMPORT_CJMOD] = TokenType::AT_CJMOD;
+    atTypes_[nameConfig.CONFIGURATION_CONFIG] = TokenType::AT_CONFIG;
 }
 
 // 初始化操作符映射表
@@ -148,7 +156,8 @@ TokenType GlobalMap::getAtType(const std::string& word) const {
         return it->second;
     }
     // 如果不是预定义的@类型，且允许自定义原始嵌入类型
-    if (!config_.DISABLE_CUSTOM_ORIGIN_TYPE && word.length() > 1 && word[0] == '@') {
+    const auto& config = ConfigurationManager::getInstance().getConfig();
+    if (!config.DISABLE_CUSTOM_ORIGIN_TYPE && word.length() > 1 && word[0] == '@') {
         return TokenType::AT_CUSTOM_TYPE;
     }
     return TokenType::UNKNOWN;
@@ -163,15 +172,10 @@ TokenType GlobalMap::getOperatorType(const std::string& op) const {
     return TokenType::UNKNOWN;
 }
 
-// 更新Name配置
-void GlobalMap::updateNameConfiguration(const NameConfiguration& nameConfig) {
-    nameConfig_ = nameConfig;
-    reinitialize();
-}
-
 // 添加自定义原始嵌入类型
 void GlobalMap::addCustomOriginType(const std::string& name, const std::string& type) {
-    if (!config_.DISABLE_CUSTOM_ORIGIN_TYPE) {
+    const auto& config = ConfigurationManager::getInstance().getConfig();
+    if (!config.DISABLE_CUSTOM_ORIGIN_TYPE) {
         customOriginTypes_[name] = type;
     }
 }
@@ -218,11 +222,6 @@ void GlobalMap::printAllMappings() const {
         std::cout << "  " << pair.first << " -> " << pair.second << std::endl;
     }
     
-    std::cout << "\n[Configuration]" << std::endl;
-    std::cout << "  INDEX_INITIAL_COUNT: " << config_.INDEX_INITIAL_COUNT << std::endl;
-    std::cout << "  DISABLE_NAME_GROUP: " << (config_.DISABLE_NAME_GROUP ? "true" : "false") << std::endl;
-    std::cout << "  DISABLE_CUSTOM_ORIGIN_TYPE: " << (config_.DISABLE_CUSTOM_ORIGIN_TYPE ? "true" : "false") << std::endl;
-    std::cout << "  DEBUG_MODE: " << (config_.DEBUG_MODE ? "true" : "false") << std::endl;
     std::cout << "=================================" << std::endl;
 }
 

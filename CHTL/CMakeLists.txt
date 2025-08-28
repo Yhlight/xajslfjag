@@ -25,6 +25,14 @@ add_library(CHTLLexer STATIC
     CHTL/CHTLLexer/Lexer.cpp
 )
 
+# CHTL 管理库
+add_library(CHTLManage STATIC
+    CHTL/CHTLManage/ConfigurationManager.cpp
+)
+
+# 链接管理库到词法分析器
+target_link_libraries(CHTLLexer CHTLManage)
+
 # 测试可执行文件
 add_executable(TestLexer
     Test/TestLexer.cpp

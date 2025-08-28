@@ -97,6 +97,7 @@ bin/TestLexer: CMakeFiles/TestLexer.dir/Test/TestLexer.cpp.o
 bin/TestLexer: CMakeFiles/TestLexer.dir/build.make
 bin/TestLexer: CMakeFiles/TestLexer.dir/compiler_depend.ts
 bin/TestLexer: libCHTLLexer.a
+bin/TestLexer: libCHTLManage.a
 bin/TestLexer: CMakeFiles/TestLexer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable bin/TestLexer"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TestLexer.dir/link.txt --verbose=$(VERBOSE)

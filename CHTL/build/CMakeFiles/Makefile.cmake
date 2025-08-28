@@ -113,5 +113,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/CHTLLexer.dir/DependInfo.cmake"
+  "CMakeFiles/CHTLManage.dir/DependInfo.cmake"
   "CMakeFiles/TestLexer.dir/DependInfo.cmake"
   )

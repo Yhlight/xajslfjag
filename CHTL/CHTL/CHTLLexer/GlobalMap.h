@@ -3,13 +3,12 @@
 
 #include <unordered_map>
 #include <string>
-#include <vector>
 #include <memory>
 #include "Token.h"
 
 namespace CHTL {
 
-// 全局映射表 - 管理关键字、符号和配置
+// 全局映射表 - 仅负责管理关键字和符号的映射
 class GlobalMap {
 private:
     // 单例模式
@@ -26,72 +25,6 @@ private:
     
     // 操作符映射表
     std::unordered_map<std::string, TokenType> operators_;
-    
-    // 配置选项 - 根据CHTL语法文档中的[Configuration]
-    struct Configuration {
-        // 索引起始计数
-        int INDEX_INITIAL_COUNT = 0;
-        
-        // 是否禁用Name配置组
-        bool DISABLE_NAME_GROUP = false;
-        
-        // 是否禁用自定义原始嵌入类型
-        bool DISABLE_CUSTOM_ORIGIN_TYPE = false;
-        
-        // 是否禁用默认命名空间
-        bool DISABLE_DEFAULT_NAMESPACE = false;
-        
-        // DEBUG模式
-        bool DEBUG_MODE = false;
-        
-        // 选择器自动化配置
-        bool DISABLE_STYLE_AUTO_ADD_CLASS = false;
-        bool DISABLE_STYLE_AUTO_ADD_ID = false;
-        bool DISABLE_SCRIPT_AUTO_ADD_CLASS = false;
-        bool DISABLE_SCRIPT_AUTO_ADD_ID = false;
-        
-        // 组选项数量限制
-        int OPTION_COUNT = 3;
-    } config_;
-    
-    // Name配置组 - 自定义关键字名称
-    struct NameConfiguration {
-        std::vector<std::string> CUSTOM_STYLE = {"@Style", "@style", "@CSS", "@Css", "@css"};
-        std::string CUSTOM_ELEMENT = "@Element";
-        std::string CUSTOM_VAR = "@Var";
-        std::string TEMPLATE_STYLE = "@Style";
-        std::string TEMPLATE_ELEMENT = "@Element";
-        std::string TEMPLATE_VAR = "@Var";
-        std::string ORIGIN_HTML = "@Html";
-        std::string ORIGIN_STYLE = "@Style";
-        std::string ORIGIN_JAVASCRIPT = "@JavaScript";
-        std::string CONFIGURATION_CONFIG = "@Config";
-        std::string IMPORT_HTML = "@Html";
-        std::string IMPORT_STYLE = "@Style";
-        std::string IMPORT_JAVASCRIPT = "@JavaScript";
-        std::string IMPORT_CHTL = "@Chtl";
-        std::string IMPORT_CJMOD = "@CJmod";
-        std::string IMPORT_CONFIG = "@Config";
-        std::string KEYWORD_INHERIT = "inherit";
-        std::string KEYWORD_DELETE = "delete";
-        std::string KEYWORD_INSERT = "insert";
-        std::string KEYWORD_AFTER = "after";
-        std::string KEYWORD_BEFORE = "before";
-        std::string KEYWORD_REPLACE = "replace";
-        std::string KEYWORD_ATTOP = "at top";
-        std::string KEYWORD_ATBOTTOM = "at bottom";
-        std::string KEYWORD_FROM = "from";
-        std::string KEYWORD_AS = "as";
-        std::string KEYWORD_EXCEPT = "except";
-        std::string KEYWORD_TEXT = "text";
-        std::string KEYWORD_STYLE = "style";
-        std::string KEYWORD_SCRIPT = "script";
-        std::string KEYWORD_CUSTOM = "[Custom]";
-        std::string KEYWORD_TEMPLATE = "[Template]";
-        std::string KEYWORD_ORIGIN = "[Origin]";
-        std::string KEYWORD_IMPORT = "[Import]";
-        std::string KEYWORD_NAMESPACE = "[Namespace]";
-    } nameConfig_;
     
     // 自定义原始嵌入类型
     std::unordered_map<std::string, std::string> customOriginTypes_;
@@ -128,20 +61,11 @@ public:
     TokenType getAtType(const std::string& word) const;
     TokenType getOperatorType(const std::string& op) const;
     
-    // 配置相关方法
-    const Configuration& getConfig() const { return config_; }
-    Configuration& getConfig() { return config_; }
-    void updateConfiguration(const Configuration& config) { config_ = config; }
-    
-    // Name配置相关方法
-    const NameConfiguration& getNameConfig() const { return nameConfig_; }
-    void updateNameConfiguration(const NameConfiguration& nameConfig);
-    
     // 自定义原始嵌入类型相关方法
     void addCustomOriginType(const std::string& name, const std::string& type);
     bool isCustomOriginType(const std::string& type) const;
     
-    // 重新初始化（用于配置更新后）
+    // 重新初始化（配置更新后需要调用）
     void reinitialize();
     
     // 调试输出

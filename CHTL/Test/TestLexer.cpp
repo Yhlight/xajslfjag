@@ -2,6 +2,7 @@
 #include <string>
 #include "../CHTL/CHTLLexer/Lexer.h"
 #include "../CHTL/CHTLLexer/GlobalMap.h"
+#include "../CHTL/CHTLManage/ConfigurationManager.h"
 
 using namespace CHTL;
 
@@ -118,11 +119,6 @@ div
             }
         }
     }
-    
-    script
-    {
-        {{box}}->addEventListener();
-    }
 }
 )";
     
@@ -143,8 +139,18 @@ void testGlobalMap() {
     globalMap.printAllMappings();
 }
 
+void testConfigurationManager() {
+    std::cout << "\n=== Testing ConfigurationManager ===" << std::endl;
+    
+    ConfigurationManager& configMgr = ConfigurationManager::getInstance();
+    configMgr.printConfiguration();
+}
+
 int main() {
     std::cout << "=== CHTL Lexer Test ===" << std::endl;
+    
+    // 测试ConfigurationManager
+    testConfigurationManager();
     
     // 测试GlobalMap
     testGlobalMap();

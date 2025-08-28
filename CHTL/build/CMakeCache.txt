@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//Dependencies for the target
+CHTLLexer_LIB_DEPENDS:STATIC=general;CHTLManage;
+
 //Value Computed by CMake
 CHTL_BINARY_DIR:STATIC=/workspace/CHTL/build
 

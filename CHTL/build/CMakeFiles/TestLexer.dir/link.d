@@ -4,6 +4,7 @@ bin/TestLexer: \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/TestLexer.dir/Test/TestLexer.cpp.o \
   libCHTLLexer.a \
+  libCHTLManage.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -41,6 +42,8 @@ bin/TestLexer: \
 CMakeFiles/TestLexer.dir/Test/TestLexer.cpp.o:
 
 libCHTLLexer.a:
+
+libCHTLManage.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

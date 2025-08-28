@@ -130,6 +130,19 @@ CHTLLexer/fast:
 .PHONY : CHTLLexer/fast
 
 #=============================================================================
+# Target rules for targets named CHTLManage
+
+# Build rule for target.
+CHTLManage: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLManage
+.PHONY : CHTLManage
+
+# fast build rule for target.
+CHTLManage/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLManage.dir/build.make CMakeFiles/CHTLManage.dir/build
+.PHONY : CHTLManage/fast
+
+#=============================================================================
 # Target rules for targets named TestLexer
 
 # Build rule for target.
@@ -214,6 +227,30 @@ CHTL/CHTLLexer/Token.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/Token.cpp.s
 .PHONY : CHTL/CHTLLexer/Token.cpp.s
 
+CHTL/CHTLManage/ConfigurationManager.o: CHTL/CHTLManage/ConfigurationManager.cpp.o
+.PHONY : CHTL/CHTLManage/ConfigurationManager.o
+
+# target to build an object file
+CHTL/CHTLManage/ConfigurationManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLManage.dir/build.make CMakeFiles/CHTLManage.dir/CHTL/CHTLManage/ConfigurationManager.cpp.o
+.PHONY : CHTL/CHTLManage/ConfigurationManager.cpp.o
+
+CHTL/CHTLManage/ConfigurationManager.i: CHTL/CHTLManage/ConfigurationManager.cpp.i
+.PHONY : CHTL/CHTLManage/ConfigurationManager.i
+
+# target to preprocess a source file
+CHTL/CHTLManage/ConfigurationManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLManage.dir/build.make CMakeFiles/CHTLManage.dir/CHTL/CHTLManage/ConfigurationManager.cpp.i
+.PHONY : CHTL/CHTLManage/ConfigurationManager.cpp.i
+
+CHTL/CHTLManage/ConfigurationManager.s: CHTL/CHTLManage/ConfigurationManager.cpp.s
+.PHONY : CHTL/CHTLManage/ConfigurationManager.s
+
+# target to generate assembly for a file
+CHTL/CHTLManage/ConfigurationManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLManage.dir/build.make CMakeFiles/CHTLManage.dir/CHTL/CHTLManage/ConfigurationManager.cpp.s
+.PHONY : CHTL/CHTLManage/ConfigurationManager.cpp.s
+
 Test/TestLexer.o: Test/TestLexer.cpp.o
 .PHONY : Test/TestLexer.o
 
@@ -247,6 +284,7 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLLexer"
+	@echo "... CHTLManage"
 	@echo "... TestLexer"
 	@echo "... CHTL/CHTLLexer/GlobalMap.o"
 	@echo "... CHTL/CHTLLexer/GlobalMap.i"
@@ -257,6 +295,9 @@ help:
 	@echo "... CHTL/CHTLLexer/Token.o"
 	@echo "... CHTL/CHTLLexer/Token.i"
 	@echo "... CHTL/CHTLLexer/Token.s"
+	@echo "... CHTL/CHTLManage/ConfigurationManager.o"
+	@echo "... CHTL/CHTLManage/ConfigurationManager.i"
+	@echo "... CHTL/CHTLManage/ConfigurationManager.s"
 	@echo "... Test/TestLexer.o"
 	@echo "... Test/TestLexer.i"
 	@echo "... Test/TestLexer.s"

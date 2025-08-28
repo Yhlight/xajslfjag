@@ -149,13 +149,9 @@ CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/GlobalMap.cpp.o: \
   /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/charconv.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_string.tcc \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/vector \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_uninitialized.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_vector.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_bvector.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/vector.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/memory \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tempbuf.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_uninitialized.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/align.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h /usr/include/stdint.h \
@@ -225,12 +221,11 @@ CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/GlobalMap.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_ios.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
+  /workspace/CHTL/CHTL/CHTLLexer/../CHTLManage/ConfigurationManager.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/vector \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_vector.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_bvector.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/vector.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/algorithm \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/algorithmfwd.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_heap.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/uniform_int_dist.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/glue_algorithm_defs.h
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc
