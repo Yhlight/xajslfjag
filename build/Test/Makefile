@@ -200,6 +200,20 @@ NamespaceManagerTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/build
 .PHONY : NamespaceManagerTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/SelectorAutomationTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/SelectorAutomationTest.dir/rule
+.PHONY : Test/CMakeFiles/SelectorAutomationTest.dir/rule
+
+# Convenience name for target.
+SelectorAutomationTest: Test/CMakeFiles/SelectorAutomationTest.dir/rule
+.PHONY : SelectorAutomationTest
+
+# fast build rule for target.
+SelectorAutomationTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/build
+.PHONY : SelectorAutomationTest/fast
+
 configuration_manager_test.o: configuration_manager_test.cpp.o
 .PHONY : configuration_manager_test.o
 
@@ -353,6 +367,30 @@ namespace_manager_test.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.s
 .PHONY : namespace_manager_test.cpp.s
 
+selector_automation_test.o: selector_automation_test.cpp.o
+.PHONY : selector_automation_test.o
+
+# target to build an object file
+selector_automation_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/selector_automation_test.cpp.o
+.PHONY : selector_automation_test.cpp.o
+
+selector_automation_test.i: selector_automation_test.cpp.i
+.PHONY : selector_automation_test.i
+
+# target to preprocess a source file
+selector_automation_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/selector_automation_test.cpp.i
+.PHONY : selector_automation_test.cpp.i
+
+selector_automation_test.s: selector_automation_test.cpp.s
+.PHONY : selector_automation_test.s
+
+# target to generate assembly for a file
+selector_automation_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/selector_automation_test.cpp.s
+.PHONY : selector_automation_test.cpp.s
+
 use_statement_test.o: use_statement_test.cpp.o
 .PHONY : use_statement_test.o
 
@@ -393,6 +431,7 @@ help:
 	@echo "... ConstraintParserTest"
 	@echo "... ImportManagerTest"
 	@echo "... NamespaceManagerTest"
+	@echo "... SelectorAutomationTest"
 	@echo "... UseStatementTest"
 	@echo "... configuration_manager_test.o"
 	@echo "... configuration_manager_test.i"
@@ -412,6 +451,9 @@ help:
 	@echo "... namespace_manager_test.o"
 	@echo "... namespace_manager_test.i"
 	@echo "... namespace_manager_test.s"
+	@echo "... selector_automation_test.o"
+	@echo "... selector_automation_test.i"
+	@echo "... selector_automation_test.s"
 	@echo "... use_statement_test.o"
 	@echo "... use_statement_test.i"
 	@echo "... use_statement_test.s"

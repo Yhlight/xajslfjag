@@ -129,3 +129,20 @@ target_link_libraries(NamespaceManagerTest CHTLContext)
 target_include_directories(NamespaceManagerTest PRIVATE
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
 )
+
+# 创建选择器自动化测试可执行文件
+add_executable(SelectorAutomationTest selector_automation_test.cpp)
+
+# 设置目标属性
+set_target_properties(SelectorAutomationTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(SelectorAutomationTest CHTLContext)
+
+# 包含目录
+target_include_directories(SelectorAutomationTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+)

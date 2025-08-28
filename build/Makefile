@@ -351,6 +351,19 @@ NamespaceManagerTest/fast:
 .PHONY : NamespaceManagerTest/fast
 
 #=============================================================================
+# Target rules for targets named SelectorAutomationTest
+
+# Build rule for target.
+SelectorAutomationTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SelectorAutomationTest
+.PHONY : SelectorAutomationTest
+
+# fast build rule for target.
+SelectorAutomationTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/SelectorAutomationTest.dir/build.make Test/CMakeFiles/SelectorAutomationTest.dir/build
+.PHONY : SelectorAutomationTest/fast
+
+#=============================================================================
 # Target rules for targets named CompilerDispatcher
 
 # Build rule for target.
@@ -875,6 +888,7 @@ help:
 	@echo "... ImportManagerTest"
 	@echo "... NamespaceManagerTest"
 	@echo "... Scanner"
+	@echo "... SelectorAutomationTest"
 	@echo "... SimpleTest"
 	@echo "... UseStatementTest"
 	@echo "... ZipUtil"

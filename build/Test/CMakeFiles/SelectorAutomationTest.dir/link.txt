@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/SelectorAutomationTest.dir/link.d CMakeFiles/SelectorAutomationTest.dir/selector_automation_test.cpp.o -o ../bin/SelectorAutomationTest  ../lib/libCHTLContext.a
