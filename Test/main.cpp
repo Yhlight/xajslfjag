@@ -91,6 +91,7 @@ script
 
     // 测试CJMOD基础双指针扫描
     std::string cjmodSnippet = "3 ** 4";
+    scanner.setSource(cjmodSnippet);
     auto r = scanner.scanCJMODByTwoPointers(0, cjmodSnippet.size());
     std::cout << "\n测试CJMOD双指针扫描('3 ** 4')，切分结果(" << r.tokens.size() << "):" << std::endl;
     for (auto& t : r.tokens) std::cout << "[" << t << "]";
