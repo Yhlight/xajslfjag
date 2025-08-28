@@ -61,7 +61,7 @@ script
     };
     
     {{.box}}->addEventListener('click', () => {
-        console.log('Box clicked!');
+        std::cout << "Box clicked!";
     });
 }
 )";
@@ -88,7 +88,14 @@ script
                   << (fragment.content.length() > 100 ? "..." : "") << std::endl;
         std::cout << "---" << std::endl;
     }
-    
+
+    // 测试CJMOD基础双指针扫描
+    std::string cjmodSnippet = "3 ** 4";
+    auto r = scanner.scanCJMODByTwoPointers(0, cjmodSnippet.size());
+    std::cout << "\n测试CJMOD双指针扫描('3 ** 4')，切分结果(" << r.tokens.size() << "):" << std::endl;
+    for (auto& t : r.tokens) std::cout << "[" << t << "]";
+    std::cout << std::endl;
+
     std::cout << "测试完成!" << std::endl;
     return 0;
 }

@@ -1,6 +1,7 @@
 #include "CHTLUnifiedScanner.h"
 #include <algorithm>
 #include <iostream>
+#include <cctype>
 
 namespace Scanner {
 
@@ -190,13 +191,40 @@ void CHTLUnifiedScanner::setState(ScannerState state) { if (currentState_ != sta
 
 void CHTLUnifiedScanner::logStateTransition(ScannerState, ScannerState) { /* optional logging */ }
 
-// CJMOD占位实现
-CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::scanCJMODByTwoPointers(size_t, size_t) {
-	return CJMODScanResult{}; // 后续实现双指针扫描
+// 基础CJMOD切分：按词法将区间切分为token序列（数字/标识符/操作符保留）
+static bool isIdentChar(char c) {
+	return std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '.';
 }
 
-CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::preCaptureForCJMOD(size_t, size_t) {
-	return CJMODScanResult{}; // 后续实现前置截取
+CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::scanCJMODByTwoPointers(size_t startPos, size_t endPos) {
+	CJMODScanResult r;
+	if (startPos >= source_.size()) return r;
+	endPos = std::min(endPos, source_.size());
+	size_t i = startPos;
+	while (i < endPos) {
+		// 跳过空白
+		while (i < endPos && std::isspace(static_cast<unsigned char>(source_[i]))) ++i;
+		if (i >= endPos) break;
+		// 标识符/数字
+		if (isIdentChar(source_[i])) {
+			size_t j = i;
+			while (j < endPos && isIdentChar(source_[j])) ++j;
+			r.tokens.emplace_back(source_.substr(i, j - i));
+			i = j;
+			continue;
+		}
+		// 连续操作符（如**, +=, => 等）
+		size_t j = i;
+		while (j < endPos && !std::isspace(static_cast<unsigned char>(source_[j])) && !isIdentChar(source_[j])) ++j;
+		r.tokens.emplace_back(source_.substr(i, j - i));
+		i = j;
+	}
+	return r;
+}
+
+CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::preCaptureForCJMOD(size_t startPos, size_t endPos) {
+	// 基础实现：同scanCJMODByTwoPointers，后续加入前置截取修正关键字边界
+	return scanCJMODByTwoPointers(startPos, endPos);
 }
 
 } // namespace Scanner
