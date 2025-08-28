@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libCHTLJSContext.a CMakeFiles/CHTLJSContext.dir/CHTL_JS/CHTLJSContext/CHTLJSContext.cpp.o
+/usr/bin/ranlib lib/libCHTLJSContext.a

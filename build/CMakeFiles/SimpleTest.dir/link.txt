@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/SimpleTest.dir/link.d CMakeFiles/SimpleTest.dir/Test/simple_test.cpp.o -o bin/SimpleTest  lib/libCHTLParser.a lib/libCHTLLexer.a lib/libCHTLJSParser.a lib/libCHTLJSLexer.a lib/libCHTLContext.a lib/libScanner.a lib/libCompilerDispatcher.a lib/libCHTLLexer.a lib/libCHTLContext.a lib/libScanner.a

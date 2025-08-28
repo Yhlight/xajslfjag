@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/DebugTest.dir/link.d CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o -o bin/DebugTest  lib/libCHTLParser.a lib/libCHTLLexer.a lib/libCHTLJSParser.a lib/libCHTLJSLexer.a lib/libCHTLContext.a lib/libScanner.a lib/libCompilerDispatcher.a lib/libCHTLLexer.a lib/libCHTLContext.a lib/libScanner.a

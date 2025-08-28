@@ -1,0 +1,2 @@
+/usr/bin/ar qc ../../lib/libCHTLJSIOStream.a CMakeFiles/CHTLJSIOStream.dir/CHTLJSIOStream.cpp.o
+/usr/bin/ranlib ../../lib/libCHTLJSIOStream.a

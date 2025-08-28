@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/NamespaceManagerTest.dir/link.d CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o -o ../bin/NamespaceManagerTest  ../lib/libCHTLContext.a

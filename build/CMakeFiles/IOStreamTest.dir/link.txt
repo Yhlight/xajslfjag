@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/IOStreamTest.dir/link.d CMakeFiles/IOStreamTest.dir/Test/io_stream_test.cpp.o -o bin/IOStreamTest  lib/libCHTLIOStream.a lib/libCHTLJSIOStream.a lib/libFileStream.a lib/libZipUtil.a
