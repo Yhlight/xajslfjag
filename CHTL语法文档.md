@@ -1174,6 +1174,32 @@ CHTL JS完全独立于JS，是一门独立的编程语言，与JS毫无关系，
 JS的语法由CHTL内置的JS编译器解析，CHTL JS的语法由CHTL JS编译器解析  
 两者之间并不兼容，CHTL JS的语法是CHTL JS编译器的扩展语法  
 
+### 文件后缀
+对于包含CHTL JS的JS文件，你可以命名为*.cjjs  
+
+### 模块导入
+你可以使用module{}来导入模块  
+CHTL JS实现了AMD风格JavaScript模块加载器  
+足够去处理大部分的模块加载需求  
+注意，CHTL JS只是解决了文件的加载顺序问题，处理了开发者最头痛的文件加载顺序问题，让JS文件能够无序加载  
+
+```chtl
+module {
+    load: ./module.cjjs,
+    load: ./module2.cjjs,
+    load: ./module3.cjjs,
+    load: ./module4.cjjs
+    load: ./module5.js  // 普通js文件也可以  
+
+    load:
+    ./module.cjjs
+    ,./module2.cjjs
+    ,./module3.cjjs
+    ,./module4.cjjs
+    ,./module5.js  // 也支持链式语法
+}
+```
+
 ### 局部script
 CHTL允许在局部样式块中使用script{}来编写JS代码  
 局部script会被添加到一个不会全局污染，具有高优先级的全局script块之中  
@@ -1194,6 +1220,11 @@ div
     script
     {
         {{box}}.addEventListener('click', () => {
+            console.log('Box clicked!');
+        });
+
+        // 引用功能
+        {{&}}->addEventListener('click', () => {
             console.log('Box clicked!');
         });
     }
