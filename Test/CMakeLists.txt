@@ -17,11 +17,14 @@ set_target_properties(CHTLTest PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
-# 链接依赖库
+# 链接库
 target_link_libraries(CHTLTest 
-    Scanner
-    CHTLContext
+    Scanner 
+    CHTLContext 
     CompilerDispatcher
+    CHTLParser
+    CHTLJSLexer
+    CHTLJSParser
 )
 
 # 包含目录

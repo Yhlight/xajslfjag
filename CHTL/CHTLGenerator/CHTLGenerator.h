@@ -30,6 +30,7 @@ private:
 	
 	// 生成方法
 	std::string generateElement(std::shared_ptr<BaseNode> node);
+	std::string generateText(std::shared_ptr<BaseNode> node);
 	std::string generateTemplate(std::shared_ptr<BaseNode> node);
 	std::string generateCustom(std::shared_ptr<BaseNode> node);
 	std::string generateOrigin(std::shared_ptr<BaseNode> node);

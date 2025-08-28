@@ -255,13 +255,14 @@ Scanner/CMakeFiles/Scanner.dir/CHTLUnifiedScanner.cpp.o: /workspace/Scanner/CHTL
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
-  /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/ThirdParty/CJMODAPI/Arg.h \
   /workspace/ThirdParty/CJMODAPI/CJMODGenerator.h \
   /workspace/ThirdParty/CJMODAPI/CJMODScannerAPI.h \
   /workspace/ThirdParty/CJMODAPI/Syntax.h \
   /workspace/Scanner/CHTLUnifiedScanner.h
 
+
+/workspace/Scanner/CHTLUnifiedScanner.h:
 
 /workspace/ThirdParty/CJMODAPI/Syntax.h:
 
@@ -270,8 +271,6 @@ Scanner/CMakeFiles/Scanner.dir/CHTLUnifiedScanner.cpp.o: /workspace/Scanner/CHTL
 /usr/include/c++/14/bits/exception.h:
 
 /usr/include/c++/14/cctype:
-
-/workspace/Scanner/CHTLUnifiedScanner.h:
 
 /usr/include/c++/14/bits/erase_if.h:
 

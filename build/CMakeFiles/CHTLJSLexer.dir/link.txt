@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libCHTLJSLexer.a CMakeFiles/CHTLJSLexer.dir/CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.o
+/usr/bin/ranlib lib/libCHTLJSLexer.a

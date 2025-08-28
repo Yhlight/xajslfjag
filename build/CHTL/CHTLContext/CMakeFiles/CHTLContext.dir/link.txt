@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../lib/libCHTLContext.a CMakeFiles/CHTLContext.dir/ImportManager.cpp.o CMakeFiles/CHTLContext.dir/NamespaceManager.cpp.o CMakeFiles/CHTLContext.dir/SelectorAutomation.cpp.o
-/usr/bin/ranlib ../../lib/libCHTLContext.a

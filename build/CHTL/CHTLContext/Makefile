@@ -116,92 +116,6 @@ depend:
 	cd /workspace/build && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
-# Convenience name for target.
-CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/rule:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/rule
-.PHONY : CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/rule
-
-# Convenience name for target.
-CHTLContext: CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/rule
-.PHONY : CHTLContext
-
-# fast build rule for target.
-CHTLContext/fast:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build
-.PHONY : CHTLContext/fast
-
-ImportManager.o: ImportManager.cpp.o
-.PHONY : ImportManager.o
-
-# target to build an object file
-ImportManager.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/ImportManager.cpp.o
-.PHONY : ImportManager.cpp.o
-
-ImportManager.i: ImportManager.cpp.i
-.PHONY : ImportManager.i
-
-# target to preprocess a source file
-ImportManager.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/ImportManager.cpp.i
-.PHONY : ImportManager.cpp.i
-
-ImportManager.s: ImportManager.cpp.s
-.PHONY : ImportManager.s
-
-# target to generate assembly for a file
-ImportManager.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/ImportManager.cpp.s
-.PHONY : ImportManager.cpp.s
-
-NamespaceManager.o: NamespaceManager.cpp.o
-.PHONY : NamespaceManager.o
-
-# target to build an object file
-NamespaceManager.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/NamespaceManager.cpp.o
-.PHONY : NamespaceManager.cpp.o
-
-NamespaceManager.i: NamespaceManager.cpp.i
-.PHONY : NamespaceManager.i
-
-# target to preprocess a source file
-NamespaceManager.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/NamespaceManager.cpp.i
-.PHONY : NamespaceManager.cpp.i
-
-NamespaceManager.s: NamespaceManager.cpp.s
-.PHONY : NamespaceManager.s
-
-# target to generate assembly for a file
-NamespaceManager.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/NamespaceManager.cpp.s
-.PHONY : NamespaceManager.cpp.s
-
-SelectorAutomation.o: SelectorAutomation.cpp.o
-.PHONY : SelectorAutomation.o
-
-# target to build an object file
-SelectorAutomation.cpp.o:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/SelectorAutomation.cpp.o
-.PHONY : SelectorAutomation.cpp.o
-
-SelectorAutomation.i: SelectorAutomation.cpp.i
-.PHONY : SelectorAutomation.i
-
-# target to preprocess a source file
-SelectorAutomation.cpp.i:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/SelectorAutomation.cpp.i
-.PHONY : SelectorAutomation.cpp.i
-
-SelectorAutomation.s: SelectorAutomation.cpp.s
-.PHONY : SelectorAutomation.s
-
-# target to generate assembly for a file
-SelectorAutomation.cpp.s:
-	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/SelectorAutomation.cpp.s
-.PHONY : SelectorAutomation.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -210,16 +124,6 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... CHTLContext"
-	@echo "... ImportManager.o"
-	@echo "... ImportManager.i"
-	@echo "... ImportManager.s"
-	@echo "... NamespaceManager.o"
-	@echo "... NamespaceManager.i"
-	@echo "... NamespaceManager.s"
-	@echo "... SelectorAutomation.o"
-	@echo "... SelectorAutomation.i"
-	@echo "... SelectorAutomation.s"
 .PHONY : help
 
 

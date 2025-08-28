@@ -1,15 +1,7 @@
-# CHTLJSNode子模块
+# CHTL JS Node模块
+# 这是一个头文件库，不需要编译
 
-# 设置CHTLJSNode源文件
-set(CHTLJSNODE_SOURCES
-    # 这里将添加CHTLJSNode的源文件
-)
-
-# 创建CHTLJSNode静态库
-add_library(CHTLJSNode STATIC ${CHTLJSNODE_SOURCES})
-
-# 设置目标属性
-set_target_properties(CHTLJSNode PROPERTIES
-    CXX_STANDARD 17
-    CXX_STANDARD_REQUIRED ON
+# 设置包含目录
+target_include_directories(CHTLJSNode INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )

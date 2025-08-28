@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/workspace/CompilerDispatcher -I/workspace/CHTL/CHTLContext
+CXX_INCLUDES = -I/workspace/CompilerDispatcher
 
 CXX_FLAGS = -std=gnu++17 -finput-charset=UTF-8 -fexec-charset=UTF-8
 

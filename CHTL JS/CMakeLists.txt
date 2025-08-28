@@ -1,15 +1,22 @@
 # CHTL JS模块
+# 这是一个容器模块，包含CHTL JS的所有子模块
 
-# 添加子目录
-add_subdirectory(CHTLJSContext)
-add_subdirectory(CHTLJSGenerator)
-add_subdirectory(CHTLJSLexer)
-add_subdirectory(CHTLJSLoader)
-add_subdirectory(CHTLJSManage)
+# 添加子模块
 add_subdirectory(CHTLJSNode)
 add_subdirectory(CHTLJSParser)
-add_subdirectory(CHTLJSState)
-add_subdirectory(CJMODSystem)
+
+# 创建CHTLJSParser静态库
+set(CHTLJSPARSER_SOURCES
+    CHTLJSParser/CHTLJSParser.cpp
+)
+
+add_library(CHTLJSParser STATIC ${CHTLJSPARSER_SOURCES})
+
+# 设置目标属性
+set_target_properties(CHTLJSParser PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
 
 # 创建CHTLJS静态库
 set(CHTLJS_SOURCES

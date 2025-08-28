@@ -1,0 +1,2 @@
+/usr/bin/ar qc lib/libCHTLJSGenerator.a CMakeFiles/CHTLJSGenerator.dir/CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
+/usr/bin/ranlib lib/libCHTLJSGenerator.a

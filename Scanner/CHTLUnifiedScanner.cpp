@@ -209,13 +209,17 @@ CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::scanCJMODByTwoPointers(s
 	
 	std::string fragment = source_.substr(start, end - start);
 	
-	// 简化实现：基础词法分析
+	// 使用CJMOD API进行双指针扫描
 	try {
-		// 简单的token分割
-		std::istringstream iss(fragment);
-		std::string token;
-		while (iss >> token) {
-			result.tokens.push_back(token);
+		// 分析模式：$ ** $ (双指针操作)
+		auto pattern = CJMODAPI::Syntax::analyze("$ ** $");
+		
+		// 扫描片段
+		auto scanned = CJMODAPI::CJMODScannerAPI::scan(pattern, "**", fragment);
+		
+		// 提取结果
+		for (size_t i = 0; i < scanned.size(); ++i) {
+			result.tokens.push_back(scanned[i].value);
 		}
 		
 		// 记录扫描位置
@@ -271,8 +275,23 @@ std::string CHTLUnifiedScanner::preEmptiveTruncateCJMOD(const std::string& fragm
 }
 
 CHTLUnifiedScanner::CJMODScanResult CHTLUnifiedScanner::preCaptureForCJMOD(size_t startPos, size_t endPos) {
-	// 基础实现：同scanCJMODByTwoPointers，后续加入前置截取修正关键字边界
-	return scanCJMODByTwoPointers(startPos, endPos);
+	// 前置截取：结合双指针扫描和前置截取
+	CJMODScanResult result;
+	
+	// 先进行前置截取
+	std::string fragment = source_.substr(startPos, endPos - startPos);
+	std::string truncated = preEmptiveTruncateCJMOD(fragment);
+	
+	// 然后对截取后的片段进行双指针扫描
+	if (truncated != fragment) {
+		// 如果发生了截取，重新计算位置
+		size_t newStart = startPos + fragment.find(truncated);
+		size_t newEnd = newStart + truncated.length();
+		return scanCJMODByTwoPointers(newStart, newEnd);
+	} else {
+		// 如果没有截取，直接扫描
+		return scanCJMODByTwoPointers(startPos, endPos);
+	}
 }
 
 } // namespace Scanner

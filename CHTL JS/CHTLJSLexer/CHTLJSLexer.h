@@ -1,43 +1,55 @@
 #pragma once
 
-#include "CHTLJSToken.h"
 #include <string>
-#include <vector>
-#include <memory>
 
 namespace CHTLJS {
 
+enum class CHTLJSTokenType {
+	// 基础类型
+	IDENTIFIER,
+	NUMBER,
+	STRING,
+	
+	// 关键字
+	VIRTUAL_OBJECT,
+	ENHANCED_SELECTOR,
+	CHAIN_OPERATION,
+	EVENT_BINDING,
+	LISTEN,
+	DELEGATE,
+	ANIMATE,
+	I_NEVER_AWAY,
+	PRINT_MY_LOVE,
+	
+	// 分隔符
+	LEFT_BRACE,  // {
+	RIGHT_BRACE, // }
+	LEFT_BRACKET, // [
+	RIGHT_BRACKET, // ]
+	COLON,       // :
+	SEMICOLON,   // ;
+	COMMA,       // ,
+	ARROW,       // ->
+	DOT,         // .
+	
+	// 特殊
+	EOF_TOKEN,
+	ERROR
+};
+
 class CHTLJSLexer {
 public:
-	CHTLJSLexer();
+	CHTLJSLexer() = default;
 	~CHTLJSLexer() = default;
-
+	
+	// 设置源代码
 	void setSource(const std::string& source);
-	std::shared_ptr<CHTLJSToken> getNextToken();
-	std::vector<std::shared_ptr<CHTLJSToken>> getAllTokens();
-	void reset();
-
-	bool isEOF() const { return currentPos_ >= source_.size(); }
-	size_t getLine() const { return currentLine_; }
-	size_t getColumn() const { return currentColumn_; }
+	
+	// 获取源代码
+	const std::string& getSource() const { return source_; }
 
 private:
 	std::string source_;
-	size_t currentPos_;
-	size_t currentLine_;
-	size_t currentColumn_;
-
-	void skipWhitespace();
-	char peek(size_t offset = 0) const;
-	void advance(size_t n = 1);
-	void advanceLine();
-
-	std::shared_ptr<CHTLJSToken> readIdentifierOrKeyword();
-	std::shared_ptr<CHTLJSToken> readString();
-	std::shared_ptr<CHTLJSToken> readNumber();
-	std::shared_ptr<CHTLJSToken> readEnhancedSelector(); // {{...}}
-
-	CHTLJSTokenType keywordOf(const std::string& id) const;
 };
 
 } // namespace CHTLJS

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <memory>
-#include "../CHTLJSNode/AST.h"
+#include "../CHTLJSNode/CHTLJSBaseNode.h"
 #include "../CHTLJSContext/CHTLJSContext.h"
 
 namespace CHTLJS {

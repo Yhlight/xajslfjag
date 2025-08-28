@@ -1,0 +1,26 @@
+# 调试测试模块
+
+# 设置调试测试源文件
+set(DEBUG_TEST_SOURCES
+    debug_test.cpp
+)
+
+# 创建调试测试可执行文件
+add_executable(DebugTest ${DEBUG_TEST_SOURCES})
+
+# 设置目标属性
+set_target_properties(DebugTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(DebugTest 
+    CHTLParser
+    CHTLLexer
+)
+
+# 包含目录
+target_include_directories(DebugTest PRIVATE
+    ${CMAKE_SOURCE_DIR}
+)

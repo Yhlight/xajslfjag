@@ -117,6 +117,45 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named DebugTest
+
+# Build rule for target.
+DebugTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 DebugTest
+.PHONY : DebugTest
+
+# fast build rule for target.
+DebugTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/build
+.PHONY : DebugTest/fast
+
+#=============================================================================
+# Target rules for targets named SimpleTest
+
+# Build rule for target.
+SimpleTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 SimpleTest
+.PHONY : SimpleTest
+
+# fast build rule for target.
+SimpleTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/build
+.PHONY : SimpleTest/fast
+
+#=============================================================================
+# Target rules for targets named GeneratorTest
+
+# Build rule for target.
+GeneratorTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 GeneratorTest
+.PHONY : GeneratorTest
+
+# fast build rule for target.
+GeneratorTest/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/build
+.PHONY : GeneratorTest/fast
+
+#=============================================================================
 # Target rules for targets named CHTLLexer
 
 # Build rule for target.
@@ -126,7 +165,7 @@ CHTLLexer: cmake_check_build_system
 
 # fast build rule for target.
 CHTLLexer/fast:
-	$(MAKE) $(MAKESILENT) -f CHTL/CHTLLexer/CMakeFiles/CHTLLexer.dir/build.make CHTL/CHTLLexer/CMakeFiles/CHTLLexer.dir/build
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/build
 .PHONY : CHTLLexer/fast
 
 #=============================================================================
@@ -139,8 +178,73 @@ CHTLContext: cmake_check_build_system
 
 # fast build rule for target.
 CHTLContext/fast:
-	$(MAKE) $(MAKESILENT) -f CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTL/CHTLContext/CMakeFiles/CHTLContext.dir/build
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/build
 .PHONY : CHTLContext/fast
+
+#=============================================================================
+# Target rules for targets named CHTLParser
+
+# Build rule for target.
+CHTLParser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLParser
+.PHONY : CHTLParser
+
+# fast build rule for target.
+CHTLParser/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/build
+.PHONY : CHTLParser/fast
+
+#=============================================================================
+# Target rules for targets named CHTLJSLexer
+
+# Build rule for target.
+CHTLJSLexer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSLexer
+.PHONY : CHTLJSLexer
+
+# fast build rule for target.
+CHTLJSLexer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/build
+.PHONY : CHTLJSLexer/fast
+
+#=============================================================================
+# Target rules for targets named CHTLJSParser
+
+# Build rule for target.
+CHTLJSParser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSParser
+.PHONY : CHTLJSParser
+
+# fast build rule for target.
+CHTLJSParser/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/build
+.PHONY : CHTLJSParser/fast
+
+#=============================================================================
+# Target rules for targets named CHTLGenerator
+
+# Build rule for target.
+CHTLGenerator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLGenerator
+.PHONY : CHTLGenerator
+
+# fast build rule for target.
+CHTLGenerator/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLGenerator.dir/build.make CMakeFiles/CHTLGenerator.dir/build
+.PHONY : CHTLGenerator/fast
+
+#=============================================================================
+# Target rules for targets named CHTLJSGenerator
+
+# Build rule for target.
+CHTLJSGenerator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLJSGenerator
+.PHONY : CHTLJSGenerator
+
+# fast build rule for target.
+CHTLJSGenerator/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/build
+.PHONY : CHTLJSGenerator/fast
 
 #=============================================================================
 # Target rules for targets named Scanner
@@ -156,19 +260,6 @@ Scanner/fast:
 .PHONY : Scanner/fast
 
 #=============================================================================
-# Target rules for targets named CompilerDispatcher
-
-# Build rule for target.
-CompilerDispatcher: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CompilerDispatcher
-.PHONY : CompilerDispatcher
-
-# fast build rule for target.
-CompilerDispatcher/fast:
-	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build
-.PHONY : CompilerDispatcher/fast
-
-#=============================================================================
 # Target rules for targets named CHTLTest
 
 # Build rule for target.
@@ -181,6 +272,355 @@ CHTLTest/fast:
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/build
 .PHONY : CHTLTest/fast
 
+#=============================================================================
+# Target rules for targets named CompilerDispatcher
+
+# Build rule for target.
+CompilerDispatcher: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CompilerDispatcher
+.PHONY : CompilerDispatcher
+
+# fast build rule for target.
+CompilerDispatcher/fast:
+	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/build
+.PHONY : CompilerDispatcher/fast
+
+CHTL/CHTLContext/ImportManager.o: CHTL/CHTLContext/ImportManager.cpp.o
+.PHONY : CHTL/CHTLContext/ImportManager.o
+
+# target to build an object file
+CHTL/CHTLContext/ImportManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o
+.PHONY : CHTL/CHTLContext/ImportManager.cpp.o
+
+CHTL/CHTLContext/ImportManager.i: CHTL/CHTLContext/ImportManager.cpp.i
+.PHONY : CHTL/CHTLContext/ImportManager.i
+
+# target to preprocess a source file
+CHTL/CHTLContext/ImportManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.i
+.PHONY : CHTL/CHTLContext/ImportManager.cpp.i
+
+CHTL/CHTLContext/ImportManager.s: CHTL/CHTLContext/ImportManager.cpp.s
+.PHONY : CHTL/CHTLContext/ImportManager.s
+
+# target to generate assembly for a file
+CHTL/CHTLContext/ImportManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.s
+.PHONY : CHTL/CHTLContext/ImportManager.cpp.s
+
+CHTL/CHTLContext/NamespaceManager.o: CHTL/CHTLContext/NamespaceManager.cpp.o
+.PHONY : CHTL/CHTLContext/NamespaceManager.o
+
+# target to build an object file
+CHTL/CHTLContext/NamespaceManager.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o
+.PHONY : CHTL/CHTLContext/NamespaceManager.cpp.o
+
+CHTL/CHTLContext/NamespaceManager.i: CHTL/CHTLContext/NamespaceManager.cpp.i
+.PHONY : CHTL/CHTLContext/NamespaceManager.i
+
+# target to preprocess a source file
+CHTL/CHTLContext/NamespaceManager.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.i
+.PHONY : CHTL/CHTLContext/NamespaceManager.cpp.i
+
+CHTL/CHTLContext/NamespaceManager.s: CHTL/CHTLContext/NamespaceManager.cpp.s
+.PHONY : CHTL/CHTLContext/NamespaceManager.s
+
+# target to generate assembly for a file
+CHTL/CHTLContext/NamespaceManager.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.s
+.PHONY : CHTL/CHTLContext/NamespaceManager.cpp.s
+
+CHTL/CHTLContext/SelectorAutomation.o: CHTL/CHTLContext/SelectorAutomation.cpp.o
+.PHONY : CHTL/CHTLContext/SelectorAutomation.o
+
+# target to build an object file
+CHTL/CHTLContext/SelectorAutomation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o
+.PHONY : CHTL/CHTLContext/SelectorAutomation.cpp.o
+
+CHTL/CHTLContext/SelectorAutomation.i: CHTL/CHTLContext/SelectorAutomation.cpp.i
+.PHONY : CHTL/CHTLContext/SelectorAutomation.i
+
+# target to preprocess a source file
+CHTL/CHTLContext/SelectorAutomation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i
+.PHONY : CHTL/CHTLContext/SelectorAutomation.cpp.i
+
+CHTL/CHTLContext/SelectorAutomation.s: CHTL/CHTLContext/SelectorAutomation.cpp.s
+.PHONY : CHTL/CHTLContext/SelectorAutomation.s
+
+# target to generate assembly for a file
+CHTL/CHTLContext/SelectorAutomation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLContext.dir/build.make CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s
+.PHONY : CHTL/CHTLContext/SelectorAutomation.cpp.s
+
+CHTL/CHTLGenerator/CHTLGenerator.o: CHTL/CHTLGenerator/CHTLGenerator.cpp.o
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.o
+
+# target to build an object file
+CHTL/CHTLGenerator/CHTLGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLGenerator.dir/build.make CMakeFiles/CHTLGenerator.dir/CHTL/CHTLGenerator/CHTLGenerator.cpp.o
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.cpp.o
+
+CHTL/CHTLGenerator/CHTLGenerator.i: CHTL/CHTLGenerator/CHTLGenerator.cpp.i
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.i
+
+# target to preprocess a source file
+CHTL/CHTLGenerator/CHTLGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLGenerator.dir/build.make CMakeFiles/CHTLGenerator.dir/CHTL/CHTLGenerator/CHTLGenerator.cpp.i
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.cpp.i
+
+CHTL/CHTLGenerator/CHTLGenerator.s: CHTL/CHTLGenerator/CHTLGenerator.cpp.s
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.s
+
+# target to generate assembly for a file
+CHTL/CHTLGenerator/CHTLGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLGenerator.dir/build.make CMakeFiles/CHTLGenerator.dir/CHTL/CHTLGenerator/CHTLGenerator.cpp.s
+.PHONY : CHTL/CHTLGenerator/CHTLGenerator.cpp.s
+
+CHTL/CHTLLexer/CHTLGlobalMap.o: CHTL/CHTLLexer/CHTLGlobalMap.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.o
+
+# target to build an object file
+CHTL/CHTLLexer/CHTLGlobalMap.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLGlobalMap.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.cpp.o
+
+CHTL/CHTLLexer/CHTLGlobalMap.i: CHTL/CHTLLexer/CHTLGlobalMap.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.i
+
+# target to preprocess a source file
+CHTL/CHTLLexer/CHTLGlobalMap.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLGlobalMap.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.cpp.i
+
+CHTL/CHTLLexer/CHTLGlobalMap.s: CHTL/CHTLLexer/CHTLGlobalMap.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.s
+
+# target to generate assembly for a file
+CHTL/CHTLLexer/CHTLGlobalMap.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLGlobalMap.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLGlobalMap.cpp.s
+
+CHTL/CHTLLexer/CHTLLexer.o: CHTL/CHTLLexer/CHTLLexer.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLLexer.o
+
+# target to build an object file
+CHTL/CHTLLexer/CHTLLexer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLLexer.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLLexer.cpp.o
+
+CHTL/CHTLLexer/CHTLLexer.i: CHTL/CHTLLexer/CHTLLexer.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLLexer.i
+
+# target to preprocess a source file
+CHTL/CHTLLexer/CHTLLexer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLLexer.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLLexer.cpp.i
+
+CHTL/CHTLLexer/CHTLLexer.s: CHTL/CHTLLexer/CHTLLexer.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLLexer.s
+
+# target to generate assembly for a file
+CHTL/CHTLLexer/CHTLLexer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLLexer.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLLexer.cpp.s
+
+CHTL/CHTLLexer/CHTLToken.o: CHTL/CHTLLexer/CHTLToken.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLToken.o
+
+# target to build an object file
+CHTL/CHTLLexer/CHTLToken.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLToken.cpp.o
+.PHONY : CHTL/CHTLLexer/CHTLToken.cpp.o
+
+CHTL/CHTLLexer/CHTLToken.i: CHTL/CHTLLexer/CHTLToken.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLToken.i
+
+# target to preprocess a source file
+CHTL/CHTLLexer/CHTLToken.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLToken.cpp.i
+.PHONY : CHTL/CHTLLexer/CHTLToken.cpp.i
+
+CHTL/CHTLLexer/CHTLToken.s: CHTL/CHTLLexer/CHTLToken.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLToken.s
+
+# target to generate assembly for a file
+CHTL/CHTLLexer/CHTLToken.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLLexer.dir/build.make CMakeFiles/CHTLLexer.dir/CHTL/CHTLLexer/CHTLToken.cpp.s
+.PHONY : CHTL/CHTLLexer/CHTLToken.cpp.s
+
+CHTL/CHTLParser/CHTLParser.o: CHTL/CHTLParser/CHTLParser.cpp.o
+.PHONY : CHTL/CHTLParser/CHTLParser.o
+
+# target to build an object file
+CHTL/CHTLParser/CHTLParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.o
+.PHONY : CHTL/CHTLParser/CHTLParser.cpp.o
+
+CHTL/CHTLParser/CHTLParser.i: CHTL/CHTLParser/CHTLParser.cpp.i
+.PHONY : CHTL/CHTLParser/CHTLParser.i
+
+# target to preprocess a source file
+CHTL/CHTLParser/CHTLParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.i
+.PHONY : CHTL/CHTLParser/CHTLParser.cpp.i
+
+CHTL/CHTLParser/CHTLParser.s: CHTL/CHTLParser/CHTLParser.cpp.s
+.PHONY : CHTL/CHTLParser/CHTLParser.s
+
+# target to generate assembly for a file
+CHTL/CHTLParser/CHTLParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLParser.dir/build.make CMakeFiles/CHTLParser.dir/CHTL/CHTLParser/CHTLParser.cpp.s
+.PHONY : CHTL/CHTLParser/CHTLParser.cpp.s
+
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o: CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o
+
+# target to build an object file
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.o
+
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.i: CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.i
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.i
+
+# target to preprocess a source file
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.i
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.i
+
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.s: CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.s
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.s
+
+# target to generate assembly for a file
+CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSGenerator.dir/build.make CMakeFiles/CHTLJSGenerator.dir/CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.s
+.PHONY : CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.cpp.s
+
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.o: CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.o
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.o
+
+# target to build an object file
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.o
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.o
+
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.i: CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.i
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.i
+
+# target to preprocess a source file
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.i
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.i
+
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.s: CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.s
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.s
+
+# target to generate assembly for a file
+CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSLexer.dir/build.make CMakeFiles/CHTLJSLexer.dir/CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.s
+.PHONY : CHTL_JS/CHTLJSLexer/CHTLJSLexer.cpp.s
+
+CHTL_JS/CHTLJSParser/CHTLJSParser.o: CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.o
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.o
+
+# target to build an object file
+CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.o
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.o
+
+CHTL_JS/CHTLJSParser/CHTLJSParser.i: CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.i
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.i
+
+# target to preprocess a source file
+CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.i
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.i
+
+CHTL_JS/CHTLJSParser/CHTLJSParser.s: CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.s
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.s
+
+# target to generate assembly for a file
+CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLJSParser.dir/build.make CMakeFiles/CHTLJSParser.dir/CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.s
+.PHONY : CHTL_JS/CHTLJSParser/CHTLJSParser.cpp.s
+
+Test/debug_test.o: Test/debug_test.cpp.o
+.PHONY : Test/debug_test.o
+
+# target to build an object file
+Test/debug_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/Test/debug_test.cpp.o
+.PHONY : Test/debug_test.cpp.o
+
+Test/debug_test.i: Test/debug_test.cpp.i
+.PHONY : Test/debug_test.i
+
+# target to preprocess a source file
+Test/debug_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/Test/debug_test.cpp.i
+.PHONY : Test/debug_test.cpp.i
+
+Test/debug_test.s: Test/debug_test.cpp.s
+.PHONY : Test/debug_test.s
+
+# target to generate assembly for a file
+Test/debug_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/DebugTest.dir/build.make CMakeFiles/DebugTest.dir/Test/debug_test.cpp.s
+.PHONY : Test/debug_test.cpp.s
+
+Test/generator_test.o: Test/generator_test.cpp.o
+.PHONY : Test/generator_test.o
+
+# target to build an object file
+Test/generator_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/Test/generator_test.cpp.o
+.PHONY : Test/generator_test.cpp.o
+
+Test/generator_test.i: Test/generator_test.cpp.i
+.PHONY : Test/generator_test.i
+
+# target to preprocess a source file
+Test/generator_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/Test/generator_test.cpp.i
+.PHONY : Test/generator_test.cpp.i
+
+Test/generator_test.s: Test/generator_test.cpp.s
+.PHONY : Test/generator_test.s
+
+# target to generate assembly for a file
+Test/generator_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/GeneratorTest.dir/build.make CMakeFiles/GeneratorTest.dir/Test/generator_test.cpp.s
+.PHONY : Test/generator_test.cpp.s
+
+Test/simple_test.o: Test/simple_test.cpp.o
+.PHONY : Test/simple_test.o
+
+# target to build an object file
+Test/simple_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/Test/simple_test.cpp.o
+.PHONY : Test/simple_test.cpp.o
+
+Test/simple_test.i: Test/simple_test.cpp.i
+.PHONY : Test/simple_test.i
+
+# target to preprocess a source file
+Test/simple_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/Test/simple_test.cpp.i
+.PHONY : Test/simple_test.cpp.i
+
+Test/simple_test.s: Test/simple_test.cpp.s
+.PHONY : Test/simple_test.s
+
+# target to generate assembly for a file
+Test/simple_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/Test/simple_test.cpp.s
+.PHONY : Test/simple_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -190,10 +630,60 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLContext"
+	@echo "... CHTLGenerator"
+	@echo "... CHTLJSGenerator"
+	@echo "... CHTLJSLexer"
+	@echo "... CHTLJSParser"
 	@echo "... CHTLLexer"
+	@echo "... CHTLParser"
 	@echo "... CHTLTest"
 	@echo "... CompilerDispatcher"
+	@echo "... DebugTest"
+	@echo "... GeneratorTest"
 	@echo "... Scanner"
+	@echo "... SimpleTest"
+	@echo "... CHTL/CHTLContext/ImportManager.o"
+	@echo "... CHTL/CHTLContext/ImportManager.i"
+	@echo "... CHTL/CHTLContext/ImportManager.s"
+	@echo "... CHTL/CHTLContext/NamespaceManager.o"
+	@echo "... CHTL/CHTLContext/NamespaceManager.i"
+	@echo "... CHTL/CHTLContext/NamespaceManager.s"
+	@echo "... CHTL/CHTLContext/SelectorAutomation.o"
+	@echo "... CHTL/CHTLContext/SelectorAutomation.i"
+	@echo "... CHTL/CHTLContext/SelectorAutomation.s"
+	@echo "... CHTL/CHTLGenerator/CHTLGenerator.o"
+	@echo "... CHTL/CHTLGenerator/CHTLGenerator.i"
+	@echo "... CHTL/CHTLGenerator/CHTLGenerator.s"
+	@echo "... CHTL/CHTLLexer/CHTLGlobalMap.o"
+	@echo "... CHTL/CHTLLexer/CHTLGlobalMap.i"
+	@echo "... CHTL/CHTLLexer/CHTLGlobalMap.s"
+	@echo "... CHTL/CHTLLexer/CHTLLexer.o"
+	@echo "... CHTL/CHTLLexer/CHTLLexer.i"
+	@echo "... CHTL/CHTLLexer/CHTLLexer.s"
+	@echo "... CHTL/CHTLLexer/CHTLToken.o"
+	@echo "... CHTL/CHTLLexer/CHTLToken.i"
+	@echo "... CHTL/CHTLLexer/CHTLToken.s"
+	@echo "... CHTL/CHTLParser/CHTLParser.o"
+	@echo "... CHTL/CHTLParser/CHTLParser.i"
+	@echo "... CHTL/CHTLParser/CHTLParser.s"
+	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.o"
+	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.i"
+	@echo "... CHTL_JS/CHTLJSGenerator/CHTLJSGenerator.s"
+	@echo "... CHTL_JS/CHTLJSLexer/CHTLJSLexer.o"
+	@echo "... CHTL_JS/CHTLJSLexer/CHTLJSLexer.i"
+	@echo "... CHTL_JS/CHTLJSLexer/CHTLJSLexer.s"
+	@echo "... CHTL_JS/CHTLJSParser/CHTLJSParser.o"
+	@echo "... CHTL_JS/CHTLJSParser/CHTLJSParser.i"
+	@echo "... CHTL_JS/CHTLJSParser/CHTLJSParser.s"
+	@echo "... Test/debug_test.o"
+	@echo "... Test/debug_test.i"
+	@echo "... Test/debug_test.s"
+	@echo "... Test/generator_test.o"
+	@echo "... Test/generator_test.i"
+	@echo "... Test/generator_test.s"
+	@echo "... Test/simple_test.o"
+	@echo "... Test/simple_test.i"
+	@echo "... Test/simple_test.s"
 .PHONY : help
 
 

@@ -156,6 +156,7 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
+  /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
   /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/stl_algobase.h \
@@ -221,6 +222,7 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/set \
+  /usr/include/c++/14/sstream \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -256,11 +258,18 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
+  /workspace/CHTL\ JS/CHTLJSNode/CHTLJSBaseNode.h \
+  /workspace/CHTL\ JS/CHTLJSLexer/CHTLJSLexer.h \
+  /workspace/CHTL\ JS/CHTLJSNode/CHTLJSBaseNode.h \
+  /workspace/CHTL\ JS/CHTLJSParser/CHTLJSParser.h \
   /workspace/CHTL/CHTLContext/ImportManager.h \
   /workspace/CHTL/CHTLContext/NamespaceManager.h \
+  /workspace/CHTL/CHTLNode/BaseNode.h \
+  /workspace/CHTL/CHTLLexer/CHTLLexer.h \
+  /workspace/CHTL/CHTLNode/BaseNode.h \
+  /workspace/CHTL/CHTLParser/CHTLParser.h \
   /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/CompilerDispatcher/CompilerDispatcher.h \
-  /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/Scanner/CHTLUnifiedScanner.h \
   /workspace/ThirdParty/CJMODAPI/Arg.h \
   /workspace/ThirdParty/CJMODAPI/CJMODGenerator.h \
@@ -268,7 +277,10 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /workspace/ThirdParty/CJMODAPI/Syntax.h
 
 bin/CHTLTest: lib/libCHTLContext.a \
+  lib/libCHTLJSLexer.a \
+  lib/libCHTLJSParser.a \
   lib/libCHTLLexer.a \
+  lib/libCHTLParser.a \
   lib/libCompilerDispatcher.a \
   lib/libScanner.a \
   /lib/x86_64-linux-gnu/Scrt1.o \
@@ -296,8 +308,6 @@ bin/CHTLTest: lib/libCHTLContext.a \
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
 
-/usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
-
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
 /lib64/ld-linux-x86-64.so.2:
@@ -312,6 +322,10 @@ bin/CHTLTest: lib/libCHTLContext.a \
 
 lib/libCompilerDispatcher.a:
 
+lib/libCHTLParser.a:
+
+lib/libCHTLJSParser.a:
+
 lib/libCHTLContext.a:
 
 /workspace/ThirdParty/CJMODAPI/Syntax.h:
@@ -321,6 +335,16 @@ lib/libCHTLContext.a:
 /workspace/CompilerDispatcher/CompilerDispatcher.h:
 
 /workspace/Scanner/CHTLUnifiedScanner.h:
+
+/workspace/CHTL/CHTLContext/NamespaceManager.h:
+
+/workspace/CHTL/CHTLContext/ImportManager.h:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
+
+/workspace/CHTL\ JS/CHTLJSParser/CHTLJSParser.h:
+
+/workspace/CHTL\ JS/CHTLJSLexer/CHTLJSLexer.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
@@ -412,6 +436,8 @@ lib/libCHTLLexer.a:
 
 /usr/include/c++/14/bits/string_view.tcc:
 
+/workspace/CHTL/CHTLNode/BaseNode.h:
+
 /usr/include/c++/14/streambuf:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
@@ -453,8 +479,6 @@ lib/libCHTLLexer.a:
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
-
-/usr/include/c++/14/bits/stl_set.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
@@ -678,6 +702,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 /usr/include/c++/14/unordered_set:
 
+/workspace/CHTL/CHTLParser/CHTLParser.h:
+
 /usr/include/c++/14/bits/memory_resource.h:
 
 /usr/include/c++/14/bits/unordered_set.h:
@@ -718,6 +744,10 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 /usr/include/c++/14/bits/refwrap.h:
 
+/usr/include/c++/14/bits/stl_set.h:
+
+/usr/include/c++/14/bits/sstream.tcc:
+
 /usr/include/c++/14/bits/new_allocator.h:
 
 /usr/include/c++/14/bits/stl_bvector.h:
@@ -729,6 +759,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 /usr/include/c++/14/bits/stl_construct.h:
 
 /usr/include/c++/14/bits/stl_map.h:
+
+/workspace/CHTL/CHTLLexer/CHTLLexer.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
@@ -744,6 +776,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 /usr/include/c++/14/bits/unique_ptr.h:
 
+lib/libCHTLJSLexer.a:
+
 /usr/include/c++/14/bits/unordered_map.h:
 
 /usr/include/c++/14/bits/uses_allocator.h:
@@ -755,6 +789,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o:
 /usr/include/c++/14/bits/version.h:
 
 /usr/include/c++/14/concepts:
+
+/workspace/CHTL\ JS/CHTLJSNode/CHTLJSBaseNode.h:
 
 /usr/include/c++/14/cstddef:
 
@@ -786,8 +822,6 @@ lib/libScanner.a:
 
 /usr/include/c++/14/ext/type_traits.h:
 
-/workspace/CHTL/CHTLContext/NamespaceManager.h:
-
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/c++/14/bits/postypes.h:
@@ -809,6 +843,8 @@ lib/libScanner.a:
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/c++/14/pstl/execution_defs.h:
+
+/usr/include/c++/14/sstream:
 
 /usr/include/c++/14/string:
 
@@ -855,5 +891,3 @@ lib/libScanner.a:
 /usr/include/c++/14/cwchar:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
-
-/workspace/CHTL/CHTLContext/ImportManager.h:

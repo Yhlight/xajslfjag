@@ -6,9 +6,13 @@
   ../lib/libScanner.a \
   ../lib/libCHTLContext.a \
   ../lib/libCompilerDispatcher.a \
+  ../lib/libCHTLParser.a \
+  ../lib/libCHTLJSLexer.a \
+  ../lib/libCHTLJSParser.a \
   ../lib/libScanner.a \
   ../lib/libCHTLContext.a \
   ../lib/libCHTLLexer.a \
+  ../lib/libCHTLJSLexer.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -51,11 +55,19 @@ CMakeFiles/CHTLTest.dir/main.cpp.o:
 
 ../lib/libCompilerDispatcher.a:
 
+../lib/libCHTLParser.a:
+
+../lib/libCHTLJSLexer.a:
+
+../lib/libCHTLJSParser.a:
+
 ../lib/libScanner.a:
 
 ../lib/libCHTLContext.a:
 
 ../lib/libCHTLLexer.a:
+
+../lib/libCHTLJSLexer.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

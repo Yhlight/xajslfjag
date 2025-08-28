@@ -1,10 +1,10 @@
 #pragma once
 
 #include <string>
-#include <vector>
 #include <memory>
-#include "../CHTLJSNode/AST.h"
+#include <vector>
 #include "../CHTLJSLexer/CHTLJSLexer.h"
+#include "../CHTLJSNode/CHTLJSBaseNode.h"
 
 namespace CHTLJS {
 
@@ -16,13 +16,13 @@ public:
 	// 设置源代码
 	void setSource(const std::string& source);
 	
-	// 解析生成AST
+	// 解析源代码
 	std::shared_ptr<CHTLJSBaseNode> parse();
 	
 	// 获取解析错误
 	const std::vector<std::string>& getErrors() const { return errors_; }
 	
-	// 检查是否解析成功
+	// 检查解析是否成功
 	bool isSuccess() const { return errors_.empty(); }
 
 private:
@@ -30,7 +30,7 @@ private:
 	std::shared_ptr<CHTLJSLexer> lexer_;
 	std::vector<std::string> errors_;
 	
-	// 解析方法
+	// 解析各种语法结构
 	std::shared_ptr<CHTLJSBaseNode> parseVirtualObject();
 	std::shared_ptr<CHTLJSBaseNode> parseEnhancedSelector();
 	std::shared_ptr<CHTLJSBaseNode> parseChainOperation();

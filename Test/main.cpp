@@ -7,6 +7,10 @@
 #include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
 #include "../CHTL/CHTLContext/NamespaceManager.h"
 #include "../CHTL/CHTLContext/ImportManager.h"
+#include "../CHTL/CHTLParser/CHTLParser.h"
+#include "../CHTL/CHTLNode/BaseNode.h"
+#include "../CHTL JS/CHTLJSParser/CHTLJSParser.h"
+#include "../CHTL JS/CHTLJSNode/CHTLJSBaseNode.h"
 #include "../CompilerDispatcher/CompilerDispatcher.h"
 
 using namespace Scanner;
@@ -290,8 +294,6 @@ function init() {
 
     // 测试CHTL解析器
     std::cout << "\n测试CHTL解析器:" << std::endl;
-    // TODO: 暂时注释掉CHTL解析器测试，等待实现完成
-    /*
     CHTL::CHTLParser chtlParser;
     
     // 测试模板解析
@@ -308,11 +310,22 @@ function init() {
     std::cout << "模板解析: " << (chtlParser.isSuccess() ? "成功" : "失败") << std::endl;
     if (templateAST) {
         std::cout << "AST类型: " << static_cast<int>(templateAST->type) << std::endl;
+        if (auto templateNode = std::dynamic_pointer_cast<CHTL::TemplateNode>(templateAST)) {
+            std::cout << "模板类型: " << templateNode->templateType << std::endl;
+            std::cout << "模板名称: " << templateNode->templateName << std::endl;
+        }
     }
     
     // 测试自定义元素解析
     std::string customCode = R"(
-[Custom] delete Button
+[Custom] @Style YellowText
+{
+    @Style DefaultText
+    {
+        delete line-height;
+    }
+    color: yellow;
+}
 )";
     
     chtlParser.setSource(customCode);
@@ -320,14 +333,51 @@ function init() {
     std::cout << "自定义元素解析: " << (chtlParser.isSuccess() ? "成功" : "失败") << std::endl;
     if (customAST) {
         std::cout << "AST类型: " << static_cast<int>(customAST->type) << std::endl;
+        if (auto customNode = std::dynamic_pointer_cast<CHTL::CustomNode>(customAST)) {
+            std::cout << "自定义类型: " << customNode->customType << std::endl;
+            std::cout << "自定义名称: " << customNode->customName << std::endl;
+            std::cout << "操作: " << customNode->operation << std::endl;
+        }
     }
-    */
-    std::cout << "CHTL解析器测试暂未实现" << std::endl;
+    
+    // 测试元素解析
+    std::string elementCode = R"(
+div
+{
+    id: "box";
+    class: "container";
+    
+    text
+    {
+        Hello World
+    }
+    
+    style
+    {
+        .box
+        {
+            width: 100px;
+        }
+    }
+}
+)";
+    
+    chtlParser.setSource(elementCode);
+    auto elementAST = chtlParser.parse();
+    std::cout << "元素解析: " << (chtlParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (elementAST) {
+        std::cout << "AST类型: " << static_cast<int>(elementAST->type) << std::endl;
+        if (auto elementNode = std::dynamic_pointer_cast<CHTL::ElementNode>(elementAST)) {
+            std::cout << "标签名: " << elementNode->tagName << std::endl;
+            std::cout << "属性数量: " << elementNode->attributes.size() << std::endl;
+            for (const auto& attr : elementNode->attributes) {
+                std::cout << "  " << attr.first << ": " << attr.second << std::endl;
+            }
+        }
+    }
 
     // 测试CHTL JS解析器
     std::cout << "\n测试CHTL JS解析器:" << std::endl;
-    // TODO: 暂时注释掉CHTL JS解析器测试，等待实现完成
-    /*
     CHTLJS::CHTLJSParser chtlJSParser;
     
     // 测试虚拟对象解析
@@ -335,6 +385,9 @@ function init() {
 vir test = listen {
     click: () => {
         std::cout << "Clicked!";
+    },
+    hover: () => {
+        console.log("Hovered!");
     }
 }
 )";
@@ -344,6 +397,9 @@ vir test = listen {
     std::cout << "虚拟对象解析: " << (chtlJSParser.isSuccess() ? "成功" : "失败") << std::endl;
     if (virAST) {
         std::cout << "AST类型: " << static_cast<int>(virAST->type) << std::endl;
+        if (auto virNode = std::dynamic_pointer_cast<CHTLJS::VirtualObjectNode>(virAST)) {
+            std::cout << "对象名称: " << virNode->objectName << std::endl;
+        }
     }
     
     // 测试增强选择器解析
@@ -358,9 +414,34 @@ vir test = listen {
     std::cout << "增强选择器解析: " << (chtlJSParser.isSuccess() ? "成功" : "失败") << std::endl;
     if (selectorAST) {
         std::cout << "AST类型: " << static_cast<int>(selectorAST->type) << std::endl;
+        if (auto selectorNode = std::dynamic_pointer_cast<CHTLJS::EnhancedSelectorNode>(selectorAST)) {
+            std::cout << "选择器: " << selectorNode->selector << std::endl;
+            std::cout << "选择器类型: " << selectorNode->selectorType << std::endl;
+        }
     }
-    */
-    std::cout << "CHTL JS解析器测试暂未实现" << std::endl;
+    
+    // 测试iNeverAway解析
+    std::string ineverCode = R"(
+vir Test = iNeverAway {
+    Void<A>: function(int, int) {
+        return a + b;
+    },
+    Void<B>: function(int, int) {
+        return a * b;
+    }
+}
+)";
+    
+    chtlJSParser.setSource(ineverCode);
+    auto ineverAST = chtlJSParser.parse();
+    std::cout << "iNeverAway解析: " << (chtlJSParser.isSuccess() ? "成功" : "失败") << std::endl;
+    if (ineverAST) {
+        std::cout << "AST类型: " << static_cast<int>(ineverAST->type) << std::endl;
+        if (auto ineverNode = std::dynamic_pointer_cast<CHTLJS::INeverAwayNode>(ineverAST)) {
+            std::cout << "状态键数量: " << ineverNode->statefulKeys.size() << std::endl;
+            std::cout << "无状态键数量: " << ineverNode->statelessKeys.size() << std::endl;
+        }
+    }
 
     // 测试CJMOD双指针扫描增强
     std::cout << "\n测试CJMOD双指针扫描增强:" << std::endl;

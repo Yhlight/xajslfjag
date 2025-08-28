@@ -233,7 +233,8 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/array \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/compare \
   /workspace/Test/../ThirdParty/CJMODAPI/CJMODScannerAPI.h \
-  /workspace/Test/../ThirdParty/CJMODAPI/../../Scanner/CHTLUnifiedScanner.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
   /workspace/Test/../ThirdParty/CJMODAPI/CJMODGenerator.h \
   /workspace/Test/../CHTL/CHTLContext/NamespaceManager.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/map \
@@ -246,5 +247,13 @@ Test/CMakeFiles/CHTLTest.dir/main.cpp.o: /workspace/Test/main.cpp \
   /workspace/Test/../CHTL/CHTLContext/ImportManager.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
+  /workspace/Test/../CHTL/CHTLParser/CHTLParser.h \
+  /workspace/Test/../CHTL/CHTLParser/../CHTLLexer/CHTLLexer.h \
+  /workspace/Test/../CHTL/CHTLParser/../CHTLNode/BaseNode.h \
+  /workspace/Test/../CHTL/CHTLNode/BaseNode.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/CHTLJSParser.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSLexer/CHTLJSLexer.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSParser/../CHTLJSNode/CHTLJSBaseNode.h \
+  /workspace/Test/../CHTL\ JS/CHTLJSNode/CHTLJSBaseNode.h \
   /workspace/Test/../CompilerDispatcher/CompilerDispatcher.h \
   /workspace/Test/../CompilerDispatcher/../Scanner/CHTLUnifiedScanner.h
