@@ -1,224 +1,150 @@
-#ifndef CONSTRAINTPARSER_H
-#define CONSTRAINTPARSER_H
+#pragma once
 
 #include <string>
-#include <memory>
 #include <vector>
-#include <unordered_set>
+#include <memory>
 #include <unordered_map>
-#include "../CHTLContext/ConfigurationManager.h"
+#include "CHTLNode.h"
 
 namespace CHTL {
 
-/**
- * @brief 约束类型枚举
- */
+// 约束类型
 enum class ConstraintType {
-    EXACT,      // 精确约束：HTML元素、自定义对象、模板对象
-    TYPE,       // 类型约束：@Html、[Custom]、[Template]
-    GLOBAL      // 全局约束：在命名空间内使用
+    ELEMENT,        // HTML元素约束
+    TYPE,           // 类型约束
+    GLOBAL          // 全局约束
 };
 
-/**
- * @brief 约束目标类型枚举
- */
-enum class ConstraintTargetType {
-    HTML_ELEMENT,    // HTML元素
-    CUSTOM_ELEMENT,  // 自定义元素
-    TEMPLATE_VAR,    // 模板变量
-    TEMPLATE_ELEMENT, // 模板元素
-    TEMPLATE_STYLE,  // 模板样式
-    ORIGIN_HTML,     // 原始HTML
-    CUSTOM_BLOCK,    // 自定义块
-    TEMPLATE_BLOCK   // 模板块
-};
-
-/**
- * @brief 约束目标结构
- */
-struct ConstraintTarget {
-    ConstraintTargetType type;
-    std::string name;        // 元素名称或类型名称
-    std::string fullPath;    // 完整路径（如 [Custom] @Element Box）
-    int lineNumber;          // 行号
-    int columnNumber;        // 列号
-    
-    ConstraintTarget() : type(ConstraintTargetType::HTML_ELEMENT), lineNumber(0), columnNumber(0) {}
-};
-
-/**
- * @brief 约束语句结构
- */
-struct ConstraintStatement {
+// 约束信息
+struct ConstraintInfo {
     ConstraintType type;
-    std::vector<ConstraintTarget> targets;  // 约束目标列表
-    std::string scope;                      // 作用域（元素名称或命名空间）
-    int lineNumber;                         // 行号
-    int columnNumber;                       // 列号
+    std::string value;
+    size_t line;
+    size_t column;
+    std::string sourceFile;
     
-    ConstraintStatement() : type(ConstraintType::EXACT), lineNumber(0), columnNumber(0) {}
+    ConstraintInfo(ConstraintType type, const std::string& value,
+                  size_t line = 0, size_t column = 0, const std::string& sourceFile = "")
+        : type(type), value(value), line(line), column(column), sourceFile(sourceFile) {}
 };
 
-/**
- * @brief 约束解析器
- * 负责解析CHTL中的except约束语句
- */
+// 约束组
+struct ConstraintGroup {
+    std::vector<ConstraintInfo> constraints;
+    size_t line;
+    size_t column;
+    std::string sourceFile;
+    
+    ConstraintGroup(size_t line = 0, size_t column = 0, const std::string& sourceFile = "")
+        : line(line), column(column), sourceFile(sourceFile) {}
+};
+
+// 约束解析器
 class ConstraintParser {
 public:
-    /**
-     * @brief 构造函数
-     * @param configManager 配置管理器指针
-     */
-    ConstraintParser(std::shared_ptr<ConfigurationManager> configManager);
+    ConstraintParser();
+    ~ConstraintParser() = default;
     
-    /**
-     * @brief 析构函数
-     */
-    ~ConstraintParser();
+    // 解析约束语句
+    std::vector<ConstraintGroup> parse(const std::string& source, const std::string& sourceFile = "");
     
-    /**
-     * @brief 解析约束语句
-     * @param source 源代码
-     * @param scope 作用域（元素名称或命名空间）
-     * @return 解析结果列表
-     */
-    std::vector<std::shared_ptr<ConstraintStatement>> parse(const std::string& source, const std::string& scope = "");
+    // 解析单个约束语句
+    ConstraintGroup parseSingleConstraintStatement(const std::string& line, size_t lineNumber,
+                                                 size_t columnNumber = 0, const std::string& sourceFile = "");
     
-    /**
-     * @brief 解析except语句
-     * @param line except语句行
-     * @param lineNumber 行号
-     * @param scope 作用域
-     * @return 解析结果
-     */
-    std::shared_ptr<ConstraintStatement> parseExceptStatement(const std::string& line, int lineNumber, const std::string& scope);
+    // 解析except关键字
+    std::vector<ConstraintInfo> parseExceptClause(const std::string& text, size_t line,
+                                                 size_t column, const std::string& sourceFile);
     
-    /**
-     * @brief 解析约束目标
-     * @param targetText 目标文本
-     * @param lineNumber 行号
-     * @return 约束目标
-     */
-    ConstraintTarget parseConstraintTarget(const std::string& targetText, int lineNumber);
+    // 验证约束
+    bool validateConstraint(const ConstraintInfo& constraint);
+    std::vector<std::string> getValidationErrors(const ConstraintInfo& constraint);
     
-    /**
-     * @brief 验证约束语句
-     * @param statement 约束语句
-     * @return 是否有效
-     */
-    bool validateConstraintStatement(const std::shared_ptr<ConstraintStatement>& statement);
+    // 获取约束类型
+    ConstraintType getConstraintType(const std::string& text);
     
-    /**
-     * @brief 应用约束语句
-     * @param statement 约束语句
-     * @return 是否成功应用
-     */
-    bool applyConstraintStatement(const std::shared_ptr<ConstraintStatement>& statement);
+    // 检查是否为约束语句
+    bool isConstraintStatement(const std::string& text);
+    bool isExceptClause(const std::string& text);
     
-    /**
-     * @brief 检查元素是否被约束
-     * @param elementName 元素名称
-     * @param scope 作用域
-     * @return 是否被约束
-     */
-    bool isElementConstrained(const std::string& elementName, const std::string& scope) const;
+    // 提取约束值
+    std::string extractConstraintValue(const std::string& text, ConstraintType type);
     
-    /**
-     * @brief 检查类型是否被约束
-     * @param typeName 类型名称
-     * @param scope 作用域
-     * @return 是否被约束
-     */
-    bool isTypeConstrained(const std::string& typeName, const std::string& scope) const;
+    // 生成约束节点
+    std::shared_ptr<ConstraintNode> createConstraintNode(const ConstraintGroup& group);
     
-    /**
-     * @brief 获取错误信息
-     * @return 错误信息列表
-     */
-    std::vector<std::string> getErrors() const;
-    
-    /**
-     * @brief 清除错误信息
-     */
+    // 获取解析错误
+    const std::vector<std::string>& getErrors() const { return errors_; }
+    bool hasErrors() const { return !errors_.empty(); }
     void clearErrors();
-
+    
+    // 获取解析统计
+    struct ParseStatistics {
+        size_t totalConstraints;
+        size_t elementConstraints;
+        size_t typeConstraints;
+        size_t globalConstraints;
+        size_t parsingErrors;
+        
+        ParseStatistics() : totalConstraints(0), elementConstraints(0), 
+                           typeConstraints(0), globalConstraints(0), parsingErrors(0) {}
+    };
+    
+    const ParseStatistics& getStatistics() const { return statistics_; }
+    void clearStatistics();
+    
+    // 调试信息
+    std::string getDebugInfo() const;
+    
+    // 重置
+    void reset();
+    
 private:
-    std::shared_ptr<ConfigurationManager> configManager_;
     std::vector<std::string> errors_;
+    ParseStatistics statistics_;
     
-    // 约束存储：作用域 -> 约束目标集合
-    std::unordered_map<std::string, std::unordered_set<std::string>> elementConstraints_;
-    std::unordered_map<std::string, std::unordered_set<std::string>> typeConstraints_;
+    // 辅助函数
+    std::vector<std::string> splitIntoLines(const std::string& source);
+    std::string trimWhitespace(const std::string& text);
+    bool isCommentLine(const std::string& text);
+    bool isEmptyLine(const std::string& text);
     
-    /**
-     * @brief 添加错误信息
-     * @param error 错误信息
-     */
-    void addError(const std::string& error);
+    // 解析函数
+    ConstraintInfo parseElementConstraint(const std::string& text, size_t line,
+                                        size_t column, const std::string& sourceFile);
+    ConstraintInfo parseTypeConstraint(const std::string& text, size_t line,
+                                     size_t column, const std::string& sourceFile);
+    ConstraintInfo parseGlobalConstraint(const std::string& text, size_t line,
+                                       size_t column, const std::string& sourceFile);
     
-    /**
-     * @brief 跳过空白字符
-     * @param line 行内容
-     * @param position 位置
-     */
-    void skipWhitespace(const std::string& line, size_t& position);
+    // 验证函数
+    bool validateElementConstraint(const ConstraintInfo& constraint);
+    bool validateTypeConstraint(const ConstraintInfo& constraint);
+    bool validateGlobalConstraint(const ConstraintInfo& constraint);
     
-    /**
-     * @brief 提取标识符
-     * @param line 行内容
-     * @param position 位置
-     * @return 标识符
-     */
-    std::string extractIdentifier(const std::string& line, size_t& position);
+    // 错误处理
+    void addError(const std::string& error, size_t line = 0, size_t column = 0);
     
-    /**
-     * @brief 检查是否匹配关键字
-     * @param line 行内容
-     * @param position 位置
-     * @param keyword 关键字
-     * @return 是否匹配
-     */
-    bool matchKeyword(const std::string& line, size_t& position, const std::string& keyword);
+    // 统计更新
+    void updateStatistics(const std::string& type, size_t value = 1);
     
-    /**
-     * @brief 解析HTML元素名称
-     * @param elementName 元素名称
-     * @return 约束目标
-     */
-    ConstraintTarget parseHTMLElement(const std::string& elementName, int lineNumber);
+    // 文本处理
+    std::string normalizeText(const std::string& text);
+    bool startsWith(const std::string& text, const std::string& prefix);
+    bool endsWith(const std::string& text, const std::string& suffix);
+    std::string extractBetween(const std::string& text, const std::string& start, const std::string& end);
     
-    /**
-     * @brief 解析自定义元素
-     * @param customText 自定义文本
-     * @param lineNumber 行号
-     * @return 约束目标
-     */
-    ConstraintTarget parseCustomElement(const std::string& customText, int lineNumber);
+    // 约束特定处理
+    std::vector<std::string> splitConstraintList(const std::string& text);
+    bool isValidElementName(const std::string& name);
+    bool isValidTypeName(const std::string& name);
+    bool isValidGlobalConstraint(const std::string& constraint);
     
-    /**
-     * @brief 解析模板对象
-     * @param templateText 模板文本
-     * @param lineNumber 行号
-     * @return 约束目标
-     */
-    ConstraintTarget parseTemplateObject(const std::string& templateText, int lineNumber);
-    
-    /**
-     * @brief 解析类型约束
-     * @param typeText 类型文本
-     * @param lineNumber 行号
-     * @return 约束目标
-     */
-    ConstraintTarget parseTypeConstraint(const std::string& typeText, int lineNumber);
-    
-    /**
-     * @brief 标准化作用域名称
-     * @param scope 作用域
-     * @return 标准化后的作用域
-     */
-    std::string normalizeScope(const std::string& scope) const;
+    // 关键字检测
+    bool isKeyword(const std::string& text, const std::vector<std::string>& keywords);
+    std::vector<std::string> getElementKeywords();
+    std::vector<std::string> getTypeKeywords();
+    std::vector<std::string> getGlobalConstraintKeywords();
 };
 
 } // namespace CHTL
-
-#endif // CONSTRAINTPARSER_H

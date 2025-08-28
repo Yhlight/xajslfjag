@@ -24,6 +24,7 @@ enum class CHTLJSTokenType {
     ANIMATE_BLOCK,       // animate {...}
     I_NEVER_AWAY,        // iNeverAway {...}
     PRINT_MY_LOVE,       // printMylove {...}
+    MODULE_BLOCK,        // module {...}
     
     // 关键字
     KEYWORD_VIR,
@@ -41,6 +42,8 @@ enum class CHTLJSTokenType {
     KEYWORD_DELAY,
     KEYWORD_CALLBACK,
     KEYWORD_AT,
+    KEYWORD_LOAD,
+    KEYWORD_MODULE,
     
     // 分隔符
     LEFT_BRACE,      // {
@@ -56,6 +59,8 @@ enum class CHTLJSTokenType {
     DOT,             // .
     AMPERSAND,       // &
     HASH,            // #
+    SLASH,           // /
+    ASTERISK,        // *
     
     // 空白字符
     WHITESPACE,

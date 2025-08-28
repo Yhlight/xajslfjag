@@ -38,6 +38,8 @@ enum class CHTLTokenType {
     KEYWORD_AT_BOTTOM,
     KEYWORD_FROM,
     KEYWORD_AS,
+    KEYWORD_NAME,
+    KEYWORD_ORIGIN_TYPE,
     
     // 模板类型
     TEMPLATE_STYLE,
@@ -53,6 +55,7 @@ enum class CHTLTokenType {
     ORIGIN_HTML,
     ORIGIN_STYLE,
     ORIGIN_JAVASCRIPT,
+    ORIGIN_CUSTOM,  // 自定义原始嵌入类型
     
     // 导入类型
     IMPORT_HTML,
@@ -64,6 +67,7 @@ enum class CHTLTokenType {
     
     // 配置类型
     CONFIGURATION_CONFIG,
+    IMPORT_CONFIG,
     
     // 分隔符
     LEFT_BRACE,      // {
@@ -80,6 +84,8 @@ enum class CHTLTokenType {
     AT,              // @
     HASH,            // #
     AMPERSAND,       // &
+    SLASH,           // /
+    ASTERISK,        // *
     
     // 注释
     COMMENT_SINGLE,  // //

@@ -1,19 +1,15 @@
-#ifndef IMPORTMANAGER_H
-#define IMPORTMANAGER_H
+#pragma once
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <filesystem>
 #include "ConfigurationManager.h"
 
 namespace CHTL {
 
-/**
- * @brief 导入类型枚举
- */
+// 导入类型
 enum class ImportType {
     HTML,           // @Html
     STYLE,          // @Style
@@ -21,260 +17,156 @@ enum class ImportType {
     CHTL,           // @Chtl
     CJMOD,          // @CJmod
     CONFIG,         // @Config
-    CUSTOM          // 自定义类型
+    CUSTOM_ELEMENT, // [Custom] @Element
+    CUSTOM_STYLE,   // [Custom] @Style
+    CUSTOM_VAR,     // [Custom] @Var
+    TEMPLATE_ELEMENT, // [Template] @Element
+    TEMPLATE_STYLE,   // [Template] @Style
+    TEMPLATE_VAR,     // [Template] @Var
+    ORIGIN_HTML,    // [Origin] @Html
+    ORIGIN_STYLE,   // [Origin] @Style
+    ORIGIN_JAVASCRIPT, // [Origin] @JavaScript
+    ORIGIN_CUSTOM   // [Origin] @Custom
 };
 
-/**
- * @brief 导入语句结构
- */
-struct ImportStatement {
+// 导入信息
+struct ImportInfo {
     ImportType type;
-    std::string path;                    // 导入路径
-    std::string alias;                   // 别名（as语法）
-    std::string configGroup;             // 配置组名称
-    bool isWildcard;                     // 是否通配符导入
-    std::string wildcardPattern;         // 通配符模式
-    std::vector<std::string> subModules; // 子模块列表
-    int lineNumber;                      // 行号
-    int columnNumber;                    // 列号
+    std::string path;
+    std::string alias;
+    std::string sourceFile;
+    size_t line;
+    bool isWildcard;
+    std::vector<std::string> subModules;
+    std::string targetName;  // 对于模板/自定义/原始嵌入类型
     
-    ImportStatement() : type(ImportType::HTML), isWildcard(false), lineNumber(0), columnNumber(0) {}
+    ImportInfo(ImportType type, const std::string& path, const std::string& alias = "",
+               const std::string& sourceFile = "", size_t line = 0)
+        : type(type), path(path), alias(alias), sourceFile(sourceFile), line(line), isWildcard(false) {}
 };
 
-/**
- * @brief 导入结果结构
- */
-struct ImportResult {
-    bool success;                        // 是否成功
-    std::string filePath;                // 实际文件路径
-    std::string content;                 // 文件内容
-    std::string errorMessage;            // 错误信息
-    std::vector<std::string> warnings;   // 警告信息
-    std::vector<std::string> importedFiles; // 导入的文件列表（通配符导入时）
+// 路径解析结果
+struct PathResolutionResult {
+    std::vector<std::string> resolvedPaths;
+    std::string error;
+    bool success;
     
-    ImportResult() : success(false) {}
+    PathResolutionResult() : success(false) {}
 };
 
-/**
- * @brief 导入管理器
- * 负责管理CHTL项目的所有导入操作
- */
+// 导入管理器
 class ImportManager {
 public:
-    /**
-     * @brief 构造函数
-     * @param configManager 配置管理器指针
-     * @param basePath 基础路径
-     */
     ImportManager(std::shared_ptr<ConfigurationManager> configManager, const std::string& basePath = "");
+    ~ImportManager() = default;
     
-    /**
-     * @brief 析构函数
-     */
-    ~ImportManager();
+    // 导入管理
+    void addImport(const ImportInfo& import);
+    std::vector<ImportInfo> getImports() const;
+    bool removeImport(const ImportInfo& import);
     
-    /**
-     * @brief 解析导入语句
-     * @param source 源代码
-     * @return 解析结果列表
-     */
-    std::vector<std::shared_ptr<ImportStatement>> parse(const std::string& source);
+    // 路径解析
+    PathResolutionResult resolvePath(const std::string& path, ImportType type);
+    std::vector<std::string> resolveWildcardPath(const std::string& path, ImportType type);
+    std::vector<std::string> resolveSubModulePath(const std::string& path, ImportType type);
     
-    /**
-     * @brief 执行导入操作
-     * @param statement 导入语句
-     * @return 导入结果
-     */
-    ImportResult executeImport(const std::shared_ptr<ImportStatement>& statement);
+    // 循环依赖检测
+    bool checkCircularDependency(const std::string& filePath);
+    std::vector<std::string> getCircularDependencies(const std::string& filePath);
     
-    /**
-     * @brief 解析通配符路径
-     * @param pattern 通配符模式
-     * @param basePath 基础路径
-     * @return 匹配的文件列表
-     */
-    std::vector<std::string> resolveWildcardPath(const std::string& pattern, const std::string& basePath);
+    // 重复导入检测
+    bool checkDuplicateImport(const std::string& type, const std::string& path);
+    std::vector<ImportInfo> getDuplicateImports() const;
     
-    /**
-     * @brief 解析子模块路径
-     * @param modulePath 模块路径
-     * @param basePath 基础路径
-     * @return 子模块文件列表
-     */
-    std::vector<std::string> resolveSubModulePath(const std::string& modulePath, const std::string& basePath);
+    // 搜索路径管理
+    void addSearchPath(const std::string& path);
+    void removeSearchPath(const std::string& path);
+    std::vector<std::string> getSearchPaths() const;
     
-    /**
-     * @brief 搜索文件
-     * @param fileName 文件名
-     * @param importType 导入类型
-     * @param searchPaths 搜索路径列表
-     * @return 找到的文件路径
-     */
-    std::string searchFile(const std::string& fileName, ImportType importType, const std::vector<std::string>& searchPaths);
+    // 模块搜索
+    std::vector<std::string> searchOfficialModules(const std::string& name, ImportType type);
+    std::vector<std::string> searchLocalModules(const std::string& name, ImportType type);
+    std::vector<std::string> searchCurrentDirectory(const std::string& name, ImportType type);
     
-    /**
-     * @brief 获取搜索路径
-     * @param importType 导入类型
-     * @return 搜索路径列表
-     */
-    std::vector<std::string> getSearchPaths(ImportType importType);
+    // 文件类型检测
+    bool isValidFileForType(const std::string& filePath, ImportType type);
+    std::vector<std::string> getValidExtensionsForType(ImportType type);
     
-    /**
-     * @brief 检查循环依赖
-     * @param filePath 文件路径
-     * @param importedFile 导入的文件
-     * @return 是否存在循环依赖
-     */
-    bool checkCircularDependency(const std::string& filePath, const std::string& importedFile);
+    // 通配符处理
+    std::vector<std::string> expandWildcard(const std::string& pattern, ImportType type);
+    bool isWildcardPattern(const std::string& pattern);
     
-    /**
-     * @brief 检查重复导入
-     * @param filePath 文件路径
-     * @param importedFile 导入的文件
-     * @return 是否重复导入
-     */
-    bool checkDuplicateImport(const std::string& filePath, const std::string& importedFile);
+    // 子模块处理
+    std::vector<std::string> parseSubModulePath(const std::string& path);
+    std::string normalizeSubModulePath(const std::string& path);
     
-    /**
-     * @brief 设置基础路径
-     * @param basePath 基础路径
-     */
-    void setBasePath(const std::string& basePath);
+    // 别名管理
+    void addAlias(const std::string& alias, const std::string& path);
+    std::string resolveAlias(const std::string& alias);
+    bool hasAlias(const std::string& alias) const;
     
-    /**
-     * @brief 获取基础路径
-     * @return 基础路径
-     */
-    std::string getBasePath() const;
+    // 导入验证
+    bool validateImport(const ImportInfo& import);
+    std::vector<std::string> getImportErrors(const ImportInfo& import);
     
-    /**
-     * @brief 获取导入历史
-     * @return 导入历史映射
-     */
-    const std::unordered_map<std::string, std::vector<std::string>>& getImportHistory() const;
+    // 导入统计
+    struct ImportStatistics {
+        size_t totalImports;
+        size_t successfulImports;
+        size_t failedImports;
+        size_t circularDependencies;
+        size_t duplicateImports;
+        
+        ImportStatistics() : totalImports(0), successfulImports(0), failedImports(0),
+                            circularDependencies(0), duplicateImports(0) {}
+    };
     
-    /**
-     * @brief 清除导入历史
-     */
-    void clearImportHistory();
+    const ImportStatistics& getStatistics() const { return statistics_; }
+    void clearStatistics();
     
-    /**
-     * @brief 获取错误信息
-     * @return 错误信息列表
-     */
-    std::vector<std::string> getErrors() const;
+    // 调试信息
+    std::string getDebugInfo() const;
+    std::string getImportInfo() const;
     
-    /**
-     * @brief 清除错误信息
-     */
-    void clearErrors();
-
+    // 重置
+    void reset();
+    
 private:
     std::shared_ptr<ConfigurationManager> configManager_;
     std::string basePath_;
-    std::vector<std::string> errors_;
+    std::vector<ImportInfo> imports_;
+    std::vector<std::string> searchPaths_;
+    std::unordered_map<std::string, std::string> aliases_;
+    std::unordered_set<std::string> processedFiles_;
+    ImportStatistics statistics_;
     
-    // 导入历史：文件路径 -> 导入的文件列表
-    std::unordered_map<std::string, std::vector<std::string>> importHistory_;
-    
-    // 循环依赖检测：当前导入链
-    std::vector<std::string> currentImportChain_;
-    
-    /**
-     * @brief 添加错误信息
-     * @param error 错误信息
-     */
-    void addError(const std::string& error);
-    
-    /**
-     * @brief 解析导入语句行
-     * @param line 导入语句行
-     * @param lineNumber 行号
-     * @return 导入语句
-     */
-    std::shared_ptr<ImportStatement> parseImportLine(const std::string& line, int lineNumber);
-    
-    /**
-     * @brief 解析导入类型
-     * @param typeText 类型文本
-     * @return 导入类型
-     */
-    ImportType parseImportType(const std::string& typeText);
-    
-    /**
-     * @brief 解析路径和别名
-     * @param pathText 路径文本
-     * @param statement 导入语句
-     */
-    void parsePathAndAlias(const std::string& pathText, std::shared_ptr<ImportStatement>& statement);
-    
-    /**
-     * @brief 检查文件是否存在
-     * @param filePath 文件路径
-     * @return 是否存在
-     */
-    bool fileExists(const std::string& filePath);
-    
-    /**
-     * @brief 读取文件内容
-     * @param filePath 文件路径
-     * @return 文件内容
-     */
-    std::string readFileContent(const std::string& filePath);
-    
-    /**
-     * @brief 获取文件扩展名
-     * @param filePath 文件路径
-     * @return 文件扩展名
-     */
-    std::string getFileExtension(const std::string& filePath);
-    
-    /**
-     * @brief 标准化路径
-     * @param path 路径
-     * @return 标准化后的路径
-     */
+    // 辅助函数
     std::string normalizePath(const std::string& path);
+    std::string getDirectoryFromPath(const std::string& path);
+    std::string getFileNameFromPath(const std::string& path);
+    std::string getExtensionFromPath(const std::string& path);
     
-    /**
-     * @brief 合并路径
-     * @param base 基础路径
-     * @param relative 相对路径
-     * @return 合并后的路径
-     */
-    std::string combinePath(const std::string& base, const std::string& relative);
+    // 路径搜索
+    std::vector<std::string> searchInDirectory(const std::string& directory, const std::string& pattern, ImportType type);
+    std::vector<std::string> searchInModuleDirectory(const std::string& modulePath, const std::string& name, ImportType type);
     
-    /**
-     * @brief 检查是否为目录
-     * @param path 路径
-     * @return 是否为目录
-     */
+    // 依赖检测
+    void buildDependencyGraph();
+    bool hasCircularDependencyDFS(const std::string& file, std::unordered_set<std::string>& visited, 
+                                 std::unordered_set<std::string>& recursionStack);
+    
+    // 文件操作
+    bool fileExists(const std::string& path);
     bool isDirectory(const std::string& path);
+    std::vector<std::string> listFiles(const std::string& directory, const std::string& pattern);
     
-    /**
-     * @brief 获取目录中的文件
-     * @param dirPath 目录路径
-     * @param extensions 文件扩展名列表
-     * @return 文件列表
-     */
-    std::vector<std::string> getFilesInDirectory(const std::string& dirPath, const std::vector<std::string>& extensions);
+    // 统计更新
+    void updateStatistics(const std::string& type, size_t value = 1);
     
-    /**
-     * @brief 匹配通配符模式
-     * @param pattern 通配符模式
-     * @param fileName 文件名
-     * @return 是否匹配
-     */
-    bool matchWildcardPattern(const std::string& pattern, const std::string& fileName);
-    
-    /**
-     * @brief 解析模块路径
-     * @param modulePath 模块路径
-     * @return 解析后的路径组件
-     */
-    std::vector<std::string> parseModulePath(const std::string& modulePath);
+    // 配置相关
+    std::string getOfficialModulePath() const;
+    std::string getLocalModulePath() const;
+    bool isOfficialModulePrefix(const std::string& path) const;
 };
 
 } // namespace CHTL
-
-#endif // IMPORTMANAGER_H

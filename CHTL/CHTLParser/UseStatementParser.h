@@ -1,167 +1,117 @@
-#ifndef USESTATEMENTPARSER_H
-#define USESTATEMENTPARSER_H
+#pragma once
 
 #include <string>
-#include <memory>
 #include <vector>
-#include "../CHTLContext/ConfigurationManager.h"
+#include <memory>
+#include <unordered_map>
+#include "CHTLNode.h"
 
 namespace CHTL {
 
-/**
- * @brief use语句类型枚举
- */
+// use语句类型
 enum class UseStatementType {
-    HTML5_TYPE,         // use html5;
-    CONFIG_GROUP,       // use @Config Basic;
-    FULL_CONFIG_GROUP   // use [Configuration] @Config Basic;
+    HTML5,      // use html5;
+    CONFIG      // use @Config Basic;
 };
 
-/**
- * @brief use语句结构
- */
-struct UseStatement {
+// use语句信息
+struct UseStatementInfo {
     UseStatementType type;
-    std::string configGroupName;  // 配置组名称（仅对CONFIG_GROUP和FULL_CONFIG_GROUP有效）
-    std::string html5Type;        // HTML类型（仅对HTML5_TYPE有效）
-    int lineNumber;               // 行号
-    int columnNumber;             // 列号
+    std::string value;      // 对于CONFIG类型，这里是配置组名称
+    size_t line;
+    size_t column;
+    std::string sourceFile;
     
-    UseStatement() : type(UseStatementType::HTML5_TYPE), lineNumber(0), columnNumber(0) {}
+    UseStatementInfo(UseStatementType type, const std::string& value = "",
+                    size_t line = 0, size_t column = 0, const std::string& sourceFile = "")
+        : type(type), value(value), line(line), column(column), sourceFile(sourceFile) {}
 };
 
-/**
- * @brief use语句解析器
- * 负责解析CHTL文件开头的use语句
- */
+// use语句解析器
 class UseStatementParser {
 public:
-    /**
-     * @brief 构造函数
-     * @param configManager 配置管理器指针
-     */
-    UseStatementParser(std::shared_ptr<ConfigurationManager> configManager);
+    UseStatementParser();
+    ~UseStatementParser() = default;
     
-    /**
-     * @brief 析构函数
-     */
-    ~UseStatementParser();
+    // 解析use语句
+    std::vector<UseStatementInfo> parse(const std::string& source, const std::string& sourceFile = "");
     
-    /**
-     * @brief 解析use语句
-     * @param source 源代码
-     * @return 解析结果，如果解析失败返回nullptr
-     */
-    std::shared_ptr<UseStatement> parse(const std::string& source);
+    // 解析单个use语句
+    UseStatementInfo parseSingleUseStatement(const std::string& line, size_t lineNumber, 
+                                           size_t columnNumber = 0, const std::string& sourceFile = "");
     
-    /**
-     * @brief 解析HTML5类型use语句
-     * @param line use语句行
-     * @param lineNumber 行号
-     * @return 解析结果
-     */
-    std::shared_ptr<UseStatement> parseHTML5Type(const std::string& line, int lineNumber);
+    // 验证use语句
+    bool validateUseStatement(const UseStatementInfo& useStatement);
+    std::vector<std::string> getValidationErrors(const UseStatementInfo& useStatement);
     
-    /**
-     * @brief 解析配置组use语句
-     * @param line use语句行
-     * @param lineNumber 行号
-     * @return 解析结果
-     */
-    std::shared_ptr<UseStatement> parseConfigGroup(const std::string& line, int lineNumber);
+    // 获取use语句类型
+    UseStatementType getUseStatementType(const std::string& text);
     
-    /**
-     * @brief 解析全缀名配置组use语句
-     * @param line use语句行
-     * @param lineNumber 行号
-     * @return 解析结果
-     */
-    std::shared_ptr<UseStatement> parseFullConfigGroup(const std::string& line, int lineNumber);
+    // 检查是否为use语句
+    bool isUseStatement(const std::string& text);
     
-    /**
-     * @brief 验证use语句
-     * @param statement use语句
-     * @return 是否有效
-     */
-    bool validateUseStatement(const std::shared_ptr<UseStatement>& statement);
+    // 提取use语句值
+    std::string extractUseStatementValue(const std::string& text, UseStatementType type);
     
-    /**
-     * @brief 应用use语句
-     * @param statement use语句
-     * @return 是否成功应用
-     */
-    bool applyUseStatement(const std::shared_ptr<UseStatement>& statement);
+    // 生成use语句节点
+    std::shared_ptr<UseStatementNode> createUseStatementNode(const UseStatementInfo& info);
     
-    /**
-     * @brief 获取错误信息
-     * @return 错误信息列表
-     */
-    std::vector<std::string> getErrors() const;
-    
-    /**
-     * @brief 清除错误信息
-     */
+    // 获取解析错误
+    const std::vector<std::string>& getErrors() const { return errors_; }
+    bool hasErrors() const { return !errors_.empty(); }
     void clearErrors();
-
+    
+    // 获取解析统计
+    struct ParseStatistics {
+        size_t totalUseStatements;
+        size_t html5Statements;
+        size_t configStatements;
+        size_t parsingErrors;
+        
+        ParseStatistics() : totalUseStatements(0), html5Statements(0), 
+                           configStatements(0), parsingErrors(0) {}
+    };
+    
+    const ParseStatistics& getStatistics() const { return statistics_; }
+    void clearStatistics();
+    
+    // 调试信息
+    std::string getDebugInfo() const;
+    
+    // 重置
+    void reset();
+    
 private:
-    std::shared_ptr<ConfigurationManager> configManager_;
     std::vector<std::string> errors_;
+    ParseStatistics statistics_;
     
-    /**
-     * @brief 添加错误信息
-     * @param error 错误信息
-     */
-    void addError(const std::string& error);
+    // 辅助函数
+    std::vector<std::string> splitIntoLines(const std::string& source);
+    std::string trimWhitespace(const std::string& text);
+    bool isCommentLine(const std::string& text);
+    bool isEmptyLine(const std::string& text);
     
-    /**
-     * @brief 检查use语句是否在文件开头
-     * @param source 源代码
-     * @param lineNumber 行号
-     * @return 是否在文件开头
-     */
-    bool isAtFileBeginning(const std::string& source, int lineNumber);
+    // 解析函数
+    UseStatementInfo parseHtml5UseStatement(const std::string& text, size_t line, 
+                                          size_t column, const std::string& sourceFile);
+    UseStatementInfo parseConfigUseStatement(const std::string& text, size_t line, 
+                                           size_t column, const std::string& sourceFile);
     
-    /**
-     * @brief 提取行号
-     * @param source 源代码
-     * @param position 位置
-     * @return 行号
-     */
-    int getLineNumber(const std::string& source, size_t position);
+    // 验证函数
+    bool validateHtml5UseStatement(const UseStatementInfo& useStatement);
+    bool validateConfigUseStatement(const UseStatementInfo& useStatement);
     
-    /**
-     * @brief 提取列号
-     * @param source 源代码
-     * @param position 位置
-     * @return 列号
-     */
-    int getColumnNumber(const std::string& source, size_t position);
+    // 错误处理
+    void addError(const std::string& error, size_t line = 0, size_t column = 0);
     
-    /**
-     * @brief 跳过空白字符
-     * @param line 行内容
-     * @param position 位置
-     */
-    void skipWhitespace(const std::string& line, size_t& position);
+    // 统计更新
+    void updateStatistics(const std::string& type, size_t value = 1);
     
-    /**
-     * @brief 提取标识符
-     * @param line 行内容
-     * @param position 位置
-     * @return 标识符
-     */
-    std::string extractIdentifier(const std::string& line, size_t& position);
-    
-    /**
-     * @brief 检查是否匹配关键字
-     * @param line 行内容
-     * @param position 位置
-     * @param keyword 关键字
-     * @return 是否匹配
-     */
-    bool matchKeyword(const std::string& line, size_t& position, const std::string& keyword);
+    // 文本处理
+    std::string normalizeText(const std::string& text);
+    bool startsWith(const std::string& text, const std::string& prefix);
+    bool endsWith(const std::string& text, const std::string& suffix);
+    std::string extractBetween(const std::string& text, const std::string& start, const std::string& end);
 };
 
 } // namespace CHTL
-
-#endif // USESTATEMENTPARSER_H

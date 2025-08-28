@@ -1,275 +1,186 @@
-#ifndef NAMESPACEMANAGER_H
-#define NAMESPACEMANAGER_H
+#pragma once
 
 #include <string>
 #include <vector>
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
-#include <set>
 #include "ConfigurationManager.h"
 
 namespace CHTL {
 
-/**
- * @brief 命名空间项类型枚举
- */
+// 命名空间项类型
 enum class NamespaceItemType {
-    CUSTOM_ELEMENT,      // [Custom] @Element
-    CUSTOM_STYLE,        // [Custom] @Style
-    CUSTOM_VAR,          // [Custom] @Var
-    TEMPLATE_ELEMENT,    // [Template] @Element
-    TEMPLATE_STYLE,      // [Template] @Style
-    TEMPLATE_VAR,        // [Template] @Var
-    ORIGIN_HTML,         // [Origin] @Html
-    ORIGIN_STYLE,        // [Origin] @Style
-    ORIGIN_JAVASCRIPT,   // [Origin] @JavaScript
-    ORIGIN_CUSTOM,       // [Origin] @Custom
-    IMPORT_HTML,         // [Import] @Html
-    IMPORT_STYLE,        // [Import] @Style
-    IMPORT_JAVASCRIPT,   // [Import] @JavaScript
-    IMPORT_CHTL,         // [Import] @Chtl
-    IMPORT_CJMOD,        // [Import] @CJmod
-    IMPORT_CONFIG,       // [Import] @Config
-    CONFIGURATION        // [Configuration]
+    CUSTOM_ELEMENT,
+    CUSTOM_STYLE,
+    CUSTOM_VAR,
+    TEMPLATE_ELEMENT,
+    TEMPLATE_STYLE,
+    TEMPLATE_VAR,
+    ORIGIN_HTML,
+    ORIGIN_STYLE,
+    ORIGIN_JAVASCRIPT,
+    ORIGIN_CUSTOM
 };
 
-/**
- * @brief 命名空间项结构
- */
+// 命名空间项
 struct NamespaceItem {
-    NamespaceItemType type;
     std::string name;
+    NamespaceItemType type;
     std::string sourceFile;
-    int lineNumber;
-    int columnNumber;
+    size_t line;
+    size_t column;
     std::string content;
-    std::vector<std::string> dependencies;
     
-    NamespaceItem() : type(NamespaceItemType::CUSTOM_ELEMENT), lineNumber(0), columnNumber(0) {}
+    NamespaceItem(const std::string& name, NamespaceItemType type,
+                  const std::string& sourceFile = "", size_t line = 0, size_t column = 0,
+                  const std::string& content = "")
+        : name(name), type(type), sourceFile(sourceFile), line(line), column(column), content(content) {}
 };
 
-/**
- * @brief 命名空间结构
- */
+// 命名空间
 struct Namespace {
     std::string name;
     std::string sourceFile;
     std::vector<std::shared_ptr<NamespaceItem>> items;
     std::vector<std::string> subNamespaces;
     std::unordered_map<std::string, std::shared_ptr<Namespace>> nestedNamespaces;
-    bool isDefault;
     
-    Namespace() : isDefault(false) {}
+    Namespace(const std::string& name, const std::string& sourceFile = "")
+        : name(name), sourceFile(sourceFile) {}
 };
 
-/**
- * @brief 命名空间冲突信息
- */
+// 命名空间冲突
 struct NamespaceConflict {
     std::string itemName;
-    NamespaceItemType itemType;
-    std::string namespace1;
-    std::string namespace2;
-    std::string sourceFile1;
-    std::string sourceFile2;
-    int line1;
-    int line2;
+    NamespaceItemType type;
+    std::vector<std::string> conflictingNamespaces;
+    std::vector<std::string> sourceFiles;
+    std::vector<size_t> lineNumbers;
     
-    NamespaceConflict() : line1(0), line2(0) {}
+    NamespaceConflict(const std::string& itemName, NamespaceItemType type)
+        : itemName(itemName), type(type) {}
 };
 
-/**
- * @brief 命名空间管理器
- * 负责管理CHTL项目的所有命名空间操作
- */
+// 命名空间管理器
 class NamespaceManager {
 public:
-    /**
-     * @brief 构造函数
-     * @param configManager 配置管理器指针
-     */
     NamespaceManager(std::shared_ptr<ConfigurationManager> configManager);
+    ~NamespaceManager() = default;
     
-    /**
-     * @brief 析构函数
-     */
-    ~NamespaceManager();
+    // 命名空间创建
+    bool createNamespace(const std::string& name, const std::string& sourceFile = "");
+    bool createNestedNamespace(const std::string& parent, const std::string& child, const std::string& sourceFile = "");
     
-    /**
-     * @brief 创建命名空间
-     * @param name 命名空间名称
-     * @param sourceFile 源文件路径
-     * @param isDefault 是否为默认命名空间
-     * @return 是否创建成功
-     */
-    bool createNamespace(const std::string& name, const std::string& sourceFile, bool isDefault = false);
+    // 命名空间项管理
+    bool addNamespaceItem(const std::string& namespaceName, std::shared_ptr<NamespaceItem> item);
+    std::shared_ptr<NamespaceItem> getNamespaceItem(const std::string& namespaceName, const std::string& itemName);
+    std::vector<std::shared_ptr<NamespaceItem>> getNamespaceItems(const std::string& namespaceName);
+    bool removeNamespaceItem(const std::string& namespaceName, const std::string& itemName);
     
-    /**
-     * @brief 创建嵌套命名空间
-     * @param parentName 父命名空间名称
-     * @param childName 子命名空间名称
-     * @param sourceFile 源文件路径
-     * @return 是否创建成功
-     */
-    bool createNestedNamespace(const std::string& parentName, const std::string& childName, const std::string& sourceFile);
-    
-    /**
-     * @brief 添加命名空间项
-     * @param namespaceName 命名空间名称
-     * @param item 命名空间项
-     * @return 是否添加成功
-     */
-    bool addNamespaceItem(const std::string& namespaceName, const std::shared_ptr<NamespaceItem>& item);
-    
-    /**
-     * @brief 获取命名空间
-     * @param name 命名空间名称
-     * @return 命名空间指针
-     */
+    // 命名空间查询
     std::shared_ptr<Namespace> getNamespace(const std::string& name);
+    std::vector<std::string> getNamespaceNames() const;
+    bool hasNamespace(const std::string& name) const;
+    size_t getNamespaceCount() const { return namespaces_.size(); }
     
-    /**
-     * @brief 获取所有命名空间
-     * @return 命名空间映射
-     */
-    const std::unordered_map<std::string, std::shared_ptr<Namespace>>& getAllNamespaces() const;
-    
-    /**
-     * @brief 检查命名空间是否存在
-     * @param name 命名空间名称
-     * @return 是否存在
-     */
-    bool namespaceExists(const std::string& name) const;
-    
-    /**
-     * @brief 检查命名空间项是否存在
-     * @param namespaceName 命名空间名称
-     * @param itemName 项名称
-     * @param itemType 项类型
-     * @return 是否存在
-     */
-    bool namespaceItemExists(const std::string& namespaceName, const std::string& itemName, NamespaceItemType itemType) const;
-    
-    /**
-     * @brief 合并同名命名空间
-     * @param name 命名空间名称
-     * @return 是否合并成功
-     */
+    // 命名空间合并
     bool mergeNamespaces(const std::string& name);
+    bool mergeNestedNamespaces(const std::string& parent, const std::string& child);
     
-    /**
-     * @brief 检测命名空间冲突
-     * @return 冲突信息列表
-     */
-    std::vector<NamespaceConflict> detectConflicts() const;
+    // 冲突检测
+    std::vector<NamespaceConflict> detectConflicts();
+    bool hasConflicts() const;
+    std::vector<NamespaceConflict> getConflictsForNamespace(const std::string& namespaceName);
     
-    /**
-     * @brief 解析命名空间路径
-     * @param path 命名空间路径（如：space.room）
-     * @return 命名空间组件列表
-     */
-    std::vector<std::string> parseNamespacePath(const std::string& path) const;
+    // 命名空间路径解析
+    std::vector<std::string> parseNamespacePath(const std::string& path);
+    std::string normalizeNamespacePath(const std::string& path);
+    std::string resolveNamespacePath(const std::string& path);
     
-    /**
-     * @brief 获取命名空间项
-     * @param namespacePath 命名空间路径
-     * @param itemName 项名称
-     * @param itemType 项类型
-     * @return 命名空间项指针
-     */
-    std::shared_ptr<NamespaceItem> getNamespaceItem(const std::string& namespacePath, const std::string& itemName, NamespaceItemType itemType) const;
-    
-    /**
-     * @brief 创建默认命名空间
-     * @param sourceFile 源文件路径
-     * @return 默认命名空间名称
-     */
-    std::string createDefaultNamespace(const std::string& sourceFile);
-    
-    /**
-     * @brief 设置默认命名空间启用状态
-     * @param enabled 是否启用
-     */
-    void setDefaultNamespaceEnabled(bool enabled);
-    
-    /**
-     * @brief 获取默认命名空间启用状态
-     * @return 是否启用
-     */
+    // 默认命名空间
+    void setDefaultNamespace(const std::string& name);
+    std::string getDefaultNamespace() const { return defaultNamespace_; }
     bool isDefaultNamespaceEnabled() const;
     
-    /**
-     * @brief 清除命名空间
-     * @param name 命名空间名称
-     */
-    void clearNamespace(const std::string& name);
+    // 命名空间继承
+    bool inheritNamespace(const std::string& child, const std::string& parent);
+    std::vector<std::string> getInheritanceChain(const std::string& namespaceName);
     
-    /**
-     * @brief 清除所有命名空间
-     */
+    // 命名空间导出
+    std::string exportNamespace(const std::string& name) const;
+    bool importNamespace(const std::string& exportData, const std::string& name = "");
+    
+    // 命名空间清理
+    void clearNamespace(const std::string& name);
     void clearAllNamespaces();
     
-    /**
-     * @brief 获取命名空间统计信息
-     * @return 统计信息字符串
-     */
-    std::string getStatistics() const;
+    // 命名空间验证
+    bool validateNamespace(const std::string& name);
+    std::vector<std::string> getValidationErrors(const std::string& name);
     
-    /**
-     * @brief 验证命名空间名称
-     * @param name 命名空间名称
-     * @return 是否有效
-     */
-    bool validateNamespaceName(const std::string& name) const;
-
+    // 统计信息
+    struct NamespaceStatistics {
+        size_t totalNamespaces;
+        size_t totalItems;
+        size_t totalConflicts;
+        size_t mergedNamespaces;
+        size_t nestedNamespaces;
+        
+        NamespaceStatistics() : totalNamespaces(0), totalItems(0), totalConflicts(0),
+                               mergedNamespaces(0), nestedNamespaces(0) {}
+    };
+    
+    const NamespaceStatistics& getStatistics() const { return statistics_; }
+    void clearStatistics();
+    
+    // 调试信息
+    std::string getDebugInfo() const;
+    std::string getNamespaceInfo(const std::string& name) const;
+    
+    // 重置
+    void reset();
+    
 private:
     std::shared_ptr<ConfigurationManager> configManager_;
     std::unordered_map<std::string, std::shared_ptr<Namespace>> namespaces_;
-    bool defaultNamespaceEnabled_;
+    std::string defaultNamespace_;
+    std::unordered_map<std::string, std::string> inheritanceMap_;
+    NamespaceStatistics statistics_;
     
-    /**
-     * @brief 查找命名空间（支持嵌套路径）
-     * @param path 命名空间路径
-     * @return 命名空间指针
-     */
-    std::shared_ptr<Namespace> findNamespace(const std::string& path) const;
+    // 辅助函数
+    bool isValidNamespaceName(const std::string& name) const;
+    bool isValidNamespaceItem(const std::shared_ptr<NamespaceItem>& item) const;
+    std::string generateNamespaceKey(const std::string& prefix, const std::string& suffix) const;
     
-    /**
-     * @brief 创建嵌套命名空间路径
-     * @param parent 父命名空间
-     * @param pathComponents 路径组件
-     * @param sourceFile 源文件路径
-     * @return 是否创建成功
-     */
-    bool createNestedNamespacePath(std::shared_ptr<Namespace> parent, const std::vector<std::string>& pathComponents, const std::string& sourceFile);
+    // 命名空间路径处理
+    std::vector<std::string> splitNamespacePath(const std::string& path);
+    std::string joinNamespacePath(const std::vector<std::string>& parts);
+    bool isAbsoluteNamespacePath(const std::string& path) const;
     
-    /**
-     * @brief 检查命名空间项冲突
-     * @param namespace1 命名空间1
-     * @param namespace2 命名空间2
-     * @param conflicts 冲突列表
-     */
-    void checkNamespaceConflicts(const std::shared_ptr<Namespace>& namespace1, 
-                                const std::shared_ptr<Namespace>& namespace2,
-                                std::vector<NamespaceConflict>& conflicts) const;
+    // 冲突检测
+    bool hasConflict(const std::string& itemName, NamespaceItemType type, const std::string& namespaceName);
+    void addConflict(const std::string& itemName, NamespaceItemType type, 
+                    const std::string& namespaceName, const std::string& sourceFile, size_t line);
     
-    /**
-     * @brief 从文件名生成默认命名空间名称
-     * @param filePath 文件路径
-     * @return 默认命名空间名称
-     */
-    std::string generateDefaultNamespaceName(const std::string& filePath) const;
+    // 合并逻辑
+    void mergeItems(std::vector<std::shared_ptr<NamespaceItem>>& target, 
+                   const std::vector<std::shared_ptr<NamespaceItem>>& source);
+    void mergeSubNamespaces(std::vector<std::string>& target, 
+                           const std::vector<std::string>& source);
+    void mergeNestedNamespaces(std::unordered_map<std::string, std::shared_ptr<Namespace>>& target,
+                              const std::unordered_map<std::string, std::shared_ptr<Namespace>>& source);
     
-    /**
-     * @brief 检查命名空间项类型兼容性
-     * @param type1 类型1
-     * @param type2 类型2
-     * @return 是否兼容
-     */
-    bool areItemTypesCompatible(NamespaceItemType type1, NamespaceItemType type2) const;
+    // 继承逻辑
+    void buildInheritanceMap();
+    bool hasCircularInheritance(const std::string& namespaceName, std::unordered_set<std::string>& visited);
+    
+    // 统计更新
+    void updateStatistics(const std::string& type, size_t value = 1);
+    
+    // 配置相关
+    bool isDefaultNamespaceDisabled() const;
+    std::string getDefaultNamespaceFromConfig() const;
 };
 
 } // namespace CHTL
-
-#endif // NAMESPACEMANAGER_H

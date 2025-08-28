@@ -1,232 +1,153 @@
-#ifndef CONFIGURATIONMANAGER_H
-#define CONFIGURATIONMANAGER_H
+#pragma once
 
 #include <string>
-#include <map>
 #include <vector>
 #include <memory>
-#include <unordered_set>
+#include <unordered_map>
+#include <optional>
+#include <variant> // Added for std::variant
 
 namespace CHTL {
 
-/**
- * @brief 配置项类型枚举
- */
-enum class ConfigValueType {
-    BOOLEAN,        // 布尔值
-    INTEGER,        // 整数值
-    STRING,         // 字符串值
-    STRING_ARRAY,   // 字符串数组
-    KEYWORD         // 关键字
+// 配置项类型
+enum class ConfigItemType {
+    BOOLEAN,
+    STRING,
+    NUMBER,
+    ARRAY,
+    GROUP
 };
 
-/**
- * @brief 配置项值结构
- */
+// 配置项值
 struct ConfigValue {
-    ConfigValueType type;
-    std::string stringValue;
-    int intValue;
-    bool boolValue;
-    std::vector<std::string> stringArrayValue;
+    ConfigItemType type;
+    std::variant<bool, std::string, double, std::vector<std::string>> value;
     
-    ConfigValue() : type(ConfigValueType::STRING), intValue(0), boolValue(false) {}
+    ConfigValue() : type(ConfigItemType::STRING), value(std::string("")) {}
+    ConfigValue(ConfigItemType t) : type(t) {
+        switch (t) {
+            case ConfigItemType::BOOLEAN: value = false; break;
+            case ConfigItemType::STRING: value = std::string(""); break;
+            case ConfigItemType::NUMBER: value = 0.0; break;
+            case ConfigItemType::ARRAY: value = std::vector<std::string>(); break;
+            case ConfigItemType::GROUP: value = std::vector<std::string>(); break;
+        }
+    }
     
-    // 构造函数重载
-    ConfigValue(const std::string& value) : type(ConfigValueType::STRING), stringValue(value), intValue(0), boolValue(false) {}
-    ConfigValue(int value) : type(ConfigValueType::INTEGER), intValue(value), boolValue(false) {}
-    ConfigValue(bool value) : type(ConfigValueType::BOOLEAN), intValue(0), boolValue(value) {}
-    ConfigValue(const std::vector<std::string>& value) : type(ConfigValueType::STRING_ARRAY), stringArrayValue(value), intValue(0), boolValue(false) {}
+    template<typename T>
+    ConfigValue(ConfigItemType t, const T& v) : type(t), value(v) {}
+    
+    template<typename T>
+    T get() const {
+        return std::get<T>(value);
+    }
+    
+    template<typename T>
+    void set(const T& v) {
+        value = v;
+    }
 };
 
-/**
- * @brief 配置组结构
- */
+// 配置组
 struct ConfigurationGroup {
-    std::string name;                           // 配置组名称（空字符串表示无名配置组）
-    std::map<std::string, ConfigValue> configs; // 配置项映射
-    std::map<std::string, std::vector<std::string>> originTypes; // 原始嵌入类型
-    bool isActive;                              // 是否激活
+    std::string name;
+    std::unordered_map<std::string, ConfigValue> configItems;
+    std::unordered_map<std::string, std::vector<std::string>> nameGroups;
+    std::unordered_map<std::string, std::string> originTypes;
+    std::string sourceFile;
+    size_t line;
+    bool isDefault;
     
-    ConfigurationGroup() : isActive(false) {}
-    ConfigurationGroup(const std::string& n) : name(n), isActive(false) {}
+    ConfigurationGroup(const std::string& name = "", const std::string& sourceFile = "", 
+                      size_t line = 0, bool isDefault = false)
+        : name(name), sourceFile(sourceFile), line(line), isDefault(isDefault) {}
 };
 
-/**
- * @brief 配置管理器
- * 管理CHTL项目的所有配置组和配置项
- */
+// 配置管理器
 class ConfigurationManager {
 public:
-    /**
-     * @brief 构造函数
-     */
     ConfigurationManager();
+    ~ConfigurationManager() = default;
     
-    /**
-     * @brief 析构函数
-     */
-    ~ConfigurationManager();
+    // 配置组管理
+    bool addConfigurationGroup(const std::string& name, const ConfigurationGroup& config);
+    std::shared_ptr<ConfigurationGroup> getConfigurationGroup(const std::string& name);
+    bool removeConfigurationGroup(const std::string& name);
     
-    /**
-     * @brief 创建配置组
-     * @param name 配置组名称（空字符串表示无名配置组）
-     * @return 是否成功创建
-     */
-    bool createConfigurationGroup(const std::string& name = "");
+    // 配置项管理
+    bool setConfigItem(const std::string& groupName, const std::string& key, const ConfigValue& value);
+    std::optional<ConfigValue> getConfigItem(const std::string& groupName, const std::string& key);
     
-    /**
-     * @brief 获取配置组
-     * @param name 配置组名称
-     * @return 配置组指针，如果不存在返回nullptr
-     */
-    std::shared_ptr<ConfigurationGroup> getConfigurationGroup(const std::string& name) const;
+    // 名称组管理
+    bool setNameGroup(const std::string& groupName, const std::string& key, 
+                     const std::vector<std::string>& values);
+    std::optional<std::vector<std::string>> getNameGroup(const std::string& groupName, const std::string& key);
     
-    /**
-     * @brief 获取所有配置组
-     * @return 配置组映射
-     */
-    const std::map<std::string, std::shared_ptr<ConfigurationGroup>>& getAllConfigurationGroups() const;
+    // 原始类型管理
+    bool setOriginType(const std::string& groupName, const std::string& key, const std::string& value);
+    std::optional<std::string> getOriginType(const std::string& groupName, const std::string& key);
     
-    /**
-     * @brief 获取无名配置组
-     * @return 无名配置组指针
-     */
-    std::shared_ptr<ConfigurationGroup> getUnnamedConfigurationGroup();
+    // 默认配置组
+    void setDefaultConfigurationGroup(const std::string& name);
+    std::string getDefaultConfigurationGroup() const { return defaultGroup_; }
     
-    /**
-     * @brief 设置配置项
-     * @param groupName 配置组名称
-     * @param key 配置键
-     * @param value 配置值
-     * @return 是否成功设置
-     */
-    bool setConfig(const std::string& groupName, const std::string& key, const ConfigValue& value);
-    
-    /**
-     * @brief 获取配置项
-     * @param groupName 配置组名称
-     * @param key 配置键
-     * @return 配置值，如果不存在返回默认值
-     */
-    ConfigValue getConfig(const std::string& groupName, const std::string& key) const;
-    
-    /**
-     * @brief 设置原始嵌入类型
-     * @param groupName 配置组名称
-     * @param typeName 类型名称
-     * @param typeValue 类型值
-     * @return 是否成功设置
-     */
-    bool setOriginType(const std::string& groupName, const std::string& typeName, const std::string& typeValue);
-    
-    /**
-     * @brief 获取原始嵌入类型
-     * @param groupName 配置组名称
-     * @param typeName 类型名称
-     * @return 类型值列表
-     */
-    std::vector<std::string> getOriginType(const std::string& groupName, const std::string& typeName) const;
-    
-    /**
-     * @brief 激活配置组
-     * @param name 配置组名称
-     * @return 是否成功激活
-     */
-    bool activateConfigurationGroup(const std::string& name);
-    
-    /**
-     * @brief 获取当前激活的配置组
-     * @return 激活的配置组名称
-     */
-    std::string getActiveConfigurationGroup() const;
-    
-    /**
-     * @brief 检查配置项是否存在
-     * @param groupName 配置组名称
-     * @param key 配置键
-     * @return 是否存在
-     */
-    bool hasConfig(const std::string& groupName, const std::string& key) const;
-    
-    /**
-     * @brief 检查配置组是否存在
-     * @param name 配置组名称
-     * @return 是否存在
-     */
+    // 配置组查询
+    std::vector<std::string> getConfigurationGroupNames() const;
     bool hasConfigurationGroup(const std::string& name) const;
+    size_t getConfigurationGroupCount() const { return configurationGroups_.size(); }
     
-    /**
-     * @brief 删除配置组
-     * @param name 配置组名称
-     * @return 是否成功删除
-     */
-    bool deleteConfigurationGroup(const std::string& name);
+    // 配置验证
+    bool validateConfiguration(const std::string& groupName);
+    std::vector<std::string> getValidationErrors(const std::string& groupName);
     
-    /**
-     * @brief 合并配置组
-     * @param targetName 目标配置组名称
-     * @param sourceName 源配置组名称
-     * @return 是否成功合并
-     */
-    bool mergeConfigurationGroups(const std::string& targetName, const std::string& sourceName);
+    // 配置合并
+    bool mergeConfigurationGroups(const std::string& target, const std::string& source);
     
-    /**
-     * @brief 获取默认配置
-     * @return 默认配置组
-     */
-    std::shared_ptr<ConfigurationGroup> getDefaultConfiguration();
+    // 配置继承
+    bool inheritConfiguration(const std::string& child, const std::string& parent);
     
-    /**
-     * @brief 重置为默认配置
-     */
-    void resetToDefault();
+    // 配置导出
+    std::string exportConfiguration(const std::string& groupName) const;
+    bool importConfiguration(const std::string& configText, const std::string& groupName = "");
     
-    /**
-     * @brief 验证配置组
-     * @param groupName 配置组名称
-     * @return 是否有效
-     */
-    bool validateConfigurationGroup(const std::string& groupName) const;
+    // 配置重置
+    void resetConfiguration(const std::string& groupName);
+    void resetAllConfigurations();
     
-    /**
-     * @brief 获取配置组信息
-     * @param groupName 配置组名称
-     * @return 配置组信息字符串
-     */
-    std::string getConfigurationGroupInfo(const std::string& groupName) const;
-
+    // 配置备份和恢复
+    bool backupConfiguration(const std::string& groupName);
+    bool restoreConfiguration(const std::string& groupName);
+    
+    // 调试信息
+    std::string getDebugInfo() const;
+    std::string getConfigurationInfo(const std::string& groupName) const;
+    
 private:
-    std::map<std::string, std::shared_ptr<ConfigurationGroup>> configurationGroups_; // 配置组映射
-    std::string activeGroupName_;                                                    // 当前激活的配置组名称
-    std::shared_ptr<ConfigurationGroup> defaultConfiguration_;                       // 默认配置
+    std::unordered_map<std::string, ConfigurationGroup> configurationGroups_;
+    std::string defaultGroup_;
+    std::unordered_map<std::string, ConfigurationGroup> backupGroups_;
     
-    /**
-     * @brief 初始化默认配置
-     */
-    void initializeDefaultConfiguration();
+    // 辅助函数
+    bool isValidConfigKey(const std::string& key) const;
+    bool isValidConfigValue(const ConfigValue& value) const;
+    std::string generateConfigKey(const std::string& prefix, const std::string& suffix) const;
     
-    /**
-     * @brief 创建标准配置项
-     */
-    void createStandardConfigs(std::shared_ptr<ConfigurationGroup> group);
+    // 配置解析
+    bool parseConfigText(const std::string& configText, ConfigurationGroup& config);
+    std::vector<std::string> parseNameGroup(const std::string& text);
     
-    /**
-     * @brief 验证配置项值
-     * @param key 配置键
-     * @param value 配置值
-     * @return 是否有效
-     */
-    bool validateConfigValue(const std::string& key, const ConfigValue& value) const;
+    // 配置验证
+    bool validateConfigItem(const std::string& key, const ConfigValue& value);
+    bool validateNameGroup(const std::string& key, const std::vector<std::string>& values);
+    bool validateOriginType(const std::string& key, const std::string& value);
     
-    /**
-     * @brief 解析配置值
-     * @param value 原始值字符串
-     * @return 解析后的配置值
-     */
-    ConfigValue parseConfigValue(const std::string& value) const;
+    // 配置合并
+    void mergeConfigItems(std::unordered_map<std::string, ConfigValue>& target, 
+                         const std::unordered_map<std::string, ConfigValue>& source);
+    void mergeNameGroups(std::unordered_map<std::string, std::vector<std::string>>& target,
+                        const std::unordered_map<std::string, std::vector<std::string>>& source);
+    void mergeOriginTypes(std::unordered_map<std::string, std::string>& target,
+                         const std::unordered_map<std::string, std::string>& source);
 };
 
 } // namespace CHTL
-
-#endif // CONFIGURATIONMANAGER_H
