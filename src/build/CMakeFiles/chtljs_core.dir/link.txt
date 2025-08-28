@@ -1,0 +1,2 @@
+/usr/bin/ar qc libchtljs_core.a CMakeFiles/chtljs_core.dir/CHTLJS/CHTLJSLexer/CHTLJSToken.cpp.o CMakeFiles/chtljs_core.dir/CHTLJS/CHTLJSLexer/CHTLJSGlobalMap.cpp.o CMakeFiles/chtljs_core.dir/CHTLJS/CHTLJSLexer/CHTLJSLexer.cpp.o
+/usr/bin/ranlib libchtljs_core.a
