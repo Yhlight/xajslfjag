@@ -1,351 +1,177 @@
 #include "UseStatementParser.h"
-#include <algorithm>
-#include <cctype>
 #include <sstream>
-#include <regex>
+#include <algorithm>
 
 namespace CHTL {
 
-UseStatementParser::UseStatementParser(std::shared_ptr<ConfigurationManager> configManager)
-    : configManager_(configManager) {
+UseStatementParser::UseStatementParser() {}
+
+std::vector<UseStatementInfo> UseStatementParser::parse(const std::string& source, const std::string& sourceFile) {
+	clearErrors();
+	statistics_ = ParseStatistics();
+	std::vector<UseStatementInfo> results;
+	auto lines = splitIntoLines(source);
+	for (size_t i = 0; i < lines.size(); ++i) {
+		std::string line = trimWhitespace(lines[i]);
+		if (isEmptyLine(line) || isCommentLine(line)) continue;
+		if (!isUseStatement(line)) break; // use必须在文件开头，遇到非use即停止
+		UseStatementInfo info = parseSingleUseStatement(line, i + 1, 1, sourceFile);
+		if (!validateUseStatement(info)) {
+			statistics_.parsingErrors++;
+			continue;
+		}
+		results.push_back(info);
+	}
+	return results;
 }
 
-UseStatementParser::~UseStatementParser() {
+UseStatementInfo UseStatementParser::parseSingleUseStatement(const std::string& line, size_t lineNumber, size_t columnNumber, const std::string& sourceFile) {
+	std::string text = trimWhitespace(line);
+	UseStatementType t = getUseStatementType(text);
+	switch (t) {
+		case UseStatementType::HTML5:
+			statistics_.html5Statements++;
+			statistics_.totalUseStatements++;
+			return parseHtml5UseStatement(text, lineNumber, columnNumber, sourceFile);
+		case UseStatementType::CONFIG:
+			statistics_.configStatements++;
+			statistics_.totalUseStatements++;
+			return parseConfigUseStatement(text, lineNumber, columnNumber, sourceFile);
+		default:
+			addError("Unknown use statement", lineNumber, columnNumber);
+			return UseStatementInfo(UseStatementType::HTML5, "", lineNumber, columnNumber, sourceFile);
+	}
 }
 
-std::shared_ptr<UseStatement> UseStatementParser::parse(const std::string& source) {
-    clearErrors();
-    
-    if (source.empty()) {
-        addError("源代码为空");
-        return nullptr;
-    }
-    
-    // 查找第一个非空行
-    std::istringstream iss(source);
-    std::string line;
-    int lineNumber = 1;
-    
-    while (std::getline(iss, line)) {
-        // 跳过空行和注释行
-        if (line.empty() || line.find("--") == 0) {
-            lineNumber++;
-            continue;
-        }
-        
-        // 检查是否以use开头
-        if (line.find("use") == 0) {
-            // 解析use语句
-            if (line.find("html5") != std::string::npos) {
-                return parseHTML5Type(line, lineNumber);
-            } else if (line.find("[Configuration]") != std::string::npos) {
-                return parseFullConfigGroup(line, lineNumber);
-            } else if (line.find("@Config") != std::string::npos) {
-                return parseConfigGroup(line, lineNumber);
-            } else {
-                addError("未知的use语句格式: " + line);
-                return nullptr;
-            }
-        }
-        
-        // 如果遇到其他语句，说明use语句不在文件开头
-        if (line.find("[") == 0 || line.find("@") == 0 || 
-            (line.find_first_not_of(" \t") != std::string::npos && line.find_first_not_of(" \t") != 0)) {
-            addError("use语句必须在文件开头");
-            return nullptr;
-        }
-        
-        lineNumber++;
-    }
-    
-    addError("未找到use语句");
-    return nullptr;
+bool UseStatementParser::validateUseStatement(const UseStatementInfo& useStatement) {
+	if (useStatement.type == UseStatementType::HTML5) {
+		return validateHtml5UseStatement(useStatement);
+	}
+	if (useStatement.type == UseStatementType::CONFIG) {
+		return validateConfigUseStatement(useStatement);
+	}
+	return false;
 }
 
-std::shared_ptr<UseStatement> UseStatementParser::parseHTML5Type(const std::string& line, int lineNumber) {
-    auto statement = std::make_shared<UseStatement>();
-    statement->type = UseStatementType::HTML5_TYPE;
-    statement->lineNumber = lineNumber;
-    statement->columnNumber = 1;
-    
-    size_t position = 0;
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "use"
-    if (!matchKeyword(line, position, "use")) {
-        addError("期望关键字 'use'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "html5"
-    if (!matchKeyword(line, position, "html5")) {
-        addError("期望关键字 'html5'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 检查分号
-    if (position >= line.length() || line[position] != ';') {
-        addError("期望分号 ';'");
-        return nullptr;
-    }
-    
-    statement->html5Type = "html5";
-    return statement;
+std::vector<std::string> UseStatementParser::getValidationErrors(const UseStatementInfo& /*useStatement*/) {
+	return errors_;
 }
 
-std::shared_ptr<UseStatement> UseStatementParser::parseConfigGroup(const std::string& line, int lineNumber) {
-    auto statement = std::make_shared<UseStatement>();
-    statement->type = UseStatementType::CONFIG_GROUP;
-    statement->lineNumber = lineNumber;
-    statement->columnNumber = 1;
-    
-    size_t position = 0;
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "use"
-    if (!matchKeyword(line, position, "use")) {
-        addError("期望关键字 'use'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "@Config"
-    if (!matchKeyword(line, position, "@Config")) {
-        addError("期望关键字 '@Config'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 提取配置组名称
-    std::string configGroupName = extractIdentifier(line, position);
-    if (configGroupName.empty()) {
-        addError("期望配置组名称");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 检查分号
-    if (position >= line.length() || line[position] != ';') {
-        addError("期望分号 ';'");
-        return nullptr;
-    }
-    
-    statement->configGroupName = configGroupName;
-    return statement;
+UseStatementType UseStatementParser::getUseStatementType(const std::string& text) {
+	std::string norm = normalizeText(text);
+	if (startsWith(norm, "use html5") && endsWith(norm, ";")) return UseStatementType::HTML5;
+	if (startsWith(norm, "use @config ") && endsWith(norm, ";")) return UseStatementType::CONFIG;
+	if (startsWith(norm, "use [configuration] @config ") && endsWith(norm, ";")) return UseStatementType::CONFIG;
+	return UseStatementType::HTML5; // default, will validate later
 }
 
-std::shared_ptr<UseStatement> UseStatementParser::parseFullConfigGroup(const std::string& line, int lineNumber) {
-    auto statement = std::make_shared<UseStatement>();
-    statement->type = UseStatementType::FULL_CONFIG_GROUP;
-    statement->lineNumber = lineNumber;
-    statement->columnNumber = 1;
-    
-    size_t position = 0;
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "use"
-    if (!matchKeyword(line, position, "use")) {
-        addError("期望关键字 'use'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "[Configuration]"
-    if (!matchKeyword(line, position, "[Configuration]")) {
-        addError("期望关键字 '[Configuration]'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 匹配 "@Config"
-    if (!matchKeyword(line, position, "@Config")) {
-        addError("期望关键字 '@Config'");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 提取配置组名称
-    std::string configGroupName = extractIdentifier(line, position);
-    if (configGroupName.empty()) {
-        addError("期望配置组名称");
-        return nullptr;
-    }
-    
-    // 跳过空白字符
-    skipWhitespace(line, position);
-    
-    // 检查分号
-    if (position >= line.length() || line[position] != ';') {
-        addError("期望分号 ';'");
-        return nullptr;
-    }
-    
-    statement->configGroupName = configGroupName;
-    return statement;
+bool UseStatementParser::isUseStatement(const std::string& text) {
+	std::string norm = normalizeText(text);
+	return startsWith(norm, "use html5") || startsWith(norm, "use @config ") || startsWith(norm, "use [configuration] @config ");
 }
 
-bool UseStatementParser::validateUseStatement(const std::shared_ptr<UseStatement>& statement) {
-    if (!statement) {
-        addError("use语句为空");
-        return false;
-    }
-    
-    switch (statement->type) {
-        case UseStatementType::HTML5_TYPE:
-            if (statement->html5Type != "html5") {
-                addError("HTML5类型必须是 'html5'");
-                return false;
-            }
-            break;
-            
-        case UseStatementType::CONFIG_GROUP:
-        case UseStatementType::FULL_CONFIG_GROUP:
-            if (statement->configGroupName.empty()) {
-                addError("配置组名称不能为空");
-                return false;
-            }
-            
-            // 检查配置组是否存在
-            if (!configManager_->hasConfigurationGroup(statement->configGroupName)) {
-                addError("配置组不存在: " + statement->configGroupName);
-                return false;
-            }
-            break;
-    }
-    
-    return true;
+std::string UseStatementParser::extractUseStatementValue(const std::string& text, UseStatementType type) {
+	std::string norm = normalizeText(text);
+	if (type == UseStatementType::HTML5) return "html5";
+	// use @Config Basic; or use [Configuration] @Config Basic;
+	auto pos = norm.find("@config ");
+	if (pos == std::string::npos) return "";
+	std::string after = norm.substr(pos + 8); // len("@config ")
+	if (!after.empty() && after.back() == ';') after.pop_back();
+	after = trimWhitespace(after);
+	return after;
 }
 
-bool UseStatementParser::applyUseStatement(const std::shared_ptr<UseStatement>& statement) {
-    if (!validateUseStatement(statement)) {
-        return false;
-    }
-    
-    switch (statement->type) {
-        case UseStatementType::HTML5_TYPE:
-            // HTML5类型不需要特殊处理，只是声明
-            break;
-            
-        case UseStatementType::CONFIG_GROUP:
-        case UseStatementType::FULL_CONFIG_GROUP:
-            // 激活指定的配置组
-            if (!configManager_->activateConfigurationGroup(statement->configGroupName)) {
-                addError("无法激活配置组: " + statement->configGroupName);
-                return false;
-            }
-            break;
-    }
-    
-    return true;
+std::shared_ptr<UseStatementNode> UseStatementParser::createUseStatementNode(const UseStatementInfo& info) {
+	auto node = std::make_shared<UseStatementNode>(info.type == UseStatementType::HTML5 ? "html5" : "@Config", info.value, info.line, info.column);
+	return node;
 }
 
-std::vector<std::string> UseStatementParser::getErrors() const {
-    return errors_;
+void UseStatementParser::clearErrors() { errors_.clear(); }
+void UseStatementParser::clearStatistics() { statistics_ = ParseStatistics(); }
+std::string UseStatementParser::getDebugInfo() const {
+	std::ostringstream oss;
+	oss << "use.total=" << statistics_.totalUseStatements
+		<< ",html5=" << statistics_.html5Statements
+		<< ",config=" << statistics_.configStatements
+		<< ",errors=" << statistics_.parsingErrors;
+	return oss.str();
+}
+void UseStatementParser::reset() { clearErrors(); clearStatistics(); }
+
+// private helpers
+std::vector<std::string> UseStatementParser::splitIntoLines(const std::string& source) {
+	std::vector<std::string> lines;
+	std::stringstream ss(source);
+	std::string line;
+	while (std::getline(ss, line)) lines.push_back(line);
+	return lines;
 }
 
-void UseStatementParser::clearErrors() {
-    errors_.clear();
+std::string UseStatementParser::trimWhitespace(const std::string& text) {
+	size_t start = 0; while (start < text.size() && isspace(static_cast<unsigned char>(text[start]))) ++start;
+	size_t end = text.size(); while (end > start && isspace(static_cast<unsigned char>(text[end - 1]))) --end;
+	return text.substr(start, end - start);
 }
 
-void UseStatementParser::addError(const std::string& error) {
-    errors_.push_back(error);
+bool UseStatementParser::isCommentLine(const std::string& text) {
+	std::string t = trimWhitespace(text);
+	return startsWith(t, "//") || startsWith(t, "--");
 }
 
-bool UseStatementParser::isAtFileBeginning(const std::string& source, int lineNumber) {
-    std::istringstream iss(source);
-    std::string line;
-    int currentLine = 1;
-    
-    while (std::getline(iss, line) && currentLine < lineNumber) {
-        // 跳过空行和注释行
-        if (!line.empty() && line.find("--") != 0) {
-            // 如果遇到非空非注释行，说明use语句不在文件开头
-            if (line.find_first_not_of(" \t") != std::string::npos) {
-                return false;
-            }
-        }
-        currentLine++;
-    }
-    
-    return true;
+bool UseStatementParser::isEmptyLine(const std::string& text) { return trimWhitespace(text).empty(); }
+
+UseStatementInfo UseStatementParser::parseHtml5UseStatement(const std::string& text, size_t line, size_t column, const std::string& sourceFile) {
+	// expect: use html5;
+	std::string norm = normalizeText(text);
+	if (!(startsWith(norm, "use html5") && endsWith(norm, ";"))) {
+		addError("Invalid html5 use statement", line, column);
+	}
+	return UseStatementInfo(UseStatementType::HTML5, "html5", line, column, sourceFile);
 }
 
-int UseStatementParser::getLineNumber(const std::string& source, size_t position) {
-    int lineNumber = 1;
-    for (size_t i = 0; i < position && i < source.length(); ++i) {
-        if (source[i] == '\n') {
-            lineNumber++;
-        }
-    }
-    return lineNumber;
+UseStatementInfo UseStatementParser::parseConfigUseStatement(const std::string& text, size_t line, size_t column, const std::string& sourceFile) {
+	std::string value = extractUseStatementValue(text, UseStatementType::CONFIG);
+	if (value.empty()) addError("Missing config group name in use @Config", line, column);
+	return UseStatementInfo(UseStatementType::CONFIG, value, line, column, sourceFile);
 }
 
-int UseStatementParser::getColumnNumber(const std::string& source, size_t position) {
-    int columnNumber = 1;
-    for (size_t i = 0; i < position && i < source.length(); ++i) {
-        if (source[i] == '\n') {
-            columnNumber = 1;
-        } else {
-            columnNumber++;
-        }
-    }
-    return columnNumber;
+bool UseStatementParser::validateHtml5UseStatement(const UseStatementInfo& useStatement) {
+	return useStatement.value == "html5";
 }
 
-void UseStatementParser::skipWhitespace(const std::string& line, size_t& position) {
-    while (position < line.length() && std::isspace(line[position])) {
-        position++;
-    }
+bool UseStatementParser::validateConfigUseStatement(const UseStatementInfo& useStatement) {
+	return !useStatement.value.empty();
 }
 
-std::string UseStatementParser::extractIdentifier(const std::string& line, size_t& position) {
-    std::string identifier;
-    
-    while (position < line.length() && 
-           (std::isalnum(line[position]) || line[position] == '_' || line[position] == '-')) {
-        identifier += line[position];
-        position++;
-    }
-    
-    return identifier;
+void UseStatementParser::addError(const std::string& error, size_t /*line*/, size_t /*column*/) { errors_.push_back(error); }
+
+void UseStatementParser::updateStatistics(const std::string& type, size_t value) {
+	(void)type; (void)value;
 }
 
-bool UseStatementParser::matchKeyword(const std::string& line, size_t& position, const std::string& keyword) {
-    if (position + keyword.length() > line.length()) {
-        return false;
-    }
-    
-    std::string substr = line.substr(position, keyword.length());
-    if (substr == keyword) {
-        position += keyword.length();
-        return true;
-    }
-    
-    return false;
+std::string UseStatementParser::normalizeText(const std::string& text) {
+	std::string s = text;
+	std::transform(s.begin(), s.end(), s.begin(), [](unsigned char c){ return static_cast<char>(::tolower(c)); });
+	return trimWhitespace(s);
+}
+
+bool UseStatementParser::startsWith(const std::string& text, const std::string& prefix) {
+	return text.rfind(prefix, 0) == 0;
+}
+
+bool UseStatementParser::endsWith(const std::string& text, const std::string& suffix) {
+	if (suffix.size() > text.size()) return false;
+	return std::equal(suffix.rbegin(), suffix.rend(), text.rbegin());
+}
+
+std::string UseStatementParser::extractBetween(const std::string& text, const std::string& start, const std::string& end) {
+	auto s = text.find(start);
+	if (s == std::string::npos) return "";
+	s += start.size();
+	auto e = text.find(end, s);
+	if (e == std::string::npos) return "";
+	return trimWhitespace(text.substr(s, e - s));
 }
 
 } // namespace CHTL
