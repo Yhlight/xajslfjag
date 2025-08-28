@@ -10,6 +10,7 @@ set(TEST_SOURCES
     configuration_manager_test.cpp
     use_statement_test.cpp
     constraint_parser_test.cpp
+    import_manager_test.cpp
 )
 
 # 创建Test可执行文件
@@ -93,4 +94,21 @@ target_link_libraries(ConstraintParserTest CHTLContext CHTLParser)
 target_include_directories(ConstraintParserTest PRIVATE
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLParser
+)
+
+# 创建导入管理器测试可执行文件
+add_executable(ImportManagerTest import_manager_test.cpp)
+
+# 设置目标属性
+set_target_properties(ImportManagerTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(ImportManagerTest CHTLContext)
+
+# 包含目录
+target_include_directories(ImportManagerTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
 )

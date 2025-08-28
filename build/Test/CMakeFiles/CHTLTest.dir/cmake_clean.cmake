@@ -6,6 +6,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLTest.dir/configuration_manager_test.cpp.o.d"
   "CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o"
   "CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.o.d"
+  "CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o"
+  "CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o.d"
   "CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o"
   "CMakeFiles/CHTLTest.dir/io_stream_test.cpp.o.d"
   "CMakeFiles/CHTLTest.dir/main.cpp.o"

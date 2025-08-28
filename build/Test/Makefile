@@ -172,6 +172,20 @@ ConstraintParserTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/build
 .PHONY : ConstraintParserTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/ImportManagerTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/ImportManagerTest.dir/rule
+.PHONY : Test/CMakeFiles/ImportManagerTest.dir/rule
+
+# Convenience name for target.
+ImportManagerTest: Test/CMakeFiles/ImportManagerTest.dir/rule
+.PHONY : ImportManagerTest
+
+# fast build rule for target.
+ImportManagerTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/build
+.PHONY : ImportManagerTest/fast
+
 configuration_manager_test.o: configuration_manager_test.cpp.o
 .PHONY : configuration_manager_test.o
 
@@ -225,6 +239,33 @@ constraint_parser_test.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/constraint_parser_test.cpp.s
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ConstraintParserTest.dir/build.make Test/CMakeFiles/ConstraintParserTest.dir/constraint_parser_test.cpp.s
 .PHONY : constraint_parser_test.cpp.s
+
+import_manager_test.o: import_manager_test.cpp.o
+.PHONY : import_manager_test.o
+
+# target to build an object file
+import_manager_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.o
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.o
+.PHONY : import_manager_test.cpp.o
+
+import_manager_test.i: import_manager_test.cpp.i
+.PHONY : import_manager_test.i
+
+# target to preprocess a source file
+import_manager_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.i
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.i
+.PHONY : import_manager_test.cpp.i
+
+import_manager_test.s: import_manager_test.cpp.s
+.PHONY : import_manager_test.s
+
+# target to generate assembly for a file
+import_manager_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/import_manager_test.cpp.s
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/import_manager_test.cpp.s
+.PHONY : import_manager_test.cpp.s
 
 io_stream_test.o: io_stream_test.cpp.o
 .PHONY : io_stream_test.o
@@ -312,6 +353,7 @@ help:
 	@echo "... CHTLTest"
 	@echo "... ConfigurationManagerTest"
 	@echo "... ConstraintParserTest"
+	@echo "... ImportManagerTest"
 	@echo "... UseStatementTest"
 	@echo "... configuration_manager_test.o"
 	@echo "... configuration_manager_test.i"
@@ -319,6 +361,9 @@ help:
 	@echo "... constraint_parser_test.o"
 	@echo "... constraint_parser_test.i"
 	@echo "... constraint_parser_test.s"
+	@echo "... import_manager_test.o"
+	@echo "... import_manager_test.i"
+	@echo "... import_manager_test.s"
 	@echo "... io_stream_test.o"
 	@echo "... io_stream_test.i"
 	@echo "... io_stream_test.s"

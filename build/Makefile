@@ -325,6 +325,19 @@ ConstraintParserTest/fast:
 .PHONY : ConstraintParserTest/fast
 
 #=============================================================================
+# Target rules for targets named ImportManagerTest
+
+# Build rule for target.
+ImportManagerTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ImportManagerTest
+.PHONY : ImportManagerTest
+
+# fast build rule for target.
+ImportManagerTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/build
+.PHONY : ImportManagerTest/fast
+
+#=============================================================================
 # Target rules for targets named CompilerDispatcher
 
 # Build rule for target.
@@ -846,6 +859,7 @@ help:
 	@echo "... FileStream"
 	@echo "... GeneratorTest"
 	@echo "... IOStreamTest"
+	@echo "... ImportManagerTest"
 	@echo "... Scanner"
 	@echo "... SimpleTest"
 	@echo "... UseStatementTest"
