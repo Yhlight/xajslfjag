@@ -58,8 +58,6 @@ private:
     void handleColonEquals();    // 处理CE对等式 (: 和 = 等价)
     void handleDoubleSlash();    // 处理 // 注释或操作符
     void handleSlashStar();      // 处理 /* */ 注释
-    void handleDash();           // 处理 - 和 -- 和 ->
-    void handleDoubleBrace();    // 处理 {{ 和 }}
     
     // 错误处理
     void addError(const std::string& message);

@@ -78,9 +78,6 @@ enum class TokenType {
     STAR,                    // *
     AMPERSAND,               // &
     HASH,                    // #
-    ARROW,                   // ->
-    DOUBLE_BRACE_OPEN,       // {{
-    DOUBLE_BRACE_CLOSE,      // }}
     
     // 特殊标记
     WHITESPACE,              // 空白字符

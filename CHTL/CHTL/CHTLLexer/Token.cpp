@@ -33,7 +33,7 @@ bool Token::isKeyword() const {
 
 // 判断是否为操作符
 bool Token::isOperator() const {
-    return type_ >= TokenType::LEFT_BRACE && type_ <= TokenType::DOUBLE_BRACE_CLOSE;
+    return type_ >= TokenType::LEFT_BRACE && type_ <= TokenType::HASH;
 }
 
 // 判断是否为注释
@@ -125,9 +125,6 @@ std::string Token::getTypeName(TokenType type) {
         case TokenType::STAR: return "*";
         case TokenType::AMPERSAND: return "&";
         case TokenType::HASH: return "#";
-        case TokenType::ARROW: return "->";
-        case TokenType::DOUBLE_BRACE_OPEN: return "{{";
-        case TokenType::DOUBLE_BRACE_CLOSE: return "}}";
         
         // 特殊标记
         case TokenType::WHITESPACE: return "WHITESPACE";

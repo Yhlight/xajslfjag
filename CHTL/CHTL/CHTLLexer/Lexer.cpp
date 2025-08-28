@@ -212,21 +212,13 @@ void Lexer::scanToken() {
         case '&': tokens_.push_back(makeToken(TokenType::AMPERSAND)); break;
         case '#': tokens_.push_back(makeToken(TokenType::HASH)); break;
         
-        // 可能是多字符的操作符
+        // 大括号
         case '{':
-            if (match('{')) {
-                tokens_.push_back(makeToken(TokenType::DOUBLE_BRACE_OPEN));
-            } else {
-                tokens_.push_back(makeToken(TokenType::LEFT_BRACE));
-            }
+            tokens_.push_back(makeToken(TokenType::LEFT_BRACE));
             break;
             
         case '}':
-            if (match('}')) {
-                tokens_.push_back(makeToken(TokenType::DOUBLE_BRACE_CLOSE));
-            } else {
-                tokens_.push_back(makeToken(TokenType::RIGHT_BRACE));
-            }
+            tokens_.push_back(makeToken(TokenType::RIGHT_BRACE));
             break;
             
         case '[':
@@ -265,7 +257,15 @@ void Lexer::scanToken() {
             break;
             
         case '-':
-            handleDash();
+            if (match('-')) {
+                // 生成器注释 --
+                scanGeneratorComment();
+            } else {
+                // 单独的 - 在 CHTL 中不是有效的操作符
+                // 但可能是标识符的一部分（如 background-color）
+                addError("Unexpected '-' character");
+                tokens_.push_back(makeToken(TokenType::UNKNOWN));
+            }
             break;
             
         case '"':
@@ -517,20 +517,7 @@ void Lexer::scanAtType() {
     }
 }
 
-// 处理破折号
-void Lexer::handleDash() {
-    if (match('-')) {
-        // 生成器注释 --
-        scanGeneratorComment();
-    } else if (match('>')) {
-        // 箭头操作符 ->
-        tokens_.push_back(makeToken(TokenType::ARROW));
-    } else {
-        // 可能是标识符的一部分或错误
-        addError("Unexpected '-' character");
-        tokens_.push_back(makeToken(TokenType::UNKNOWN));
-    }
-}
+
 
 // 调试输出
 void Lexer::printTokens() const {

@@ -101,9 +101,6 @@ void GlobalMap::initializeOperators() {
     operators_["*"] = TokenType::STAR;
     operators_["&"] = TokenType::AMPERSAND;
     operators_["#"] = TokenType::HASH;
-    operators_["->"] = TokenType::ARROW;
-    operators_["{{"] = TokenType::DOUBLE_BRACE_OPEN;
-    operators_["}}"] = TokenType::DOUBLE_BRACE_CLOSE;
 }
 
 // 查询是否为关键字
