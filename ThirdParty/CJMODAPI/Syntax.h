@@ -3,10 +3,9 @@
 #include <string>
 #include <vector>
 #include <cctype>
+#include "Arg.h"
 
 namespace CJMODAPI {
-
-class Arg; // 前置声明
 
 class Syntax {
 public:

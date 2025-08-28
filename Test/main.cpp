@@ -1,6 +1,10 @@
 #include <iostream>
 #include <string>
 #include "../Scanner/CHTLUnifiedScanner.h"
+#include "../ThirdParty/CJMODAPI/Syntax.h"
+#include "../ThirdParty/CJMODAPI/Arg.h"
+#include "../ThirdParty/CJMODAPI/CJMODScannerAPI.h"
+#include "../ThirdParty/CJMODAPI/CJMODGenerator.h"
 
 using namespace Scanner;
 
@@ -96,6 +100,16 @@ script
     std::cout << "\n测试CJMOD双指针扫描('3 ** 4')，切分结果(" << r.tokens.size() << "):" << std::endl;
     for (auto& t : r.tokens) std::cout << "[" << t << "]";
     std::cout << std::endl;
+
+    // 使用原始API头-only骨架进行端到端示例
+    std::cout << "\n测试CJMOD原始API端到端('3 ** 4' -> 'pow(3, 4)'):" << std::endl;
+    auto pattern = CJMODAPI::Syntax::analyze("$ ** $");
+    pattern.print();
+    auto scanned = CJMODAPI::CJMODScannerAPI::scan(pattern, "**", cjmodSnippet);
+    scanned.print();
+    // 直接使用扫描结果进行转换
+    scanned.transform(std::string("pow(") + scanned[0].value + ", " + scanned[2].value + ")");
+    CJMODAPI::CJMODGenerator::exportResult(scanned);
 
     std::cout << "测试完成!" << std::endl;
     return 0;
