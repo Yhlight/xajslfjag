@@ -186,6 +186,20 @@ ImportManagerTest/fast:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/build
 .PHONY : ImportManagerTest/fast
 
+# Convenience name for target.
+Test/CMakeFiles/NamespaceManagerTest.dir/rule:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/NamespaceManagerTest.dir/rule
+.PHONY : Test/CMakeFiles/NamespaceManagerTest.dir/rule
+
+# Convenience name for target.
+NamespaceManagerTest: Test/CMakeFiles/NamespaceManagerTest.dir/rule
+.PHONY : NamespaceManagerTest
+
+# fast build rule for target.
+NamespaceManagerTest/fast:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/build
+.PHONY : NamespaceManagerTest/fast
+
 configuration_manager_test.o: configuration_manager_test.cpp.o
 .PHONY : configuration_manager_test.o
 
@@ -315,6 +329,30 @@ main.cpp.s:
 	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/CHTLTest.dir/build.make Test/CMakeFiles/CHTLTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+namespace_manager_test.o: namespace_manager_test.cpp.o
+.PHONY : namespace_manager_test.o
+
+# target to build an object file
+namespace_manager_test.cpp.o:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.o
+.PHONY : namespace_manager_test.cpp.o
+
+namespace_manager_test.i: namespace_manager_test.cpp.i
+.PHONY : namespace_manager_test.i
+
+# target to preprocess a source file
+namespace_manager_test.cpp.i:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.i
+.PHONY : namespace_manager_test.cpp.i
+
+namespace_manager_test.s: namespace_manager_test.cpp.s
+.PHONY : namespace_manager_test.s
+
+# target to generate assembly for a file
+namespace_manager_test.cpp.s:
+	cd /workspace/build && $(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/namespace_manager_test.cpp.s
+.PHONY : namespace_manager_test.cpp.s
+
 use_statement_test.o: use_statement_test.cpp.o
 .PHONY : use_statement_test.o
 
@@ -354,6 +392,7 @@ help:
 	@echo "... ConfigurationManagerTest"
 	@echo "... ConstraintParserTest"
 	@echo "... ImportManagerTest"
+	@echo "... NamespaceManagerTest"
 	@echo "... UseStatementTest"
 	@echo "... configuration_manager_test.o"
 	@echo "... configuration_manager_test.i"
@@ -370,6 +409,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... namespace_manager_test.o"
+	@echo "... namespace_manager_test.i"
+	@echo "... namespace_manager_test.s"
 	@echo "... use_statement_test.o"
 	@echo "... use_statement_test.i"
 	@echo "... use_statement_test.s"

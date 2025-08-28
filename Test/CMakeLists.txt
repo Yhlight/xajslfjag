@@ -112,3 +112,20 @@ target_link_libraries(ImportManagerTest CHTLContext)
 target_include_directories(ImportManagerTest PRIVATE
     ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
 )
+
+# 创建命名空间管理器测试可执行文件
+add_executable(NamespaceManagerTest namespace_manager_test.cpp)
+
+# 设置目标属性
+set_target_properties(NamespaceManagerTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
+# 链接库
+target_link_libraries(NamespaceManagerTest CHTLContext)
+
+# 包含目录
+target_include_directories(NamespaceManagerTest PRIVATE
+    ${CMAKE_SOURCE_DIR}/CHTL/CHTLContext
+)

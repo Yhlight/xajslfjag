@@ -101,6 +101,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "Test/CMakeFiles/UseStatementTest.dir/DependInfo.cmake"
   "Test/CMakeFiles/ConstraintParserTest.dir/DependInfo.cmake"
   "Test/CMakeFiles/ImportManagerTest.dir/DependInfo.cmake"
+  "Test/CMakeFiles/NamespaceManagerTest.dir/DependInfo.cmake"
   "CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/DependInfo.cmake"
   "Util/CHTLIOStream/CMakeFiles/CHTLIOStream.dir/DependInfo.cmake"
   "Util/CHTLJSIOStream/CMakeFiles/CHTLJSIOStream.dir/DependInfo.cmake"

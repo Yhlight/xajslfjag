@@ -300,6 +300,7 @@ Test/all: Test/CMakeFiles/ConfigurationManagerTest.dir/all
 Test/all: Test/CMakeFiles/UseStatementTest.dir/all
 Test/all: Test/CMakeFiles/ConstraintParserTest.dir/all
 Test/all: Test/CMakeFiles/ImportManagerTest.dir/all
+Test/all: Test/CMakeFiles/NamespaceManagerTest.dir/all
 .PHONY : Test/all
 
 # Recursive "codegen" directory target.
@@ -308,6 +309,7 @@ Test/codegen: Test/CMakeFiles/ConfigurationManagerTest.dir/codegen
 Test/codegen: Test/CMakeFiles/UseStatementTest.dir/codegen
 Test/codegen: Test/CMakeFiles/ConstraintParserTest.dir/codegen
 Test/codegen: Test/CMakeFiles/ImportManagerTest.dir/codegen
+Test/codegen: Test/CMakeFiles/NamespaceManagerTest.dir/codegen
 .PHONY : Test/codegen
 
 # Recursive "preinstall" directory target.
@@ -320,6 +322,7 @@ Test/clean: Test/CMakeFiles/ConfigurationManagerTest.dir/clean
 Test/clean: Test/CMakeFiles/UseStatementTest.dir/clean
 Test/clean: Test/CMakeFiles/ConstraintParserTest.dir/clean
 Test/clean: Test/CMakeFiles/ImportManagerTest.dir/clean
+Test/clean: Test/CMakeFiles/NamespaceManagerTest.dir/clean
 .PHONY : Test/clean
 
 #=============================================================================
@@ -503,7 +506,7 @@ CMakeFiles/SimpleTest.dir/all: Scanner/CMakeFiles/Scanner.dir/all
 CMakeFiles/SimpleTest.dir/all: CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=51,52 "Built target SimpleTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=53,54 "Built target SimpleTest"
 .PHONY : CMakeFiles/SimpleTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -520,7 +523,7 @@ SimpleTest: CMakeFiles/SimpleTest.dir/rule
 # codegen rule for target.
 CMakeFiles/SimpleTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/SimpleTest.dir/build.make CMakeFiles/SimpleTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=51,52 "Finished codegen for target SimpleTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=53,54 "Finished codegen for target SimpleTest"
 .PHONY : CMakeFiles/SimpleTest.dir/codegen
 
 # clean rule for target.
@@ -834,7 +837,7 @@ CMakeFiles/CHTLJSGenerator.dir/clean:
 Scanner/CMakeFiles/Scanner.dir/all:
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/depend
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=49,50 "Built target Scanner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=51,52 "Built target Scanner"
 .PHONY : Scanner/CMakeFiles/Scanner.dir/all
 
 # Build rule for subdir invocation for target.
@@ -851,7 +854,7 @@ Scanner: Scanner/CMakeFiles/Scanner.dir/rule
 # codegen rule for target.
 Scanner/CMakeFiles/Scanner.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner.dir/build.make Scanner/CMakeFiles/Scanner.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=49,50 "Finished codegen for target Scanner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=51,52 "Finished codegen for target Scanner"
 .PHONY : Scanner/CMakeFiles/Scanner.dir/codegen
 
 # clean rule for target.
@@ -941,7 +944,7 @@ Test/CMakeFiles/UseStatementTest.dir/all: CMakeFiles/CHTLContext.dir/all
 Test/CMakeFiles/UseStatementTest.dir/all: CMakeFiles/CHTLParser.dir/all
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/depend
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=53,54 "Built target UseStatementTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=55,56 "Built target UseStatementTest"
 .PHONY : Test/CMakeFiles/UseStatementTest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -958,7 +961,7 @@ UseStatementTest: Test/CMakeFiles/UseStatementTest.dir/rule
 # codegen rule for target.
 Test/CMakeFiles/UseStatementTest.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/UseStatementTest.dir/build.make Test/CMakeFiles/UseStatementTest.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=53,54 "Finished codegen for target UseStatementTest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=55,56 "Finished codegen for target UseStatementTest"
 .PHONY : Test/CMakeFiles/UseStatementTest.dir/codegen
 
 # clean rule for target.
@@ -1030,6 +1033,38 @@ Test/CMakeFiles/ImportManagerTest.dir/codegen:
 Test/CMakeFiles/ImportManagerTest.dir/clean:
 	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/ImportManagerTest.dir/build.make Test/CMakeFiles/ImportManagerTest.dir/clean
 .PHONY : Test/CMakeFiles/ImportManagerTest.dir/clean
+
+#=============================================================================
+# Target rules for target Test/CMakeFiles/NamespaceManagerTest.dir
+
+# All Build rule for target.
+Test/CMakeFiles/NamespaceManagerTest.dir/all: CMakeFiles/CHTLContext.dir/all
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/depend
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=49,50 "Built target NamespaceManagerTest"
+.PHONY : Test/CMakeFiles/NamespaceManagerTest.dir/all
+
+# Build rule for subdir invocation for target.
+Test/CMakeFiles/NamespaceManagerTest.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 7
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Test/CMakeFiles/NamespaceManagerTest.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/build/CMakeFiles 0
+.PHONY : Test/CMakeFiles/NamespaceManagerTest.dir/rule
+
+# Convenience name for target.
+NamespaceManagerTest: Test/CMakeFiles/NamespaceManagerTest.dir/rule
+.PHONY : NamespaceManagerTest
+
+# codegen rule for target.
+Test/CMakeFiles/NamespaceManagerTest.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=49,50 "Finished codegen for target NamespaceManagerTest"
+.PHONY : Test/CMakeFiles/NamespaceManagerTest.dir/codegen
+
+# clean rule for target.
+Test/CMakeFiles/NamespaceManagerTest.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/clean
+.PHONY : Test/CMakeFiles/NamespaceManagerTest.dir/clean
 
 #=============================================================================
 # Target rules for target CompilerDispatcher/CMakeFiles/CompilerDispatcher.dir
@@ -1168,7 +1203,7 @@ Util/FileStream/CMakeFiles/FileStream.dir/clean:
 Util/ZipUtil/CMakeFiles/ZipUtil.dir/all:
 	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/depend
 	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=55,56 "Built target ZipUtil"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=57,58 "Built target ZipUtil"
 .PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1185,7 +1220,7 @@ ZipUtil: Util/ZipUtil/CMakeFiles/ZipUtil.dir/rule
 # codegen rule for target.
 Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f Util/ZipUtil/CMakeFiles/ZipUtil.dir/build.make Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=55,56 "Finished codegen for target ZipUtil"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/build/CMakeFiles --progress-num=57,58 "Finished codegen for target ZipUtil"
 .PHONY : Util/ZipUtil/CMakeFiles/ZipUtil.dir/codegen
 
 # clean rule for target.

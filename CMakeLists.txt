@@ -78,10 +78,10 @@ set_target_properties(CHTLLexer PROPERTIES
 
 # 创建CHTLContext静态库
 set(CHTLCONTEXT_SOURCES
-    CHTL/CHTLContext/ImportManager.cpp
-    CHTL/CHTLContext/SelectorAutomation.cpp
-    CHTL/CHTLContext/NamespaceManager.cpp
     CHTL/CHTLContext/ConfigurationManager.cpp
+    CHTL/CHTLContext/ImportManager.cpp
+    CHTL/CHTLContext/NamespaceManager.cpp
+    CHTL/CHTLContext/SelectorAutomation.cpp
 )
 
 add_library(CHTLContext STATIC ${CHTLCONTEXT_SOURCES})

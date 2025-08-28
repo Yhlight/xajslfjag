@@ -72,10 +72,24 @@ include CMakeFiles/CHTLContext.dir/flags.make
 CMakeFiles/CHTLContext.dir/codegen:
 .PHONY : CMakeFiles/CHTLContext.dir/codegen
 
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspace/CHTL/CHTLContext/ConfigurationManager.cpp
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: CMakeFiles/CHTLContext.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o -MF CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o.d -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o -c /workspace/CHTL/CHTLContext/ConfigurationManager.cpp
+
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLContext/ConfigurationManager.cpp > CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i
+
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/ConfigurationManager.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s
+
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: /workspace/CHTL/CHTLContext/ImportManager.cpp
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o: CMakeFiles/CHTLContext.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o -MF CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o.d -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o -c /workspace/CHTL/CHTLContext/ImportManager.cpp
 
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.i: cmake_force
@@ -85,20 +99,6 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.i: cmake_force
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/ImportManager.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.s
-
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace/CHTL/CHTLContext/SelectorAutomation.cpp
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: CMakeFiles/CHTLContext.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o -MF CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o.d -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o -c /workspace/CHTL/CHTLContext/SelectorAutomation.cpp
-
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLContext/SelectorAutomation.cpp > CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i
-
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/SelectorAutomation.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s
 
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
 CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o: /workspace/CHTL/CHTLContext/NamespaceManager.cpp
@@ -114,34 +114,34 @@ CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/NamespaceManager.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.s
 
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: /workspace/CHTL/CHTLContext/ConfigurationManager.cpp
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o: CMakeFiles/CHTLContext.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o -MF CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o.d -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o -c /workspace/CHTL/CHTLContext/ConfigurationManager.cpp
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: CMakeFiles/CHTLContext.dir/flags.make
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: /workspace/CHTL/CHTLContext/SelectorAutomation.cpp
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o: CMakeFiles/CHTLContext.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o -MF CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o.d -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o -c /workspace/CHTL/CHTLContext/SelectorAutomation.cpp
 
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLContext/ConfigurationManager.cpp > CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.i
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/CHTL/CHTLContext/SelectorAutomation.cpp > CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.i
 
-CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/ConfigurationManager.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.s
+CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/CHTL/CHTLContext/SelectorAutomation.cpp -o CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.s
 
 # Object files for target CHTLContext
 CHTLContext_OBJECTS = \
+"CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o" \
 "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o" \
-"CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o" \
 "CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o" \
-"CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o"
+"CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o"
 
 # External object files for target CHTLContext
 CHTLContext_EXTERNAL_OBJECTS =
 
-lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o
-lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o
-lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o
 lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ConfigurationManager.cpp.o
+lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/ImportManager.cpp.o
+lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/NamespaceManager.cpp.o
+lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/CHTL/CHTLContext/SelectorAutomation.cpp.o
 lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/build.make
 lib/libCHTLContext.a: CMakeFiles/CHTLContext.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library lib/libCHTLContext.a"

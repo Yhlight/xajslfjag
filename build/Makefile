@@ -338,6 +338,19 @@ ImportManagerTest/fast:
 .PHONY : ImportManagerTest/fast
 
 #=============================================================================
+# Target rules for targets named NamespaceManagerTest
+
+# Build rule for target.
+NamespaceManagerTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 NamespaceManagerTest
+.PHONY : NamespaceManagerTest
+
+# fast build rule for target.
+NamespaceManagerTest/fast:
+	$(MAKE) $(MAKESILENT) -f Test/CMakeFiles/NamespaceManagerTest.dir/build.make Test/CMakeFiles/NamespaceManagerTest.dir/build
+.PHONY : NamespaceManagerTest/fast
+
+#=============================================================================
 # Target rules for targets named CompilerDispatcher
 
 # Build rule for target.
@@ -860,6 +873,7 @@ help:
 	@echo "... GeneratorTest"
 	@echo "... IOStreamTest"
 	@echo "... ImportManagerTest"
+	@echo "... NamespaceManagerTest"
 	@echo "... Scanner"
 	@echo "... SimpleTest"
 	@echo "... UseStatementTest"
