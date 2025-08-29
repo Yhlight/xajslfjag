@@ -161,10 +161,13 @@ private:
     
     // 编译核心逻辑
     CompilationResult compileInternal(const String& source, const String& sourcePath);
-    CompilationResult compileCHTLFragment(const CodeFragment& fragment);
-    CompilationResult compileCHTLJSFragment(const CodeFragment& fragment);
-    CompilationResult compileCSSFragment(const CodeFragment& fragment);
-    CompilationResult compileJavaScriptFragment(const CodeFragment& fragment);
+    FragmentResult compileFragment(const ScanResult& fragment);
+    FragmentResult compileCHTLFragment(const ScanResult& fragment);
+    FragmentResult compileCHTLJSFragment(const ScanResult& fragment);
+    FragmentResult compilePureJSFragment(const ScanResult& fragment);
+    FragmentResult compileCSSFragment(const ScanResult& fragment);
+    FragmentResult compileJSFragment(const ScanResult& fragment);
+    FragmentResult compileHTMLFragment(const ScanResult& fragment);
     
     // 片段分析和调度
     std::vector<CodeFragment> analyzeSource(const String& source);
@@ -235,6 +238,10 @@ private:
     bool validateInput(const String& source);
     void initializeComponents();
     void cleanupComponents();
+    
+    // 纯JS处理方法
+    String compilePureJSWithANTLR(const String& jsContent);
+    String validateAndCleanJS(const String& jsContent);
 };
 
 // 编译器注册表

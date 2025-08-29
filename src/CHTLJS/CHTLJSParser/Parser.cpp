@@ -1,5 +1,6 @@
 #include "Parser.h"
 #include "../CHTLJSNode/CHTLJSNodes.h"
+#include "../CHTLJSNode/ModuleNode.h"
 #include "../../CHTL/CHTLLexer/GlobalMap.h"
 #include <regex>
 #include <algorithm>

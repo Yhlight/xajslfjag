@@ -681,7 +681,7 @@ body
 ```
 
 #### 自定义类型系统
-@Html，@Style，@Javascript是CHTL中基本的类型，CHTL只为原始嵌入提供了这三种类型  
+@Html，@Style，@JavaScript是CHTL中基本的类型，CHTL只为原始嵌入提供了这三种类型  
 如果你需要更多的类型，你可以直接创建你想要的类型的原始嵌入，注意！必须以@为前缀    
 
 ```chtl
@@ -844,7 +844,7 @@ body
 导入原始嵌入  
 [Import] [Origin] @Html 名称 from chtl文件路径 as(可选) 命名为  
 [Import] [Origin] @Style 名称 from chtl文件路径 as(可选) 命名为  
-[Import] [Origin] @Javascript 名称 from chtl文件路径 as(可选) 命名为  
+[Import] [Origin] @JavaScript 名称 from chtl文件路径 as(可选) 命名为  
 
 导入自定义类型的原始嵌入  
 [Import] [Origin] @Vue 名称 from chtl文件路径 as(可选) 命名为  
@@ -1409,7 +1409,7 @@ info文件夹中的chtl文件主要提供两个功能
     [Template] @Var ...;
     [Origin] @Html ...;
     [Origin] @Style ...;
-    [Origin] @Javascript ...;
+    [Origin] @JavaScript ...;
     [Origin] @Vue ...;  // 一样支持导出自定义类型的原始嵌入
     [Configuration] @Config ...;
 }

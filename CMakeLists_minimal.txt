@@ -53,11 +53,7 @@ set(CHTL_INCLUDE_DIRS
 add_library(chtl_core STATIC ${CHTL_CORE_SOURCES})
 
 # 设置包含目录
-target_include_directories(chtl_core PUBLIC 
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/include>
-    $<INSTALL_INTERFACE:include>
-)
+target_include_directories(chtl_core PUBLIC ${CHTL_INCLUDE_DIRS})
 
 # 链接线程库
 target_link_libraries(chtl_core PUBLIC Threads::Threads)

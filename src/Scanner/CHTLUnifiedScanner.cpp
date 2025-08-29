@@ -9,9 +9,9 @@ namespace CHTL {
 // 代码片段类型定义
 enum class FragmentType {
     CHTL,
-    CHTL_JS,
+    CHTL_JS,        // CHTL JS语法
+    PURE_JS,        // 纯JavaScript
     CSS,
-    JAVASCRIPT,
     HTML,
     UNKNOWN
 };
@@ -489,11 +489,10 @@ void CHTLUnifiedScanner::adjustFragmentTypeByContext(CodeFragment& fragment) {
     if (fragment.context == "style" && fragment.type == FragmentType::UNKNOWN) {
         fragment.type = FragmentType::CSS;
     } else if (fragment.context == "script" && fragment.type == FragmentType::UNKNOWN) {
-        if (isCHTLJSSyntax(fragment.startPos)) {
-            fragment.type = FragmentType::CHTL_JS;
-        } else {
-            fragment.type = FragmentType::JAVASCRIPT;
-        }
+        // 使用智能脚本分离功能
+        analyzeScriptContent(fragment.content, fragment.startPos);
+        // 标记原fragment为已处理，避免重复处理
+        fragment.type = FragmentType::UNKNOWN; // 将被新的fragments替代
     }
 }
 
@@ -501,8 +500,8 @@ String CHTLUnifiedScanner::fragmentTypeToString(FragmentType type) {
     switch (type) {
         case FragmentType::CHTL: return "CHTL";
         case FragmentType::CHTL_JS: return "CHTL_JS";
+        case FragmentType::PURE_JS: return "PURE_JS";
         case FragmentType::CSS: return "CSS";
-        case FragmentType::JAVASCRIPT: return "JAVASCRIPT";
         case FragmentType::HTML: return "HTML";
         default: return "UNKNOWN";
     }
@@ -534,6 +533,93 @@ String CHTLUnifiedScanner::getSourceCode() const {
 
 std::vector<CodeFragment> CHTLUnifiedScanner::getFragments() const {
     return fragments;
+}
+
+// 智能脚本分离功能实现
+void CHTLUnifiedScanner::analyzeScriptContent(const String& content, size_t startPos) {
+    // 检查是否包含CHTL JS特有语法
+    bool hasCHTLJSSyntax = hasCHTLJSFeatures(content);
+    bool hasPureJSSyntax = hasPureJSFeatures(content);
+    
+    // 根据检测结果进行分片处理
+    if (hasCHTLJSSyntax && hasPureJSSyntax) {
+        // 混合语法，需要进一步分离
+        separateMixedScriptContent(content, startPos);
+    } else if (hasCHTLJSSyntax) {
+        // 纯CHTL JS语法
+        createFragment(FragmentType::CHTL_JS, content, startPos);
+    } else {
+        // 纯JavaScript语法
+        createFragment(FragmentType::PURE_JS, content, startPos);
+    }
+}
+
+void CHTLUnifiedScanner::separateMixedScriptContent(const String& content, size_t startPos) {
+    // 使用正则表达式分离CHTL JS和纯JS语法
+    std::regex chtljsPattern(R"(\{\{[^}]+\}\}[^;]*;?)");  // 匹配 {{...}} 相关语法
+    
+    size_t currentPos = 0;
+    size_t contentStart = startPos;
+    
+    std::sregex_iterator iter(content.begin(), content.end(), chtljsPattern);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        const std::smatch& match = *iter;
+        
+        // 检查匹配前是否有纯JS内容
+        if (match.position() > currentPos) {
+            String jsContent = content.substr(currentPos, match.position() - currentPos);
+            if (!jsContent.empty() && !isWhitespaceOnly(jsContent)) {
+                createFragment(FragmentType::PURE_JS, jsContent, contentStart + currentPos);
+            }
+        }
+        
+        // 创建CHTL JS片段
+        String chtljsContent = match.str();
+        createFragment(FragmentType::CHTL_JS, chtljsContent, contentStart + match.position());
+        
+        currentPos = match.position() + match.length();
+    }
+    
+    // 处理剩余的JS内容
+    if (currentPos < content.length()) {
+        String remainingJS = content.substr(currentPos);
+        if (!isWhitespaceOnly(remainingJS)) {
+            createFragment(FragmentType::PURE_JS, remainingJS, contentStart + currentPos);
+        }
+    }
+}
+
+void CHTLUnifiedScanner::createFragment(FragmentType type, const String& content, size_t startPos) {
+    CodeFragment fragment(type, content, startPos, startPos + content.length(), 1, 1);
+    fragments.push_back(fragment);
+}
+
+bool CHTLUnifiedScanner::hasCHTLJSFeatures(const String& content) const {
+    StringVector chtljsFeatures = {
+        "{{", "}}", "&->", "listen", "delegate", "animate", "module", "vir"
+    };
+    
+    for (const auto& feature : chtljsFeatures) {
+        if (content.find(feature) != String::npos) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CHTLUnifiedScanner::hasPureJSFeatures(const String& content) const {
+    StringVector pureJSFeatures = {
+        "function", "var ", "let ", "const ", "=>", "document.", "window.", "console."
+    };
+    
+    for (const auto& feature : pureJSFeatures) {
+        if (content.find(feature) != String::npos) {
+            return true;
+        }
+    }
+    return false;
 }
 
 } // namespace CHTL

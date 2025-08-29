@@ -82,6 +82,7 @@ enum class NodeType {
     CHTLJS_ANIMATE,     // 动画
     CHTLJS_DELEGATE,    // 事件委托
     CHTLJS_VIR_OBJECT,  // 虚对象
+    CHTLJS_MODULE,      // CHTL JS模块
     
     // 特殊
     UNKNOWN             // 未知节点

@@ -33,7 +33,7 @@
 // 测试原始嵌入导入
 [Import] [Origin] @Html CustomElement from ./components/custom.chtl
 [Import] [Origin] @Style AnimationStyles from ./styles/animations.chtl
-[Import] [Origin] @Javascript CustomScripts from ./scripts/custom.chtl
+[Import] [Origin] @JavaScript CustomScripts from ./scripts/custom.chtl
 
 // 测试批量导入
 [Import] [Template] from ./templates/all.chtl
@@ -74,8 +74,8 @@ html
         script
         {
             // 使用导入的JavaScript
-            [Origin] @Javascript UtilsJS;
-            [Origin] @Javascript CustomScripts;
+            [Origin] @JavaScript UtilsJS;
+            [Origin] @JavaScript CustomScripts;
         }
     }
     

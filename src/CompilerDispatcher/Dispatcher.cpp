@@ -86,10 +86,10 @@ FragmentResult CompilerDispatcher::compileFragment(const ScanResult& fragment) {
             result = compileCHTLFragment(fragment);
         } else if (fragment.type == "CHTL_JS") {
             result = compileCHTLJSFragment(fragment);
+        } else if (fragment.type == "PURE_JS") {
+            result = compilePureJSFragment(fragment);
         } else if (fragment.type == "CSS") {
             result = compileCSSFragment(fragment);
-        } else if (fragment.type == "JAVASCRIPT") {
-            result = compileJSFragment(fragment);
         } else if (fragment.type == "HTML") {
             result = compileHTMLFragment(fragment);
         } else {
@@ -214,6 +214,28 @@ FragmentResult CompilerDispatcher::compileCSSFragment(const ScanResult& fragment
         
     } catch (const std::exception& e) {
         result.errors.push_back("CSS Compilation Error: " + String(e.what()));
+    }
+    
+    return result;
+}
+
+FragmentResult CompilerDispatcher::compilePureJSFragment(const ScanResult& fragment) {
+    FragmentResult result;
+    result.fragmentType = "PURE_JS";
+    
+    try {
+        if (config.useANTLRForJS) {
+            // 使用ANTLR JavaScript编译器处理纯JS
+            result.jsOutput = compilePureJSWithANTLR(fragment.content);
+        } else {
+            // 直接输出纯JavaScript，确保是完整的JS字符串
+            result.jsOutput = validateAndCleanJS(fragment.content);
+        }
+        
+        result.success = true;
+        
+    } catch (const std::exception& e) {
+        result.errors.push_back("Pure JavaScript Compilation Error: " + String(e.what()));
     }
     
     return result;
@@ -461,6 +483,55 @@ String CompilationResult::getFullHTML() const {
     
     fullHTML += "</body>\n</html>";
     return fullHTML;
+}
+
+String CompilerDispatcher::compilePureJSWithANTLR(const String& jsContent) {
+    // 使用ANTLR编译纯JavaScript
+    // 这里应该调用ANTLR JavaScript解析器
+    // 暂时返回清理后的内容
+    return validateAndCleanJS(jsContent);
+}
+
+String CompilerDispatcher::validateAndCleanJS(const String& jsContent) {
+    String cleaned = jsContent;
+    
+    // 移除多余的空白字符但保持代码结构
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s+$)"), ""); // 移除行尾空白
+    cleaned = std::regex_replace(cleaned, std::regex(R"(^\s+)"), ""); // 移除行首空白
+    
+    // 确保语句以分号结尾（如果需要）
+    if (!cleaned.empty() && cleaned.back() != ';' && cleaned.back() != '}') {
+        cleaned += ";";
+    }
+    
+    // 验证基本的JavaScript语法完整性
+    int braceCount = 0;
+    int parenCount = 0;
+    bool inString = false;
+    char stringChar = 0;
+    
+    for (size_t i = 0; i < cleaned.length(); ++i) {
+        char c = cleaned[i];
+        
+        if (!inString && (c == '"' || c == '\'')) {
+            inString = true;
+            stringChar = c;
+        } else if (inString && c == stringChar && (i == 0 || cleaned[i-1] != '\\')) {
+            inString = false;
+        } else if (!inString) {
+            if (c == '{') braceCount++;
+            else if (c == '}') braceCount--;
+            else if (c == '(') parenCount++;
+            else if (c == ')') parenCount--;
+        }
+    }
+    
+    // 如果括号不匹配，添加注释说明
+    if (braceCount != 0 || parenCount != 0) {
+        cleaned = "/* Warning: Unmatched braces or parentheses detected */\n" + cleaned;
+    }
+    
+    return cleaned;
 }
 
 String CompilationResult::getErrorSummary() const {

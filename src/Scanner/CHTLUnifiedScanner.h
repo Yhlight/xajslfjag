@@ -8,8 +8,8 @@ namespace CHTL {
 enum class FragmentType {
     CHTL,           // CHTL代码片段
     CHTL_JS,        // CHTL JS代码片段
+    PURE_JS,        // 纯JavaScript代码片段
     CSS,            // CSS代码片段
-    JAVASCRIPT,     // 纯JavaScript代码片段
     HTML,           // HTML代码片段
     COMMENT,        // 注释片段
     WHITESPACE,     // 空白片段
@@ -178,6 +178,13 @@ private:
     // 统计更新
     void updateStats(const CodeFragment& fragment);
     void incrementFragmentCount(FragmentType type);
+    
+    // 智能脚本分离功能
+    void analyzeScriptContent(const String& content, size_t startPos);
+    void separateMixedScriptContent(const String& content, size_t startPos);
+    void createFragment(FragmentType type, const String& content, size_t startPos);
+    bool hasCHTLJSFeatures(const String& content) const;
+    bool hasPureJSFeatures(const String& content) const;
 };
 
 // 扫描器工厂
