@@ -1,0 +1,72 @@
+// CHTL JS Test File
+
+// Module imports
+module {
+    load: ./utils.cjjs,
+    load: ./components.cjjs
+}
+
+// Enhanced selector test
+{{.button}}->addEventListener('click', () => {
+    console.log('Button clicked!');
+});
+
+// Listen block
+{{.card}}->listen {
+    click: () => {
+        console.log('Card clicked');
+    },
+    
+    mouseenter: function() {
+        {{&}}->style.backgroundColor = '#f0f0f0';
+    },
+    
+    mouseleave: () => {
+        {{&}}->style.backgroundColor = '';
+    }
+};
+
+// Event delegation
+{{document.body}}->delegate {
+    target: {{.dynamic-button}},
+    click: (event) => {
+        console.log('Dynamic button clicked:', event.target);
+    }
+};
+
+// Animation
+const fadeIn = animate {
+    target: {{.modal}},
+    duration: 300,
+    easing: ease-in-out,
+    
+    begin: {
+        opacity: 0,
+        transform: 'scale(0.9)'
+    },
+    
+    end: {
+        opacity: 1,
+        transform: 'scale(1)'
+    }
+};
+
+// Virtual object
+vir ComponentManager = listen {
+    init: () => {
+        console.log('Initializing components');
+    },
+    
+    destroy: () => {
+        console.log('Destroying components');
+    }
+};
+
+// Using virtual object
+ComponentManager->init();
+
+// Event binding with &->
+{{#submit-btn}} &-> click {
+    event.preventDefault();
+    console.log('Form submitted');
+}

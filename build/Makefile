@@ -543,6 +543,30 @@ CHTL/CHTLState/State.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CHTLState/State.cpp.s
 .PHONY : CHTL/CHTLState/State.cpp.s
 
+CHTL/CMODSystem/CMODLoader.o: CHTL/CMODSystem/CMODLoader.cpp.o
+.PHONY : CHTL/CMODSystem/CMODLoader.o
+
+# target to build an object file
+CHTL/CMODSystem/CMODLoader.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.o
+.PHONY : CHTL/CMODSystem/CMODLoader.cpp.o
+
+CHTL/CMODSystem/CMODLoader.i: CHTL/CMODSystem/CMODLoader.cpp.i
+.PHONY : CHTL/CMODSystem/CMODLoader.i
+
+# target to preprocess a source file
+CHTL/CMODSystem/CMODLoader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.i
+.PHONY : CHTL/CMODSystem/CMODLoader.cpp.i
+
+CHTL/CMODSystem/CMODLoader.s: CHTL/CMODSystem/CMODLoader.cpp.s
+.PHONY : CHTL/CMODSystem/CMODLoader.s
+
+# target to generate assembly for a file
+CHTL/CMODSystem/CMODLoader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.s
+.PHONY : CHTL/CMODSystem/CMODLoader.cpp.s
+
 CHTL/CMODSystem/CMODPackager.o: CHTL/CMODSystem/CMODPackager.cpp.o
 .PHONY : CHTL/CMODSystem/CMODPackager.o
 
@@ -1129,6 +1153,9 @@ help:
 	@echo "... CHTL/CHTLState/State.o"
 	@echo "... CHTL/CHTLState/State.i"
 	@echo "... CHTL/CHTLState/State.s"
+	@echo "... CHTL/CMODSystem/CMODLoader.o"
+	@echo "... CHTL/CMODSystem/CMODLoader.i"
+	@echo "... CHTL/CMODSystem/CMODLoader.s"
 	@echo "... CHTL/CMODSystem/CMODPackager.o"
 	@echo "... CHTL/CMODSystem/CMODPackager.i"
 	@echo "... CHTL/CMODSystem/CMODPackager.s"

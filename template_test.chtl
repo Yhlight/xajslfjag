@@ -1,0 +1,57 @@
+// Test template features
+
+// Style template
+[Template] @Style DefaultText {
+    color: black;
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+// Element template  
+[Template] @Element Card {
+    div {
+        class: "card";
+        
+        h3 {
+            text {
+                "Card Title"
+            }
+        }
+        
+        p {
+            text {
+                "Card content goes here"
+            }
+        }
+    }
+}
+
+// Variable template
+[Template] @Var ThemeColors {
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+}
+
+// Using templates
+html {
+    body {
+        // Use element template
+        @Element Card;
+        
+        // Another card
+        div {
+            style {
+                // Use style template
+                @Style DefaultText;
+                
+                // Additional styles
+                margin: 20px;
+            }
+            
+            text {
+                "This div uses the DefaultText style template"
+            }
+        }
+    }
+}

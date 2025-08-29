@@ -22,6 +22,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/CHTL/CHTLNode/NodeImplementations.cpp" "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.o.d"
   "/workspace/src/CHTL/CHTLParser/Parser.cpp" "CMakeFiles/CHTLCore.dir/CHTL/CHTLParser/Parser.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTL/CHTLParser/Parser.cpp.o.d"
   "/workspace/src/CHTL/CHTLState/State.cpp" "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/State.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/State.cpp.o.d"
+  "/workspace/src/CHTL/CMODSystem/CMODLoader.cpp" "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.o.d"
   "/workspace/src/CHTL/CMODSystem/CMODPackager.cpp" "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODPackager.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODPackager.cpp.o.d"
   "/workspace/src/CHTLJS/CHTLJSContext/Context.cpp" "CMakeFiles/CHTLCore.dir/CHTLJS/CHTLJSContext/Context.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTLJS/CHTLJSContext/Context.cpp.o.d"
   "/workspace/src/CHTLJS/CHTLJSGenerator/Generator.cpp" "CMakeFiles/CHTLCore.dir/CHTLJS/CHTLJSGenerator/Generator.cpp.o" "gcc" "CMakeFiles/CHTLCore.dir/CHTLJS/CHTLJSGenerator/Generator.cpp.o.d"

@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLCore.dir/CHTL/CHTLParser/Parser.cpp.o.d"
   "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/State.cpp.o"
   "CMakeFiles/CHTLCore.dir/CHTL/CHTLState/State.cpp.o.d"
+  "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.o"
+  "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODLoader.cpp.o.d"
   "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODPackager.cpp.o"
   "CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODPackager.cpp.o.d"
   "CMakeFiles/CHTLCore.dir/CHTLJS/CHTLJSContext/Context.cpp.o"

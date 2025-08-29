@@ -76,6 +76,7 @@ std::unordered_map<StateType, std::vector<StateType>> StateManager::initTransiti
     
     // 样式块内的状态
     rules[StateType::IN_STYLE_BLOCK] = {
+        StateType::IN_STYLE_BLOCK,  // Allow recursive style blocks for now
         StateType::IN_CLASS_SELECTOR,
         StateType::IN_ID_SELECTOR,
         StateType::IN_PSEUDO_SELECTOR,

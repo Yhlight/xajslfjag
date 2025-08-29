@@ -239,7 +239,15 @@ std::shared_ptr<ElementNode> Parser::parseElement() {
         if (check(TokenType::NUMBER_LITERAL)) {
             auto indexToken = current_;
             advance();
-            element->setIndex(std::get<int64_t>(indexToken->getValue()));
+            try {
+                if (std::holds_alternative<int64_t>(indexToken->getValue())) {
+                    element->setIndex(std::get<int64_t>(indexToken->getValue()));
+                } else if (std::holds_alternative<double>(indexToken->getValue())) {
+                    element->setIndex(static_cast<size_t>(std::get<double>(indexToken->getValue())));
+                }
+            } catch (const std::bad_variant_access& e) {
+                error("Invalid index value");
+            }
         }
         consume(TokenType::RIGHT_BRACKET, "Expected ']' after index");
     }
@@ -470,7 +478,18 @@ std::string Parser::parseString() {
         return "";
     }
     
-    std::string str = std::get<std::string>(current_->getValue());
+    std::string str;
+    try {
+        if (std::holds_alternative<std::string>(current_->getValue())) {
+            str = std::get<std::string>(current_->getValue());
+        } else {
+            // If it's not a string, use the lexeme
+            str = current_->getLexeme();
+        }
+    } catch (const std::bad_variant_access& e) {
+        // Fallback to lexeme
+        str = current_->getLexeme();
+    }
     advance();
     return str;
 }
@@ -558,28 +577,296 @@ std::shared_ptr<ASTNode> Parser::parseTemplate() {
 }
 
 std::shared_ptr<ASTNode> Parser::parseCustom() {
-    // 类似parseTemplate的实现
-    return nullptr;
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_CUSTOM, "Expected '[Custom]'");
+    
+    // 检查类型 @Style, @Element, @Var
+    CustomType type;
+    if (match(TokenType::TYPE_STYLE)) {
+        type = CustomType::STYLE;
+    } else if (match(TokenType::TYPE_ELEMENT)) {
+        type = CustomType::ELEMENT;
+    } else if (match(TokenType::TYPE_VAR)) {
+        type = CustomType::VAR;
+    } else {
+        error("Expected custom type (@Style, @Element, or @Var)");
+        return nullptr;
+    }
+    
+    // 获取名称
+    std::string name = parseIdentifier();
+    
+    auto customNode = std::make_shared<CustomNode>(type, name, location);
+    
+    consume(TokenType::LEFT_BRACE, "Expected '{' after custom name");
+    
+    enterState(StateType::IN_CUSTOM);
+    
+    // 解析自定义内容
+    while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        auto content = parseCustomContent(type);
+        if (content) {
+            customNode->addContent(content);
+        }
+    }
+    
+    consume(TokenType::RIGHT_BRACE, "Expected '}' after custom content");
+    
+    exitState();
+    
+    // 注册到全局映射表
+    GlobalMap::getInstance().registerCustom(name, 
+        type == CustomType::STYLE ? CustomInfo::CustomKind::STYLE :
+        type == CustomType::ELEMENT ? CustomInfo::CustomKind::ELEMENT :
+        CustomInfo::CustomKind::VAR,
+        context_->getSourceFile());
+    
+    return customNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseOrigin() {
-    // 解析原始嵌入
-    return nullptr;
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_ORIGIN, "Expected '[Origin]'");
+    
+    // 检查类型 @Html, @Style, @JavaScript, 或自定义类型
+    OriginType type = OriginType::HTML;
+    std::string customType;
+    
+    if (match(TokenType::TYPE_HTML)) {
+        type = OriginType::HTML;
+    } else if (match(TokenType::TYPE_STYLE)) {
+        type = OriginType::STYLE;
+    } else if (match(TokenType::TYPE_JAVASCRIPT)) {
+        type = OriginType::JAVASCRIPT;
+    } else if (check(TokenType::AT) && peek(1) && peek(1)->getType() == TokenType::IDENTIFIER) {
+        // Custom origin type like @Vue
+        advance(); // skip @
+        customType = parseIdentifier();
+        type = OriginType::CUSTOM;
+    } else {
+        error("Expected origin type (@Html, @Style, @JavaScript, or custom)");
+        return nullptr;
+    }
+    
+    // 可选的名称
+    std::string name;
+    if (check(TokenType::IDENTIFIER)) {
+        name = parseIdentifier();
+    }
+    
+    auto originNode = std::make_shared<OriginNode>(type, name, location);
+    if (type == OriginType::CUSTOM_ORIGIN) {
+        // TODO: Add custom type support to OriginNode
+        // originNode->setCustomType(customType);
+    }
+    
+    consume(TokenType::LEFT_BRACE, "Expected '{' after origin type");
+    
+    enterState(StateType::IN_ORIGIN);
+    
+    // 收集原始内容直到 }
+    std::string content;
+    int braceDepth = 0;
+    
+    while (!isAtEnd()) {
+        if (check(TokenType::LEFT_BRACE)) {
+            braceDepth++;
+        } else if (check(TokenType::RIGHT_BRACE)) {
+            if (braceDepth == 0) break;
+            braceDepth--;
+        }
+        
+        content += current_->getLexeme();
+        if (check(TokenType::NEWLINE)) {
+            content += "\n";
+        } else if (!isAtEnd()) {
+            content += " ";
+        }
+        advance();
+    }
+    
+    originNode->setContent(content);
+    
+    consume(TokenType::RIGHT_BRACE, "Expected '}' after origin content");
+    
+    exitState();
+    
+    return originNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseImport() {
-    // 解析导入语句
-    return nullptr;
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_IMPORT, "Expected '[Import]'");
+    
+    ImportType importType = ImportType::CHTL;
+    std::string targetName;
+    std::string asName;
+    std::string fromPath;
+    
+    // Check for [Custom] or [Template] or [Origin] or [Configuration]
+    // bool isQualified = false;
+    if (match(TokenType::KEYWORD_CUSTOM)) {
+        // isQualified = true;
+    } else if (match(TokenType::KEYWORD_TEMPLATE)) {
+        // isQualified = true;
+    } else if (match(TokenType::KEYWORD_ORIGIN)) {
+        // isQualified = true;
+    } else if (match(TokenType::KEYWORD_CONFIGURATION)) {
+        // isQualified = true;
+    }
+    
+    // Parse import type
+    if (match(TokenType::TYPE_HTML)) {
+        importType = ImportType::HTML;
+    } else if (match(TokenType::TYPE_STYLE)) {
+        importType = ImportType::STYLE;
+    } else if (match(TokenType::TYPE_JAVASCRIPT)) {
+        importType = ImportType::JAVASCRIPT;
+    } else if (match(TokenType::TYPE_CHTL)) {
+        importType = ImportType::CHTL;
+    } else if (match(TokenType::TYPE_CJMOD)) {
+        importType = ImportType::CJMOD;
+    } else if (match(TokenType::TYPE_CONFIG)) {
+        importType = ImportType::CONFIG;
+    } else if (match(TokenType::TYPE_ELEMENT)) {
+        // For qualified imports like [Import] [Custom] @Element
+        if (check(TokenType::IDENTIFIER)) {
+            targetName = parseIdentifier();
+        }
+    } else if (match(TokenType::TYPE_VAR)) {
+        // For qualified imports like [Import] [Custom] @Var
+        if (check(TokenType::IDENTIFIER)) {
+            targetName = parseIdentifier();
+        }
+    }
+    
+    // Check for specific import target
+    if (targetName.empty() && check(TokenType::IDENTIFIER)) {
+        targetName = parseIdentifier();
+    }
+    
+    // Parse 'from' clause
+    if (match(TokenType::KEYWORD_FROM)) {
+        if (check(TokenType::STRING_LITERAL)) {
+            fromPath = parseString();
+        } else if (check(TokenType::IDENTIFIER) || check(TokenType::UNQUOTED_LITERAL)) {
+            fromPath = parseUnquotedLiteral();
+        } else {
+            error("Expected path after 'from'");
+        }
+    } else {
+        error("Expected 'from' in import statement");
+    }
+    
+    // Parse optional 'as' clause
+    if (match(TokenType::KEYWORD_AS)) {
+        asName = parseIdentifier();
+    }
+    
+    auto importNode = std::make_shared<ImportNode>(importType, fromPath, location);
+    // TODO: Add target name and as name support to ImportNode
+    // importNode->setTargetName(targetName);
+    // importNode->setAsName(asName);
+    
+    return importNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseNamespace() {
-    // 解析命名空间
-    return nullptr;
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_NAMESPACE, "Expected '[Namespace]'");
+    
+    std::string name = parseIdentifier();
+    
+    auto namespaceNode = std::make_shared<NamespaceNode>(name, location);
+    
+    // Namespace can optionally have braces
+    bool hasBraces = false;
+    if (match(TokenType::LEFT_BRACE)) {
+        hasBraces = true;
+    }
+    
+    enterState(StateType::IN_NAMESPACE);
+    
+    if (hasBraces) {
+        // Parse namespace content
+        while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+            auto stmt = parseStatement();
+            if (stmt) {
+                namespaceNode->addContent(stmt);
+            }
+        }
+        
+        consume(TokenType::RIGHT_BRACE, "Expected '}' after namespace content");
+    }
+    
+    exitState();
+    
+    // Register namespace
+    context_->enterNamespace(name);
+    
+    return namespaceNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseConfiguration() {
-    // 解析配置
-    return nullptr;
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_CONFIGURATION, "Expected '[Configuration]'");
+    
+    std::string name;
+    
+    // Optional @Config name
+    if (match(TokenType::TYPE_CONFIG)) {
+        if (check(TokenType::IDENTIFIER)) {
+            name = parseIdentifier();
+        }
+    }
+    
+    auto configNode = std::make_shared<ConfigNode>(name, location);
+    
+    consume(TokenType::LEFT_BRACE, "Expected '{' after configuration");
+    
+    enterState(StateType::IN_CONFIGURATION);
+    
+    // Parse configuration options
+    while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (check(TokenType::IDENTIFIER)) {
+            std::string key = parseIdentifier();
+            
+            if (match(TokenType::EQUAL)) {
+                std::string value = parseAttributeValue();
+                // TODO: Add option support to ConfigNode
+                // configNode->addOption(key, value);
+                match(TokenType::SEMICOLON);
+            }
+        } else if (match(TokenType::LEFT_BRACKET)) {
+            // Nested configuration section like [Name]
+            std::string sectionName = parseIdentifier();
+            consume(TokenType::RIGHT_BRACKET, "Expected ']' after section name");
+            consume(TokenType::LEFT_BRACE, "Expected '{' after section");
+            
+            // Parse section content
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (check(TokenType::IDENTIFIER)) {
+                    std::string key = parseIdentifier();
+                    if (match(TokenType::EQUAL)) {
+                        parseAttributeValue();
+                        match(TokenType::SEMICOLON);
+                    }
+                } else {
+                    advance();
+                }
+            }
+            
+            consume(TokenType::RIGHT_BRACE, "Expected '}' after section");
+        } else {
+            advance();
+        }
+    }
+    
+    consume(TokenType::RIGHT_BRACE, "Expected '}' after configuration");
+    
+    exitState();
+    
+    return configNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseInfo() {
@@ -593,13 +880,95 @@ std::shared_ptr<ASTNode> Parser::parseExport() {
 }
 
 std::shared_ptr<ASTNode> Parser::parseTemplateContent(TemplateType type) {
-    // 根据模板类型解析内容
-    (void)type; // TODO: 使用type参数
+    switch (type) {
+        case TemplateType::STYLE: {
+            // Parse style template content (CSS properties)
+            auto styleNode = std::make_shared<StyleNode>(StyleBlockType::GLOBAL, current_->getLocation());
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                // For now, skip style content
+                if (check(TokenType::SEMICOLON)) {
+                    advance();
+                } else {
+                    advance();
+                }
+            }
+            return styleNode;
+        }
+        
+        case TemplateType::ELEMENT: {
+            // Parse element template content (nested elements)
+            std::vector<std::shared_ptr<ASTNode>> elements;
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (check(TokenType::HTML_TAG) || check(TokenType::IDENTIFIER)) {
+                    std::string name = current_->getLexeme();
+                    if (isHtmlTag(name)) {
+                        auto elem = parseElement();
+                        if (elem) {
+                            elements.push_back(elem);
+                        }
+                    }
+                } else {
+                    advance();
+                }
+            }
+            
+            // Return a container node with all elements
+            if (!elements.empty()) {
+                return elements[0]; // TODO: Support multiple elements
+            }
+            break;
+        }
+        
+        case TemplateType::VAR: {
+            // Parse variable template content (key-value pairs)
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (check(TokenType::IDENTIFIER)) {
+                    std::string varName = parseIdentifier();
+                    if (match({TokenType::COLON, TokenType::EQUAL})) {
+                        parseAttributeValue();
+                        consume(TokenType::SEMICOLON, "Expected ';' after variable value");
+                    }
+                } else {
+                    advance();
+                }
+            }
+            break;
+        }
+    }
+    
     return nullptr;
 }
 
 std::shared_ptr<ASTNode> Parser::parseStyleContent() {
-    // 解析样式内容
+    // For now, collect raw CSS content for the style block
+    // This should be enhanced to parse CSS selectors, properties, etc.
+    
+    // Skip any whitespace
+    while (match({TokenType::NEWLINE, TokenType::WHITESPACE})) {
+        // Skip
+    }
+    
+    // Check for selector or property
+    if (check(TokenType::IDENTIFIER) || check(TokenType::DOT) || 
+        check(TokenType::HASH) || check(TokenType::AMPERSAND)) {
+        // For now, skip to the next }
+        int braceDepth = 0;
+        while (!isAtEnd()) {
+            if (check(TokenType::LEFT_BRACE)) {
+                braceDepth++;
+                advance();
+            } else if (check(TokenType::RIGHT_BRACE)) {
+                if (braceDepth == 0) {
+                    break;
+                }
+                braceDepth--;
+                advance();
+            } else {
+                advance();
+            }
+        }
+    }
+    
     return nullptr;
 }
 
@@ -608,9 +977,118 @@ std::shared_ptr<ASTNode> Parser::parseTemplateUse() {
     return nullptr;
 }
 
-std::shared_ptr<ASTNode> Parser::parseExceptConstraint() {
-    // 解析except约束
+std::shared_ptr<ASTNode> Parser::parseCustomContent(CustomType type) {
+    switch (type) {
+        case CustomType::STYLE: {
+            // Parse style custom content (CSS properties, inherit, delete)
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (match(TokenType::KEYWORD_DELETE)) {
+                    // Parse delete operation
+                    advance();
+                } else if (match(TokenType::KEYWORD_INHERIT)) {
+                    // Parse inherit operation
+                    advance();
+                } else if (check(TokenType::TYPE_STYLE)) {
+                    // Parse style group usage
+                    advance();
+                } else if (check(TokenType::IDENTIFIER)) {
+                    // Parse property or selector
+                    advance();
+                } else {
+                    advance();
+                }
+            }
+            break;
+        }
+        
+        case CustomType::ELEMENT: {
+            // Parse element custom content
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (match(TokenType::KEYWORD_DELETE)) {
+                    // Parse delete operation
+                    advance();
+                } else if (match(TokenType::KEYWORD_INSERT)) {
+                    // Parse insert operation
+                    advance();
+                } else if (check(TokenType::HTML_TAG) || check(TokenType::IDENTIFIER)) {
+                    std::string name = current_->getLexeme();
+                    if (isHtmlTag(name)) {
+                        auto elem = parseElement();
+                        if (elem) {
+                            return elem;
+                        }
+                    }
+                } else {
+                    advance();
+                }
+            }
+            break;
+        }
+        
+        case CustomType::VAR: {
+            // Parse variable custom content
+            while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+                if (check(TokenType::IDENTIFIER)) {
+                    std::string varName = parseIdentifier();
+                    if (match({TokenType::COLON, TokenType::EQUAL})) {
+                        parseAttributeValue();
+                        match(TokenType::SEMICOLON);
+                    } else if (match(TokenType::COMMA)) {
+                        // Variable without value
+                        continue;
+                    } else if (match(TokenType::SEMICOLON)) {
+                        // Variable without value
+                        continue;
+                    }
+                } else {
+                    advance();
+                }
+            }
+            break;
+        }
+    }
+    
     return nullptr;
+}
+
+std::shared_ptr<ASTNode> Parser::parseExceptConstraint() {
+    auto location = current_->getLocation();
+    consume(TokenType::KEYWORD_EXCEPT, "Expected 'except'");
+    
+    auto exceptNode = std::make_shared<ExceptNode>(location);
+    
+    // Parse constraint targets
+    do {
+        if (check(TokenType::HTML_TAG) || check(TokenType::IDENTIFIER)) {
+            // Specific element constraint
+            std::string name = parseIdentifier();
+            exceptNode->addTarget(name);
+        } else if (check(TokenType::TYPE_HTML)) {
+            // Type constraint like @Html
+            advance();
+            exceptNode->addTypeConstraint("@Html");
+        } else if (match(TokenType::KEYWORD_TEMPLATE)) {
+            // [Template] constraint
+            if (check(TokenType::TYPE_STYLE) || check(TokenType::TYPE_ELEMENT) || 
+                check(TokenType::TYPE_VAR)) {
+                advance();
+            }
+            exceptNode->addTypeConstraint("[Template]");
+        } else if (match(TokenType::KEYWORD_CUSTOM)) {
+            // [Custom] constraint
+            if (check(TokenType::TYPE_STYLE) || check(TokenType::TYPE_ELEMENT) || 
+                check(TokenType::TYPE_VAR)) {
+                advance();
+            }
+            exceptNode->addTypeConstraint("[Custom]");
+        } else {
+            break;
+        }
+    } while (match(TokenType::COMMA));
+    
+    consume(TokenType::SEMICOLON, "Expected ';' after except constraint");
+    
+    return exceptNode;
 }
 
 } // namespace CHTL

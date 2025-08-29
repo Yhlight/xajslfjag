@@ -487,7 +487,7 @@ bool CMODPackager::parseManifest(const std::string& manifest, CMODStructure& str
 
 // CMODLoader实现
 
-bool CMODLoader::loadModule(const std::string& cmodFile) {
+bool CMODLoaderBase::loadModule(const std::string& cmodFile) {
     CMODPackager packager;
     
     // 获取模块信息
@@ -523,7 +523,7 @@ bool CMODLoader::loadModule(const std::string& cmodFile) {
     return true;
 }
 
-bool CMODLoader::loadFromDirectory(const std::string& dir) {
+bool CMODLoaderBase::loadFromDirectory(const std::string& dir) {
     CMODPackager packager;
     
     // 验证目录结构
@@ -549,7 +549,7 @@ bool CMODLoader::loadFromDirectory(const std::string& dir) {
     return true;
 }
 
-std::shared_ptr<CMODStructure> CMODLoader::getModule(const std::string& moduleName) const {
+std::shared_ptr<CMODStructure> CMODLoaderBase::getModule(const std::string& moduleName) const {
     auto it = loadedModules_.find(moduleName);
     if (it != loadedModules_.end()) {
         return it->second;
@@ -557,11 +557,11 @@ std::shared_ptr<CMODStructure> CMODLoader::getModule(const std::string& moduleNa
     return nullptr;
 }
 
-bool CMODLoader::isModuleLoaded(const std::string& moduleName) const {
+bool CMODLoaderBase::isModuleLoaded(const std::string& moduleName) const {
     return loadedModules_.find(moduleName) != loadedModules_.end();
 }
 
-std::optional<std::string> CMODLoader::getModulePath(const std::string& moduleName) const {
+std::optional<std::string> CMODLoaderBase::getModulePath(const std::string& moduleName) const {
     auto it = modulePaths_.find(moduleName);
     if (it != modulePaths_.end()) {
         return it->second;
@@ -569,7 +569,7 @@ std::optional<std::string> CMODLoader::getModulePath(const std::string& moduleNa
     return std::nullopt;
 }
 
-void CMODLoader::unloadModule(const std::string& moduleName) {
+void CMODLoaderBase::unloadModule(const std::string& moduleName) {
     auto it = modulePaths_.find(moduleName);
     if (it != modulePaths_.end()) {
         // 如果是临时目录，删除它
@@ -582,7 +582,7 @@ void CMODLoader::unloadModule(const std::string& moduleName) {
     loadedModules_.erase(moduleName);
 }
 
-void CMODLoader::clearAll() {
+void CMODLoaderBase::clearAll() {
     // 清理所有临时目录
     for (const auto& [name, path] : modulePaths_) {
         if (path.find("cmod_") != std::string::npos) {

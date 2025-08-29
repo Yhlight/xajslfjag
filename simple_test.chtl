@@ -1,0 +1,19 @@
+// Simple test without style blocks
+html {
+    body {
+        h1 {
+            text {
+                "Hello CHTL"
+            }
+        }
+        
+        p {
+            id: "intro";
+            class: "text-content";
+            
+            text {
+                "This is a simple test."
+            }
+        }
+    }
+}

@@ -21,8 +21,50 @@ std::string Generator::generate(std::shared_ptr<ProgramNode> program) {
     globalScripts_.str("");
     indentLevel_ = 0;
     
-    // TODO: 实现AST遍历
-    // program->accept(this);
+    // 遍历所有顶层节点
+    for (const auto& node : program->getTopLevelNodes()) {
+        if (node) {
+            // Use dynamic dispatch based on node type
+            switch (node->getType()) {
+                case NodeType::ELEMENT:
+                    visitElementNode(static_cast<ElementNode*>(node.get()));
+                    break;
+                case NodeType::TEXT:
+                    visitTextNode(static_cast<TextNode*>(node.get()));
+                    break;
+                case NodeType::COMMENT:
+                    visitCommentNode(static_cast<CommentNode*>(node.get()));
+                    break;
+                case NodeType::TEMPLATE:
+                    visitTemplateNode(static_cast<TemplateNode*>(node.get()));
+                    break;
+                case NodeType::CUSTOM:
+                    visitCustomNode(static_cast<CustomNode*>(node.get()));
+                    break;
+                case NodeType::STYLE_BLOCK:
+                    visitStyleNode(static_cast<StyleNode*>(node.get()));
+                    break;
+                case NodeType::SCRIPT_BLOCK:
+                    visitScriptNode(static_cast<ScriptNode*>(node.get()));
+                    break;
+                case NodeType::ORIGIN:
+                    visitOriginNode(static_cast<OriginNode*>(node.get()));
+                    break;
+                case NodeType::IMPORT:
+                    visitImportNode(static_cast<ImportNode*>(node.get()));
+                    break;
+                case NodeType::CONFIGURATION:
+                    visitConfigNode(static_cast<ConfigNode*>(node.get()));
+                    break;
+                case NodeType::NAMESPACE:
+                    visitNamespaceNode(static_cast<NamespaceNode*>(node.get()));
+                    break;
+                default:
+                    // Skip unknown node types
+                    break;
+            }
+        }
+    }
     
     // 构建最终输出
     std::stringstream finalOutput;
@@ -106,8 +148,31 @@ void Generator::generateHtmlElement(ElementNode* node) {
             indent();
         }
         
-        // TODO: 遍历子节点
-        (void)node->getChildNodes();
+        // 遍历子节点
+        for (const auto& child : node->getChildNodes()) {
+            if (child) {
+                switch (child->getType()) {
+                    case NodeType::ELEMENT:
+                        visitElementNode(static_cast<ElementNode*>(child.get()));
+                        break;
+                    case NodeType::TEXT:
+                        visitTextNode(static_cast<TextNode*>(child.get()));
+                        break;
+                    case NodeType::COMMENT:
+                        visitCommentNode(static_cast<CommentNode*>(child.get()));
+                        break;
+                    case NodeType::STYLE_BLOCK:
+                        visitStyleNode(static_cast<StyleNode*>(child.get()));
+                        break;
+                    case NodeType::SCRIPT_BLOCK:
+                        visitScriptNode(static_cast<ScriptNode*>(child.get()));
+                        break;
+                    default:
+                        // Skip other node types inside elements
+                        break;
+                }
+            }
+        }
         
         if (hasChildren && !config_.minify) {
             dedent();

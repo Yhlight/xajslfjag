@@ -116,11 +116,11 @@ private:
     bool parseManifest(const std::string& manifest, CMODStructure& structure);
 };
 
-// CMOD加载器
-class CMODLoader {
+// CMOD加载器（基础版本）
+class CMODLoaderBase {
 public:
-    static CMODLoader& getInstance() {
-        static CMODLoader instance;
+    static CMODLoaderBase& getInstance() {
+        static CMODLoaderBase instance;
         return instance;
     }
     
@@ -146,9 +146,9 @@ public:
     void clearAll();
 
 private:
-    CMODLoader() = default;
-    CMODLoader(const CMODLoader&) = delete;
-    CMODLoader& operator=(const CMODLoader&) = delete;
+    CMODLoaderBase() = default;
+    CMODLoaderBase(const CMODLoaderBase&) = delete;
+    CMODLoaderBase& operator=(const CMODLoaderBase&) = delete;
     
     // 已加载的模块
     std::unordered_map<std::string, std::shared_ptr<CMODStructure>> loadedModules_;

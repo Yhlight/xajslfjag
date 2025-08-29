@@ -58,6 +58,8 @@ add_library(CHTLCore STATIC
     CHTL/CHTLNode/BaseNode.cpp
     CHTL/CHTLNode/NodeImplementations.cpp
     CHTL/CHTLParser/Parser.cpp
+    CHTL/CMODSystem/CMODPackager.cpp
+    CHTL/CMODSystem/CMODLoader.cpp
     CHTL/CHTLGenerator/Generator.cpp
     CHTL/CHTLLoader/ImportResolver.cpp
     CHTL/CHTLManage/NamespaceManager.cpp

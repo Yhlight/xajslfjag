@@ -1,0 +1,107 @@
+// Test CHTL core features
+
+// Basic HTML structure
+html {
+    head {
+        title {
+            text {
+                "CHTL Test Page"
+            }
+        }
+        
+        // Global style block
+        style {
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+            }
+        }
+    }
+    
+    body {
+        // Header with attributes
+        header {
+            id: "main-header";
+            class: "header-section";
+            
+            h1 {
+                text {
+                    "Welcome to CHTL"
+                }
+            }
+        }
+        
+        // Main content
+        main {
+            // Article with local style
+            article {
+                style {
+                    // Inline styles
+                    padding: 20px;
+                    background-color: #f5f5f5;
+                    
+                    // Auto class selector
+                    .content {
+                        max-width: 800px;
+                        margin: 0 auto;
+                    }
+                    
+                    // Context selector with &
+                    &:hover {
+                        background-color: #eeeeee;
+                    }
+                }
+                
+                h2 {
+                    text {
+                        "CHTL Features"
+                    }
+                }
+                
+                p {
+                    text {
+                        "CHTL makes HTML development more intuitive and maintainable."
+                    }
+                }
+                
+                // List of features
+                ul {
+                    li {
+                        text {
+                            "Clean syntax"
+                        }
+                    }
+                    li {
+                        text {
+                            "Local style blocks"
+                        }
+                    }
+                    li {
+                        text {
+                            "Template support"
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Footer
+        footer {
+            style {
+                .footer {
+                    text-align: center;
+                    padding: 20px;
+                    background-color: #333;
+                    color: white;
+                }
+            }
+            
+            p {
+                text {
+                    "© 2024 CHTL Project"
+                }
+            }
+        }
+    }
+}
