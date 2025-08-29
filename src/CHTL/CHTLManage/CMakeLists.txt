@@ -17,11 +17,13 @@ endif()
 set(CHTL_MANAGE_SOURCES
     LocalStyleManager.cpp
     TemplateManager.cpp
+    SelectorAutomationManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
     LocalStyleManager.h
     TemplateManager.h
+    SelectorAutomationManager.h
 )
 
 # 创建静态库

@@ -1429,10 +1429,558 @@ std::string CHTLParser::parseOriginContent() {
     return content;
 }
 
-NodePtr CHTLParser::parseImport() { advance(); return nullptr; }
-NodePtr CHTLParser::parseConfiguration() { advance(); return nullptr; }
-NodePtr CHTLParser::parseNamespace() { advance(); return nullptr; }
-NodePtr CHTLParser::parseUse() { advance(); return nullptr; }
+// ========== 配置系统解析实现 ==========
+
+NodePtr CHTLParser::parseConfiguration() {
+    if (!consume(TokenType::CONFIGURATION, "Expected '[Configuration]'")) {
+        return nullptr;
+    }
+    
+    // 检查是否为命名配置
+    std::string configName;
+    if (match(TokenType::AT_CONFIG)) {
+        advance(); // consume @Config
+        if (match(TokenType::IDENTIFIER)) {
+            configName = currentToken().value;
+            advance();
+        }
+    }
+    
+    auto configNode = std::make_shared<ConfigurationNode>(configName);
+    
+    if (!consume(TokenType::LEFT_BRACE, "Expected '{' after configuration")) {
+        return nullptr;
+    }
+    
+    enterScope(CHTLNodeType::CONFIG_NODE);
+    
+    while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (match(TokenType::NAME)) {
+            // 解析[Name]子配置
+            auto nameConfig = parseNameConfig();
+            if (nameConfig) {
+                configNode->addChild(nameConfig);
+            }
+        } else if (match(TokenType::ORIGIN_TYPE)) {
+            // 解析[OriginType]子配置
+            auto originTypeConfig = parseOriginTypeConfig();
+            if (originTypeConfig) {
+                configNode->addChild(originTypeConfig);
+            }
+        } else if (match(TokenType::IDENTIFIER)) {
+            // 解析配置项
+            parseConfigurationItem(configNode.get());
+        } else {
+            advance(); // 跳过未知token
+        }
+    }
+    
+    exitScope();
+    
+    if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after configuration")) {
+        return nullptr;
+    }
+    
+    updateStatistics("configuration_definitions");
+    return configNode;
+}
+
+NodePtr CHTLParser::parseNameConfig() {
+    if (!consume(TokenType::NAME, "Expected '[Name]'")) {
+        return nullptr;
+    }
+    
+    auto nameConfig = std::make_shared<NameConfigNode>();
+    
+    if (!consume(TokenType::LEFT_BRACE, "Expected '{' after [Name]")) {
+        return nullptr;
+    }
+    
+    while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (match(TokenType::IDENTIFIER)) {
+            parseNameConfigItem(nameConfig.get());
+        } else {
+            advance();
+        }
+    }
+    
+    if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after [Name]")) {
+        return nullptr;
+    }
+    
+    return nameConfig;
+}
+
+NodePtr CHTLParser::parseOriginTypeConfig() {
+    if (!consume(TokenType::ORIGIN_TYPE, "Expected '[OriginType]'")) {
+        return nullptr;
+    }
+    
+    auto originTypeConfig = std::make_shared<OriginTypeConfigNode>();
+    
+    if (!consume(TokenType::LEFT_BRACE, "Expected '{' after [OriginType]")) {
+        return nullptr;
+    }
+    
+    while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (match(TokenType::IDENTIFIER)) {
+            parseOriginTypeConfigItem(originTypeConfig.get());
+        } else {
+            advance();
+        }
+    }
+    
+    if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after [OriginType]")) {
+        return nullptr;
+    }
+    
+    return originTypeConfig;
+}
+
+void CHTLParser::parseConfigurationItem(ConfigurationNode* configNode) {
+    if (!match(TokenType::IDENTIFIER)) {
+        return;
+    }
+    
+    std::string key = currentToken().value;
+    advance();
+    
+    if (!match({TokenType::EQUAL, TokenType::COLON})) {
+        reportError("Expected '=' or ':' after configuration key");
+        return;
+    }
+    advance();
+    
+    ConfigValue value = parseConfigValue();
+    configNode->setConfigValue(key, value);
+    
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+}
+
+void CHTLParser::parseNameConfigItem(NameConfigNode* nameConfig) {
+    if (!match(TokenType::IDENTIFIER)) {
+        return;
+    }
+    
+    std::string keyword = currentToken().value;
+    advance();
+    
+    if (!match({TokenType::EQUAL, TokenType::COLON})) {
+        reportError("Expected '=' or ':' after keyword");
+        return;
+    }
+    advance();
+    
+    std::vector<std::string> aliases;
+    
+    if (match(TokenType::LEFT_BRACKET)) {
+        // 数组形式: [alias1, alias2, ...]
+        advance();
+        
+        while (!match(TokenType::RIGHT_BRACKET) && !isAtEnd()) {
+            if (match({TokenType::IDENTIFIER, TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR, 
+                      TokenType::AT_HTML, TokenType::AT_JAVASCRIPT, TokenType::DOUBLE_QUOTED_STRING})) {
+                aliases.push_back(currentToken().value);
+                advance();
+            }
+            
+            if (match(TokenType::COMMA)) {
+                advance();
+            }
+        }
+        
+        if (!consume(TokenType::RIGHT_BRACKET, "Expected ']' after alias array")) {
+            return;
+        }
+    } else {
+        // 单个值
+        if (match({TokenType::IDENTIFIER, TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR,
+                  TokenType::AT_HTML, TokenType::AT_JAVASCRIPT, TokenType::DOUBLE_QUOTED_STRING})) {
+            aliases.push_back(currentToken().value);
+            advance();
+        }
+    }
+    
+    nameConfig->setKeywordAlias(keyword, aliases);
+    
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+}
+
+void CHTLParser::parseOriginTypeConfigItem(OriginTypeConfigNode* originTypeConfig) {
+    if (!match(TokenType::IDENTIFIER)) {
+        return;
+    }
+    
+    std::string typeName = currentToken().value;
+    advance();
+    
+    if (!match({TokenType::EQUAL, TokenType::COLON})) {
+        reportError("Expected '=' or ':' after origin type name");
+        return;
+    }
+    advance();
+    
+    if (match({TokenType::AT_CUSTOM_TYPE, TokenType::IDENTIFIER})) {
+        std::string typeIdentifier = currentToken().value;
+        originTypeConfig->addCustomOriginType(typeName, typeIdentifier);
+        advance();
+    }
+    
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+}
+
+ConfigValue CHTLParser::parseConfigValue() {
+    if (match(TokenType::LEFT_BRACKET)) {
+        // 数组值
+        advance();
+        std::vector<std::string> arrayValues;
+        
+        while (!match(TokenType::RIGHT_BRACKET) && !isAtEnd()) {
+            if (match({TokenType::IDENTIFIER, TokenType::DOUBLE_QUOTED_STRING, TokenType::SINGLE_QUOTED_STRING,
+                      TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR, TokenType::AT_HTML, 
+                      TokenType::AT_JAVASCRIPT})) {
+                arrayValues.push_back(currentToken().value);
+                advance();
+            }
+            
+            if (match(TokenType::COMMA)) {
+                advance();
+            }
+        }
+        
+        if (!consume(TokenType::RIGHT_BRACKET, "Expected ']' after array")) {
+            return ConfigValue("");
+        }
+        
+        return ConfigValue(arrayValues);
+    } else if (match({TokenType::IDENTIFIER, TokenType::DOUBLE_QUOTED_STRING, TokenType::SINGLE_QUOTED_STRING})) {
+        std::string value = currentToken().value;
+        advance();
+        
+        // 尝试推断类型
+        if (value == "true" || value == "false") {
+            return ConfigValue(value == "true");
+        } else if (std::all_of(value.begin(), value.end(), ::isdigit) || 
+                  (value[0] == '-' && std::all_of(value.begin() + 1, value.end(), ::isdigit))) {
+            return ConfigValue(std::stoi(value));
+        } else {
+            return ConfigValue(value);
+        }
+    }
+    
+    return ConfigValue("");
+}
+
+// ========== 导入、命名空间、使用语法解析 ==========
+
+NodePtr CHTLParser::parseImport() {
+    if (!consume(TokenType::IMPORT, "Expected '[Import]'")) {
+        return nullptr;
+    }
+    
+    // 解析导入类型
+    ImportType importType = ImportType::CHTL_IMPORT;
+    std::string symbolType;
+    std::string symbolName;
+    bool isBatchImport = false;
+    
+    if (match(TokenType::AT_HTML)) {
+        importType = ImportType::HTML_IMPORT;
+        advance();
+    } else if (match(TokenType::AT_STYLE)) {
+        importType = ImportType::STYLE_IMPORT;
+        advance();
+    } else if (match(TokenType::AT_JAVASCRIPT)) {
+        importType = ImportType::JAVASCRIPT_IMPORT;
+        advance();
+    } else if (match(TokenType::AT_CHTL)) {
+        importType = ImportType::CHTL_IMPORT;
+        advance();
+    } else if (match(TokenType::AT_CJMOD)) {
+        importType = ImportType::CJMOD_IMPORT;
+        advance();
+    } else if (match(TokenType::AT_CONFIG)) {
+        importType = ImportType::CONFIG_IMPORT;
+        advance();
+    } else if (match(TokenType::TEMPLATE)) {
+        // [Import] [Template] @Element/@Style/@Var name
+        advance(); // consume [Template]
+        importType = ImportType::TEMPLATE_IMPORT;
+        
+        if (match({TokenType::AT_ELEMENT, TokenType::AT_STYLE, TokenType::AT_VAR})) {
+            symbolType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                symbolName = currentToken().value;
+                advance();
+            } else {
+                // 批量导入所有模板
+                isBatchImport = true;
+                importType = ImportType::ALL_TEMPLATES_IMPORT;
+            }
+        }
+    } else if (match(TokenType::CUSTOM)) {
+        // [Import] [Custom] @Element/@Style/@Var name
+        advance(); // consume [Custom]
+        importType = ImportType::CUSTOM_IMPORT;
+        
+        if (match({TokenType::AT_ELEMENT, TokenType::AT_STYLE, TokenType::AT_VAR})) {
+            symbolType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                symbolName = currentToken().value;
+                advance();
+            } else {
+                // 批量导入所有自定义
+                isBatchImport = true;
+                importType = ImportType::ALL_CUSTOMS_IMPORT;
+            }
+        }
+    } else if (match(TokenType::ORIGIN)) {
+        // [Import] [Origin] @Html/@Style/@JavaScript name
+        advance(); // consume [Origin]
+        importType = ImportType::ORIGIN_IMPORT;
+        
+        if (match({TokenType::AT_HTML, TokenType::AT_STYLE, TokenType::AT_JAVASCRIPT, TokenType::AT_CUSTOM_TYPE})) {
+            symbolType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                symbolName = currentToken().value;
+                advance();
+            } else {
+                // 批量导入所有原始嵌入
+                isBatchImport = true;
+                importType = ImportType::ALL_ORIGINS_IMPORT;
+            }
+        }
+    } else if (match(TokenType::CONFIGURATION)) {
+        // [Import] [Configuration] @Config name
+        advance(); // consume [Configuration]
+        importType = ImportType::CONFIG_IMPORT;
+        
+        if (match(TokenType::AT_CONFIG)) {
+            advance();
+            if (match(TokenType::IDENTIFIER)) {
+                symbolName = currentToken().value;
+                advance();
+            } else {
+                // 批量导入所有配置
+                isBatchImport = true;
+                importType = ImportType::ALL_CONFIGS_IMPORT;
+            }
+        }
+    }
+    
+    // 创建导入节点
+    std::shared_ptr<ImportNode> importNode;
+    
+    switch (importType) {
+        case ImportType::HTML_IMPORT:
+            importNode = std::make_shared<HtmlImportNode>();
+            break;
+        case ImportType::STYLE_IMPORT:
+            importNode = std::make_shared<StyleImportNode>();
+            break;
+        case ImportType::JAVASCRIPT_IMPORT:
+            importNode = std::make_shared<JavaScriptImportNode>();
+            break;
+        case ImportType::CHTL_IMPORT:
+            importNode = std::make_shared<CHTLImportNode>();
+            break;
+        case ImportType::CJMOD_IMPORT:
+            importNode = std::make_shared<CJMODImportNode>();
+            break;
+        case ImportType::CONFIG_IMPORT:
+            importNode = std::make_shared<ConfigImportNode>();
+            break;
+        case ImportType::TEMPLATE_IMPORT:
+            importNode = std::make_shared<TemplateImportNode>();
+            break;
+        case ImportType::CUSTOM_IMPORT:
+            importNode = std::make_shared<CustomImportNode>();
+            break;
+        case ImportType::ORIGIN_IMPORT:
+            importNode = std::make_shared<OriginImportNode>();
+            break;
+        default:
+            importNode = std::make_shared<ImportNode>(importType);
+            break;
+    }
+    
+    // 设置符号信息
+    if (!symbolType.empty()) {
+        importNode->setSymbolType(symbolType);
+    }
+    if (!symbolName.empty()) {
+        importNode->setSymbolName(symbolName);
+    }
+    
+    // 解析from路径
+    if (match(TokenType::FROM)) {
+        advance(); // consume 'from'
+        
+        if (match({TokenType::IDENTIFIER, TokenType::DOUBLE_QUOTED_STRING, TokenType::SINGLE_QUOTED_STRING})) {
+            std::string importPath = currentToken().value;
+            importNode->setImportPath(importPath);
+            advance();
+        } else {
+            reportError("Expected import path after 'from'");
+            return nullptr;
+        }
+    }
+    
+    // 解析as别名
+    if (match(TokenType::AS)) {
+        advance(); // consume 'as'
+        
+        if (match(TokenType::IDENTIFIER)) {
+            std::string alias = currentToken().value;
+            importNode->setAlias(alias);
+            advance();
+        } else {
+            reportError("Expected alias name after 'as'");
+            return nullptr;
+        }
+    }
+    
+    // 消费分号
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+    
+    updateStatistics("import_statements");
+    return importNode;
+}
+
+NodePtr CHTLParser::parseNamespace() {
+    if (!consume(TokenType::NAMESPACE, "Expected '[Namespace]'")) {
+        return nullptr;
+    }
+    
+    std::string namespaceName;
+    if (match(TokenType::IDENTIFIER)) {
+        namespaceName = currentToken().value;
+        advance();
+    } else {
+        reportError("Expected namespace name after '[Namespace]'");
+        return nullptr;
+    }
+    
+    auto namespaceNode = std::make_shared<NamespaceNode>(namespaceName);
+    
+    // 检查是否有大括号（嵌套命名空间或内容）
+    if (match(TokenType::LEFT_BRACE)) {
+        advance(); // consume '{'
+        
+        enterScope(CHTLNodeType::NAMESPACE_NODE);
+        
+        while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+            // 解析命名空间内容
+            auto childNode = parseTopLevel();
+            if (childNode) {
+                namespaceNode->addChild(childNode);
+                
+                // 如果是嵌套命名空间，添加为子命名空间
+                if (auto childNamespace = std::dynamic_pointer_cast<NamespaceNode>(childNode)) {
+                    namespaceNode->addChildNamespace(childNamespace);
+                }
+                // 如果是模板节点，添加到命名空间符号表
+                else if (auto templateNode = std::dynamic_pointer_cast<TemplateNode>(childNode)) {
+                    namespaceNode->addTemplate(templateNode);
+                }
+                // 如果是自定义节点，添加到命名空间符号表
+                else if (auto customNode = std::dynamic_pointer_cast<CustomNode>(childNode)) {
+                    namespaceNode->addCustom(customNode);
+                }
+                // 如果是原始嵌入节点，添加到命名空间符号表
+                else if (auto originNode = std::dynamic_pointer_cast<OriginNode>(childNode)) {
+                    namespaceNode->addOrigin(originNode);
+                }
+                // 如果是配置节点，添加到命名空间符号表
+                else if (auto configNode = std::dynamic_pointer_cast<ConfigNode>(childNode)) {
+                    namespaceNode->addConfig(configNode);
+                }
+            }
+        }
+        
+        exitScope();
+        
+        if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after namespace content")) {
+            return nullptr;
+        }
+    }
+    
+    updateStatistics("namespace_definitions");
+    return namespaceNode;
+}
+
+NodePtr CHTLParser::parseUse() {
+    if (!consume(TokenType::USE, "Expected 'use'")) {
+        return nullptr;
+    }
+    
+    auto useNode = std::make_shared<UseNode>();
+    std::string useContent;
+    
+    // 解析use内容
+    if (match(TokenType::IDENTIFIER)) {
+        std::string content = currentToken().value;
+        advance();
+        
+        if (content == "html5") {
+            // use html5;
+            useContent = "html5";
+        } else {
+            // 可能是其他标识符，暂时记录
+            useContent = content;
+        }
+    } else if (match(TokenType::AT_CONFIG)) {
+        // use @Config ConfigName;
+        advance(); // consume @Config
+        useContent += "@Config";
+        
+        if (match(TokenType::IDENTIFIER)) {
+            useContent += " " + currentToken().value;
+            advance();
+        }
+    } else if (match(TokenType::CONFIGURATION)) {
+        // use [Configuration] @Config ConfigName;
+        advance(); // consume [Configuration]
+        useContent += "[Configuration]";
+        
+        if (match(TokenType::AT_CONFIG)) {
+            advance();
+            useContent += " @Config";
+            
+            if (match(TokenType::IDENTIFIER)) {
+                useContent += " " + currentToken().value;
+                advance();
+            }
+        }
+    } else {
+        reportError("Expected use content after 'use'");
+        return nullptr;
+    }
+    
+    useNode->setUseContent(useContent);
+    
+    // 消费分号
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+    
+    updateStatistics("use_statements");
+    return useNode;
+}
 
 // ========== CHTLParserFactory 实现 ==========
 

@@ -20,10 +20,15 @@ set(CHTL_NODE_SOURCES
     TextNode.cpp
     CommentNode.cpp
     StyleNode.cpp
+    ScriptNode.cpp
     TemplateNode.cpp
     AdvancedTemplateNode.cpp
     OperatorNode.cpp
     OriginNode.cpp
+    ConfigNode.cpp
+    NamespaceNode.cpp
+    ImportNode.cpp
+    ConstraintNode.cpp
 )
 
 set(CHTL_NODE_HEADERS
@@ -32,11 +37,15 @@ set(CHTL_NODE_HEADERS
     TextNode.h
     CommentNode.h
     StyleNode.h
+    ScriptNode.h
     TemplateNode.h
     AdvancedTemplateNode.h
     OperatorNode.h
     ConfigNode.h
     OriginNode.h
+    NamespaceNode.h
+    ImportNode.h
+    ConstraintNode.h
 )
 
 # 创建静态库

@@ -28,6 +28,9 @@ enum class CHTLNodeType {
     
     // 脚本节点
     SCRIPT_NODE,            // 局部脚本节点
+    CHTLJS_LISTENER_NODE,   // CHTL JS监听器节点
+    CHTLJS_ANIMATION_NODE,  // CHTL JS动画节点
+    CHTLJS_DELEGATE_NODE,   // CHTL JS委托节点
     
     // 模板节点
     TEMPLATE_STYLE_NODE,    // 样式组模板节点
@@ -62,6 +65,16 @@ enum class CHTLNodeType {
     INFO_CONFIG_NODE,       // 信息配置节点
     EXPORT_CONFIG_NODE,     // 导出配置节点
     
+    // 命名空间节点
+    NAMESPACE_NODE,         // 命名空间节点
+    
+    // 导入和使用节点
+    IMPORT_NODE,            // 导入节点
+    USE_NODE,               // 使用节点
+    
+    // 约束节点
+    CONSTRAINT_NODE,        // 约束节点
+    
     // 导入节点
     IMPORT_HTML_NODE,       // 导入HTML节点
     IMPORT_STYLE_NODE,      // 导入样式节点
@@ -72,17 +85,6 @@ enum class CHTLNodeType {
     IMPORT_TEMPLATE_NODE,   // 导入模板节点
     IMPORT_CUSTOM_NODE,     // 导入自定义节点
     IMPORT_ORIGIN_NODE,     // 导入原始嵌入节点
-    
-    // 配置节点
-    CONFIG_NODE,            // 配置节点
-    CONFIG_NAME_NODE,       // Name配置节点
-    CONFIG_ORIGINTYPE_NODE, // OriginType配置节点
-    
-    // 命名空间节点
-    NAMESPACE_NODE,         // 命名空间节点
-    
-    // 操作节点
-    USE_NODE,               // use操作节点
     INHERIT_NODE,           // inherit操作节点
     DELETE_NODE,            // delete操作节点
     INSERT_NODE,            // insert操作节点

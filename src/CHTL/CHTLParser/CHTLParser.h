@@ -13,6 +13,10 @@
 #include "../CHTLNode/OperatorNode.h"
 #include "../CHTLNode/ConfigNode.h"
 #include "../CHTLNode/OriginNode.h"
+#include "../CHTLNode/NamespaceNode.h"
+#include "../CHTLNode/ImportNode.h"
+#include "../CHTLNode/ScriptNode.h"
+#include "../CHTLNode/ConstraintNode.h"
 #include "../CHTLIOStream/CHTLIOStream.h"
 #include "../CHTLManage/TemplateManager.h"
 #include "../../Error/ErrorReport.h"
@@ -34,6 +38,7 @@ struct ParseOptions {
     bool enableImports = true;              // 是否解析导入
     bool enableConfig = true;               // 是否解析配置
     bool enableOrigins = true;              // 是否解析原始嵌入
+    bool enableConstraints = true;          // 是否启用约束系统
     bool strictMode = false;                // 严格模式
     bool autoRecovery = true;               // 错误自动恢复
     size_t maxDepth = 1000;                // 最大嵌套深度
@@ -356,6 +361,36 @@ private:
      * 解析命名空间
      */
     NodePtr parseNamespace();
+    
+    /**
+     * 解析[Name]配置
+     */
+    NodePtr parseNameConfig();
+    
+    /**
+     * 解析[OriginType]配置
+     */
+    NodePtr parseOriginTypeConfig();
+    
+    /**
+     * 解析配置项
+     */
+    void parseConfigurationItem(ConfigurationNode* configNode);
+    
+    /**
+     * 解析名称配置项
+     */
+    void parseNameConfigItem(NameConfigNode* nameConfig);
+    
+    /**
+     * 解析原始类型配置项
+     */
+    void parseOriginTypeConfigItem(OriginTypeConfigNode* originTypeConfig);
+    
+    /**
+     * 解析配置值
+     */
+    ConfigValue parseConfigValue();
     
     // ========== 表达式解析 ==========
     

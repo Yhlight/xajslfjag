@@ -386,8 +386,6 @@ std::string BaseNode::getNodeTypeString() const {
         case CHTLNodeType::IMPORT_CUSTOM_NODE: return "IMPORT_CUSTOM";
         case CHTLNodeType::IMPORT_ORIGIN_NODE: return "IMPORT_ORIGIN";
         case CHTLNodeType::CONFIG_NODE: return "CONFIG";
-        case CHTLNodeType::CONFIG_NAME_NODE: return "CONFIG_NAME";
-        case CHTLNodeType::CONFIG_ORIGINTYPE_NODE: return "CONFIG_ORIGINTYPE";
         case CHTLNodeType::NAMESPACE_NODE: return "NAMESPACE";
         case CHTLNodeType::USE_NODE: return "USE";
         case CHTLNodeType::INHERIT_NODE: return "INHERIT";

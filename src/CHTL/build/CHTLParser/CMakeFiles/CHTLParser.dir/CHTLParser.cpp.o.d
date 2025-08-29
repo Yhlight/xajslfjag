@@ -263,6 +263,10 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/OperatorNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/ConfigNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/OriginNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLNode/NamespaceNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLNode/ImportNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLNode/ScriptNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLNode/ConstraintNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/CHTLIOStream.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../../Util/FileSystem/FileSystem.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/fstream \
