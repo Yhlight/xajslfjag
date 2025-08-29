@@ -25,12 +25,36 @@ struct ScannerState {
     void reset() { position = 0; line = 1; column = 1; isValid = true; }
 };
 
+// CJMOD元素类型
+enum class CJMODElementType {
+    FUNCTION,
+    CLASS,
+    VARIABLE,
+    EXPORT,
+    IMPORT,
+    UNKNOWN
+};
+
+// CJMOD元素
+struct CJMODElement {
+    CJMODElementType type;
+    CHTL::String name;
+    CHTL::String content;
+    CHTL::String signature;
+    size_t startPosition;
+    size_t endPosition;
+    std::unordered_map<CHTL::String, CHTL::String> attributes;
+    
+    CJMODElement() : type(CJMODElementType::UNKNOWN), startPosition(0), endPosition(0) {}
+};
+
 // 双指针扫描结果
 struct DualPointerScanResult {
     CHTL::StringVector fragments;
     CHTL::StringVector keywords;
     CHTL::StringVector errors;
     CHTL::StringVector warnings;
+    std::vector<CJMODElement> capturedElements;
     std::unordered_map<CHTL::String, CHTL::String> metadata;
     bool success = false;
     
@@ -48,6 +72,8 @@ struct CJMODScannerConfig {
     bool enableFragmentValidation = true;
     bool enablePostProcessing = true;
     bool strictMode = false;
+    bool sortElementsByPosition = true;
+    bool optimizeElementInfo = true;
     size_t maxScanDepth = 1000;
     CHTL::StringVector customKeywords;
     CHTL::StringVector ignorePatterns;
@@ -76,6 +102,12 @@ public:
     const CHTL::StringVector& getErrors() const { return errors; }
     const CHTL::StringVector& getWarnings() const { return warnings; }
     
+    // 配置方法
+    void setConfig(const CJMODScannerConfig& newConfig);
+    CJMODScannerConfig getConfig() const;
+    size_t getCurrentPosition() const;
+    size_t getAuxiliaryPosition() const;
+    
 private:
     // 成员变量
     CHTL::String sourceCode;
@@ -90,17 +122,61 @@ private:
     void scanWithPrimaryPointer(DualPointerScanResult& result);
     void scanWithAuxiliaryPointer(DualPointerScanResult& result);
     
-    // 关键字检测
-    bool detectKeyword(const CHTL::String& keyword, size_t position);
-    void processKeywordFound(const CHTL::String& keyword, DualPointerScanResult& result);
+    // 同步和状态管理
+    void synchronizePointers();
+    bool hasDeadlock();
+    void advancePrimaryPointer();
+    void updateScannerState(ScannerState& state, size_t position);
     
-    // 片段处理
-    void collectFragment(size_t start, size_t end, DualPointerScanResult& result);
-    void validateFragment(const CHTL::String& fragment, DualPointerScanResult& result);
+    // CJMOD检测和处理
+    bool detectCJMODPrefix(size_t position);
+    void performPrefixCapture(DualPointerScanResult& result);
+    void validateScannedRegion(size_t start, size_t end, DualPointerScanResult& result);
+    void performLookaheadScan(DualPointerScanResult& result);
+    double calculateConfidence(size_t position);
     
-    // 后处理
+    // 后处理和优化
     void postProcessResults(DualPointerScanResult& result);
     void validateScanResults(DualPointerScanResult& result);
+    void optimizeElementInformation(DualPointerScanResult& result);
+    void generateStatistics(DualPointerScanResult& result);
+    void checkDuplicateElements(DualPointerScanResult& result);
+    void validateDependencies(DualPointerScanResult& result);
+    
+    // 元素处理方法
+    CJMODElementType determineCJMODElementType(size_t position);
+    size_t findCaptureEnd(size_t start, CJMODElementType type);
+    void parseElementAttributes(CJMODElement& element);
+    void parseFunctionSignature(CJMODElement& element, const CHTL::String& content);
+    void parseClassDeclaration(CJMODElement& element, const CHTL::String& content);
+    void parseExportDeclaration(CJMODElement& element, const CHTL::String& content);
+    void parseImportDeclaration(CJMODElement& element, const CHTL::String& content);
+    void parseVariableDeclaration(CJMODElement& element, const CHTL::String& content);
+    CHTL::StringVector parseParameterList(const CHTL::String& paramStr);
+    
+    // 元素验证方法
+    bool validateCJMODElement(const CJMODElement& element);
+    bool validateFunctionElement(const CJMODElement& element);
+    bool validateClassElement(const CJMODElement& element);
+    bool validateExportElement(const CJMODElement& element);
+    bool validateImportElement(const CJMODElement& element);
+    bool validateVariableElement(const CJMODElement& element);
+    bool validateElementCompleteness(const CJMODElement& element);
+    void optimizeElementAttributes(CJMODElement& element);
+    
+    // 工具方法
+    bool matchPatternAtPosition(const CHTL::String& pattern, size_t position);
+    CHTL::String getSegmentAtPosition(size_t position, size_t length);
+    bool detectCppFunctionSignature(size_t position);
+    bool detectExportMacro(size_t position);
+    bool isValidIdentifier(const CHTL::String& identifier);
+    bool isValidParameterDeclaration(const CHTL::String& param);
+    bool isValidTypeName(const CHTL::String& typeName);
+    bool hasSyntaxErrors(const CHTL::String& content);
+    bool hasUnmatchedBrackets(const CHTL::String& content);
+    
+    // 字符串转换
+    static CHTL::String cjmodElementTypeToString(CJMODElementType type);
     
     // 初始化
     void initializePattern();

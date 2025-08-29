@@ -115,6 +115,11 @@ public:
     
     virtual ~BaseNode() = default;
     
+    // 基础访问方法
+    NodeType getType() const { return type; }
+    const String& getValue() const { return value; }
+    const Position& getPosition() const { return position; }
+    
     // 节点操作
     void addChild(std::unique_ptr<BaseNode> child);
     void insertChild(size_t index, std::unique_ptr<BaseNode> child);

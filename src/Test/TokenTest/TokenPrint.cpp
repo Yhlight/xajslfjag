@@ -169,7 +169,8 @@ String TokenPrint::getTokenTypeName(CHTL::TokenType type) {
         case CHTL::TokenType::OPERATOR: return "OPERATOR";
         case CHTL::TokenType::KEYWORD: return "KEYWORD";
         case CHTL::TokenType::PUNCTUATION: return "PUNCTUATION";
-        case CHTL::TokenType::COMMENT: return "COMMENT";
+        case CHTL::TokenType::COMMENT_LINE: return "COMMENT_LINE";
+        case CHTL::TokenType::COMMENT_BLOCK: return "COMMENT_BLOCK";
         case CHTL::TokenType::WHITESPACE: return "WHITESPACE";
         case CHTL::TokenType::NEWLINE: return "NEWLINE";
         case CHTL::TokenType::EOF_TOKEN: return "EOF";
@@ -178,18 +179,15 @@ String TokenPrint::getTokenTypeName(CHTL::TokenType type) {
 }
 
 String TokenPrint::getNodeTypeName(CHTL::NodeType type) {
-    // 这里需要根据实际的NodeType枚举来实现
+    // 根据实际的NodeType枚举来实现
     switch (type) {
         case CHTL::NodeType::ELEMENT: return "ELEMENT";
         case CHTL::NodeType::TEXT: return "TEXT";
-        case CHTL::NodeType::COMMENT: return "COMMENT";
         case CHTL::NodeType::TEMPLATE: return "TEMPLATE";
         case CHTL::NodeType::CUSTOM: return "CUSTOM";
-        case CHTL::NodeType::STYLE: return "STYLE";
-        case CHTL::NodeType::SCRIPT: return "SCRIPT";
-        case CHTL::NodeType::ORIGIN: return "ORIGIN";
         case CHTL::NodeType::IMPORT: return "IMPORT";
-        case CHTL::NodeType::CONFIG: return "CONFIG";
+        case CHTL::NodeType::CONFIGURATION: return "CONFIG";
+        case CHTL::NodeType::UNKNOWN: return "UNKNOWN";
         default: return "UNKNOWN";
     }
 }

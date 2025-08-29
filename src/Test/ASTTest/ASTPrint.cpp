@@ -124,7 +124,7 @@ String ASTPrint::getNodeTypeName(CHTL::NodeType type) {
         case CHTL::NodeType::SCRIPT: return "SCRIPT";
         case CHTL::NodeType::ORIGIN: return "ORIGIN";
         case CHTL::NodeType::IMPORT: return "IMPORT";
-        case CHTL::NodeType::CONFIG: return "CONFIG";
+        case CHTL::NodeType::CONFIGURATION: return "CONFIG";
         case CHTL::NodeType::CONSTRAINT: return "CONSTRAINT";
         case CHTL::NodeType::DELETE_NODE: return "DELETE";
         case CHTL::NodeType::INSERT_NODE: return "INSERT";

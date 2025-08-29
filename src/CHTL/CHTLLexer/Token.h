@@ -83,6 +83,11 @@ enum class TokenType {
     ELLIPSIS,             // ...
     DOLLAR,               // $
     
+    // 通用分类 (为了向后兼容测试代码)
+    OPERATOR,             // 操作符通用类型
+    KEYWORD,              // 关键字通用类型  
+    PUNCTUATION,          // 标点符号通用类型
+    
     // 特殊符号组合
     ARROW,                // ->
     DOUBLE_COLON,         // ::
@@ -142,6 +147,11 @@ public:
     Token() : type(TokenType::UNKNOWN) {}
     Token(TokenType t, const String& v, const Position& pos = Position())
         : type(t), value(v), position(pos) {}
+    
+    // Getter方法
+    TokenType getType() const { return type; }
+    const String& getValue() const { return value; }
+    const Position& getPosition() const { return position; }
     
     // 工具方法
     bool isKeyword() const;

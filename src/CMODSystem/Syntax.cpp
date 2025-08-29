@@ -1,4 +1,5 @@
 #include "Syntax.h"
+#include "../Util/StringUtils.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
@@ -11,7 +12,7 @@ Arg Syntax::analyze(const CHTL::String& pattern) {
     std::vector<AtomArg> atoms;
     
     for (const auto& token : tokens) {
-        if (token.starts_with("$") || token == "...") {
+        if (CHTL::Util::StringUtils::starts_with(token, "$") || token == "...") {
             AtomArg::PlaceholderType type = AtomArg::parsePlaceholderType(token);
             atoms.emplace_back(token, type);
         } else {
@@ -127,11 +128,11 @@ CHTL::String AtomArg::toString() const {
 
 AtomArg::PlaceholderType AtomArg::parsePlaceholderType(const CHTL::String& placeholder) {
     if (placeholder == "...") return PlaceholderType::VARIADIC;
-    if (placeholder.ends_with("!_") || placeholder.ends_with("_!")) return PlaceholderType::REQUIRED;
-    if (placeholder.ends_with("?_") || placeholder.ends_with("_?")) return PlaceholderType::OPTIONAL;
-    if (placeholder.ends_with("!")) return PlaceholderType::REQUIRED;
-    if (placeholder.ends_with("?")) return PlaceholderType::OPTIONAL;
-    if (placeholder.ends_with("_")) return PlaceholderType::UNORDERED;
+    if (CHTL::Util::StringUtils::ends_with(placeholder, "!_") || CHTL::Util::StringUtils::ends_with(placeholder, "_!")) return PlaceholderType::REQUIRED;
+    if (CHTL::Util::StringUtils::ends_with(placeholder, "?_") || CHTL::Util::StringUtils::ends_with(placeholder, "_?")) return PlaceholderType::OPTIONAL;
+    if (CHTL::Util::StringUtils::ends_with(placeholder, "!")) return PlaceholderType::REQUIRED;
+    if (CHTL::Util::StringUtils::ends_with(placeholder, "?")) return PlaceholderType::OPTIONAL;
+    if (CHTL::Util::StringUtils::ends_with(placeholder, "_")) return PlaceholderType::UNORDERED;
     return PlaceholderType::NORMAL;
 }
 
@@ -250,7 +251,7 @@ bool Arg::isComplete() const {
 bool Arg::hasUnboundPlaceholders() const {
     return std::any_of(atoms.begin(), atoms.end(),
                       [](const AtomArg& atom) {
-                          return !atom.isBound && atom.placeholder.starts_with("$");
+                          return !atom.isBound && CHTL::Util::StringUtils::starts_with(atom.placeholder, "$");
                       });
 }
 
@@ -265,7 +266,7 @@ bool Arg::hasUnfilledRequired() const {
 CHTL::StringVector Arg::getUnboundPlaceholders() const {
     CHTL::StringVector unbound;
     for (const auto& atom : atoms) {
-        if (!atom.isBound && atom.placeholder.starts_with("$")) {
+        if (!atom.isBound && CHTL::Util::StringUtils::starts_with(atom.placeholder, "$")) {
             unbound.push_back(atom.placeholder);
         }
     }

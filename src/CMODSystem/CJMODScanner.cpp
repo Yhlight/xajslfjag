@@ -1,5 +1,6 @@
 #include "CJMODScanner.h"
 #include "../CHTL/CHTLLexer/GlobalMap.h"
+#include "../Util/StringUtils.h"
 #include <algorithm>
 #include <regex>
 #include <set>

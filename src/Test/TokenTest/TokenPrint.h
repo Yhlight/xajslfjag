@@ -2,6 +2,7 @@
 
 #include "../../Util/Common.h"
 #include "../../CHTL/CHTLLexer/Token.h"
+#include "../../CHTL/CHTLNode/BaseNode.h"
 #include <iostream>
 #include <iomanip>
 #include <vector>

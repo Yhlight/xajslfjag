@@ -266,6 +266,7 @@ private:
         std::chrono::high_resolution_clock::time_point lastHit;
         bool isSuspicious;
         
+        LoopPoint() : hitCount(0), isSuspicious(false) {}
         LoopPoint(const String& n);
     };
     
