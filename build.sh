@@ -1,23 +1,17 @@
 #!/bin/bash
 
-# CHTL编译器构建脚本
+# CHTL项目构建脚本
 # 使用方法: ./build.sh [选项]
+# 选项:
+#   clean    - 清理构建目录
+#   debug    - Debug模式构建
+#   release  - Release模式构建（默认）
+#   test     - 构建并运行测试
+#   install  - 安装到系统
+#   package  - 创建安装包
+#   all      - 完整构建流程
 
 set -e  # 遇到错误立即退出
-
-# 默认配置
-BUILD_TYPE="Release"
-BUILD_DIR="build"
-INSTALL_PREFIX="/usr/local"
-ENABLE_TESTS=false
-ENABLE_DOCS=false
-ENABLE_PACKAGE=false
-ENABLE_STATIC_ANALYSIS=false
-ENABLE_COVERAGE=false
-ENABLE_PROFILING=false
-JOBS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)
-VERBOSE=false
-CLEAN=false
 
 # 颜色定义
 RED='\033[0;31m'
@@ -26,66 +20,27 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# 打印带颜色的消息
-print_message() {
-    local color=$1
-    local message=$2
-    echo -e "${color}${message}${NC}"
+# 打印函数
+print_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
 }
 
 print_success() {
-    print_message "$GREEN" "✓ $1"
-}
-
-print_error() {
-    print_message "$RED" "✗ $1"
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
 print_warning() {
-    print_message "$YELLOW" "⚠ $1"
+    echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
-print_info() {
-    print_message "$BLUE" "ℹ $1"
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
 }
 
-# 显示帮助信息
-show_help() {
-    cat << EOF
-CHTL编译器构建脚本
-
-用法: $0 [选项]
-
-选项:
-    -h, --help              显示此帮助信息
-    -t, --type TYPE         构建类型 (Debug|Release|MinSizeRel|RelWithDebInfo) [默认: Release]
-    -d, --build-dir DIR     构建目录 [默认: build]
-    -p, --prefix PATH       安装前缀 [默认: /usr/local]
-    -j, --jobs N            并行作业数 [默认: CPU核心数]
-    --tests                 启用测试构建
-    --docs                  启用文档生成
-    --package               启用包构建
-    --static-analysis       启用静态分析
-    --coverage              启用代码覆盖率 (仅Debug模式)
-    --profiling             启用性能分析
-    --clean                 清理构建目录
-    --verbose               详细输出
-    --install               构建后安装
-
-构建类型说明:
-    Debug           - 调试版本，包含调试信息，无优化
-    Release         - 发布版本，完全优化，无调试信息
-    MinSizeRel      - 最小体积发布版本
-    RelWithDebInfo  - 带调试信息的发布版本
-
-示例:
-    $0                                    # 默认Release构建
-    $0 --type Debug --tests --docs        # Debug构建，包含测试和文档
-    $0 --package --install                # 构建并安装包
-    $0 --clean                            # 清理构建目录
-    $0 --static-analysis --coverage       # 启用静态分析和覆盖率
-
-EOF
+print_header() {
+    echo -e "${BLUE}================================${NC}"
+    echo -e "${BLUE}$1${NC}"
+    echo -e "${BLUE}================================${NC}"
 }
 
 # 检查依赖
@@ -94,354 +49,361 @@ check_dependencies() {
     
     # 检查CMake
     if ! command -v cmake &> /dev/null; then
-        print_error "CMake未找到，请安装CMake 3.15+"
+        print_error "CMake未安装，请先安装CMake 3.15或更高版本"
         exit 1
     fi
     
-    local cmake_version=$(cmake --version | head -n1 | cut -d' ' -f3)
-    print_success "找到CMake $cmake_version"
+    CMAKE_VERSION=$(cmake --version | head -n1 | awk '{print $3}')
+    print_info "CMake版本: $CMAKE_VERSION"
     
     # 检查编译器
     if command -v g++ &> /dev/null; then
-        local gcc_version=$(g++ --version | head -n1)
-        print_success "找到编译器: $gcc_version"
+        GCC_VERSION=$(g++ --version | head -n1)
+        print_info "编译器: $GCC_VERSION"
     elif command -v clang++ &> /dev/null; then
-        local clang_version=$(clang++ --version | head -n1)
-        print_success "找到编译器: $clang_version"
+        CLANG_VERSION=$(clang++ --version | head -n1)
+        print_info "编译器: $CLANG_VERSION"
     else
-        print_error "未找到C++编译器"
+        print_error "未找到C++编译器，请安装g++或clang++"
         exit 1
     fi
     
-    # 检查ANTLR4（可选）
-    if pkg-config --exists antlr4-runtime 2>/dev/null; then
-        local antlr_version=$(pkg-config --modversion antlr4-runtime)
-        print_success "找到ANTLR4: $antlr_version"
-    else
-        print_warning "未找到ANTLR4，将使用内置副本"
-    fi
-    
-    # 检查可选工具
-    if $ENABLE_STATIC_ANALYSIS; then
-        if command -v clang-tidy &> /dev/null; then
-            print_success "找到clang-tidy"
-        else
-            print_warning "未找到clang-tidy，静态分析可能不完整"
-        fi
-        
-        if command -v cppcheck &> /dev/null; then
-            print_success "找到cppcheck"
-        else
-            print_warning "未找到cppcheck"
+    # 检查线程库支持
+    print_info "检查线程库支持..."
+    if command -v pkg-config &> /dev/null; then
+        if pkg-config --exists threads; then
+            print_info "线程库支持: 可用"
         fi
     fi
     
-    if $ENABLE_DOCS; then
-        if command -v doxygen &> /dev/null; then
-            print_success "找到Doxygen"
-        else
-            print_warning "未找到Doxygen，无法生成文档"
-        fi
-    fi
+    print_success "依赖检查完成"
+}
+
+# 设置构建环境
+setup_build_env() {
+    print_info "设置构建环境..."
+    
+    # 获取脚本所在目录
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    PROJECT_ROOT="$SCRIPT_DIR"
+    BUILD_DIR="$PROJECT_ROOT/build"
+    INSTALL_DIR="$PROJECT_ROOT/install"
+    
+    # 默认构建类型
+    BUILD_TYPE="${BUILD_TYPE:-Release}"
+    
+    print_info "项目根目录: $PROJECT_ROOT"
+    print_info "构建目录: $BUILD_DIR"
+    print_info "安装目录: $INSTALL_DIR"
+    print_info "构建类型: $BUILD_TYPE"
 }
 
 # 清理构建目录
 clean_build() {
+    print_header "清理构建目录"
+    
     if [ -d "$BUILD_DIR" ]; then
-        print_info "清理构建目录: $BUILD_DIR"
+        print_info "删除构建目录: $BUILD_DIR"
         rm -rf "$BUILD_DIR"
-        print_success "构建目录已清理"
-    else
-        print_info "构建目录不存在，无需清理"
     fi
+    
+    if [ -d "$INSTALL_DIR" ]; then
+        print_info "删除安装目录: $INSTALL_DIR"
+        rm -rf "$INSTALL_DIR"
+    fi
+    
+    # 清理生成的测试文件
+    find "$PROJECT_ROOT" -name "test_output.*" -delete 2>/dev/null || true
+    find "$PROJECT_ROOT" -name "*.log" -delete 2>/dev/null || true
+    
+    print_success "清理完成"
 }
 
-# 配置构建
-configure_build() {
-    print_info "配置构建 (类型: $BUILD_TYPE, 目录: $BUILD_DIR)"
+# 配置项目
+configure_project() {
+    print_header "配置CHTL项目"
     
     # 创建构建目录
     mkdir -p "$BUILD_DIR"
     cd "$BUILD_DIR"
     
-    # 构建CMake参数
-    local cmake_args=(
+    # CMake配置选项
+    CMAKE_OPTIONS=(
         "-DCMAKE_BUILD_TYPE=$BUILD_TYPE"
-        "-DCMAKE_INSTALL_PREFIX=$INSTALL_PREFIX"
+        "-DCMAKE_INSTALL_PREFIX=$INSTALL_DIR"
         "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+        "-DCHTL_ENABLE_PROFILING=OFF"
+        "-DCHTL_ENABLE_SANITIZERS=OFF"
+        "-DCHTL_BUILD_SHARED_LIBS=OFF"
     )
     
-    if $ENABLE_TESTS; then
-        cmake_args+=("-DBUILD_TESTS=ON")
+    # Debug模式特定选项
+    if [ "$BUILD_TYPE" = "Debug" ]; then
+        CMAKE_OPTIONS+=("-DCHTL_ENABLE_SANITIZERS=ON")
+        print_info "Debug模式: 启用地址和未定义行为检测器"
     fi
     
-    if $ENABLE_DOCS; then
-        cmake_args+=("-DBUILD_DOCS=ON")
-    fi
+    # 运行CMake配置
+    print_info "运行CMake配置..."
+    print_info "配置选项: ${CMAKE_OPTIONS[*]}"
     
-    if $ENABLE_PACKAGE; then
-        cmake_args+=("-DBUILD_PACKAGE=ON")
-    fi
-    
-    if $ENABLE_STATIC_ANALYSIS; then
-        cmake_args+=("-DENABLE_STATIC_ANALYSIS=ON")
-    fi
-    
-    if $ENABLE_COVERAGE && [ "$BUILD_TYPE" = "Debug" ]; then
-        cmake_args+=("-DENABLE_COVERAGE=ON")
-    fi
-    
-    if $ENABLE_PROFILING; then
-        cmake_args+=("-DENABLE_PROFILING=ON")
-    fi
-    
-    # 执行CMake配置
-    if $VERBOSE; then
-        cmake "${cmake_args[@]}" ..
+    if cmake "${CMAKE_OPTIONS[@]}" "$PROJECT_ROOT"; then
+        print_success "项目配置成功"
     else
-        cmake "${cmake_args[@]}" .. > /dev/null
+        print_error "项目配置失败"
+        exit 1
     fi
-    
-    print_success "配置完成"
-    cd ..
 }
 
-# 执行构建
+# 构建项目
 build_project() {
-    print_info "开始构建 (使用 $JOBS 个并行作业)"
+    print_header "构建CHTL项目"
     
     cd "$BUILD_DIR"
     
-    local build_args=(
-        "--build" "."
-        "--config" "$BUILD_TYPE"
-        "--parallel" "$JOBS"
-    )
-    
-    if $VERBOSE; then
-        build_args+=("--verbose")
+    # 获取CPU核心数用于并行编译
+    if command -v nproc &> /dev/null; then
+        JOBS=$(nproc)
+    elif command -v sysctl &> /dev/null; then
+        JOBS=$(sysctl -n hw.ncpu)
+    else
+        JOBS=4
     fi
     
-    # 记录构建开始时间
-    local start_time=$(date +%s)
+    print_info "使用 $JOBS 个并行任务进行编译"
     
-    # 执行构建
-    if cmake "${build_args[@]}"; then
-        local end_time=$(date +%s)
-        local duration=$((end_time - start_time))
-        print_success "构建完成 (耗时: ${duration}秒)"
+    # 构建项目
+    if cmake --build . --config "$BUILD_TYPE" -j "$JOBS"; then
+        print_success "项目构建成功"
     else
-        print_error "构建失败"
-        cd ..
+        print_error "项目构建失败"
         exit 1
     fi
     
-    cd ..
+    # 显示构建结果
+    print_info "构建产物:"
+    if [ -f "chtl_compiler" ] || [ -f "chtl_compiler.exe" ]; then
+        print_info "  ✓ CHTL编译器"
+    fi
+    
+    if [ -f "libchtl_core.a" ] || [ -f "chtl_core.lib" ]; then
+        print_info "  ✓ CHTL核心库"
+    fi
+    
+    # 统计测试可执行文件
+    TEST_COUNT=$(find . -name "test_*" -executable -type f | wc -l)
+    if [ "$TEST_COUNT" -gt 0 ]; then
+        print_info "  ✓ $TEST_COUNT 个测试程序"
+    fi
 }
 
 # 运行测试
 run_tests() {
-    if $ENABLE_TESTS; then
-        print_info "运行测试..."
-        cd "$BUILD_DIR"
+    print_header "运行CHTL测试"
+    
+    cd "$BUILD_DIR"
+    
+    # 查找所有测试可执行文件
+    TEST_FILES=($(find . -name "test_*" -executable -type f | sort))
+    
+    if [ ${#TEST_FILES[@]} -eq 0 ]; then
+        print_warning "未找到测试文件"
+        return
+    fi
+    
+    print_info "找到 ${#TEST_FILES[@]} 个测试程序"
+    
+    # 运行每个测试
+    PASSED_TESTS=0
+    FAILED_TESTS=0
+    
+    for test_file in "${TEST_FILES[@]}"; do
+        test_name=$(basename "$test_file")
+        print_info "运行测试: $test_name"
         
-        if ctest --output-on-failure; then
-            print_success "所有测试通过"
+        if timeout 60 "$test_file"; then
+            print_success "  ✓ $test_name 通过"
+            ((PASSED_TESTS++))
         else
-            print_error "部分测试失败"
-            cd ..
-            exit 1
+            print_error "  ✗ $test_name 失败"
+            ((FAILED_TESTS++))
         fi
-        
-        cd ..
+        echo
+    done
+    
+    # 测试结果汇总
+    print_header "测试结果汇总"
+    print_info "通过: $PASSED_TESTS"
+    print_info "失败: $FAILED_TESTS"
+    print_info "总计: $((PASSED_TESTS + FAILED_TESTS))"
+    
+    if [ "$FAILED_TESTS" -eq 0 ]; then
+        print_success "所有测试通过！"
+    else
+        print_error "有 $FAILED_TESTS 个测试失败"
+        exit 1
     fi
 }
 
-# 生成文档
-generate_docs() {
-    if $ENABLE_DOCS; then
-        print_info "生成文档..."
-        cd "$BUILD_DIR"
-        
-        if cmake --build . --target docs; then
-            print_success "文档生成完成"
-            print_info "文档位置: $BUILD_DIR/docs/html/index.html"
-        else
-            print_warning "文档生成失败"
-        fi
-        
-        cd ..
-    fi
-}
-
-# 构建包
-build_package() {
-    if $ENABLE_PACKAGE; then
-        print_info "构建安装包..."
-        cd "$BUILD_DIR"
-        
-        if cpack; then
-            print_success "安装包构建完成"
-            print_info "安装包位置: $BUILD_DIR/"
-        else
-            print_error "安装包构建失败"
-            cd ..
-            exit 1
-        fi
-        
-        cd ..
-    fi
-}
-
-# 安装
+# 安装项目
 install_project() {
-    if $INSTALL; then
-        print_info "安装到: $INSTALL_PREFIX"
-        cd "$BUILD_DIR"
+    print_header "安装CHTL项目"
+    
+    cd "$BUILD_DIR"
+    
+    if cmake --install . --config "$BUILD_TYPE"; then
+        print_success "项目安装成功"
+        print_info "安装位置: $INSTALL_DIR"
         
-        if cmake --install .; then
-            print_success "安装完成"
-        else
-            print_error "安装失败"
-            cd ..
-            exit 1
+        # 显示安装内容
+        if [ -d "$INSTALL_DIR" ]; then
+            print_info "安装内容:"
+            find "$INSTALL_DIR" -type f | head -20 | while read -r file; do
+                rel_path=${file#$INSTALL_DIR/}
+                print_info "  $rel_path"
+            done
+            
+            total_files=$(find "$INSTALL_DIR" -type f | wc -l)
+            if [ "$total_files" -gt 20 ]; then
+                print_info "  ... 以及其他 $((total_files - 20)) 个文件"
+            fi
         fi
-        
-        cd ..
+    else
+        print_error "项目安装失败"
+        exit 1
     fi
 }
 
-# 显示构建信息
-show_build_info() {
-    print_info "构建信息:"
-    echo "  构建类型: $BUILD_TYPE"
-    echo "  构建目录: $BUILD_DIR"
-    echo "  安装前缀: $INSTALL_PREFIX"
-    echo "  并行作业: $JOBS"
-    echo "  启用测试: $ENABLE_TESTS"
-    echo "  生成文档: $ENABLE_DOCS"
-    echo "  构建包: $ENABLE_PACKAGE"
-    echo "  静态分析: $ENABLE_STATIC_ANALYSIS"
-    echo "  代码覆盖率: $ENABLE_COVERAGE"
-    echo "  性能分析: $ENABLE_PROFILING"
+# 创建安装包
+create_package() {
+    print_header "创建CHTL安装包"
+    
+    cd "$BUILD_DIR"
+    
+    if command -v cpack &> /dev/null; then
+        print_info "使用CPack创建安装包..."
+        
+        if cpack -C "$BUILD_TYPE"; then
+            print_success "安装包创建成功"
+            
+            # 显示创建的包
+            find . -name "*.tar.gz" -o -name "*.zip" -o -name "*.deb" -o -name "*.rpm" -o -name "*.dmg" | while read -r package; do
+                package_name=$(basename "$package")
+                package_size=$(du -h "$package" | cut -f1)
+                print_info "  $package_name ($package_size)"
+            done
+        else
+            print_error "安装包创建失败"
+            exit 1
+        fi
+    else
+        print_warning "CPack未安装，跳过包创建"
+    fi
+}
+
+# 显示帮助信息
+show_help() {
+    echo "CHTL项目构建脚本"
+    echo
+    echo "使用方法: $0 [选项]"
+    echo
+    echo "选项:"
+    echo "  clean     清理构建目录"
+    echo "  debug     Debug模式构建"
+    echo "  release   Release模式构建（默认）"
+    echo "  test      构建并运行测试"
+    echo "  install   安装到指定目录"
+    echo "  package   创建安装包"
+    echo "  all       完整构建流程（配置+构建+测试+安装）"
+    echo "  help      显示此帮助信息"
+    echo
+    echo "环境变量:"
+    echo "  BUILD_TYPE   构建类型 (Debug|Release|RelWithDebInfo|MinSizeRel)"
+    echo "  CC           C编译器"
+    echo "  CXX          C++编译器"
+    echo
+    echo "示例:"
+    echo "  $0 clean"
+    echo "  $0 debug"
+    echo "  BUILD_TYPE=Debug $0 test"
+    echo "  $0 all"
 }
 
 # 主函数
 main() {
-    # 解析命令行参数
-    while [[ $# -gt 0 ]]; do
-        case $1 in
-            -h|--help)
-                show_help
-                exit 0
-                ;;
-            -t|--type)
-                BUILD_TYPE="$2"
-                shift 2
-                ;;
-            -d|--build-dir)
-                BUILD_DIR="$2"
-                shift 2
-                ;;
-            -p|--prefix)
-                INSTALL_PREFIX="$2"
-                shift 2
-                ;;
-            -j|--jobs)
-                JOBS="$2"
-                shift 2
-                ;;
-            --tests)
-                ENABLE_TESTS=true
-                shift
-                ;;
-            --docs)
-                ENABLE_DOCS=true
-                shift
-                ;;
-            --package)
-                ENABLE_PACKAGE=true
-                shift
-                ;;
-            --static-analysis)
-                ENABLE_STATIC_ANALYSIS=true
-                shift
-                ;;
-            --coverage)
-                ENABLE_COVERAGE=true
-                shift
-                ;;
-            --profiling)
-                ENABLE_PROFILING=true
-                shift
-                ;;
-            --clean)
-                CLEAN=true
-                shift
-                ;;
-            --verbose)
-                VERBOSE=true
-                shift
-                ;;
-            --install)
-                INSTALL=true
-                shift
-                ;;
-            *)
-                print_error "未知选项: $1"
-                show_help
-                exit 1
-                ;;
-        esac
-    done
+    print_header "CHTL项目构建系统"
     
-    # 验证构建类型
-    case $BUILD_TYPE in
-        Debug|Release|MinSizeRel|RelWithDebInfo)
+    # 解析命令行参数
+    ACTION="${1:-release}"
+    
+    case "$ACTION" in
+        "clean")
+            setup_build_env
+            clean_build
+            ;;
+        "debug")
+            BUILD_TYPE="Debug"
+            setup_build_env
+            check_dependencies
+            configure_project
+            build_project
+            ;;
+        "release")
+            BUILD_TYPE="Release"
+            setup_build_env
+            check_dependencies
+            configure_project
+            build_project
+            ;;
+        "test")
+            setup_build_env
+            check_dependencies
+            if [ ! -f "$BUILD_DIR/Makefile" ] && [ ! -f "$BUILD_DIR/build.ninja" ]; then
+                configure_project
+            fi
+            build_project
+            run_tests
+            ;;
+        "install")
+            setup_build_env
+            if [ ! -f "$BUILD_DIR/Makefile" ] && [ ! -f "$BUILD_DIR/build.ninja" ]; then
+                check_dependencies
+                configure_project
+                build_project
+            fi
+            install_project
+            ;;
+        "package")
+            setup_build_env
+            if [ ! -f "$BUILD_DIR/Makefile" ] && [ ! -f "$BUILD_DIR/build.ninja" ]; then
+                check_dependencies
+                configure_project
+                build_project
+            fi
+            create_package
+            ;;
+        "all")
+            setup_build_env
+            check_dependencies
+            configure_project
+            build_project
+            run_tests
+            install_project
+            create_package
+            ;;
+        "help"|"-h"|"--help")
+            show_help
             ;;
         *)
-            print_error "无效的构建类型: $BUILD_TYPE"
+            print_error "未知选项: $ACTION"
+            echo
+            show_help
             exit 1
             ;;
     esac
     
-    print_info "CHTL编译器构建脚本"
-    print_info "===================="
-    
-    # 如果只是清理，则执行清理并退出
-    if $CLEAN; then
-        clean_build
-        exit 0
-    fi
-    
-    # 显示构建信息
-    show_build_info
-    echo
-    
-    # 执行构建流程
-    check_dependencies
-    configure_build
-    build_project
-    run_tests
-    generate_docs
-    build_package
-    install_project
-    
-    print_success "构建流程完成!"
-    print_info "可执行文件位置: $BUILD_DIR/bin/chtl"
-    
-    if $ENABLE_TESTS; then
-        print_info "测试报告: $BUILD_DIR/Testing/"
-    fi
-    
-    if $ENABLE_DOCS; then
-        print_info "文档: $BUILD_DIR/docs/html/"
-    fi
-    
-    if $ENABLE_PACKAGE; then
-        print_info "安装包: $BUILD_DIR/*.tar.gz (或其他格式)"
-    fi
+    print_success "构建脚本执行完成"
 }
 
-# 执行主函数
+# 运行主函数
 main "$@"

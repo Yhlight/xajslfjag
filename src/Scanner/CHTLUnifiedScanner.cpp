@@ -1,430 +1,357 @@
 #include "CHTLUnifiedScanner.h"
-#include <chrono>
-#include <iostream>
+#include "../CHTL/CHTLLexer/GlobalMap.h"
+#include <algorithm>
+#include <regex>
+#include <stack>
 
 namespace CHTL {
 
-String CodeFragment::toString() const {
-    String typeStr;
-    switch (type) {
-        case FragmentType::CHTL: typeStr = "CHTL"; break;
-        case FragmentType::CHTL_JS: typeStr = "CHTL_JS"; break;
-        case FragmentType::CSS: typeStr = "CSS"; break;
-        case FragmentType::JAVASCRIPT: typeStr = "JAVASCRIPT"; break;
-        case FragmentType::HTML: typeStr = "HTML"; break;
-        case FragmentType::COMMENT: typeStr = "COMMENT"; break;
-        case FragmentType::WHITESPACE: typeStr = "WHITESPACE"; break;
-        default: typeStr = "UNKNOWN"; break;
+// 代码片段类型定义
+enum class FragmentType {
+    CHTL,
+    CHTL_JS,
+    CSS,
+    JAVASCRIPT,
+    HTML,
+    UNKNOWN
+};
+
+// 代码片段结构
+struct CodeFragment {
+    FragmentType type;
+    String content;
+    size_t startPos;
+    size_t endPos;
+    int nestingLevel;
+    String context;
+    
+    CodeFragment(FragmentType t, const String& c, size_t start, size_t end, int level = 0)
+        : type(t), content(c), startPos(start), endPos(end), nestingLevel(level) {}
+};
+
+// CHTLUnifiedScanner实现
+CHTLUnifiedScanner::CHTLUnifiedScanner(const String& source)
+    : sourceCode(source), currentPosition(0), minUnitSize(10), maxLookahead(50) {
+    fragments.clear();
+    errors.clear();
+}
+
+std::vector<ScanResult> CHTLUnifiedScanner::scanAndSplit() {
+    std::vector<ScanResult> results;
+    
+    try {
+        // 执行变长切片扫描
+        performVariableLengthSlicing();
+        
+        // 验证每个片段的上下文
+        validateFragmentContexts();
+        
+        // 转换为扫描结果
+        for (const auto& fragment : fragments) {
+            ScanResult result;
+            result.type = fragmentTypeToString(fragment.type);
+            result.content = fragment.content;
+            result.startPosition = fragment.startPos;
+            result.endPosition = fragment.endPos;
+            result.isValid = validateFragmentSyntax(fragment);
+            result.context = fragment.context;
+            results.push_back(result);
+        }
+        
+    } catch (const std::exception& e) {
+        reportError("扫描过程发生异常: " + String(e.what()));
     }
     
-    return "Fragment{" + typeStr + ", pos:" + std::to_string(startPos) + 
-           "-" + std::to_string(endPos) + ", line:" + std::to_string(lineNumber) + 
-           ", col:" + std::to_string(columnNumber) + ", content:\"" + 
-           (content.length() > 50 ? content.substr(0, 50) + "..." : content) + "\"}";
+    return results;
 }
 
-CHTLUnifiedScanner::CHTLUnifiedScanner(const String& source, const ScannerConfig& config)
-    : source(source), currentPos(0), currentLine(1), currentColumn(1), config(config) {
-    resetPosition();
-}
-
-std::vector<CodeFragment> CHTLUnifiedScanner::scanAll() {
-    auto startTime = std::chrono::high_resolution_clock::now();
-    
-    std::vector<CodeFragment> fragments;
-    reset();
-    
-    while (hasMoreFragments()) {
-        CodeFragment fragment = scanNext();
-        if (!fragment.isEmpty()) {
-            // 如果启用最小单元切割，进一步分割复合片段
-            if (config.enableMinimalUnitSplitting && 
-                (fragment.type == FragmentType::CHTL || fragment.type == FragmentType::CHTL_JS)) {
-                auto subFragments = splitToMinimalUnits(fragment);
-                fragments.insert(fragments.end(), subFragments.begin(), subFragments.end());
-            } else {
-                fragments.push_back(fragment);
+void CHTLUnifiedScanner::performVariableLengthSlicing() {
+    while (currentPosition < sourceCode.length()) {
+        // 跳过空白字符
+        skipWhitespace();
+        if (currentPosition >= sourceCode.length()) break;
+        
+        // 检测片段类型并进行切割
+        FragmentType detectedType = detectFragmentType(currentPosition);
+        
+        if (detectedType != FragmentType::UNKNOWN) {
+            size_t fragmentStart = currentPosition;
+            size_t fragmentEnd = findFragmentEnd(detectedType, fragmentStart);
+            
+            // 如果发现不完整的片段，尝试向前扩展
+            if (needsExtension(detectedType, fragmentStart, fragmentEnd)) {
+                fragmentEnd = extendFragment(detectedType, fragmentStart, fragmentEnd);
             }
-            updateStats(fragment);
+            
+            // 创建片段
+            String fragmentContent = sourceCode.substr(fragmentStart, fragmentEnd - fragmentStart);
+            CodeFragment fragment(detectedType, fragmentContent, fragmentStart, fragmentEnd);
+            fragment.context = analyzeContext(fragmentStart, fragmentEnd);
+            
+            fragments.push_back(fragment);
+            currentPosition = fragmentEnd;
+        } else {
+            // 未知类型，按最小单元处理
+            handleUnknownFragment();
         }
     }
-    
-    auto endTime = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
-    stats.scanTime = duration.count() / 1000.0; // 转换为毫秒
-    stats.totalFragments = fragments.size();
-    
-    return fragments;
 }
 
-CodeFragment CHTLUnifiedScanner::scanNext() {
-    if (!hasMoreFragments()) {
-        return CodeFragment{};
-    }
+FragmentType CHTLUnifiedScanner::detectFragmentType(size_t position) {
+    if (position >= sourceCode.length()) return FragmentType::UNKNOWN;
     
-    // 跳过空白字符（如果配置要求）
-    if (!config.preserveWhitespace) {
-        skipWhitespace(currentPos);
-    }
-    
-    if (isAtEnd(currentPos)) {
-        return CodeFragment{};
-    }
-    
-    return scanFragment();
-}
-
-bool CHTLUnifiedScanner::hasMoreFragments() const {
-    return currentPos < source.length();
-}
-
-void CHTLUnifiedScanner::reset() {
-    currentPos = 0;
-    resetPosition();
-    clearErrors();
-    stats = ScanStats{};
-}
-
-CodeFragment CHTLUnifiedScanner::scanFragment() {
-    size_t startPos = currentPos;
-    size_t startLine = currentLine;
-    size_t startColumn = currentColumn;
-    
-    // 检测片段类型
-    FragmentType type = detectFragmentType(startPos, config.minValidationLength);
-    
-    // 找到片段结束位置
-    size_t endPos = findFragmentEnd(startPos, type);
-    
-    // 如果启用可变长度切片，检查是否需要扩展
-    if (config.enableVariableLengthSlicing) {
-        String content = substring(startPos, endPos - startPos);
-        if (needsExtension(content, type)) {
-            endPos = extendFragment(startPos, endPos, type);
-        }
-    }
-    
-    // 创建片段
-    String content = substring(startPos, endPos - startPos);
-    CodeFragment fragment(type, content, startPos, endPos, startLine, startColumn);
-    
-    // 上下文验证
-    if (config.enableContextValidation && !validateFragmentContext(fragment)) {
-        reportInvalidFragment(type, startPos);
-    }
-    
-    // 更新位置
-    for (size_t i = startPos; i < endPos; ++i) {
-        updatePosition(charAt(i));
-    }
-    currentPos = endPos;
-    
-    return fragment;
-}
-
-FragmentType CHTLUnifiedScanner::detectFragmentType(size_t start, size_t length) {
-    if (isAtEnd(start)) {
-        return FragmentType::UNKNOWN;
-    }
-    
-    // 检查注释
-    if (matchCommentPattern(start)) {
-        return FragmentType::COMMENT;
-    }
-    
-    // 检查空白字符
-    if (std::isspace(charAt(start))) {
-        return FragmentType::WHITESPACE;
-    }
-    
-    // 检查CHTL JS模式
-    if (matchCHTLJSPattern(start)) {
+    // 检测CHTL JS语法
+    if (isCHTLJSSyntax(position)) {
         return FragmentType::CHTL_JS;
     }
     
-    // 检查CSS模式
-    if (matchCSSPattern(start)) {
+    // 检测样式块
+    if (isStyleBlock(position)) {
         return FragmentType::CSS;
     }
     
-    // 检查JavaScript模式
-    if (matchJSPattern(start)) {
+    // 检测脚本块
+    if (isScriptBlock(position)) {
         return FragmentType::JAVASCRIPT;
     }
     
-    // 检查CHTL模式
-    if (matchCHTLPattern(start)) {
+    // 检测CHTL语法
+    if (isCHTLSyntax(position)) {
         return FragmentType::CHTL;
+    }
+    
+    // 检测HTML片段
+    if (isHTMLFragment(position)) {
+        return FragmentType::HTML;
     }
     
     return FragmentType::UNKNOWN;
 }
 
-size_t CHTLUnifiedScanner::findFragmentEnd(size_t start, FragmentType type) {
-    size_t pos = start;
+bool CHTLUnifiedScanner::isCHTLJSSyntax(size_t position) {
+    // 检测CHTL JS特有语法
+    StringVector chtljsKeywords = {"module", "listen", "delegate", "animate", "vir"};
     
-    switch (type) {
-        case FragmentType::CHTL:
-            return findCHTLFragmentEnd(pos);
-        case FragmentType::CHTL_JS:
-            return findCHTLJSFragmentEnd(pos);
-        case FragmentType::CSS:
-            return findCSSFragmentEnd(pos);
-        case FragmentType::JAVASCRIPT:
-            return findJSFragmentEnd(pos);
-        case FragmentType::COMMENT:
-            return findCommentEnd(pos);
-        case FragmentType::WHITESPACE:
-            return findWhitespaceEnd(pos);
-        default:
-            return pos + 1;
+    for (const auto& keyword : chtljsKeywords) {
+        if (matchKeywordAtPosition(keyword, position)) {
+            return true;
+        }
     }
-}
-
-bool CHTLUnifiedScanner::needsExtension(const String& fragment, FragmentType type) {
-    if (type == FragmentType::CHTL) {
-        return !validateCHTLFragment(fragment);
-    } else if (type == FragmentType::CHTL_JS) {
-        return !validateCHTLJSFragment(fragment);
+    
+    // 检测{{...}}选择器语法
+    if (position + 1 < sourceCode.length() && 
+        sourceCode.substr(position, 2) == "{{") {
+        return true;
     }
+    
+    // 检测&->事件绑定语法
+    if (position + 2 < sourceCode.length() && 
+        sourceCode.substr(position, 3) == "&->") {
+        return true;
+    }
+    
     return false;
 }
 
-size_t CHTLUnifiedScanner::extendFragment(size_t start, size_t currentEnd, FragmentType type) {
-    size_t newEnd = currentEnd;
-    size_t maxExtension = std::min(start + config.maxChunkSize, source.length());
-    
-    // 逐步扩展直到找到合适的边界
-    while (newEnd < maxExtension) {
-        String extendedContent = substring(start, newEnd - start);
-        if (type == FragmentType::CHTL && validateCHTLFragment(extendedContent)) {
-            break;
-        } else if (type == FragmentType::CHTL_JS && validateCHTLJSFragment(extendedContent)) {
-            break;
-        }
-        newEnd++;
+bool CHTLUnifiedScanner::isStyleBlock(size_t position) {
+    // 检测style关键字
+    if (matchKeywordAtPosition("style", position)) {
+        // 确保后面跟着{
+        size_t bracePos = findNextNonWhitespace(position + 5);
+        return bracePos < sourceCode.length() && sourceCode[bracePos] == '{';
     }
     
-    return newEnd;
+    // 检测CSS选择器模式
+    return detectCSSSelector(position);
 }
 
-bool CHTLUnifiedScanner::validateCHTLFragment(const String& fragment) {
-    // 检查CHTL片段的完整性
-    size_t braceCount = 0;
+bool CHTLUnifiedScanner::isScriptBlock(size_t position) {
+    // 检测script关键字
+    if (matchKeywordAtPosition("script", position)) {
+        size_t bracePos = findNextNonWhitespace(position + 6);
+        return bracePos < sourceCode.length() && sourceCode[bracePos] == '{';
+    }
+    
+    return false;
+}
+
+bool CHTLUnifiedScanner::isCHTLSyntax(size_t position) {
+    // 检测CHTL特有语法
+    StringVector chtlKeywords = {"[Template]", "[Custom]", "[Origin]", "[Import]", 
+                                "[Configuration]", "[Namespace]", "text"};
+    
+    for (const auto& keyword : chtlKeywords) {
+        if (matchKeywordAtPosition(keyword, position)) {
+            return true;
+        }
+    }
+    
+    // 检测HTML元素
+    String word = extractWordAtPosition(position);
+    if (HTMLElementMap::isHTMLElement(word)) {
+        return true;
+    }
+    
+    return false;
+}
+
+bool CHTLUnifiedScanner::isHTMLFragment(size_t position) {
+    // 检测HTML标签
+    if (position < sourceCode.length() && sourceCode[position] == '<') {
+        return true;
+    }
+    
+    return false;
+}
+
+size_t CHTLUnifiedScanner::findFragmentEnd(FragmentType type, size_t start) {
+    size_t pos = start;
+    int braceLevel = 0;
+    bool inString = false;
+    char stringChar = 0;
+    
+    while (pos < sourceCode.length()) {
+        char c = sourceCode[pos];
+        
+        // 处理字符串
+        if (!inString && (c == '"' || c == '\'')) {
+            inString = true;
+            stringChar = c;
+        } else if (inString && c == stringChar && (pos == 0 || sourceCode[pos-1] != '\\')) {
+            inString = false;
+        }
+        
+        if (!inString) {
+            // 处理大括号嵌套
+            if (c == '{') {
+                braceLevel++;
+            } else if (c == '}') {
+                braceLevel--;
+                if (braceLevel == 0) {
+                    return pos + 1; // 包含结束大括号
+                }
+            }
+            
+            // 特殊处理不同类型的结束条件
+            if (type == FragmentType::CHTL_JS && braceLevel == 0) {
+                if (detectCHTLJSEnd(pos)) {
+                    return pos;
+                }
+            }
+        }
+        
+        pos++;
+    }
+    
+    return pos;
+}
+
+bool CHTLUnifiedScanner::needsExtension(FragmentType type, size_t start, size_t end) {
+    // 检查片段是否完整
+    String fragment = sourceCode.substr(start, end - start);
+    
+    // 检查大括号配对
+    int braceCount = 0;
     bool inString = false;
     char stringChar = 0;
     
     for (char c : fragment) {
-        if (inString) {
-            if (c == stringChar && (fragment.size() == 1 || fragment[fragment.size()-2] != '\\')) {
-                inString = false;
-            }
-        } else {
-            if (c == '"' || c == '\'') {
-                inString = true;
-                stringChar = c;
-            } else if (c == '{') {
-                braceCount++;
-            } else if (c == '}') {
-                if (braceCount > 0) braceCount--;
+        if (!inString && (c == '"' || c == '\'')) {
+            inString = true;
+            stringChar = c;
+        } else if (inString && c == stringChar) {
+            inString = false;
+        }
+        
+        if (!inString) {
+            if (c == '{') braceCount++;
+            else if (c == '}') braceCount--;
+        }
+    }
+    
+    return braceCount != 0;
+}
+
+size_t CHTLUnifiedScanner::extendFragment(FragmentType type, size_t start, size_t currentEnd) {
+    size_t maxExtension = std::min(sourceCode.length(), currentEnd + maxLookahead);
+    
+    for (size_t pos = currentEnd; pos < maxExtension; ++pos) {
+        if (sourceCode[pos] == '}') {
+            // 重新验证片段完整性
+            if (!needsExtension(type, start, pos + 1)) {
+                return pos + 1;
             }
         }
     }
     
-    return braceCount == 0 && !inString;
+    return currentEnd;
 }
 
-bool CHTLUnifiedScanner::validateCHTLJSFragment(const String& fragment) {
-    // 检查CHTL JS片段的完整性
-    if (Utils::startsWith(fragment, "{{") && Utils::endsWith(fragment, "}}")) {
+void CHTLUnifiedScanner::validateFragmentContexts() {
+    for (auto& fragment : fragments) {
+        fragment.context = analyzeContext(fragment.startPos, fragment.endPos);
+        
+        // 根据上下文调整片段类型
+        adjustFragmentTypeByContext(fragment);
+    }
+}
+
+String CHTLUnifiedScanner::analyzeContext(size_t start, size_t end) {
+    // 分析片段的上下文环境
+    String context = "global";
+    
+    // 检查是否在特定块内部
+    if (isInElementContext(start)) {
+        context = "element";
+    } else if (isInStyleContext(start)) {
+        context = "style";
+    } else if (isInScriptContext(start)) {
+        context = "script";
+    } else if (isInTemplateContext(start)) {
+        context = "template";
+    }
+    
+    return context;
+}
+
+bool CHTLUnifiedScanner::validateFragmentSyntax(const CodeFragment& fragment) {
+    switch (fragment.type) {
+        case FragmentType::CHTL:
+            return validateCHTLSyntax(fragment.content);
+        case FragmentType::CHTL_JS:
+            return validateCHTLJSSyntax(fragment.content);
+        case FragmentType::CSS:
+            return validateCSSSyntax(fragment.content);
+        case FragmentType::JAVASCRIPT:
+            return validateJSSyntax(fragment.content);
+        case FragmentType::HTML:
+            return validateHTMLSyntax(fragment.content);
+        default:
+            return false;
+    }
+}
+
+bool CHTLUnifiedScanner::validateCHTLSyntax(const String& content) {
+    // 基础CHTL语法验证
+    if (content.empty()) return false;
+    
+    // 检查关键字
+    std::regex chtlKeywordRegex(R"(\[(Template|Custom|Origin|Import|Configuration|Namespace)\])");
+    if (std::regex_search(content, chtlKeywordRegex)) {
         return true;
     }
     
-    // 检查CHTL JS函数语法
-    for (const String& func : {"listen", "animate", "delegate", "printMyLove", "iNeverAway"}) {
-        if (fragment.find(func) != String::npos) {
-            // 简单检查花括号匹配
-            size_t braceCount = 0;
-            for (char c : fragment) {
-                if (c == '{') braceCount++;
-                else if (c == '}') {
-                    if (braceCount > 0) braceCount--;
-                }
-            }
-            return braceCount == 0;
-        }
-    }
-    
-    return true;
+    // 检查HTML元素
+    std::regex elementRegex(R"(\b(div|span|p|h[1-6]|html|body|head)\s*\{)");
+    return std::regex_search(content, elementRegex);
 }
 
-std::vector<CodeFragment> CHTLUnifiedScanner::splitToMinimalUnits(const CodeFragment& fragment) {
-    std::vector<CodeFragment> result;
+bool CHTLUnifiedScanner::validateCHTLJSSyntax(const String& content) {
+    // CHTL JS语法验证
+    StringVector chtljsFeatures = {"module", "listen", "delegate", "animate", "vir", "{{", "&->"};
     
-    if (fragment.type == FragmentType::CHTL) {
-        auto breakpoints = findCHTLBreakpoints(fragment.content);
-        size_t lastPos = 0;
-        
-        for (size_t bp : breakpoints) {
-            if (bp > lastPos) {
-                String subContent = fragment.content.substr(lastPos, bp - lastPos);
-                CodeFragment subFragment(fragment.type, subContent, 
-                                       fragment.startPos + lastPos, 
-                                       fragment.startPos + bp,
-                                       fragment.lineNumber, fragment.columnNumber);
-                result.push_back(subFragment);
-                lastPos = bp;
-            }
-        }
-        
-        // 添加最后一个片段
-        if (lastPos < fragment.content.length()) {
-            String subContent = fragment.content.substr(lastPos);
-            CodeFragment subFragment(fragment.type, subContent,
-                                   fragment.startPos + lastPos,
-                                   fragment.endPos,
-                                   fragment.lineNumber, fragment.columnNumber);
-            result.push_back(subFragment);
-        }
-    } else if (fragment.type == FragmentType::CHTL_JS) {
-        auto breakpoints = findCHTLJSBreakpoints(fragment.content);
-        // 类似处理...
-    }
-    
-    return result.empty() ? std::vector<CodeFragment>{fragment} : result;
-}
-
-std::vector<size_t> CHTLUnifiedScanner::findCHTLBreakpoints(const String& content) {
-    std::vector<size_t> breakpoints;
-    
-    // 查找CHTL语法的断点，如关键字边界、操作符等
-    for (size_t i = 0; i < content.length(); ++i) {
-        // 检查关键字断点
-        if (i == 0 || std::isspace(content[i-1])) {
-            for (const String& keyword : {"div", "span", "text", "style", "script"}) {
-                if (content.substr(i, keyword.length()) == keyword) {
-                    if (i + keyword.length() == content.length() || 
-                        !std::isalnum(content[i + keyword.length()])) {
-                        if (i > 0) breakpoints.push_back(i);
-                    }
-                }
-            }
-        }
-        
-        // 检查符号断点
-        if (content[i] == '{' || content[i] == '}' || content[i] == ';') {
-            breakpoints.push_back(i + 1);
-        }
-    }
-    
-    return breakpoints;
-}
-
-std::vector<size_t> CHTLUnifiedScanner::findCHTLJSBreakpoints(const String& content) {
-    std::vector<size_t> breakpoints;
-    
-    // 查找CHTL JS的断点，如{{}}、->等
-    for (size_t i = 0; i < content.length() - 1; ++i) {
-        if (content.substr(i, 2) == "{{" || content.substr(i, 2) == "}}" ||
-            content.substr(i, 2) == "->" || content.substr(i, 3) == "&->") {
-            breakpoints.push_back(i);
-        }
-    }
-    
-    return breakpoints;
-}
-
-// 双指针扫描实现（用于CJMOD）
-CodeFragment CHTLUnifiedScanner::dualPointerScan(const String& keyword) {
-    PointerPair pointers{currentPos, currentPos, false};
-    
-    while (pointers.frontPtr < source.length()) {
-        // 预览检查关键字
-        if (previewForKeyword(pointers.frontPtr, keyword)) {
-            pointers.isCollecting = true;
-            pointers.backPtr = pointers.frontPtr;
-        }
-        
-        if (pointers.isCollecting) {
-            // 同步向前移动
-            synchronizePointers(pointers);
-            
-            // 检查是否完成收集
-            String collected = substring(pointers.backPtr, 
-                                       pointers.frontPtr - pointers.backPtr);
-            if (validateCHTLJSFragment(collected)) {
-                // 创建片段并返回
-                CodeFragment fragment(FragmentType::CHTL_JS, collected,
-                                    pointers.backPtr, pointers.frontPtr,
-                                    currentLine, currentColumn);
-                currentPos = pointers.frontPtr;
-                return fragment;
-            }
-        } else {
-            pointers.frontPtr++;
-        }
-    }
-    
-    return CodeFragment{};
-}
-
-bool CHTLUnifiedScanner::previewForKeyword(size_t pos, const String& keyword) const {
-    if (pos + keyword.length() > source.length()) {
-        return false;
-    }
-    return source.substr(pos, keyword.length()) == keyword;
-}
-
-void CHTLUnifiedScanner::synchronizePointers(PointerPair& pointers) {
-    // 滑动窗口式同步移动
-    pointers.frontPtr++;
-    
-    // 检查是否需要移动后指针
-    if (pointers.frontPtr - pointers.backPtr > config.maxChunkSize) {
-        pointers.backPtr++;
-    }
-}
-
-// 前置截取实现（用于CJMOD）
-String CHTLUnifiedScanner::preemptiveCapture(size_t pos, const String& pattern) {
-    if (shouldPreempt(pos, pattern)) {
-        // 查找模式的开始位置
-        size_t patternStart = pos;
-        while (patternStart > 0 && source.substr(patternStart, pattern.length()) != pattern) {
-            patternStart--;
-        }
-        
-        if (patternStart > 0) {
-            // 截取从模式开始到当前位置的内容
-            String captured = substring(patternStart, pos - patternStart);
-            return captured;
-        }
-    }
-    return "";
-}
-
-bool CHTLUnifiedScanner::shouldPreempt(size_t pos, const String& pattern) const {
-    // 检查是否需要前置截取
-    // 例如：处理 "arg ** arg2" 中的 "**" 模式
-    if (pos >= pattern.length()) {
-        String preceding = substring(pos - pattern.length(), pattern.length());
-        return preceding == pattern;
-    }
-    return false;
-}
-
-// 模式匹配实现
-bool CHTLUnifiedScanner::matchCHTLPattern(size_t pos) const {
-    // 检查CHTL关键字
-    String word = extractWordAt(pos);
-    if (isCHTLKeyword(word) || isHTMLTag(word)) {
-        return true;
-    }
-    
-    // 检查CHTL语法结构
-    if (charAt(pos) == '[' && pos + 8 < source.length()) {
-        String bracket = substring(pos, 9);
-        if (bracket == "[Template" || bracket == "[Custom]" || bracket == "[Origin]") {
+    for (const auto& feature : chtljsFeatures) {
+        if (content.find(feature) != String::npos) {
             return true;
         }
     }
@@ -432,151 +359,181 @@ bool CHTLUnifiedScanner::matchCHTLPattern(size_t pos) const {
     return false;
 }
 
-bool CHTLUnifiedScanner::matchCHTLJSPattern(size_t pos) const {
-    // 检查{{...}}选择器
-    if (charAt(pos) == '{' && pos + 1 < source.length() && charAt(pos + 1) == '{') {
-        return true;
-    }
+bool CHTLUnifiedScanner::validateCSSSyntax(const String& content) {
+    // CSS语法验证
+    std::regex cssRuleRegex(R"([^{}]+\s*\{[^{}]*\})");
+    return std::regex_search(content, cssRuleRegex);
+}
+
+bool CHTLUnifiedScanner::validateJSSyntax(const String& content) {
+    // JavaScript语法验证
+    StringVector jsFeatures = {"function", "var", "let", "const", "=>"};
     
-    // 检查事件绑定 &->
-    if (charAt(pos) == '&' && pos + 2 < source.length() && 
-        charAt(pos + 1) == '-' && charAt(pos + 2) == '>') {
-        return true;
-    }
-    
-    // 检查CHTL JS函数
-    String word = extractWordAt(pos);
-    if (word == "listen" || word == "animate" || word == "delegate" || 
-        word == "printMyLove" || word == "iNeverAway" || word == "vir") {
-        return true;
+    for (const auto& feature : jsFeatures) {
+        if (content.find(feature) != String::npos) {
+            return true;
+        }
     }
     
     return false;
 }
 
-bool CHTLUnifiedScanner::matchCSSPattern(size_t pos) const {
-    if (isInStyleBlock(pos)) {
-        String word = extractWordAt(pos);
-        return isCSSProperty(word) || charAt(pos) == '.' || charAt(pos) == '#';
+bool CHTLUnifiedScanner::validateHTMLSyntax(const String& content) {
+    // HTML语法验证
+    std::regex htmlTagRegex(R"(<[^>]+>)");
+    return std::regex_search(content, htmlTagRegex);
+}
+
+// 辅助方法实现
+void CHTLUnifiedScanner::skipWhitespace() {
+    while (currentPosition < sourceCode.length() && 
+           std::isspace(sourceCode[currentPosition])) {
+        currentPosition++;
+    }
+}
+
+void CHTLUnifiedScanner::handleUnknownFragment() {
+    // 按最小单元处理未知片段
+    size_t start = currentPosition;
+    size_t end = std::min(currentPosition + minUnitSize, sourceCode.length());
+    
+    String content = sourceCode.substr(start, end - start);
+    CodeFragment fragment(FragmentType::UNKNOWN, content, start, end);
+    fragments.push_back(fragment);
+    
+    currentPosition = end;
+}
+
+bool CHTLUnifiedScanner::matchKeywordAtPosition(const String& keyword, size_t position) {
+    if (position + keyword.length() > sourceCode.length()) {
+        return false;
+    }
+    
+    String substring = sourceCode.substr(position, keyword.length());
+    return substring == keyword;
+}
+
+String CHTLUnifiedScanner::extractWordAtPosition(size_t position) {
+    if (position >= sourceCode.length()) return "";
+    
+    size_t start = position;
+    size_t end = position;
+    
+    // 向后扩展直到非字母数字字符
+    while (end < sourceCode.length() && 
+           (std::isalnum(sourceCode[end]) || sourceCode[end] == '_')) {
+        end++;
+    }
+    
+    return sourceCode.substr(start, end - start);
+}
+
+size_t CHTLUnifiedScanner::findNextNonWhitespace(size_t position) {
+    while (position < sourceCode.length() && std::isspace(sourceCode[position])) {
+        position++;
+    }
+    return position;
+}
+
+bool CHTLUnifiedScanner::detectCSSSelector(size_t position) {
+    // 检测CSS选择器模式
+    std::regex selectorRegex(R"([.#]?[a-zA-Z][a-zA-Z0-9_-]*\s*\{)");
+    String segment = sourceCode.substr(position, std::min(size_t(50), sourceCode.length() - position));
+    return std::regex_search(segment, selectorRegex);
+}
+
+bool CHTLUnifiedScanner::detectCHTLJSEnd(size_t position) {
+    // 检测CHTL JS片段的结束
+    if (position + 1 < sourceCode.length()) {
+        String twoChar = sourceCode.substr(position, 2);
+        if (twoChar == "}}" || twoChar == ");") {
+            return true;
+        }
     }
     return false;
 }
 
-bool CHTLUnifiedScanner::matchJSPattern(size_t pos) const {
-    if (isInScriptBlock(pos) && !isInCHTLJSContext(pos)) {
-        String word = extractWordAt(pos);
-        return isJSKeyword(word);
-    }
-    return false;
+bool CHTLUnifiedScanner::isInElementContext(size_t position) {
+    // 检查是否在元素上下文中
+    return findNearestBlockType(position) == "element";
 }
 
-bool CHTLUnifiedScanner::matchCommentPattern(size_t pos) const {
-    if (charAt(pos) == '/' && pos + 1 < source.length()) {
-        char next = charAt(pos + 1);
-        return next == '/' || next == '*';
-    }
-    if (charAt(pos) == '-' && pos + 1 < source.length() && charAt(pos + 1) == '-') {
-        return true;
-    }
-    return false;
+bool CHTLUnifiedScanner::isInStyleContext(size_t position) {
+    return findNearestBlockType(position) == "style";
 }
 
-// 工具方法实现
-char CHTLUnifiedScanner::charAt(size_t pos) const {
-    return (pos < source.length()) ? source[pos] : '\0';
+bool CHTLUnifiedScanner::isInScriptContext(size_t position) {
+    return findNearestBlockType(position) == "script";
 }
 
-String CHTLUnifiedScanner::substring(size_t start, size_t length) const {
-    if (start >= source.length()) return "";
-    return source.substr(start, std::min(length, source.length() - start));
+bool CHTLUnifiedScanner::isInTemplateContext(size_t position) {
+    return findNearestBlockType(position) == "template";
 }
 
-bool CHTLUnifiedScanner::isAtEnd(size_t pos) const {
-    return pos >= source.length();
+String CHTLUnifiedScanner::findNearestBlockType(size_t position) {
+    // 向前搜索最近的块类型标识
+    if (position == 0) return "global";
+    
+    size_t searchStart = (position > 100) ? position - 100 : 0;
+    String segment = sourceCode.substr(searchStart, position - searchStart);
+    
+    if (segment.rfind("style") != String::npos) return "style";
+    if (segment.rfind("script") != String::npos) return "script";
+    if (segment.rfind("[Template]") != String::npos) return "template";
+    
+    return "element";
 }
 
-void CHTLUnifiedScanner::skipWhitespace(size_t& pos) const {
-    while (pos < source.length() && std::isspace(charAt(pos))) {
-        pos++;
-    }
-}
-
-void CHTLUnifiedScanner::updatePosition(char c) {
-    if (c == '\n') {
-        currentLine++;
-        currentColumn = 1;
-    } else {
-        currentColumn++;
+void CHTLUnifiedScanner::adjustFragmentTypeByContext(CodeFragment& fragment) {
+    // 根据上下文调整片段类型
+    if (fragment.context == "style" && fragment.type == FragmentType::UNKNOWN) {
+        fragment.type = FragmentType::CSS;
+    } else if (fragment.context == "script" && fragment.type == FragmentType::UNKNOWN) {
+        if (isCHTLJSSyntax(fragment.startPos)) {
+            fragment.type = FragmentType::CHTL_JS;
+        } else {
+            fragment.type = FragmentType::JAVASCRIPT;
+        }
     }
 }
 
-void CHTLUnifiedScanner::resetPosition() {
-    currentLine = 1;
-    currentColumn = 1;
-}
-
-void CHTLUnifiedScanner::reportError(const String& message, size_t pos) {
-    if (pos == SIZE_MAX) pos = currentPos;
-    String error = "Error at position " + std::to_string(pos) + 
-                   " (line " + std::to_string(currentLine) + 
-                   ", column " + std::to_string(currentColumn) + "): " + message;
-    errors.push_back(error);
-}
-
-void CHTLUnifiedScanner::updateStats(const CodeFragment& fragment) {
-    stats.totalChars += fragment.content.length();
-    incrementFragmentCount(fragment.type);
-}
-
-void CHTLUnifiedScanner::incrementFragmentCount(FragmentType type) {
+String CHTLUnifiedScanner::fragmentTypeToString(FragmentType type) {
     switch (type) {
-        case FragmentType::CHTL: stats.chtlFragments++; break;
-        case FragmentType::CHTL_JS: stats.chtljsFragments++; break;
-        case FragmentType::CSS: stats.cssFragments++; break;
-        case FragmentType::JAVASCRIPT: stats.jsFragments++; break;
-        case FragmentType::COMMENT: stats.commentFragments++; break;
-        case FragmentType::WHITESPACE: stats.whitespaceFragments++; break;
-        default: stats.unknownFragments++; break;
+        case FragmentType::CHTL: return "CHTL";
+        case FragmentType::CHTL_JS: return "CHTL_JS";
+        case FragmentType::CSS: return "CSS";
+        case FragmentType::JAVASCRIPT: return "JAVASCRIPT";
+        case FragmentType::HTML: return "HTML";
+        default: return "UNKNOWN";
     }
 }
 
-// 工厂方法实现
-std::unique_ptr<CHTLUnifiedScanner> ScannerFactory::createScanner(const String& source) {
-    return std::make_unique<CHTLUnifiedScanner>(source, getDefaultConfig());
+void CHTLUnifiedScanner::reportError(const String& message) {
+    errors.push_back(message);
 }
 
-std::unique_ptr<CHTLUnifiedScanner> ScannerFactory::createScannerWithConfig(
-    const String& source, const ScannerConfig& config) {
-    return std::make_unique<CHTLUnifiedScanner>(source, config);
+bool CHTLUnifiedScanner::hasErrors() const {
+    return !errors.empty();
 }
 
-ScannerConfig ScannerFactory::getDefaultConfig() {
-    return ScannerConfig{};
+StringVector CHTLUnifiedScanner::getErrors() const {
+    return errors;
 }
 
-ScannerConfig ScannerFactory::getPerformanceConfig() {
-    ScannerConfig config;
-    config.enableVariableLengthSlicing = false;
-    config.enableContextValidation = false;
-    config.enableMinimalUnitSplitting = false;
-    config.preserveWhitespace = false;
-    config.preserveComments = false;
-    config.initialChunkSize = 2048;
-    config.maxChunkSize = 8192;
-    return config;
+void CHTLUnifiedScanner::setMinUnitSize(size_t size) {
+    minUnitSize = size;
 }
 
-ScannerConfig ScannerFactory::getDebugConfig() {
-    ScannerConfig config;
-    config.enableVariableLengthSlicing = true;
-    config.enableContextValidation = true;
-    config.enableMinimalUnitSplitting = true;
-    config.preserveWhitespace = true;
-    config.preserveComments = true;
-    config.initialChunkSize = 512;
-    config.maxChunkSize = 2048;
-    config.minValidationLength = 8;
-    return config;
+void CHTLUnifiedScanner::setMaxLookahead(size_t lookahead) {
+    maxLookahead = lookahead;
+}
+
+String CHTLUnifiedScanner::getSourceCode() const {
+    return sourceCode;
+}
+
+std::vector<CodeFragment> CHTLUnifiedScanner::getFragments() const {
+    return fragments;
 }
 
 } // namespace CHTL

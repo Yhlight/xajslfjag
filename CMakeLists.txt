@@ -1,335 +1,280 @@
 cmake_minimum_required(VERSION 3.15)
+project(CHTL VERSION 1.0.0 LANGUAGES CXX)
 
-# 项目配置
-project(CHTL 
-    VERSION 1.0.0
-    DESCRIPTION "CHTL超文本语言编译器"
-    LANGUAGES CXX
-)
-
-# 设置C++标准
+# 设置C++17标准
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# 构建类型
-if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
+# 设置编译器特定的标志
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+    set(CMAKE_CXX_FLAGS_DEBUG "/Od /MDd")
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2 /MD /DNDEBUG")
 endif()
 
-# 编译选项
-set(CMAKE_CXX_FLAGS_DEBUG "-g -O0 -DDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-
-# 输出目录
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-
-# 查找依赖
+# 查找必要的包
 find_package(Threads REQUIRED)
 
-# 查找ANTLR4
-find_path(ANTLR4_INCLUDE_DIR
-    NAMES antlr4-runtime.h
-    PATHS 
-        ${CMAKE_SOURCE_DIR}/ANTLR4/include
-        ${CMAKE_SOURCE_DIR}/ANTLR4DEBUG/include
-        /usr/local/include/antlr4-runtime
-        /usr/include/antlr4-runtime
+# 定义头文件目录
+set(CHTL_INCLUDE_DIRS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Util
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLLexer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLParser
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLNode
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLGenerator
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLLoader
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLManage
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLState
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTL/CHTLConfig
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTLJS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTLJS/CHTLJSLexer
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTLJS/CHTLJSParser
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTLJS/CHTLJSNode
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CHTLJS/CHTLJSGenerator
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Scanner
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CompilerDispatcher
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/CMODSystem
 )
 
-find_library(ANTLR4_LIBRARY
-    NAMES antlr4-runtime
-    PATHS
-        ${CMAKE_SOURCE_DIR}/ANTLR4/lib
-        ${CMAKE_SOURCE_DIR}/ANTLR4DEBUG/lib
-        /usr/local/lib
-        /usr/lib
-)
-
-if(ANTLR4_INCLUDE_DIR AND ANTLR4_LIBRARY)
-    message(STATUS "找到ANTLR4: ${ANTLR4_LIBRARY}")
-    set(ANTLR4_FOUND TRUE)
-else()
-    message(WARNING "未找到ANTLR4，将使用内置副本")
-    set(ANTLR4_FOUND FALSE)
-endif()
-
-# 头文件目录
-include_directories(
-    ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/Util
-)
-
-if(ANTLR4_FOUND)
-    include_directories(${ANTLR4_INCLUDE_DIR})
-endif()
-
-# 源文件列表
-set(UTIL_SOURCES
+# 定义所有源文件
+set(CHTL_CORE_SOURCES
+    # Util
     src/Util/Common.cpp
-)
-
-set(SCANNER_SOURCES
-    src/Scanner/CHTLUnifiedScanner.cpp
-)
-
-set(CHTL_LEXER_SOURCES
+    
+    # CHTL Core
     src/CHTL/CHTLLexer/Token.cpp
     src/CHTL/CHTLLexer/GlobalMap.cpp
     src/CHTL/CHTLLexer/Lexer.cpp
-)
-
-set(CHTL_STATE_SOURCES
-    src/CHTL/CHTLState/State.cpp
-)
-
-set(CHTL_CONTEXT_SOURCES
-    src/CHTL/CHTLContext/Context.cpp
-)
-
-set(CHTL_NODE_SOURCES
+    src/CHTL/CHTLParser/Parser.cpp
     src/CHTL/CHTLNode/BaseNode.cpp
-)
-
-# CSS和JavaScript解析器（ANTLR生成的文件）
-set(CSS_PARSER_SOURCES
-    css/css3Lexer.cpp
-    css/css3Parser.cpp
-    css/css3ParserBaseListener.cpp
-    css/css3ParserListener.cpp
-)
-
-set(JS_PARSER_SOURCES
-    js/JavaScriptLexer.cpp
-    js/JavaScriptLexerBase.cpp
-    js/JavaScriptParser.cpp
-    js/JavaScriptParserBase.cpp
-    js/JavaScriptParserBaseListener.cpp
-    js/JavaScriptParserListener.cpp
-)
-
-# 所有核心源文件
-set(CORE_SOURCES
-    ${UTIL_SOURCES}
-    ${SCANNER_SOURCES}
-    ${CHTL_LEXER_SOURCES}
-    ${CHTL_STATE_SOURCES}
-    ${CHTL_CONTEXT_SOURCES}
-    ${CHTL_NODE_SOURCES}
-)
-
-# 条件包含ANTLR生成的源文件
-if(ANTLR4_FOUND)
-    list(APPEND CORE_SOURCES ${CSS_PARSER_SOURCES} ${JS_PARSER_SOURCES})
-endif()
-
-# 主要可执行文件
-add_executable(chtl
-    src/main.cpp
-    ${CORE_SOURCES}
-)
-
-# 链接库
-target_link_libraries(chtl 
-    Threads::Threads
-)
-
-if(ANTLR4_FOUND)
-    target_link_libraries(chtl ${ANTLR4_LIBRARY})
-endif()
-
-# 编译器特定设置
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    target_compile_options(chtl PRIVATE
-        -Wall
-        -Wextra
-        -Wpedantic
-        -Wno-unused-parameter
-        $<$<CONFIG:Debug>:-fsanitize=address>
-        $<$<CONFIG:Debug>:-fsanitize=undefined>
-    )
+    src/CHTL/CHTLNode/TemplateNode.cpp
+    src/CHTL/CHTLNode/CustomNode.cpp
+    src/CHTL/CHTLNode/OriginNode.cpp
+    src/CHTL/CHTLGenerator/Generator.cpp
+    src/CHTL/CHTLLoader/ModuleLoader.cpp
+    src/CHTL/CHTLManage/NamespaceResolver.cpp
+    src/CHTL/CHTLManage/ConstraintValidator.cpp
+    src/CHTL/CHTLState/RAIIManager.cpp
     
-    target_link_options(chtl PRIVATE
-        $<$<CONFIG:Debug>:-fsanitize=address>
-        $<$<CONFIG:Debug>:-fsanitize=undefined>
-    )
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(chtl PRIVATE
-        /W4
-        /permissive-
-        $<$<CONFIG:Debug>:/Od>
-        $<$<CONFIG:Release>:/O2>
-    )
-endif()
-
-# 预处理器定义
-target_compile_definitions(chtl PRIVATE
-    CHTL_VERSION_MAJOR=${PROJECT_VERSION_MAJOR}
-    CHTL_VERSION_MINOR=${PROJECT_VERSION_MINOR}
-    CHTL_VERSION_PATCH=${PROJECT_VERSION_PATCH}
-    $<$<CONFIG:Debug>:CHTL_DEBUG>
-    $<$<CONFIG:Release>:CHTL_RELEASE>
+    # CHTL JS
+    src/CHTLJS/CHTLJSLexer/Lexer.cpp
+    src/CHTLJS/CHTLJSParser/Parser.cpp
+    src/CHTLJS/CHTLJSGenerator/Generator.cpp
+    
+    # Scanner and Dispatcher
+    src/Scanner/CHTLUnifiedScanner.cpp
+    src/CompilerDispatcher/Dispatcher.cpp
+    
+    # CMOD System
+    src/CMODSystem/CJMODScanner.cpp
 )
 
-# 安装规则
-install(TARGETS chtl
+# 定义所有头文件
+set(CHTL_CORE_HEADERS
+    # Util
+    src/Util/Common.h
+    
+    # CHTL Core
+    src/CHTL/CHTLLexer/Token.h
+    src/CHTL/CHTLLexer/GlobalMap.h
+    src/CHTL/CHTLLexer/Lexer.h
+    src/CHTL/CHTLParser/Parser.h
+    src/CHTL/CHTLNode/BaseNode.h
+    src/CHTL/CHTLNode/TemplateNode.h
+    src/CHTL/CHTLNode/CustomNode.h
+    src/CHTL/CHTLNode/OriginNode.h
+    src/CHTL/CHTLGenerator/Generator.h
+    src/CHTL/CHTLLoader/ModuleLoader.h
+    src/CHTL/CHTLManage/NamespaceResolver.h
+    src/CHTL/CHTLManage/ConstraintValidator.h
+    src/CHTL/CHTLState/RAIIManager.h
+    src/CHTL/CHTLConfig/ConfigNode.h
+    
+    # CHTL JS
+    src/CHTLJS/CHTLJSLexer/Lexer.h
+    src/CHTLJS/CHTLJSParser/Parser.h
+    src/CHTLJS/CHTLJSNode/CHTLJSNodes.h
+    src/CHTLJS/CHTLJSGenerator/Generator.h
+    
+    # Scanner and Dispatcher
+    src/Scanner/CHTLUnifiedScanner.h
+    src/CompilerDispatcher/Dispatcher.h
+    
+    # CMOD System
+    src/CMODSystem/CJMODScanner.h
+)
+
+# 创建CHTL核心库
+add_library(chtl_core STATIC ${CHTL_CORE_SOURCES} ${CHTL_CORE_HEADERS})
+
+# 设置包含目录
+target_include_directories(chtl_core PUBLIC ${CHTL_INCLUDE_DIRS})
+
+# 链接线程库
+target_link_libraries(chtl_core PUBLIC Threads::Threads)
+
+# 设置编译器特定的选项
+target_compile_features(chtl_core PUBLIC cxx_std_17)
+
+# 定义预处理器宏
+target_compile_definitions(chtl_core PRIVATE
+    CHTL_VERSION_MAJOR=1
+    CHTL_VERSION_MINOR=0
+    CHTL_VERSION_PATCH=0
+)
+
+# 如果是Debug模式，启用调试宏
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(chtl_core PRIVATE CHTL_DEBUG)
+endif()
+
+# 创建CHTL编译器可执行文件
+add_executable(chtl_compiler
+    src/main.cpp
+)
+
+target_link_libraries(chtl_compiler PRIVATE chtl_core)
+target_include_directories(chtl_compiler PRIVATE ${CHTL_INCLUDE_DIRS})
+
+# 创建测试可执行文件
+set(TEST_SOURCES
+    test_basic_syntax.cpp
+    test_token_recognition.cpp
+    test_element_parsing.cpp
+    test_simple_parsing.cpp
+    test_template_system.cpp
+    test_custom_system.cpp
+    test_origin_system.cpp
+    test_config_system.cpp
+    test_chtl_complete_syntax.cpp
+    test_complete_integration.cpp
+)
+
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    add_executable(${TEST_NAME} ${TEST_SOURCE})
+    target_link_libraries(${TEST_NAME} PRIVATE chtl_core)
+    target_include_directories(${TEST_NAME} PRIVATE ${CHTL_INCLUDE_DIRS})
+endforeach()
+
+# 设置安装目标
+install(TARGETS chtl_core chtl_compiler
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
     RUNTIME DESTINATION bin
 )
 
-# 安装头文件（供扩展开发使用）
+# 安装头文件
 install(DIRECTORY src/
     DESTINATION include/chtl
     FILES_MATCHING PATTERN "*.h"
 )
 
-# 测试配置
-option(BUILD_TESTS "构建测试" OFF)
+# 创建包配置文件
+include(CMakePackageConfigHelpers)
 
-if(BUILD_TESTS)
-    enable_testing()
-    
-    # 查找测试框架
-    find_package(GTest QUIET)
-    
-    if(GTest_FOUND)
-        add_subdirectory(src/Test)
-    else()
-        message(WARNING "未找到Google Test，跳过测试构建")
-    endif()
-endif()
-
-# 文档生成
-option(BUILD_DOCS "构建文档" OFF)
-
-if(BUILD_DOCS)
-    find_package(Doxygen QUIET)
-    
-    if(Doxygen_FOUND)
-        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in)
-        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
-        
-        configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-        
-        add_custom_target(docs ALL
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "生成API文档"
-            VERBATIM
-        )
-    else()
-        message(WARNING "未找到Doxygen，跳过文档生成")
-    endif()
-endif()
-
-# 包配置
-option(BUILD_PACKAGE "构建安装包" OFF)
-
-if(BUILD_PACKAGE)
-    include(CPack)
-    
-    set(CPACK_PACKAGE_NAME "CHTL")
-    set(CPACK_PACKAGE_VENDOR "CHTL Team")
-    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CHTL超文本语言编译器")
-    set(CPACK_PACKAGE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
-    set(CPACK_PACKAGE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
-    set(CPACK_PACKAGE_VERSION_PATCH ${PROJECT_VERSION_PATCH})
-    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
-    set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
-    
-    # Windows特定设置
-    if(WIN32)
-        set(CPACK_GENERATOR "NSIS")
-        set(CPACK_NSIS_DISPLAY_NAME "CHTL编译器")
-        set(CPACK_NSIS_HELP_LINK "https://github.com/CHTL-Team/CHTL")
-        set(CPACK_NSIS_URL_INFO_ABOUT "https://github.com/CHTL-Team/CHTL")
-        set(CPACK_NSIS_CONTACT "chtl-team@example.com")
-    endif()
-    
-    # Linux特定设置
-    if(UNIX AND NOT APPLE)
-        set(CPACK_GENERATOR "DEB;RPM")
-        set(CPACK_DEBIAN_PACKAGE_MAINTAINER "CHTL Team <chtl-team@example.com>")
-        set(CPACK_DEBIAN_PACKAGE_SECTION "devel")
-        set(CPACK_DEBIAN_PACKAGE_PRIORITY "optional")
-        set(CPACK_RPM_PACKAGE_GROUP "Development/Tools")
-        set(CPACK_RPM_PACKAGE_LICENSE "MIT")
-    endif()
-    
-    # macOS特定设置
-    if(APPLE)
-        set(CPACK_GENERATOR "DragNDrop")
-        set(CPACK_DMG_VOLUME_NAME "CHTL编译器")
-    endif()
-endif()
-
-# 性能分析支持
-option(ENABLE_PROFILING "启用性能分析" OFF)
-
-if(ENABLE_PROFILING)
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(chtl PRIVATE -pg)
-        target_link_options(chtl PRIVATE -pg)
-    endif()
-endif()
-
-# 代码覆盖率
-option(ENABLE_COVERAGE "启用代码覆盖率" OFF)
-
-if(ENABLE_COVERAGE AND CMAKE_BUILD_TYPE STREQUAL "Debug")
-    if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-        target_compile_options(chtl PRIVATE --coverage)
-        target_link_options(chtl PRIVATE --coverage)
-    endif()
-endif()
-
-# 静态分析
-option(ENABLE_STATIC_ANALYSIS "启用静态分析" OFF)
-
-if(ENABLE_STATIC_ANALYSIS)
-    find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
-    if(CLANG_TIDY_EXE)
-        set_target_properties(chtl PROPERTIES
-            CXX_CLANG_TIDY "${CLANG_TIDY_EXE};-checks=-*,readability-*,performance-*,modernize-*"
-        )
-    endif()
-    
-    find_program(CPPCHECK_EXE NAMES "cppcheck")
-    if(CPPCHECK_EXE)
-        add_custom_target(cppcheck
-            COMMAND ${CPPCHECK_EXE} --enable=all --std=c++17 --project=${CMAKE_BINARY_DIR}/compile_commands.json
-            COMMENT "运行cppcheck静态分析"
-        )
-    endif()
-endif()
-
-# 编译数据库
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# 打印配置信息
-message(STATUS "构建类型: ${CMAKE_BUILD_TYPE}")
-message(STATUS "C++编译器: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
-message(STATUS "C++标准: ${CMAKE_CXX_STANDARD}")
-message(STATUS "ANTLR4支持: ${ANTLR4_FOUND}")
-message(STATUS "构建测试: ${BUILD_TESTS}")
-message(STATUS "构建文档: ${BUILD_DOCS}")
-message(STATUS "构建包: ${BUILD_PACKAGE}")
-message(STATUS "性能分析: ${ENABLE_PROFILING}")
-message(STATUS "代码覆盖率: ${ENABLE_COVERAGE}")
-message(STATUS "静态分析: ${ENABLE_STATIC_ANALYSIS}")
-
-# 自定义目标
-add_custom_target(format
-    COMMAND find src -name "*.cpp" -o -name "*.h" | xargs clang-format -i
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    COMMENT "格式化代码"
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/CHTLConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/CHTLConfig.cmake"
+    INSTALL_DESTINATION lib/cmake/CHTL
 )
 
-add_custom_target(clean-all
-    COMMAND ${CMAKE_BUILD_TOOL} clean
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/bin
-    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/lib
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "清理所有构建文件"
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/CHTLConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
 )
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/CHTLConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/CHTLConfigVersion.cmake"
+    DESTINATION lib/cmake/CHTL
+)
+
+# 导出目标
+export(TARGETS chtl_core FILE "${CMAKE_CURRENT_BINARY_DIR}/CHTLTargets.cmake")
+install(EXPORT CHTLTargets
+    FILE CHTLTargets.cmake
+    DESTINATION lib/cmake/CHTL
+)
+
+# 创建自定义目标用于运行测试
+add_custom_target(run_tests
+    COMMENT "Running CHTL tests"
+)
+
+foreach(TEST_SOURCE ${TEST_SOURCES})
+    get_filename_component(TEST_NAME ${TEST_SOURCE} NAME_WE)
+    add_custom_command(
+        TARGET run_tests POST_BUILD
+        COMMAND ${TEST_NAME}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Running ${TEST_NAME}"
+        DEPENDS ${TEST_NAME}
+    )
+endforeach()
+
+# 打包配置
+set(CPACK_PACKAGE_NAME "CHTL")
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CHTL - Hypertext Language Compiler")
+set(CPACK_PACKAGE_VENDOR "CHTL Project")
+set(CPACK_PACKAGE_CONTACT "chtl@example.com")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
+set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
+
+if(WIN32)
+    set(CPACK_GENERATOR "ZIP;NSIS")
+elseif(APPLE)
+    set(CPACK_GENERATOR "TGZ;DragNDrop")
+else()
+    set(CPACK_GENERATOR "TGZ;DEB;RPM")
+endif()
+
+include(CPack)
+
+# 显示配置信息
+message(STATUS "CHTL Configuration:")
+message(STATUS "  Version: ${PROJECT_VERSION}")
+message(STATUS "  C++ Standard: ${CMAKE_CXX_STANDARD}")
+message(STATUS "  Build Type: ${CMAKE_BUILD_TYPE}")
+message(STATUS "  Compiler: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "  Install Prefix: ${CMAKE_INSTALL_PREFIX}")
+message(STATUS "  Source Files: ${CHTL_CORE_SOURCES}")
+message(STATUS "  Header Files: ${CHTL_CORE_HEADERS}")
+message(STATUS "  Test Files: ${TEST_SOURCES}")
+
+# 性能和调试选项
+option(CHTL_ENABLE_PROFILING "Enable profiling support" OFF)
+option(CHTL_ENABLE_SANITIZERS "Enable address and undefined behavior sanitizers" OFF)
+option(CHTL_BUILD_SHARED_LIBS "Build CHTL as shared libraries" OFF)
+
+if(CHTL_ENABLE_PROFILING)
+    target_compile_options(chtl_core PRIVATE -pg)
+    target_link_options(chtl_core PRIVATE -pg)
+    message(STATUS "Profiling enabled")
+endif()
+
+if(CHTL_ENABLE_SANITIZERS AND NOT MSVC)
+    target_compile_options(chtl_core PRIVATE -fsanitize=address,undefined)
+    target_link_options(chtl_core PRIVATE -fsanitize=address,undefined)
+    message(STATUS "Sanitizers enabled")
+endif()
+
+if(CHTL_BUILD_SHARED_LIBS)
+    set_target_properties(chtl_core PROPERTIES
+        POSITION_INDEPENDENT_CODE ON
+    )
+    message(STATUS "Building shared libraries")
+endif()
