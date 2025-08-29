@@ -277,6 +277,24 @@ cmake .. \
 
 ### 🪟 **Windows构建**
 
+#### 使用PowerShell脚本 (推荐)
+```powershell
+# 检查环境
+.\scripts\check_environment.ps1
+
+# 安装依赖 (以管理员身份运行)
+.\scripts\install_dependencies.ps1 -All
+
+# Release构建
+.\scripts\build_release.ps1
+
+# Debug构建
+.\scripts\build_debug.ps1
+
+# 清理构建
+.\scripts\clean_build.ps1 -All
+```
+
 #### Visual Studio
 ```cmd
 # 使用Visual Studio 2019/2022
@@ -312,10 +330,26 @@ cmake .. \
 make -j$(nproc)
 ```
 
+#### Windows特定选项
+```powershell
+# 选择不同的Visual Studio版本
+.\scripts\build_release.ps1 -Generator "Visual Studio 17 2022"
+
+# 使用MinGW编译器
+.\scripts\build_release.ps1 -Generator "MinGW Makefiles"
+
+# 启用AddressSanitizer (VS 2019+)
+.\scripts\build_debug.ps1 -EnableSanitizers
+
+# 启用代码覆盖率
+.\scripts\build_debug.ps1 -EnableCoverage
+```
+
 ## 构建脚本详解
 
-### 📜 **build_release.sh**
+### 📜 **Linux/macOS构建脚本**
 
+#### build_release.sh
 ```bash
 # 功能说明
 ./scripts/build_release.sh
@@ -333,8 +367,7 @@ make -j$(nproc)
 # - CHTL_RELEASE_INFO.txt (构建信息)
 ```
 
-### 🐛 **build_debug.sh**
-
+#### build_debug.sh
 ```bash
 # 功能说明
 ./scripts/build_debug.sh
@@ -350,6 +383,65 @@ make -j$(nproc)
 # - debug_with_gdb.sh (GDB调试脚本)
 # - debug_with_valgrind.sh (Valgrind脚本)
 # - compile_commands.json (IDE支持)
+```
+
+### 🪟 **Windows构建脚本**
+
+#### build_release.ps1
+```powershell
+# 功能说明
+.\scripts\build_release.ps1
+
+# 主要特性:
+# 1. 自动检测Visual Studio和MinGW
+# 2. 支持多种CMake生成器
+# 3. Windows特定优化 (/O2, /MP)
+# 4. 自动处理DLL依赖
+
+# 参数选项:
+# -Generator "Visual Studio 17 2022"  # 指定生成器
+# -Platform "x64"                     # 指定平台
+# -BuildDir "custom_build"            # 自定义构建目录
+
+# 输出文件:
+# - build_release/src/Release/chtl.exe (主程序)
+# - CHTL_RELEASE_INFO.txt (构建信息)
+```
+
+#### build_debug.ps1
+```powershell
+# 功能说明
+.\scripts\build_debug.ps1
+
+# 主要特性:
+# 1. Debug符号和调试信息 (/Zi, /Od)
+# 2. 支持AddressSanitizer (VS 2019+)
+# 3. 创建Windows调试脚本
+# 4. Visual Studio项目集成
+
+# 参数选项:
+# -EnableSanitizers    # 启用AddressSanitizer
+# -EnableCoverage      # 启用代码覆盖率
+
+# 输出文件:
+# - build_debug/src/Debug/chtl.exe (调试版本)
+# - debug_with_vs.bat (Visual Studio调试)
+# - debug_with_cdb.bat (控制台调试器)
+# - debug_session.ps1 (PowerShell调试助手)
+# - compile_commands.json (IDE支持)
+```
+
+#### 环境管理脚本
+```powershell
+# 环境检查
+.\scripts\check_environment.ps1
+.\scripts\check_environment.ps1 -Detailed
+
+# 依赖安装 (需要管理员权限)
+.\scripts\install_dependencies.ps1 -All
+.\scripts\install_dependencies.ps1 -Chocolatey
+.\scripts\install_dependencies.ps1 -Vcpkg
+.\scripts\install_dependencies.ps1 -Manual  # 显示手动安装说明
 ```
 
 ### 🧹 **clean_build.sh**
