@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CJMOD实际使用示例 - 用户管理系统</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .form-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .error-display {
+            background: #fee;
+            color: #c33;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid #c33;
+            display: none;
+        }
+        
+        .success-display {
+            background: #efe;
+            color: #3c3;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid #3c3;
+            display: none;
+        }
+        
+        .user-list {
+            padding: 30px;
+        }
+        
+        .user-item {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .user-item:hover {
+            background: #f0f0f0;
+            transform: translateX(5px);
+        }
+        
+        .user-item.template {
+            display: none;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .user-email {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-display {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 CJMOD实际使用示例</h1>
+            <p>用户管理系统 - 展示CJMOD强大语法的真实应用</p>
+        </div>
+        
+        <div class="form-section">
+            <h2>添加新用户</h2>
+            
+            <div class="input-group">
+                <label for="username">用户名:</label>
+                <input type="text" id="username" placeholder="请输入用户名 (至少3个字符)">
+                <div class="error-display" id="username-error"></div>
+            </div>
+            
+            <div class="input-group">
+                <label for="email">邮箱:</label>
+                <input type="email" id="email" placeholder="请输入邮箱地址">
+                <div class="error-display" id="email-error"></div>
+            </div>
+            
+            <div class="input-group">
+                <label for="fullname">全名:</label>
+                <input type="text" id="fullname" readonly placeholder="自动生成">
+            </div>
+            
+            <button class="btn submit-button" id="submit-btn">
+                <span class="btn-text">添加用户</span>
+                <span class="loading" style="display: none;"></span>
+            </button>
+            
+            <button class="btn" id="load-users-btn">加载用户列表</button>
+            
+            <div class="status-display" id="status-display"></div>
+        </div>
+        
+        <div class="user-list">
+            <h2>用户列表</h2>
+            <div class="user-list-container" id="user-container">
+                <div class="user-item template">
+                    <div class="user-info">
+                        <div class="user-name"></div>
+                        <div class="user-email"></div>
+                    </div>
+                    <div class="user-actions">
+                        <button class="btn btn-small">编辑</button>
+                        <button class="btn btn-small btn-danger">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== 这里是CJMOD生成的JavaScript代码 =====
+        
+        // 模拟CJMOD编译后的代码
+        console.log("🎯 CJMOD实际使用示例启动");
+        console.log("原始CHTL代码中使用的CJMOD语法:");
+        console.log(`
+{{.user-management}} init -> {
+    // CJMOD双向数据绑定语法
+    username <-> input#username.value;
+    email <-> input#email.value;
+    
+    // CJMOD计算属性语法  
+    fullName => username + "@" + email.split("@")[0];
+    
+    // CJMOD异步链式语法
+    submitUser await>> validateUser() >> saveUser() >> refreshList();
+    
+    // CJMOD并行加载语法
+    loadData parallel>> fetchUsers() || fetchStats() || fetchConfig();
+    
+    // CJMOD监听器语法
+    username ~> validateUsername(value) -> showUsernameStatus;
+    email ~> validateEmail(value) -> showEmailStatus;
+    
+    // CJMOD事件流语法
+    click |> debounce(300) |> validateForm |> submitUser;
+};
+        `);
+
+        // 实际的响应式系统实现
+        class UserManagementSystem {
+            constructor() {
+                this.state = new Proxy({
+                    username: '',
+                    email: '',
+                    fullName: '',
+                    users: [],
+                    isLoading: false,
+                    errors: {}
+                }, {
+                    set: (target, property, value) => {
+                        const oldValue = target[property];
+                        target[property] = value;
+                        this.notifyChange(property, value, oldValue);
+                        return true;
+                    }
+                });
+                
+                this.watchers = new Map();
+                this.initializeBindings();
+                this.setupComputedProperties();
+                this.setupWatchers();
+                this.setupEventStreams();
+                
+                console.log("✅ CJMOD用户管理系统初始化完成");
+            }
+            
+            // CJMOD双向数据绑定: username <-> input#username.value
+            initializeBindings() {
+                const usernameInput = document.getElementById('username');
+                const emailInput = document.getElementById('email');
+                const fullNameInput = document.getElementById('fullname');
+                
+                // 用户名绑定
+                usernameInput.addEventListener('input', (e) => {
+                    this.state.username = e.target.value;
+                });
+                
+                this.watch('username', (newValue) => {
+                    if (usernameInput.value !== newValue) {
+                        usernameInput.value = newValue;
+                    }
+                });
+                
+                // 邮箱绑定  
+                emailInput.addEventListener('input', (e) => {
+                    this.state.email = e.target.value;
+                });
+                
+                this.watch('email', (newValue) => {
+                    if (emailInput.value !== newValue) {
+                        emailInput.value = newValue;
+                    }
+                });
+                
+                // 全名显示
+                this.watch('fullName', (newValue) => {
+                    fullNameInput.value = newValue;
+                });
+                
+                console.log("✅ CJMOD双向数据绑定设置完成");
+            }
+            
+            // CJMOD计算属性: fullName => username + "@" + email.split("@")[0]
+            setupComputedProperties() {
+                this.computed('fullName', () => {
+                    if (this.state.username && this.state.email) {
+                        const emailPrefix = this.state.email.split('@')[0] || 'user';
+                        return `${this.state.username} (${emailPrefix})`;
+                    }
+                    return '';
+                }, ['username', 'email']);
+                
+                console.log("✅ CJMOD计算属性设置完成");
+            }
+            
+            // CJMOD监听器: username ~> validateUsername(value) -> showUsernameStatus
+            setupWatchers() {
+                this.watch('username', async (value) => {
+                    if (value.length > 0) {
+                        const isValid = await this.validateUsername(value);
+                        this.showValidationResult('username', isValid, isValid ? '用户名可用' : '用户名无效(至少3个字符)');
+                    } else {
+                        this.clearValidationResult('username');
+                    }
+                });
+                
+                this.watch('email', async (value) => {
+                    if (value.length > 0) {
+                        const isValid = await this.validateEmail(value);
+                        this.showValidationResult('email', isValid, isValid ? '邮箱格式正确' : '邮箱格式无效');
+                    } else {
+                        this.clearValidationResult('email');
+                    }
+                });
+                
+                console.log("✅ CJMOD监听器设置完成");
+            }
+            
+            // CJMOD事件流: click |> debounce(300) |> validateForm |> submitUser
+            setupEventStreams() {
+                const submitBtn = document.getElementById('submit-btn');
+                const loadUsersBtn = document.getElementById('load-users-btn');
+                
+                const debouncedSubmit = this.debounce(async () => {
+                    await this.submitUserFlow();
+                }, 300);
+                
+                submitBtn.addEventListener('click', debouncedSubmit);
+                loadUsersBtn.addEventListener('click', () => this.loadUsersFlow());
+                
+                console.log("✅ CJMOD事件流设置完成");
+            }
+            
+            // CJMOD异步链式: submitUser await>> validateUser() >> saveUser() >> refreshList()
+            async submitUserFlow() {
+                try {
+                    this.setLoadingState(true);
+                    this.showStatus('正在验证用户信息...', 'info');
+                    
+                    // 链式异步调用
+                    const validationResult = await this.validateUser();
+                    console.log("🔄 CJMOD异步链 - 步骤1: 验证用户", validationResult);
+                    
+                    if (!validationResult.valid) {
+                        throw new Error(validationResult.message);
+                    }
+                    
+                    this.showStatus('正在保存用户...', 'info');
+                    const saveResult = await this.saveUser(validationResult.data);
+                    console.log("🔄 CJMOD异步链 - 步骤2: 保存用户", saveResult);
+                    
+                    this.showStatus('正在刷新列表...', 'info');
+                    const refreshResult = await this.refreshList();
+                    console.log("🔄 CJMOD异步链 - 步骤3: 刷新列表", refreshResult);
+                    
+                    this.showStatus('用户添加成功!', 'success');
+                    this.clearForm();
+                    
+                } catch (error) {
+                    console.error("❌ CJMOD异步链执行失败:", error);
+                    this.showStatus(`操作失败: ${error.message}`, 'error');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+            
+            // CJMOD并行加载: loadData parallel>> fetchUsers() || fetchStats() || fetchConfig()
+            async loadUsersFlow() {
+                try {
+                    this.setLoadingState(true);
+                    this.showStatus('正在并行加载数据...', 'info');
+                    
+                    // 并行异步调用
+                    const [users, stats, config] = await Promise.all([
+                        this.fetchUsers(),
+                        this.fetchStats(), 
+                        this.fetchConfig()
+                    ]);
+                    
+                    console.log("🔄 CJMOD并行加载完成:", { users, stats, config });
+                    
+                    this.state.users = users;
+                    this.renderUserList();
+                    this.showStatus(`成功加载 ${users.length} 个用户`, 'success');
+                    
+                } catch (error) {
+                    console.error("❌ CJMOD并行加载失败:", error);
+                    this.showStatus(`加载失败: ${error.message}`, 'error');
+                } finally {
+                    this.setLoadingState(false);
+                }
+            }
+            
+            // 核心响应式方法
+            computed(name, fn, dependencies = []) {
+                this.state[name] = fn();
+                dependencies.forEach(dep => {
+                    this.watch(dep, () => {
+                        const newValue = fn();
+                        if (this.state[name] !== newValue) {
+                            this.state[name] = newValue;
+                        }
+                    });
+                });
+            }
+            
+            watch(property, callback) {
+                if (!this.watchers.has(property)) {
+                    this.watchers.set(property, []);
+                }
+                this.watchers.get(property).push(callback);
+            }
+            
+            notifyChange(property, newValue, oldValue) {
+                if (this.watchers.has(property)) {
+                    this.watchers.get(property).forEach(callback => {
+                        callback(newValue, oldValue);
+                    });
+                }
+            }
+            
+            // 工具方法
+            debounce(fn, delay) {
+                let timeoutId;
+                return (...args) => {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => fn.apply(this, args), delay);
+                };
+            }
+            
+            // 验证方法
+            async validateUsername(username) {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username));
+                    }, 200);
+                });
+            }
+            
+            async validateEmail(email) {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+                    }, 200);
+                });
+            }
+            
+            async validateUser() {
+                const usernameValid = await this.validateUsername(this.state.username);
+                const emailValid = await this.validateEmail(this.state.email);
+                
+                if (!usernameValid || !emailValid) {
+                    return {
+                        valid: false,
+                        message: '请检查用户名和邮箱格式'
+                    };
+                }
+                
+                return {
+                    valid: true,
+                    data: {
+                        username: this.state.username,
+                        email: this.state.email,
+                        fullName: this.state.fullName
+                    }
+                };
+            }
+            
+            async saveUser(userData) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (Math.random() > 0.1) {
+                            resolve({
+                                success: true,
+                                id: Date.now(),
+                                message: '用户保存成功'
+                            });
+                        } else {
+                            reject(new Error('网络错误，请重试'));
+                        }
+                    }, 1000);
+                });
+            }
+            
+            async refreshList() {
+                return this.fetchUsers();
+            }
+            
+            async fetchUsers() {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        const mockUsers = [
+                            { id: 1, username: 'alice', email: 'alice@example.com' },
+                            { id: 2, username: 'bob', email: 'bob@example.com' },
+                            { id: 3, username: 'charlie', email: 'charlie@example.com' }
+                        ];
+                        resolve(mockUsers);
+                    }, 800);
+                });
+            }
+            
+            async fetchStats() {
+                return new Promise(resolve => {
+                    setTimeout(() => resolve({ totalUsers: 3, activeUsers: 2 }), 500);
+                });
+            }
+            
+            async fetchConfig() {
+                return new Promise(resolve => {
+                    setTimeout(() => resolve({ theme: 'light', language: 'zh-CN' }), 300);
+                });
+            }
+            
+            // UI更新方法
+            showValidationResult(field, isValid, message) {
+                const errorEl = document.getElementById(`${field}-error`);
+                if (errorEl) {
+                    errorEl.textContent = message;
+                    errorEl.style.display = 'block';
+                    errorEl.style.background = isValid ? '#efe' : '#fee';
+                    errorEl.style.color = isValid ? '#3c3' : '#c33';
+                }
+            }
+            
+            clearValidationResult(field) {
+                const errorEl = document.getElementById(`${field}-error`);
+                if (errorEl) {
+                    errorEl.style.display = 'none';
+                }
+            }
+            
+            setLoadingState(loading) {
+                const submitBtn = document.getElementById('submit-btn');
+                const btnText = submitBtn.querySelector('.btn-text');
+                const loadingSpinner = submitBtn.querySelector('.loading');
+                
+                submitBtn.disabled = loading;
+                btnText.style.display = loading ? 'none' : 'inline';
+                loadingSpinner.style.display = loading ? 'inline-block' : 'none';
+            }
+            
+            showStatus(message, type) {
+                const statusEl = document.getElementById('status-display');
+                statusEl.textContent = message;
+                statusEl.className = 'status-display';
+                
+                if (type === 'success') {
+                    statusEl.style.background = '#efe';
+                    statusEl.style.color = '#3c3';
+                } else if (type === 'error') {
+                    statusEl.style.background = '#fee';
+                    statusEl.style.color = '#c33';
+                } else {
+                    statusEl.style.background = '#eef';
+                    statusEl.style.color = '#33c';
+                }
+            }
+            
+            clearForm() {
+                this.state.username = '';
+                this.state.email = '';
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+            }
+            
+            renderUserList() {
+                const container = document.getElementById('user-container');
+                const template = container.querySelector('.template');
+                
+                // 清空现有列表
+                container.querySelectorAll('.user-item:not(.template)').forEach(el => el.remove());
+                
+                // 渲染用户列表
+                this.state.users.forEach(user => {
+                    const item = template.cloneNode(true);
+                    item.classList.remove('template');
+                    
+                    item.querySelector('.user-name').textContent = user.username;
+                    item.querySelector('.user-email').textContent = user.email;
+                    
+                    container.appendChild(item);
+                });
+            }
+        }
+        
+        // 启动系统
+        const userSystem = new UserManagementSystem();
+        
+        console.log("🎉 CJMOD实际使用示例运行中...");
+        console.log("请尝试:");
+        console.log("1. 输入用户名和邮箱 (观察双向绑定和实时验证)");
+        console.log("2. 点击'添加用户' (观察异步链式处理)");
+        console.log("3. 点击'加载用户列表' (观察并行异步加载)");
+    </script>
+</body>
+</html>

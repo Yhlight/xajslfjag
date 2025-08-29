@@ -1,0 +1,192 @@
+// ===== CJMOD实际使用示例 - 原始CHTL源码 =====
+
+@template UserManagement {
+    <div class="user-management-system">
+        <header class="system-header">
+            <h1>用户管理系统</h1>
+            <p>CJMOD强大语法演示</p>
+        </header>
+        
+        <section class="user-form">
+            <input#username type="text" placeholder="用户名">
+            <input#email type="email" placeholder="邮箱">
+            <input#fullname type="text" readonly placeholder="自动生成全名">
+            <button.submit-btn>添加用户</button>
+            <button.load-btn>加载用户</button>
+        </section>
+        
+        <section class="user-list">
+            <div.user-container>
+                <!-- 用户列表将动态生成 -->
+            </div>
+        </section>
+    </div>
+}
+
+// ===== CJMOD语法使用示例 =====
+
+{{.user-management-system}} init -> {
+    
+    // 🔗 CJMOD双向数据绑定语法
+    username <-> input#username.value;
+    email <-> input#email.value;
+    fullName <-> input#fullname.value;
+    
+    // ⚡ CJMOD计算属性语法
+    fullName => username + " (" + email.split("@")[0] + ")";
+    
+    // 🔄 CJMOD异步链式语法 (核心功能)
+    submitUser await>> validateUser() >> saveUser() >> refreshUserList();
+    
+    // 🚀 CJMOD并行异步语法
+    loadData parallel>> fetchUsers() || fetchUserStats() || fetchSystemConfig();
+    
+    // 👀 CJMOD监听器语法
+    username ~> validateUsername(value) -> showUsernameStatus;
+    email ~> validateEmail(value) -> showEmailStatus;
+    
+    // 🌊 CJMOD事件流语法
+    click.submit-btn |> debounce(300) |> validateForm |> submitUser;
+    click.load-btn |> throttle(1000) |> loadData;
+    
+    // ⏰ CJMOD超时语法
+    apiCall timeout>> fetchUserData() @ 5000;
+    
+    // 🔁 CJMOD重试语法  
+    networkCall retry>> connectToAPI() * 3;
+    
+    // 🎯 CJMOD条件渲染语法
+    showError ?: errorMessage != null :: .error-display;
+    showSuccess ?: successMessage != null :: .success-display;
+    
+    // 📋 CJMOD列表渲染语法
+    userList *: users :: .user-item template {
+        .user-name -> user.username;
+        .user-email -> user.email;
+        .user-actions -> renderUserActions(user);
+    };
+    
+    // 🔧 CJMOD自定义扩展语法
+    dataSync custom>> syncToServer(data) with retry(3) timeout(5000);
+    
+    // 💾 CJMOD状态管理语法
+    state manage>> {
+        username: String = "",
+        email: String = "",
+        users: Array = [],
+        loading: Boolean = false,
+        errors: Object = {}
+    };
+};
+
+// ===== CJMOD高级用法示例 =====
+
+{{.advanced-features}} setup -> {
+    
+    // 🎪 复合异步语法
+    complexFlow await>> {
+        step1 retry>> initializeSystem() * 2;
+        step2 parallel>> loadConfig() || loadUsers() || loadPermissions();
+        step3 timeout>> processData(step2) @ 10000;
+        final await>> step1 >> step3 >> saveResults();
+    };
+    
+    // 🎨 响应式样式绑定
+    themeMode <-> select#theme.value;
+    
+    style dynamic>> {
+        .container.background-color => themeMode === "dark" ? "#333" : "#fff";
+        .text.color => themeMode === "dark" ? "#fff" : "#333";
+        .button.opacity => loading ? 0.6 : 1.0;
+    };
+    
+    // 🎵 动画序列语法
+    loadingAnimation sequence>> {
+        fadeIn(spinner) >> 
+        rotate(spinner, 360deg, 1s) repeat(infinite) >>
+        when(dataLoaded) >> fadeOut(spinner);
+    };
+    
+    // 🔐 权限检查语法
+    userAction permission>> {
+        addUser requires>> "user.create";
+        editUser requires>> "user.edit" && ownsResource(userId);
+        deleteUser requires>> "user.delete" && confirmAction();
+    };
+    
+    // 📡 WebSocket连接语法
+    realtime websocket>> {
+        connect to>> "ws://localhost:8080/users";
+        on userAdded >> refreshUserList();
+        on userUpdated >> updateUserInList(data);
+        on userDeleted >> removeUserFromList(data.id);
+        on error >> handleWebSocketError(error);
+    };
+    
+    // 🎯 表单验证语法
+    validation rules>> {
+        username: required && minLength(3) && pattern(/^[a-zA-Z0-9_]+$/);
+        email: required && email && unique("users", "email");
+        password: required && minLength(8) && strength(medium);
+    };
+};
+
+// ===== CJMOD模块化语法 =====
+
+module UserManagementCJMOD {
+    
+    // 🏗️ 导出CJMOD语法扩展
+    export syntax {
+        "user-crud" -> UserCRUDSyntax,
+        "realtime-sync" -> RealtimeSyncSyntax,
+        "form-validation" -> FormValidationSyntax
+    };
+    
+    // 📦 语法包装器
+    syntax UserCRUDSyntax {
+        pattern: "$action user $data with $options";
+        
+        handler: (action, data, options) => {
+            switch(action) {
+                case "create": return createUserAPI(data, options);
+                case "update": return updateUserAPI(data, options);
+                case "delete": return deleteUserAPI(data, options);
+                case "fetch": return fetchUserAPI(data, options);
+            }
+        };
+    };
+    
+    // 🔄 实时同步语法
+    syntax RealtimeSyncSyntax {
+        pattern: "sync $model to $endpoint every $interval";
+        
+        handler: (model, endpoint, interval) => {
+            return setInterval(() => {
+                syncModelToEndpoint(model, endpoint);
+            }, parseInterval(interval));
+        };
+    };
+}
+
+// ===== 使用自定义CJMOD语法 =====
+
+{{.crud-operations}} setup -> {
+    
+    // 使用自定义的user-crud语法
+    newUser user-crud>> create user {name: username, email: email} with {validate: true};
+    
+    existingUser user-crud>> update user {id: userId, name: newName} with {merge: true};
+    
+    userList user-crud>> fetch user {limit: 10, offset: 0} with {cache: true};
+    
+    // 使用实时同步语法
+    userModel realtime-sync>> sync users to "/api/users" every 30s;
+    
+    // 组合使用多种CJMOD语法
+    userWorkflow await>> {
+        validation await>> validateUserData(formData);
+        creation user-crud>> create user validation.data with {notify: true};
+        sync realtime-sync>> sync creation.result to "/api/sync" every 10s;
+        notification await>> sendNotification("用户创建成功");
+    };
+};
