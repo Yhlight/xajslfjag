@@ -1,0 +1,6 @@
+// Test @Element followed by [Custom]
+@Element Card;
+
+[Custom] @Style theme {
+    primary: blue;
+}

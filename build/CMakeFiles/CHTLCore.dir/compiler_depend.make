@@ -3292,7 +3292,12 @@ CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.o: /workspace/src/
   /workspace/src/CHTL/CHTLLexer/Token.h \
   /workspace/src/CHTL/CHTLNode/BaseNode.h \
   /workspace/src/CHTL/CHTLNode/CommentNode.h \
+  /workspace/src/CHTL/CHTLNode/ConfigNode.h \
+  /workspace/src/CHTL/CHTLNode/CustomNode.h \
+  /workspace/src/CHTL/CHTLNode/ImportNode.h \
+  /workspace/src/CHTL/CHTLNode/NamespaceNode.h \
   /workspace/src/CHTL/CHTLNode/OperatorNode.h \
+  /workspace/src/CHTL/CHTLNode/OriginNode.h \
   /workspace/src/CHTL/CHTLNode/ProgramNode.h \
   /workspace/src/CHTL/CHTLNode/ScriptNode.h \
   /workspace/src/CHTL/CHTLNode/StyleNode.h \

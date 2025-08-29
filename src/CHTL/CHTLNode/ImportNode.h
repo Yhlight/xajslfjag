@@ -29,14 +29,18 @@ enum class ImportType {
 // 导入节点
 class ImportNode : public ASTNode {
 public:
-    ImportNode(ImportType importType, const TokenLocation& location)
-        : ASTNode(NodeType::IMPORT, location), importType_(importType) {}
+    ImportNode(ImportType importType, const std::string& fromPath, const TokenLocation& location)
+        : ASTNode(NodeType::IMPORT, location), importType_(importType), fromPath_(fromPath) {}
     
     ImportType getImportType() const { return importType_; }
     
     // 设置导入的具体项（可选）
     void setImportItem(const std::string& item) {
         importItem_ = item;
+    }
+    
+    void setTargetName(const std::string& targetName) {
+        importItem_ = targetName;
     }
     
     const std::optional<std::string>& getImportItem() const {
@@ -53,6 +57,10 @@ public:
     // 设置别名（可选）
     void setAlias(const std::string& alias) {
         alias_ = alias;
+    }
+    
+    void setAsName(const std::string& asName) {
+        alias_ = asName;
     }
     
     const std::optional<std::string>& getAlias() const {

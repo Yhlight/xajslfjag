@@ -215,6 +215,11 @@ CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
   /workspace/src/CHTL/CHTLNode/OperatorNode.h \
+  /workspace/src/CHTL/CHTLNode/CustomNode.h \
+  /workspace/src/CHTL/CHTLNode/OriginNode.h \
+  /workspace/src/CHTL/CHTLNode/ImportNode.h \
+  /workspace/src/CHTL/CHTLNode/NamespaceNode.h \
+  /workspace/src/CHTL/CHTLNode/ConfigNode.h \
   /workspace/src/CHTL/CHTLNode/../CHTLGenerator/Generator.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \

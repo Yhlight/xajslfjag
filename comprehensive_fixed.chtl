@@ -1,0 +1,71 @@
+// Fixed comprehensive CHTL Test
+// Basic elements and text
+div {
+    id: "main-container";
+    class: "container wrapper";
+    
+    h1 { "Welcome to CHTL" }
+    
+    p {
+        "This is a paragraph with "
+        span { "inline text" }
+        " continuation."
+    }
+}
+
+// Templates
+[Template] @Style button-style {
+    background: #007bff;
+    color: white;
+}
+
+// Template usage
+button {
+    @Style button-style;
+    "Click me!"
+}
+
+// Custom elements
+[Custom] @Style theme-colors {
+    primary: #007bff;
+}
+
+[Custom] @Element Header {
+    header {
+        nav {
+            ul {
+                li { "Home" }
+            }
+        }
+    }
+}
+
+// Origin embedding
+[Origin] @Style {
+    body {
+        font-family: Arial, sans-serif;
+    }
+}
+
+[Origin] @JavaScript {
+    console.log("CHTL loaded");
+}
+
+// Configuration
+[Configuration] @Config site-config {
+    title: "My CHTL Site";
+    version: "1.0.0";
+}
+
+// Constraints
+div {
+    except p;
+    span { "This is allowed" }
+}
+
+// Global style
+style {
+    * {
+        margin: 0;
+    }
+}

@@ -19,6 +19,10 @@ public:
         properties_[key] = value;
     }
     
+    void addOption(const std::string& key, const std::string& value) {
+        properties_[key] = value;
+    }
+    
     const std::unordered_map<std::string, std::string>& getProperties() const {
         return properties_;
     }

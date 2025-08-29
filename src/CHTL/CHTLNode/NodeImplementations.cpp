@@ -4,6 +4,11 @@
 #include "ScriptNode.h"
 #include "TemplateNode.h"
 #include "OperatorNode.h"
+#include "CustomNode.h"
+#include "OriginNode.h"
+#include "ImportNode.h"
+#include "NamespaceNode.h"
+#include "ConfigNode.h"
 #include "../CHTLGenerator/Generator.h"
 #include <sstream>
 
@@ -124,6 +129,112 @@ std::string SelectorNode::toString() const {
     }
     ss << ", selector=\"" << selector_ << "\")";
     return ss.str();
+}
+
+// CustomNode implementation
+void CustomNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<CustomVisitor*>(visitor)) {
+        v->visitCustomNode(this);
+    }
+}
+
+std::string CustomNode::toString() const {
+    std::string typeStr;
+    switch (customType_) {
+        case CustomType::STYLE: typeStr = "@Style"; break;
+        case CustomType::ELEMENT: typeStr = "@Element"; break;
+        case CustomType::VAR: typeStr = "@Var"; break;
+    }
+    return "[Custom] " + typeStr + " " + name_;
+}
+
+// OriginNode implementation
+void OriginNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<OriginVisitor*>(visitor)) {
+        v->visitOriginNode(this);
+    }
+}
+
+std::string OriginNode::toString() const {
+    std::string typeStr;
+    switch (type_) {
+        case OriginType::HTML: typeStr = "@Html"; break;
+        case OriginType::STYLE: typeStr = "@Style"; break;
+        case OriginType::JAVASCRIPT: typeStr = "@JavaScript"; break;
+        case OriginType::CUSTOM: typeStr = customType_; break;
+    }
+    return "[Origin] " + typeStr + (name_.empty() ? "" : " " + name_);
+}
+
+// ImportNode implementation
+void ImportNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<ImportVisitor*>(visitor)) {
+        v->visitImportNode(this);
+    }
+}
+
+std::string ImportNode::toString() const {
+    return "[Import] from " + fromPath_;
+}
+
+// NamespaceNode implementation
+void NamespaceNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<NamespaceVisitor*>(visitor)) {
+        v->visitNamespaceNode(this);
+    }
+}
+
+std::string NamespaceNode::toString() const {
+    return "[Namespace] " + name_;
+}
+
+// ConfigNode implementation
+void ConfigNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<ConfigVisitor*>(visitor)) {
+        v->visitConfigNode(this);
+    }
+}
+
+std::string ConfigNode::toString() const {
+    return "[Configuration]" + (name_.empty() ? "" : " @Config " + name_);
+}
+
+// ExceptNode implementation
+void ExceptNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<OperatorVisitor*>(visitor)) {
+        v->visitExceptNode(this);
+    }
+}
+
+std::string ExceptNode::toString() const {
+    return "except " + std::to_string(constraints_.size()) + " constraints";
+}
+
+// PropertyNode implementation
+void PropertyNode::accept(Visitor* visitor) {
+    // TODO: Add visitPropertyNode to Visitor interface
+    (void)visitor;
+}
+
+std::string PropertyNode::toString() const {
+    return name_ + ": " + value_;
+}
+
+// TemplateUseNode implementation
+void TemplateUseNode::accept(Visitor* visitor) {
+    if (auto* v = dynamic_cast<TemplateVisitor*>(visitor)) {
+        v->visitTemplateUseNode(this);
+    }
+}
+
+std::string TemplateUseNode::toString() const {
+    std::string typeStr;
+    switch (templateType_) {
+        case TemplateType::STYLE: typeStr = "@Style"; break;
+        case TemplateType::ELEMENT: typeStr = "@Element"; break;
+        case TemplateType::VAR: typeStr = "@Var"; break;
+    }
+    return typeStr + " " + name_;
 }
 
 } // namespace CHTL

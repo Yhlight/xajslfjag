@@ -499,7 +499,10 @@ std::string Generator::escapeJs(const std::string& text) {
 }
 
 // 其他访问者方法的空实现
-void Generator::visitTemplateNode(TemplateNode* node) { (void)node; }
+void Generator::visitTemplateNode(TemplateNode* node) { 
+    // Templates are registered during parsing, no HTML output needed
+    (void)node;
+}
 void Generator::visitTemplateUseNode(TemplateUseNode* node) { (void)node; }
 void Generator::visitCustomNode(CustomNode* node) { (void)node; }
 void Generator::visitCustomUseNode(CustomUseNode* node) { (void)node; }

@@ -1,0 +1,15 @@
+// Test imports and namespaces
+[Import] [Custom] Header from "./components/header.chtl";
+[Import] [Template] @Style theme from "./styles/theme.chtl" as theme-styles;
+
+[Namespace] components {
+    @Element Header;
+}
+
+[Configuration] @Config site-config {
+    title: "My CHTL Site";
+    
+    [Name] {
+        author: "Developer";
+    }
+}

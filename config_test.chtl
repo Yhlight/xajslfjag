@@ -1,0 +1,4 @@
+// Test configuration
+[Configuration] @Config site-config {
+    title: "Test";
+}

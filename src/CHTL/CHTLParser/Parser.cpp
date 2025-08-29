@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include "../CHTLNode/BaseNode.h"
 #include "../CHTLNode/CommentNode.h"
 #include "../CHTLNode/TemplateNode.h"
 #include "../CHTLNode/CustomNode.h"
@@ -201,6 +202,16 @@ std::shared_ptr<ASTNode> Parser::parseTopLevel() {
         return parseScriptBlock();
     }
     
+    // 模板/自定义使用 (at top level)
+    if (check(TokenType::TYPE_STYLE) || check(TokenType::TYPE_ELEMENT) || check(TokenType::TYPE_VAR)) {
+        return parseTemplateUse();
+    }
+    
+    // use语句
+    if (check(TokenType::KEYWORD_USE)) {
+        return parseUseStatement();
+    }
+    
     error(*current_, "Unexpected token at top level");
     advance();
     return nullptr;
@@ -325,6 +336,13 @@ std::shared_ptr<ASTNode> Parser::parseElementContent() {
     // [Origin]嵌入
     if (check(TokenType::KEYWORD_ORIGIN)) {
         return parseOrigin();
+    }
+    
+    // 字符串字面量（文本内容）
+    if (check(TokenType::STRING_LITERAL)) {
+        auto location = current_->getLocation();
+        std::string content = parseString();
+        return std::make_shared<TextNode>(content, location);
     }
     
     error(*current_, "Unexpected token in element");
@@ -520,7 +538,16 @@ bool Parser::isHtmlTag(const std::string& name) {
 }
 
 void Parser::enterState(StateType state) {
-    context_->getStateManager().pushState(state);
+    try {
+        context_->getStateManager().pushState(state);
+    } catch (const StateException& e) {
+        // Add current token info to error
+        std::stringstream ss;
+        ss << e.what() << " (current token: " << current_->getLexeme() 
+           << " at line " << current_->getLocation().line
+           << ", col " << current_->getLocation().column << ")";
+        throw StateException(ss.str());
+    }
 }
 
 void Parser::exitState() {
@@ -606,7 +633,7 @@ std::shared_ptr<ASTNode> Parser::parseCustom() {
     while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
         auto content = parseCustomContent(type);
         if (content) {
-            customNode->addContent(content);
+            customNode->setContent(content);
         }
     }
     
@@ -638,7 +665,7 @@ std::shared_ptr<ASTNode> Parser::parseOrigin() {
         type = OriginType::STYLE;
     } else if (match(TokenType::TYPE_JAVASCRIPT)) {
         type = OriginType::JAVASCRIPT;
-    } else if (check(TokenType::AT) && peek(1) && peek(1)->getType() == TokenType::IDENTIFIER) {
+    } else if (check(TokenType::AT)) {
         // Custom origin type like @Vue
         advance(); // skip @
         customType = parseIdentifier();
@@ -655,9 +682,8 @@ std::shared_ptr<ASTNode> Parser::parseOrigin() {
     }
     
     auto originNode = std::make_shared<OriginNode>(type, name, location);
-    if (type == OriginType::CUSTOM_ORIGIN) {
-        // TODO: Add custom type support to OriginNode
-        // originNode->setCustomType(customType);
+    if (type == OriginType::CUSTOM) {
+        originNode->setCustomType(customType);
     }
     
     consume(TokenType::LEFT_BRACE, "Expected '{' after origin type");
@@ -764,9 +790,8 @@ std::shared_ptr<ASTNode> Parser::parseImport() {
     }
     
     auto importNode = std::make_shared<ImportNode>(importType, fromPath, location);
-    // TODO: Add target name and as name support to ImportNode
-    // importNode->setTargetName(targetName);
-    // importNode->setAsName(asName);
+    importNode->setTargetName(targetName);
+    importNode->setAsName(asName);
     
     return importNode;
 }
@@ -790,7 +815,7 @@ std::shared_ptr<ASTNode> Parser::parseNamespace() {
     if (hasBraces) {
         // Parse namespace content
         while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
-            auto stmt = parseStatement();
+            auto stmt = parseTopLevel();
             if (stmt) {
                 namespaceNode->addContent(stmt);
             }
@@ -833,8 +858,7 @@ std::shared_ptr<ASTNode> Parser::parseConfiguration() {
             
             if (match(TokenType::EQUAL)) {
                 std::string value = parseAttributeValue();
-                // TODO: Add option support to ConfigNode
-                // configNode->addOption(key, value);
+                configNode->addOption(key, value);
                 match(TokenType::SEMICOLON);
             }
         } else if (match(TokenType::LEFT_BRACKET)) {
@@ -974,31 +998,67 @@ std::shared_ptr<ASTNode> Parser::parseStyleContent() {
 
 std::shared_ptr<ASTNode> Parser::parseTemplateUse() {
     // 解析模板使用
-    return nullptr;
+    auto location = current_->getLocation();
+    
+    // Determine template type from token
+    TemplateType type;
+    if (match(TokenType::TYPE_STYLE)) {
+        type = TemplateType::STYLE;
+    } else if (match(TokenType::TYPE_ELEMENT)) {
+        type = TemplateType::ELEMENT;
+    } else if (match(TokenType::TYPE_VAR)) {
+        type = TemplateType::VAR;
+    } else {
+        error("Expected template type (@Style, @Element, or @Var)");
+        return nullptr;
+    }
+    
+    // Get template name
+    std::string templateName = parseIdentifier();
+    
+    // Create template use node
+    auto useNode = std::make_shared<TemplateUseNode>(type, templateName, location);
+    
+    // Check for semicolon
+    match(TokenType::SEMICOLON);
+    
+    return useNode;
 }
 
 std::shared_ptr<ASTNode> Parser::parseCustomContent(CustomType type) {
     switch (type) {
         case CustomType::STYLE: {
             // Parse style custom content (CSS properties, inherit, delete)
+            auto styleNode = std::make_shared<StyleNode>(StyleBlockType::LOCAL, current_->getLocation());
+            
             while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
                 if (match(TokenType::KEYWORD_DELETE)) {
-                    // Parse delete operation
-                    advance();
+                    // TODO: Parse delete operation
+                    parseIdentifier();  // Get property to delete
+                    match(TokenType::SEMICOLON);
                 } else if (match(TokenType::KEYWORD_INHERIT)) {
-                    // Parse inherit operation
-                    advance();
-                } else if (check(TokenType::TYPE_STYLE)) {
+                    // TODO: Parse inherit operation
+                    parseIdentifier();  // Get custom name to inherit
+                    match(TokenType::SEMICOLON);
+                } else if (match(TokenType::TYPE_STYLE)) {
                     // Parse style group usage
-                    advance();
+                    parseIdentifier();  // Get style group name
+                    match(TokenType::SEMICOLON);
                 } else if (check(TokenType::IDENTIFIER)) {
-                    // Parse property or selector
-                    advance();
+                    // Parse property
+                    std::string propName = parseIdentifier();
+                    consume(TokenType::COLON, "Expected ':' after property name");
+                    std::string propValue = parseAttributeValue();
+                    match(TokenType::SEMICOLON);
+                    
+                    auto prop = std::make_shared<PropertyNode>(propName, propValue, current_->getLocation());
+                    styleNode->addRule(prop);
                 } else {
                     advance();
                 }
             }
-            break;
+            
+            return styleNode;
         }
         
         case CustomType::ELEMENT: {
@@ -1022,16 +1082,21 @@ std::shared_ptr<ASTNode> Parser::parseCustomContent(CustomType type) {
                     advance();
                 }
             }
-            break;
+            return nullptr;  // Return null if no element found
         }
         
         case CustomType::VAR: {
             // Parse variable custom content
+            // For now, create a simple container node
+            auto varNode = std::make_shared<ElementNode>("var-container", current_->getLocation());
+            
             while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
                 if (check(TokenType::IDENTIFIER)) {
                     std::string varName = parseIdentifier();
+                    std::string varValue = "";
+                    
                     if (match({TokenType::COLON, TokenType::EQUAL})) {
-                        parseAttributeValue();
+                        varValue = parseAttributeValue();
                         match(TokenType::SEMICOLON);
                     } else if (match(TokenType::COMMA)) {
                         // Variable without value
@@ -1040,11 +1105,15 @@ std::shared_ptr<ASTNode> Parser::parseCustomContent(CustomType type) {
                         // Variable without value
                         continue;
                     }
+                    
+                    // Store as attribute on the container
+                    varNode->addAttribute(varName, varValue);
                 } else {
                     advance();
                 }
             }
-            break;
+            
+            return varNode;
         }
     }
     
@@ -1062,25 +1131,25 @@ std::shared_ptr<ASTNode> Parser::parseExceptConstraint() {
         if (check(TokenType::HTML_TAG) || check(TokenType::IDENTIFIER)) {
             // Specific element constraint
             std::string name = parseIdentifier();
-            exceptNode->addTarget(name);
+            exceptNode->addConstraint(name);
         } else if (check(TokenType::TYPE_HTML)) {
             // Type constraint like @Html
             advance();
-            exceptNode->addTypeConstraint("@Html");
+            exceptNode->addConstraint("@Html");
         } else if (match(TokenType::KEYWORD_TEMPLATE)) {
             // [Template] constraint
             if (check(TokenType::TYPE_STYLE) || check(TokenType::TYPE_ELEMENT) || 
                 check(TokenType::TYPE_VAR)) {
                 advance();
             }
-            exceptNode->addTypeConstraint("[Template]");
+            exceptNode->addConstraint("[Template]");
         } else if (match(TokenType::KEYWORD_CUSTOM)) {
             // [Custom] constraint
             if (check(TokenType::TYPE_STYLE) || check(TokenType::TYPE_ELEMENT) || 
                 check(TokenType::TYPE_VAR)) {
                 advance();
             }
-            exceptNode->addTypeConstraint("[Custom]");
+            exceptNode->addConstraint("[Custom]");
         } else {
             break;
         }

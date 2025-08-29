@@ -1,0 +1,10 @@
+// Test custom
+[Custom] @Style theme {
+    color: blue;
+}
+
+[Custom] @Element Box {
+    div {
+        "Box content"
+    }
+}

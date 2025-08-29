@@ -1,0 +1,8 @@
+// Test configuration followed by custom
+[Configuration] @Config test {
+    key: "value";
+}
+
+[Custom] @Style theme {
+    color: blue;
+}

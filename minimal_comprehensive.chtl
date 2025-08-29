@@ -1,0 +1,54 @@
+// Minimal comprehensive test
+div {
+    h1 { "Title" }
+}
+
+[Template] @Style button-style {
+    color: blue;
+}
+
+button {
+    @Style button-style;
+    "Click"
+}
+
+[Custom] @Style theme {
+    color: red;
+}
+
+[Custom] @Element Header {
+    header { "Header" }
+}
+
+[Origin] @Style {
+    body { color: black; }
+}
+
+[Origin] @JavaScript {
+    console.log("test");
+}
+
+[Import] [Custom] Header from "./header.chtl";
+
+[Namespace] components {
+    @Element Header;
+}
+
+[Configuration] @Config test {
+    key: "value";
+}
+
+div {
+    except p;
+    span { "test" }
+}
+
+use html5;
+
+script {
+    console.log("test");
+}
+
+style {
+    body { margin: 0; }
+}

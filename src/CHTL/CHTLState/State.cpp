@@ -118,7 +118,9 @@ void StateManager::pushState(StateType type, const std::string& name,
     if (!canTransitionTo(type)) {
         std::stringstream ss;
         ss << "Invalid state transition from " << static_cast<int>(getCurrentState())
-           << " to " << static_cast<int>(type);
+           << " to " << static_cast<int>(type)
+           << " at line " << line << ", col " << col
+           << " (name: " << name << ")";
         throw StateException(ss.str());
     }
     

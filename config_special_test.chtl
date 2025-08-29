@@ -1,0 +1,9 @@
+// Test configuration with special sections
+[Configuration] @Config site-config {
+    title: "My CHTL Site";
+    version: "1.0.0";
+    
+    [Name] {
+        author: "CHTL Developer";
+    }
+}

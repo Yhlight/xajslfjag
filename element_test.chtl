@@ -1,0 +1,10 @@
+// Test nested elements
+div {
+    h1 { "Title" }
+    p { "Paragraph 1" }
+    p { "Paragraph 2" }
+    ul {
+        li { "Item 1" }
+        li { "Item 2" }
+    }
+}

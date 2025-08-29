@@ -1,0 +1,18 @@
+// Test brackets in different contexts
+[Configuration] @Config test {
+    title: "test";
+    
+    [Name] {
+        author: "dev";
+    }
+}
+
+// Element with array index
+div[0] {
+    "Test"
+}
+
+// Custom after config
+[Custom] @Style theme {
+    color: blue;
+}

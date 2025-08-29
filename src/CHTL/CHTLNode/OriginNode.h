@@ -5,14 +5,22 @@
 
 namespace CHTL {
 
+// 原始嵌入类型
+enum class OriginType {
+    HTML,
+    STYLE,
+    JAVASCRIPT,
+    CUSTOM
+};
+
 // 原始嵌入节点
 class OriginNode : public ASTNode {
 public:
-    OriginNode(const std::string& type, const std::string& name,
+    OriginNode(OriginType type, const std::string& name,
                const TokenLocation& location)
         : ASTNode(NodeType::ORIGIN, location), type_(type), name_(name) {}
     
-    const std::string& getOriginType() const { return type_; }
+    OriginType getOriginType() const { return type_; }
     const std::string& getName() const { return name_; }
     
     // 设置原始内容
@@ -22,13 +30,21 @@ public:
     
     const std::string& getContent() const { return content_; }
     
+    // 设置自定义类型名称（仅用于CUSTOM类型）
+    void setCustomType(const std::string& customType) {
+        customType_ = customType;
+    }
+    
+    const std::string& getCustomType() const { return customType_; }
+    
     void accept(Visitor* visitor) override;
     std::string toString() const override;
     
 private:
-    std::string type_;     // @Html, @Style, @JavaScript, @Vue等
+    OriginType type_;      // 原始嵌入类型
     std::string name_;     // 命名（可选）
     std::string content_;  // 原始内容
+    std::string customType_; // 自定义类型名称（如@Vue）
 };
 
 // 原始嵌入使用节点
