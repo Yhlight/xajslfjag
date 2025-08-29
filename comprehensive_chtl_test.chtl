@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CHTL完整语法测试</title>
+    
+    <!-- 基础配置系统 -->
+    [Configuration]
+    Name: TestProject
+    Version: 1.0.0
+    Author: CHTL Team
+    Language: zh-CN
+    Encoding: UTF-8
+    [End]
+    
+    <!-- 导入系统测试 -->
+    import "./styles/base.css" as baseStyles;
+    import "./scripts/utils.js" as utils;
+    import template "./templates/header.chtl" as headerTemplate;
+    import cmod "./modules/dataHandler.cmod" as dataHandler;
+    import cjmod "./extensions/validator.cjmod" as validator;
+    
+    <!-- 通配符导入测试 -->
+    import "./components/*.chtl" except {legacy, deprecated};
+    
+    <style>
+        /* 基础样式 */
+        .container {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 模板系统测试 -->
+    [Template]
+    @Style HeaderStyle {
+        .dynamic-header {
+            background: {{headerColor}};
+            font-size: {{headerSize}};
+        }
+    }
+    
+    @Element Header {
+        <header class="dynamic-header {{headerClass}}">
+            <h1>{{title}}</h1>
+            <p>{{subtitle}}</p>
+        </header>
+    }
+    
+    @Var HeaderVariables {
+        headerColor: "#4a90e2";
+        headerSize: "24px";
+        headerClass: "main-header";
+        title: "CHTL语法测试";
+        subtitle: "测试所有核心功能";
+    }
+    [End]
+    
+    <!-- 自定义系统测试 -->
+    [Custom]
+    @Style ButtonStyle {
+        .custom-button {
+            background: linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .custom-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    }
+    
+    @Element CustomButton {
+        <button class="custom-button {{buttonType}}" onclick="{{clickAction}}">
+            {{buttonText}}
+        </button>
+    }
+    
+    @Var ButtonVariables {
+        buttonType: "primary";
+        buttonText: "点击测试";
+        clickAction: "handleButtonClick()";
+    }
+    [End]
+    
+    <!-- 主要内容区域 -->
+    <div class="container">
+        <!-- 使用模板 -->
+        {{Template.Header}}
+        
+        <!-- 原始嵌入测试 -->
+        <Origin Type="html" Name="RawHTML">
+            <div class="raw-html-section">
+                <h2>原始HTML嵌入测试</h2>
+                <p>这是一个原始HTML嵌入的示例</p>
+            </div>
+        </Origin>
+        
+        <!-- 特殊化系统测试 -->
+        <div class="interactive-section">
+            <!-- 删除某些默认样式 -->
+            delete line-height, border;
+            
+            <!-- 插入新样式 -->
+            insert after "margin: 10px;";
+            
+            <h3>交互功能测试区域</h3>
+            
+            <!-- 使用自定义组件 -->
+            {{Custom.CustomButton}}
+            
+            <!-- 索引访问测试 -->
+            <div class="test-list">
+                <span>第一项</span>
+                <span>第二项</span>
+                <span>第三项</span>
+                <!-- 访问第二个span -->
+                span[1] {
+                    font-weight: bold;
+                    color: #e74c3c;
+                }
+            </div>
+        </div>
+        
+        <!-- 约束系统测试 -->
+        <div class="constraint-section">
+            except margin, padding {
+                <h4>约束系统测试</h4>
+                <p>这个区域排除了margin和padding样式</p>
+            }
+        </div>
+        
+        <!-- CHTL JS 功能测试 -->
+        <div class="chtl-js-section">
+            <button id="test-btn">CHTL JS测试按钮</button>
+            <div id="output">输出区域</div>
+            
+            <script type="text/chtl-js">
+                // 基础CHTL JS语法
+                let testData = {
+                    name: "CHTL测试",
+                    version: "1.0.0",
+                    features: ["模板", "自定义", "约束", "导入"]
+                };
+                
+                // 监听器语法
+                listen #test-btn {
+                    click: function(event) {
+                        let output = document.getElementById('output');
+                        output.innerHTML = `<p>CHTL JS点击事件触发！</p>
+                                          <p>项目: ${testData.name}</p>
+                                          <p>版本: ${testData.version}</p>`;
+                    },
+                    
+                    mouseover: function(event) {
+                        event.target.style.backgroundColor = '#3498db';
+                    },
+                    
+                    mouseout: function(event) {
+                        event.target.style.backgroundColor = '';
+                    }
+                }
+                
+                // 委托语法
+                delegate .container {
+                    'button': {
+                        click: function(event) {
+                            console.log('委托点击事件:', event.target.textContent);
+                        }
+                    }
+                }
+                
+                // 动画语法
+                animate .custom-button {
+                    duration: 300,
+                    easing: 'ease-in-out',
+                    hover: {
+                        transform: 'scale(1.05)',
+                        boxShadow: '0 6px 12px rgba(0,0,0,0.3)'
+                    }
+                }
+                
+                // 虚拟对象
+                vir DataManager {
+                    data: testData,
+                    
+                    update: function(newData) {
+                        this.data = {...this.data, ...newData};
+                        this.render();
+                    },
+                    
+                    render: function() {
+                        console.log('数据更新:', this.data);
+                    }
+                }
+                
+                // 模块加载
+                module {
+                    name: 'CHTLTestModule',
+                    version: '1.0.0',
+                    
+                    init: function() {
+                        console.log('CHTL测试模块初始化完成');
+                        DataManager.render();
+                    },
+                    
+                    exports: {
+                        testData: testData,
+                        DataManager: DataManager
+                    }
+                }
+            </script>
+        </div>
+        
+        <!-- 无引号字面量测试 -->
+        <div class="literal-test">
+            <p data-value=unquoted-literal data-number=42 data-boolean=true>
+                无引号字面量测试
+            </p>
+        </div>
+        
+        <!-- 选择器自动化测试 -->
+        <div class="auto-selector-test">
+            <style>
+                /* 这些样式会自动添加到父元素 */
+                & {
+                    border: 2px solid #9b59b6;
+                    border-radius: 8px;
+                    padding: 15px;
+                    margin: 10px 0;
+                    background-color: #f8f9fa;
+                }
+                
+                /* 子元素样式 */
+                p {
+                    color: #2c3e50;
+                    line-height: 1.6;
+                }
+            </style>
+            
+            <h5>选择器自动化测试</h5>
+            <p>这个区域演示了选择器自动化功能，样式会自动应用到父元素</p>
+        </div>
+    </div>
+    
+    <!-- 引用规则测试 -->
+    <footer>
+        <style>
+            {{.container}} {
+                text-align: center;
+                color: #7f8c8d;
+                font-size: 14px;
+                padding: 20px;
+                border-top: 1px solid #ecf0f1;
+            }
+        </style>
+        
+        <p>&copy; 2024 CHTL语法测试. 所有功能验证完成.</p>
+    </footer>
+</body>
+</html>

@@ -31,12 +31,14 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLNode/OriginNode.cpp
     src/CHTL/CHTLNode/ConstraintNode.cpp
     src/CHTL/CHTLNode/SpecializationNode.cpp
+    src/CHTL/CHTLNode/ImportNode.cpp
     src/CHTL/CHTLConfig/ConfigurationManager.cpp
     src/CHTL/CHTLLoader/ImportEnhancer.cpp
     src/CHTL/CMODSystem/CMODManager.cpp
     src/CHTL/CHTLNode/InheritanceManager.cpp
     src/CHTL/CHTLGenerator/Generator.cpp
     src/CHTL/CHTLState/State.cpp
+    src/CHTL/CHTLContext/Context.cpp
     src/CHTL/CHTLIOStream/FileStream.cpp
     src/CHTL/CHTLSelector/SelectorAutomation.cpp
     

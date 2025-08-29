@@ -5,6 +5,7 @@
 #include "ConstraintNode.h"
 #include "SpecializationNode.h"
 #include "../CHTLLexer/GlobalMap.h"
+#include "../../Util/StringUtils.h"
 #include <iostream>
 #include <queue>
 #include <algorithm>
@@ -501,7 +502,7 @@ void ElementNode::onChildAdded(BaseNode* child) {
 
 // TextNode实现
 void TextNode::trim() {
-    textContent = Utils::trim(textContent);
+    textContent = Util::StringUtils::trim(textContent);
     value = textContent;
 }
 

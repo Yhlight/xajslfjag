@@ -1,0 +1,513 @@
+// CHTL完整语法测试文件
+use html5;
+
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 0;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    DISABLE_SCRIPT_AUTO_ADD_CLASS = true;
+    DISABLE_SCRIPT_AUTO_ADD_ID = true;
+    DISABLE_DEFAULT_NAMESPACE = false;
+    
+    [Name]
+    {
+        CUSTOM_STYLE = [@Style, @style, @CSS];
+        CUSTOM_ELEMENT = @Element;
+        CUSTOM_VAR = @Var;
+        TEMPLATE_STYLE = @Style;
+        TEMPLATE_ELEMENT = @Element;
+        TEMPLATE_VAR = @Var;
+    }
+    
+    [OriginType]
+    {
+        ORIGINTYPE_VUE = @Vue;
+        ORIGINTYPE_REACT = @React;
+    }
+}
+
+[Namespace] TestNamespace
+
+// 模板系统测试
+[Template] @Style DefaultText
+{
+    color: "black";
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+[Template] @Style ThemeColors
+{
+    color: rgba(255, 192, 203, 1);
+    background-color: rgba(253, 144, 162, 1);
+}
+
+[Template] @Style InheritedColors
+{
+    background-color: yellow;
+    inherit @Style ThemeColors;
+}
+
+[Template] @Var ThemeVars
+{
+    primaryColor: "rgb(255, 192, 203)";
+    secondaryColor: "rgb(253, 144, 162)";
+    fontSize: "16px";
+}
+
+[Template] @Element BasicBox
+{
+    div
+    {
+        style
+        {
+            @Style DefaultText;
+            width: 200px;
+            height: 200px;
+        }
+        
+        text
+        {
+            Basic Template Box
+        }
+    }
+}
+
+// 自定义系统测试
+[Custom] @Style FlexibleText
+{
+    color,
+    font-size,
+    line-height;
+}
+
+[Custom] @Style CustomBox
+{
+    @Style FlexibleText
+    {
+        color: blue;
+        font-size: 18px;
+        line-height: 1.8;
+    }
+    border: 1px solid black;
+}
+
+[Custom] @Element AdvancedBox
+{
+    div
+    {
+        style
+        {
+            width: 300px;
+            height: 300px;
+        }
+    }
+    
+    span
+    {
+        text
+        {
+            Advanced Custom Element
+        }
+    }
+    
+    div
+    {
+        style
+        {
+            background-color: red;
+        }
+    }
+}
+
+[Custom] @Var CustomVars
+{
+    boxColor: "rgb(100, 150, 200)";
+    textSize: "14px";
+}
+
+// 导入系统测试
+[Import] @Html from "external.html" as externalHtml
+[Import] @Style from "styles.css" as customStyles
+[Import] [Template] @Element BasicBox from "components.chtl" as ImportedBox
+[Import] [Custom] @Style CustomBox from "styles.chtl"
+[Import] @Chtl from "utils.*"
+[Import] @CJmod from "advanced-features"
+
+// 原始嵌入测试
+[Origin] @Html headerContent
+{
+    <header class="main-header">
+        <h1>CHTL Syntax Test</h1>
+    </header>
+}
+
+[Origin] @Vue vueComponent
+{
+    <template>
+        <div class="vue-test">Vue Component</div>
+    </template>
+    <script>
+        export default {
+            name: 'VueTest'
+        }
+    </script>
+}
+
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                CHTL Complete Syntax Test
+            }
+        }
+        
+        style
+        {
+            body {
+                margin: 0;
+                padding: 20px;
+                font-family: Arial, sans-serif;
+            }
+            
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+        }
+    }
+    
+    body
+    {
+        [Origin] @Html headerContent;
+        
+        div
+        {
+            class: container;
+            
+            // 基础元素测试
+            div
+            {
+                style
+                {
+                    .basic-box
+                    {
+                        width: 200px;
+                        height: 200px;
+                        background-color: ThemeVars(primaryColor);
+                        border: 1px solid ThemeVars(secondaryColor);
+                    }
+                    
+                    &:hover
+                    {
+                        transform: scale(1.05);
+                    }
+                }
+                
+                script
+                {
+                    {{.basic-box}}.addEventListener('click', () => {
+                        console.log('Basic box clicked');
+                    });
+                    
+                    {{&}}->listen {
+                        mouseenter: () => {
+                            console.log('Mouse entered');
+                        },
+                        
+                        mouseleave: () => {
+                            console.log('Mouse left');
+                        }
+                    };
+                }
+                
+                text
+                {
+                    Basic Box with Auto Class
+                }
+            }
+            
+            // 模板使用测试
+            @Element BasicBox;
+            
+            // 自定义元素使用测试
+            @Element AdvancedBox
+            {
+                span
+                {
+                    style
+                    {
+                        color: CustomVars(boxColor);
+                        font-size: CustomVars(textSize);
+                    }
+                }
+                
+                div[0]
+                {
+                    style
+                    {
+                        @Style CustomBox
+                        {
+                            delete color;
+                        }
+                    }
+                }
+                
+                insert after div[0] {
+                    p
+                    {
+                        text
+                        {
+                            Inserted paragraph
+                        }
+                    }
+                }
+                
+                delete span;
+            }
+            
+            // 特例化操作测试
+            div
+            {
+                style
+                {
+                    @Style InheritedColors
+                    {
+                        delete @Style ThemeColors;
+                    }
+                    width: 150px;
+                    height: 150px;
+                }
+                
+                text
+                {
+                    Specialized Box
+                }
+            }
+            
+            // 约束测试
+            div
+            {
+                except span, [Custom] @Element AdvancedBox;
+                
+                style
+                {
+                    .constrained-box
+                    {
+                        width: 100px;
+                        height: 100px;
+                        background-color: lightblue;
+                    }
+                }
+                
+                text
+                {
+                    Constrained Content
+                }
+            }
+            
+            // CHTL JS高级语法测试
+            div
+            {
+                style
+                {
+                    .interactive-box
+                    {
+                        width: 250px;
+                        height: 250px;
+                        background-color: lightgreen;
+                        cursor: pointer;
+                    }
+                }
+                
+                script
+                {
+                    // CHTL JS模块导入
+                    module {
+                        load: ./utils.cjjs,
+                        load: ./helpers.js
+                    }
+                    
+                    // 增强选择器
+                    {{.interactive-box}}->textContent = 'Interactive Box';
+                    
+                    // 增强监听器
+                    {{.interactive-box}}->listen {
+                        click: () => {
+                            console.log('Interactive box clicked');
+                        },
+                        
+                        mouseenter: () => {
+                            this.style.backgroundColor = 'lightcoral';
+                        },
+                        
+                        mouseleave: () => {
+                            this.style.backgroundColor = 'lightgreen';
+                        }
+                    };
+                    
+                    // 事件委托
+                    {{body}}->delegate {
+                        target: {{.interactive-box}},
+                        click: (event) => {
+                            console.log('Delegated click event');
+                        }
+                    };
+                    
+                    // 动画系统
+                    const animation = animate {
+                        target: {{.interactive-box}},
+                        duration: 1000,
+                        easing: ease-in-out,
+                        
+                        begin: {
+                            opacity: 1,
+                            transform: 'scale(1)'
+                        },
+                        
+                        when: [
+                            {
+                                at: 0.5;
+                                opacity: 0.7,
+                                transform: 'scale(1.1)'
+                            }
+                        ],
+                        
+                        end: {
+                            opacity: 1,
+                            transform: 'scale(1)'
+                        },
+                        
+                        loop: -1,
+                        callback: () => {
+                            console.log('Animation completed');
+                        }
+                    };
+                    
+                    // 虚对象测试
+                    vir interactionHandler = listen {
+                        click: () => {
+                            console.log('Virtual object click');
+                        },
+                        
+                        data: {
+                            counter: 0,
+                            name: 'InteractionHandler'
+                        }
+                    };
+                    
+                    // 事件绑定操作符
+                    {{.interactive-box}} &-> click {
+                        interactionHandler->data.counter++;
+                        console.log('Click count:', interactionHandler->data.counter);
+                    }
+                }
+                
+                text
+                {
+                    Interactive CHTL JS Box
+                }
+            }
+            
+            // 命名空间引用测试
+            div
+            {
+                style
+                {
+                    @Style DefaultText from TestNamespace;
+                    .namespace-box
+                    {
+                        width: 180px;
+                        height: 180px;
+                        background-color: lightyellow;
+                    }
+                }
+                
+                text
+                {
+                    Namespace Test Box
+                }
+            }
+            
+            // 原始嵌入使用测试
+            [Origin] @Vue vueComponent;
+            
+            // CE对等式测试
+            div
+            {
+                id = unique-box;
+                class = ce-test-box;
+                data-value = "test-data";
+                
+                style
+                {
+                    .ce-test-box
+                    {
+                        width: 160px;
+                        height: 160px;
+                        background-color: lightpink;
+                    }
+                }
+                
+                text
+                {
+                    CE Equality Test (: = =)
+                }
+            }
+            
+            // 无修饰字面量测试
+            div
+            {
+                style
+                {
+                    .literal-box
+                    {
+                        width: 140px;
+                        height: 140px;
+                        background-color: lightcyan;
+                        color: darkblue;
+                        font-weight: bold;
+                    }
+                }
+                
+                text
+                {
+                    Unquoted Literal Text
+                }
+            }
+        }
+        
+        script
+        {
+            // 全局脚本块 - 只能使用原始嵌入和--注释
+            [Origin] @JavaScript
+            {
+                console.log('Global script loaded');
+                
+                // 全局函数定义
+                function globalUtility() {
+                    return 'Global utility function';
+                }
+            }
+            
+            // 生成器注释测试
+            -- This is a generator comment that will be preserved
+        }
+    }
+}
+
+// 配置组命名测试
+[Configuration] @Config Advanced
+{
+    DEBUG_MODE = true;
+    
+    [Name]
+    {
+        CUSTOM_STYLE = [@Style, @css];
+    }
+}

@@ -77,6 +77,19 @@ public:
         
         return start < str.length();
     }
+    
+    // 字符串连接
+    static String join(const StringVector& strings, const String& separator) {
+        if (strings.empty()) return "";
+        if (strings.size() == 1) return strings[0];
+        
+        String result;
+        for (size_t i = 0; i < strings.size(); ++i) {
+            if (i > 0) result += separator;
+            result += strings[i];
+        }
+        return result;
+    }
 };
 
 } // namespace CHTL::Util

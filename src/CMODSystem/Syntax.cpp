@@ -115,7 +115,8 @@ void AtomArg::fillValue(double val) {
 }
 
 void AtomArg::fillValue(bool val) {
-    fillValue(val ? "true" : "false");
+    value = val ? "true" : "false";
+    isFilled = true;
 }
 
 CHTL::String AtomArg::getValue() const {

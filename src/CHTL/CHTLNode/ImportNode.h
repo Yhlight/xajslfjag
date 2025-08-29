@@ -18,9 +18,8 @@ public:
     String resolvedPath;    // 解析后的路径
     StringUnorderedMap importMetadata;  // 导入元数据
     
-    ImportNode(NodeType type, const String& iType, const String& source, const Position& pos = Position())
-        : BaseNode(type, source, pos), importType(iType), sourcePath(source), 
-          hasAlias(false), isWildcardImport(false), isResolved(false) {}
+    ImportNode(NodeType type, const String& iType, const String& source, const Position& pos = Position());
+    virtual ~ImportNode();
     
     // 基础操作
     void setSourcePath(const String& path) { sourcePath = path; value = path; }

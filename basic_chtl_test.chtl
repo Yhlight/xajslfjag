@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CHTL基础语法测试</title>
+    
+    <!-- 基础配置 -->
+    [Configuration]
+    Name: BasicTest
+    Version: 1.0.0
+    [End]
+    
+    <style>
+        .container {
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 基础模板测试 -->
+    [Template]
+    @Style HeaderStyle {
+        .header {
+            background: {{headerColor}};
+            font-size: {{headerSize}};
+        }
+    }
+    
+    @Element Header {
+        <header class="header">
+            <h1>{{title}}</h1>
+        </header>
+    }
+    
+    @Var HeaderVariables {
+        headerColor: "#4a90e2";
+        headerSize: "24px";
+        title: "CHTL测试";
+    }
+    [End]
+    
+    <div class="container">
+        <!-- 使用模板 -->
+        {{Template.Header}}
+        
+        <!-- 基础元素 -->
+        <p data-value=test data-number=42>基础测试内容</p>
+        
+        <!-- 基础脚本 -->
+        <script type="text/chtl-js">
+            let testData = {
+                name: "CHTL",
+                version: "1.0.0"
+            };
+            
+            console.log("CHTL基础测试", testData);
+        </script>
+    </div>
+</body>
+</html>

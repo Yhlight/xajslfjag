@@ -1,4 +1,5 @@
 #include "Context.h"
+#include "../../Util/StringUtils.h"
 #include <iostream>
 #include <algorithm>
 
@@ -197,7 +198,7 @@ String Context::getCurrentNamespace() const {
     if (namespaceStack.empty()) {
         return "";
     }
-    return Utils::join(namespaceStack, ".");
+    return Util::StringUtils::join(namespaceStack, ".");
 }
 
 String Context::getFullyQualifiedName(const String& name) const {
@@ -407,7 +408,7 @@ void Context::dumpContext() const {
         }
         
         if (!scope.imports.empty()) {
-            std::cout << "  Imports: " << Utils::join(scope.imports, ", ") << std::endl;
+            std::cout << "  Imports: " << Util::StringUtils::join(scope.imports, ", ") << std::endl;
         }
     }
     
