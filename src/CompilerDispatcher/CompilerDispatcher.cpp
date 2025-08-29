@@ -1,10 +1,12 @@
 #include "CompilerDispatcher.h"
 #include "../Scanner/CHTLUnifiedScanner.h"
+#include "../Scanner/FragmentCollector.h"
 #include "../CHTL/CHTLParser/Parser.h"
 #include "../CHTL/CHTLGenerator/Generator.h"
 #include "../CHTLJS/CHTLJSParser/Parser.h"
 #include "../CHTLJS/CHTLJSGenerator/Generator.h"
 #include "../CHTL/CHTLIOStream/CHTLFileSystem.h"
+#include "../Error/ErrorReport.h"
 #include <chrono>
 #include <sstream>
 #include <algorithm>
@@ -341,8 +343,36 @@ CompileResult CompilerDispatcher::doCompile(const std::string& content, const st
         // 使用统一扫描器分析代码
         auto fragments = scanner_->scan(content);
         
-        // 调度片段到相应的编译器
-        dispatchFragments(fragments, result);
+        // 使用FragmentCollector收集同类型片段
+        FragmentCollector collector;
+        collector.processFragments(fragments);
+        
+        // 记录处理的片段数
+        result.processedFragments = fragments.size();
+        
+        // 处理CHTL片段（如果有）
+        if (collector.hasContent(FragmentType::CHTL)) {
+            auto chtlResult = compileCHTL(collector.getCompleteCode(FragmentType::CHTL));
+            mergeResults(result, chtlResult);
+        }
+        
+        // 处理CHTL JS片段（如果有）
+        if (collector.hasContent(FragmentType::CHTLJS)) {
+            auto cjtlJsResult = compileCHTLJS(collector.getCompleteCode(FragmentType::CHTLJS));
+            mergeResults(result, cjtlJsResult);
+        }
+        
+        // 处理CSS片段（如果有）- 传递完整的CSS代码给CSS编译器
+        if (collector.hasContent(FragmentType::CSS)) {
+            auto cssResult = compileCSS(collector.getCompleteCSS());
+            mergeResults(result, cssResult);
+        }
+        
+        // 处理JavaScript片段（如果有）- 传递完整的JS代码给JS编译器
+        if (collector.hasContent(FragmentType::JavaScript)) {
+            auto jsResult = compileJavaScript(collector.getCompleteJavaScript());
+            mergeResults(result, jsResult);
+        }
         
         // 生成最终输出
         generateOutput(result);
@@ -380,6 +410,64 @@ void CompilerDispatcher::dispatchFragments(const std::vector<CodeFragment>& frag
         
         mergeResults(result, fragmentResult);
     }
+}
+
+CompileResult CompilerDispatcher::compileCHTL(const std::string& code) {
+    auto compiler = std::static_pointer_cast<CHTLCompiler>(compilers_[CompilerType::CHTL]);
+    if (!compiler) {
+        CompileResult result;
+        result.success = false;
+        result.errors.push_back("CHTL compiler not initialized");
+        return result;
+    }
+    return compiler->compile(code, options_);
+}
+
+CompileResult CompilerDispatcher::compileCHTLJS(const std::string& code) {
+    auto compiler = std::static_pointer_cast<CHTLJSCompiler>(compilers_[CompilerType::CHTLJS]);
+    if (!compiler) {
+        CompileResult result;
+        result.success = false;
+        result.errors.push_back("CHTL JS compiler not initialized");
+        return result;
+    }
+    return compiler->compile(code, options_);
+}
+
+CompileResult CompilerDispatcher::compileCSS(const std::string& code) {
+    auto compiler = std::static_pointer_cast<CSSCompiler>(compilers_[CompilerType::CSS]);
+    if (!compiler) {
+        CompileResult result;
+        result.success = false;
+        result.errors.push_back("CSS compiler not initialized");
+        return result;
+    }
+    
+    // 记录CSS编译器接收到完整代码
+    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+        .withMessage("CSS Compiler processing complete CSS code")
+        .withDetail("Code length: " + std::to_string(code.length()) + " characters")
+        .report();
+        
+    return compiler->compile(code, options_);
+}
+
+CompileResult CompilerDispatcher::compileJavaScript(const std::string& code) {
+    auto compiler = std::static_pointer_cast<JavaScriptCompiler>(compilers_[CompilerType::JAVASCRIPT]);
+    if (!compiler) {
+        CompileResult result;
+        result.success = false;
+        result.errors.push_back("JavaScript compiler not initialized");
+        return result;
+    }
+    
+    // 记录JS编译器接收到完整代码
+    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+        .withMessage("JavaScript Compiler processing complete JS code")
+        .withDetail("Code length: " + std::to_string(code.length()) + " characters")
+        .report();
+        
+    return compiler->compile(code, options_);
 }
 
 CompilerType CompilerDispatcher::determineCompiler(const CodeFragment& fragment) {

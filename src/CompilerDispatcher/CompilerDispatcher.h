@@ -131,6 +131,12 @@ private:
     void dispatchFragments(const std::vector<CodeFragment>& fragments, CompileResult& result);
     CompilerType determineCompiler(const CodeFragment& fragment);
     void mergeResults(CompileResult& mainResult, const CompileResult& fragmentResult);
+    
+    // 编译各种类型的完整代码
+    CompileResult compileCHTL(const std::string& code);
+    CompileResult compileCHTLJS(const std::string& code);
+    CompileResult compileCSS(const std::string& code);
+    CompileResult compileJavaScript(const std::string& code);
     void generateOutput(CompileResult& result);
     void reportError(const std::string& error, CompileResult& result);
     void reportWarning(const std::string& warning, CompileResult& result);
