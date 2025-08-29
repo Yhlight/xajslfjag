@@ -34,10 +34,19 @@ enum class CHTLNodeType {
     TEMPLATE_ELEMENT_NODE,  // 元素模板节点
     TEMPLATE_VAR_NODE,      // 变量组模板节点
     
+    // 高级模板节点（支持继承和特例化）
+    ADVANCED_TEMPLATE_STYLE_NODE,   // 高级样式组模板节点
+    ADVANCED_TEMPLATE_ELEMENT_NODE, // 高级元素模板节点
+    ADVANCED_TEMPLATE_VAR_NODE,     // 高级变量组模板节点
+    
     // 自定义节点
     CUSTOM_STYLE_NODE,      // 自定义样式组节点
     CUSTOM_ELEMENT_NODE,    // 自定义元素节点
     CUSTOM_VAR_NODE,        // 自定义变量组节点
+    
+    // 模板使用节点
+    TEMPLATE_USAGE_NODE,    // 模板使用节点
+    VARIABLE_REFERENCE_NODE, // 变量引用节点
     
     // 原始嵌入节点
     ORIGIN_HTML_NODE,       // 原始HTML嵌入节点

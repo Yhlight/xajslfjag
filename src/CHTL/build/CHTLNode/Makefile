@@ -130,6 +130,30 @@ CHTLNode/fast:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/build
 .PHONY : CHTLNode/fast
 
+AdvancedTemplateNode.o: AdvancedTemplateNode.cpp.o
+.PHONY : AdvancedTemplateNode.o
+
+# target to build an object file
+AdvancedTemplateNode.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.o
+.PHONY : AdvancedTemplateNode.cpp.o
+
+AdvancedTemplateNode.i: AdvancedTemplateNode.cpp.i
+.PHONY : AdvancedTemplateNode.i
+
+# target to preprocess a source file
+AdvancedTemplateNode.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.i
+.PHONY : AdvancedTemplateNode.cpp.i
+
+AdvancedTemplateNode.s: AdvancedTemplateNode.cpp.s
+.PHONY : AdvancedTemplateNode.s
+
+# target to generate assembly for a file
+AdvancedTemplateNode.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.s
+.PHONY : AdvancedTemplateNode.cpp.s
+
 BaseNode.o: BaseNode.cpp.o
 .PHONY : BaseNode.o
 
@@ -307,6 +331,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLNode"
+	@echo "... AdvancedTemplateNode.o"
+	@echo "... AdvancedTemplateNode.i"
+	@echo "... AdvancedTemplateNode.s"
 	@echo "... BaseNode.o"
 	@echo "... BaseNode.i"
 	@echo "... BaseNode.s"

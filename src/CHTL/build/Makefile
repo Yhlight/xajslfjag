@@ -169,6 +169,19 @@ test_chtl_syntax/fast:
 .PHONY : test_chtl_syntax/fast
 
 #=============================================================================
+# Target rules for targets named test_template_system
+
+# Build rule for target.
+test_template_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_template_system
+.PHONY : test_template_system
+
+# fast build rule for target.
+test_template_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_system.dir/build.make CMakeFiles/test_template_system.dir/build
+.PHONY : test_template_system/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -422,6 +435,30 @@ test_state_context.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/test_state_context.cpp.s
 .PHONY : test_state_context.cpp.s
 
+test_template_system.o: test_template_system.cpp.o
+.PHONY : test_template_system.o
+
+# target to build an object file
+test_template_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_system.dir/build.make CMakeFiles/test_template_system.dir/test_template_system.cpp.o
+.PHONY : test_template_system.cpp.o
+
+test_template_system.i: test_template_system.cpp.i
+.PHONY : test_template_system.i
+
+# target to preprocess a source file
+test_template_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_system.dir/build.make CMakeFiles/test_template_system.dir/test_template_system.cpp.i
+.PHONY : test_template_system.cpp.i
+
+test_template_system.s: test_template_system.cpp.s
+.PHONY : test_template_system.s
+
+# target to generate assembly for a file
+test_template_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_system.dir/build.make CMakeFiles/test_template_system.dir/test_template_system.cpp.s
+.PHONY : test_template_system.cpp.s
+
 test_updated_lexer.o: test_updated_lexer.cpp.o
 .PHONY : test_updated_lexer.o
 
@@ -471,6 +508,7 @@ help:
 	@echo "... test_complete_system"
 	@echo "... test_lexer"
 	@echo "... test_state_context"
+	@echo "... test_template_system"
 	@echo "... test_updated_lexer"
 	@echo "... test_chtl_syntax.o"
 	@echo "... test_chtl_syntax.i"
@@ -481,6 +519,9 @@ help:
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"
+	@echo "... test_template_system.o"
+	@echo "... test_template_system.i"
+	@echo "... test_template_system.s"
 	@echo "... test_updated_lexer.o"
 	@echo "... test_updated_lexer.i"
 	@echo "... test_updated_lexer.s"

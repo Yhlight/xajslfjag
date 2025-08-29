@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o.d"
+  "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o"
+  "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o.d"
   "libCHTLManage.a"
   "libCHTLManage.pdb"
 )

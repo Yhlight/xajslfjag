@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.o"
+  "CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.o.d"
   "CMakeFiles/CHTLNode.dir/BaseNode.cpp.o"
   "CMakeFiles/CHTLNode.dir/BaseNode.cpp.o.d"
   "CMakeFiles/CHTLNode.dir/CommentNode.cpp.o"

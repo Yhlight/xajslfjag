@@ -285,8 +285,12 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /workspace/src/CHTL/CHTLLexer/Token.h
  /workspace/src/CHTL/CHTLLexer/Type.h
  /workspace/src/Error/ErrorReport.h
+ /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h
+ /workspace/src/CHTL/CHTLManage/TemplateManager.h
+ /workspace/src/Error/ErrorReport.h
  /workspace/src/CHTL/CHTLLexer/Token.h
  /workspace/src/CHTL/CHTLLexer/Type.h
+ /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h
  /workspace/src/CHTL/CHTLNode/BaseNode.h
  /workspace/src/CHTL/CHTLNode/CommentNode.h
  /workspace/src/CHTL/CHTLNode/ConfigNode.h

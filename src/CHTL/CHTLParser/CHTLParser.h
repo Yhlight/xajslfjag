@@ -9,9 +9,11 @@
 #include "../CHTLNode/CommentNode.h"
 #include "../CHTLNode/StyleNode.h"
 #include "../CHTLNode/TemplateNode.h"
+#include "../CHTLNode/AdvancedTemplateNode.h"
 #include "../CHTLNode/OperatorNode.h"
 #include "../CHTLNode/ConfigNode.h"
 #include "../CHTLIOStream/CHTLIOStream.h"
+#include "../CHTLManage/TemplateManager.h"
 #include "../../Error/ErrorReport.h"
 #include <string>
 #include <vector>
@@ -205,22 +207,64 @@ private:
     /**
      * 解析样式组模板
      */
-    NodePtr parseStyleTemplate(const std::string& name);
+    NodePtr parseStyleTemplate(const std::string& name, bool isCustom = false);
     
     /**
      * 解析元素模板
      */
-    NodePtr parseElementTemplate(const std::string& name);
+    NodePtr parseElementTemplate(const std::string& name, bool isCustom = false);
     
     /**
      * 解析变量组模板
      */
-    NodePtr parseVarTemplate(const std::string& name);
+    NodePtr parseVarTemplate(const std::string& name, bool isCustom = false);
     
     /**
      * 解析自定义定义
      */
     NodePtr parseCustom();
+    
+    // ========== 高级模板解析 ==========
+    
+    /**
+     * 解析模板使用
+     */
+    NodePtr parseTemplateUsage();
+    
+    /**
+     * 解析变量引用
+     */
+    NodePtr parseVariableReference();
+    
+    /**
+     * 解析继承语句
+     */
+    NodePtr parseInheritStatement();
+    
+    /**
+     * 解析特例化操作
+     */
+    std::vector<SpecializationInfo> parseSpecializations();
+    
+    /**
+     * 解析delete操作
+     */
+    SpecializationInfo parseDeleteOperation();
+    
+    /**
+     * 解析insert操作
+     */
+    SpecializationInfo parseInsertOperation();
+    
+    /**
+     * 解析索引访问
+     */
+    SpecializationInfo parseIndexAccess();
+    
+    /**
+     * 解析模板参数
+     */
+    std::unordered_map<std::string, std::string> parseTemplateParameters();
     
     /**
      * 解析自定义样式组
@@ -298,15 +342,7 @@ private:
      */
     std::string parseSelector();
     
-    /**
-     * 解析索引访问
-     */
-    std::string parseIndexAccess();
-    
-    /**
-     * 解析变量引用
-     */
-    std::string parseVariableReference();
+
     
     // ========== Token操作 ==========
     

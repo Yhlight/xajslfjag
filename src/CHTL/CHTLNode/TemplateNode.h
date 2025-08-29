@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseNode.h"
 #include <unordered_map>
+#include <memory>
 
 namespace CHTL {
 
@@ -8,10 +9,40 @@ namespace CHTL {
  * 模板类型枚举
  */
 enum class TemplateType {
-    STYLE_TEMPLATE,     // 样式组模板
-    ELEMENT_TEMPLATE,   // 元素模板
-    VAR_TEMPLATE        // 变量组模板
+    STYLE_TEMPLATE,     // 样式组模板 - [Template] @Style
+    ELEMENT_TEMPLATE,   // 元素模板 - [Template] @Element
+    VAR_TEMPLATE        // 变量组模板 - [Template] @Var
 };
+
+/**
+ * 自定义类型
+ */
+enum class CustomType {
+    CUSTOM_STYLE,       // 自定义样式组 - [Custom] @Style
+    CUSTOM_ELEMENT,     // 自定义元素 - [Custom] @Element
+    CUSTOM_VAR          // 自定义变量组 - [Custom] @Var
+};
+
+/**
+ * 继承类型
+ */
+enum class InheritanceType {
+    COMPOSITION,        // 组合式继承 (@Style TemplateName)
+    EXPLICIT           // 显式继承 (inherit @Style TemplateName)
+};
+
+/**
+ * 特例化操作类型
+ */
+enum class SpecializationType {
+    DELETE_PROPERTY,    // 删除属性
+    DELETE_INHERITANCE, // 删除继承
+    INSERT_ELEMENT,     // 插入元素
+    REPLACE_ELEMENT,    // 替换元素
+    INDEX_ACCESS        // 索引访问
+};
+
+// InsertPosition 定义在 OperatorNode.h 中
 
 /**
  * 模板节点基类

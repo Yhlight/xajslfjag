@@ -154,6 +154,30 @@ LocalStyleManager.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.s
 .PHONY : LocalStyleManager.cpp.s
 
+TemplateManager.o: TemplateManager.cpp.o
+.PHONY : TemplateManager.o
+
+# target to build an object file
+TemplateManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o
+.PHONY : TemplateManager.cpp.o
+
+TemplateManager.i: TemplateManager.cpp.i
+.PHONY : TemplateManager.i
+
+# target to preprocess a source file
+TemplateManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.i
+.PHONY : TemplateManager.cpp.i
+
+TemplateManager.s: TemplateManager.cpp.s
+.PHONY : TemplateManager.s
+
+# target to generate assembly for a file
+TemplateManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.s
+.PHONY : TemplateManager.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -166,6 +190,9 @@ help:
 	@echo "... LocalStyleManager.o"
 	@echo "... LocalStyleManager.i"
 	@echo "... LocalStyleManager.s"
+	@echo "... TemplateManager.o"
+	@echo "... TemplateManager.i"
+	@echo "... TemplateManager.s"
 .PHONY : help
 
 

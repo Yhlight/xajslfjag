@@ -53,6 +53,16 @@ enum class ErrorType {
     CIRCULAR_DEPENDENCY,        // 循环依赖
     MODULE_ERROR,               // 模块错误
     
+    // 模板系统错误
+    TEMPLATE_ERROR,             // 模板错误
+    TEMPLATE_WARNING,           // 模板警告
+    TEMPLATE_NOT_FOUND,         // 模板未找到
+    TEMPLATE_INSTANTIATION_ERROR, // 模板实例化错误
+    CIRCULAR_INHERITANCE,       // 循环继承
+    INVALID_INHERITANCE,        // 无效继承
+    SPECIALIZATION_ERROR,       // 特例化错误
+    VARIABLE_NOT_FOUND,         // 变量未找到
+    
     // 其他错误
     INTERNAL_ERROR,             // 内部错误
     UNKNOWN_ERROR               // 未知错误

@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/CHTL/CHTLManage/LocalStyleManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o.d"
+  "/workspace/src/CHTL/CHTLManage/TemplateManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

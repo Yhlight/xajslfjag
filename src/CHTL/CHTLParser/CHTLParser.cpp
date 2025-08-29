@@ -188,6 +188,12 @@ NodePtr CHTLParser::parseTopLevel() {
         case TokenType::USE:
             return parseUse();
             
+        case TokenType::AT_STYLE:
+        case TokenType::AT_ELEMENT:
+        case TokenType::AT_VAR:
+            // 模板使用
+            return parseTemplateUsage();
+            
         default:
             reportError("Unexpected token: " + getTokenString(token));
             advance();
@@ -639,9 +645,106 @@ std::string CHTLParser::getTokenString(const Token& token) const {
     return token.value.empty() ? "EOF" : token.value;
 }
 
-// 简化实现的其他方法
-NodePtr CHTLParser::parseTemplate() { advance(); return nullptr; }
-NodePtr CHTLParser::parseCustom() { advance(); return nullptr; }
+// ========== 模板和自定义解析实现 ==========
+
+NodePtr CHTLParser::parseTemplate() {
+    if (!consume(TokenType::TEMPLATE, "Expected '[Template]'")) {
+        return nullptr;
+    }
+    
+    // 解析模板类型 (@Style, @Element, @Var)
+    if (!match({TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR})) {
+        reportError("Expected template type (@Style, @Element, or @Var)");
+        return nullptr;
+    }
+    
+    TokenType templateType = currentToken().type;
+    advance();
+    
+    // 解析模板名称
+    if (!match(TokenType::IDENTIFIER)) {
+        reportError("Expected template name");
+        return nullptr;
+    }
+    
+    std::string templateName = currentToken().value;
+    advance();
+    
+    // 根据类型解析不同的模板
+    switch (templateType) {
+        case TokenType::AT_STYLE:
+            return parseStyleTemplate(templateName, false);
+        case TokenType::AT_ELEMENT:
+            return parseElementTemplate(templateName, false);
+        case TokenType::AT_VAR:
+            return parseVarTemplate(templateName, false);
+        default:
+            reportError("Unsupported template type");
+            return nullptr;
+    }
+}
+
+NodePtr CHTLParser::parseCustom() {
+    if (!consume(TokenType::CUSTOM, "Expected '[Custom]'")) {
+        return nullptr;
+    }
+    
+    // 解析自定义类型 (@Style, @Element, @Var)
+    if (!match({TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR})) {
+        reportError("Expected custom type (@Style, @Element, or @Var)");
+        return nullptr;
+    }
+    
+    TokenType customType = currentToken().type;
+    advance();
+    
+    // 解析自定义名称
+    if (!match(TokenType::IDENTIFIER)) {
+        reportError("Expected custom name");
+        return nullptr;
+    }
+    
+    std::string customName = currentToken().value;
+    advance();
+    
+    // 根据类型解析不同的自定义
+    switch (customType) {
+        case TokenType::AT_STYLE:
+            return parseStyleTemplate(customName, true);
+        case TokenType::AT_ELEMENT:
+            return parseElementTemplate(customName, true);
+        case TokenType::AT_VAR:
+            return parseVarTemplate(customName, true);
+        default:
+            reportError("Unsupported custom type");
+            return nullptr;
+    }
+}
+// 简化实现的其他方法（暂未实现）
+NodePtr CHTLParser::parseStyleTemplate(const std::string& name, bool isCustom) { 
+    advance(); 
+    updateStatistics(isCustom ? "custom_style_templates" : "style_templates");
+    return nullptr; 
+}
+NodePtr CHTLParser::parseElementTemplate(const std::string& name, bool isCustom) { 
+    advance(); 
+    updateStatistics(isCustom ? "element_templates" : "element_templates");
+    return nullptr; 
+}
+NodePtr CHTLParser::parseVarTemplate(const std::string& name, bool isCustom) { 
+    advance(); 
+    updateStatistics(isCustom ? "var_templates" : "var_templates");
+    return nullptr; 
+}
+NodePtr CHTLParser::parseTemplateUsage() { advance(); return nullptr; }
+NodePtr CHTLParser::parseVariableReference() { advance(); return nullptr; }
+NodePtr CHTLParser::parseInheritStatement() { advance(); return nullptr; }
+std::vector<SpecializationInfo> CHTLParser::parseSpecializations() { return {}; }
+SpecializationInfo CHTLParser::parseDeleteOperation() { return SpecializationInfo(); }
+SpecializationInfo CHTLParser::parseInsertOperation() { return SpecializationInfo(); }
+SpecializationInfo CHTLParser::parseIndexAccess() { return SpecializationInfo(); }
+std::unordered_map<std::string, std::string> CHTLParser::parseTemplateParameters() { return {}; }
+
 NodePtr CHTLParser::parseImport() { advance(); return nullptr; }
 NodePtr CHTLParser::parseConfiguration() { advance(); return nullptr; }
 NodePtr CHTLParser::parseNamespace() { advance(); return nullptr; }

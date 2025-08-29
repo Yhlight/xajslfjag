@@ -16,10 +16,12 @@ endif()
 # 设置源文件
 set(CHTL_MANAGE_SOURCES
     LocalStyleManager.cpp
+    TemplateManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
     LocalStyleManager.h
+    TemplateManager.h
 )
 
 # 创建静态库

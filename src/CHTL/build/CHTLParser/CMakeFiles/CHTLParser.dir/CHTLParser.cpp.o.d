@@ -259,6 +259,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/CommentNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/StyleNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/TemplateNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLNode/AdvancedTemplateNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/OperatorNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/ConfigNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/CHTLIOStream.h \
@@ -278,4 +279,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../CHTLLexer/Token.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../CHTLNode/BaseNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../../Error/ErrorReport.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/TemplateManager.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/AdvancedTemplateNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/../../Error/ErrorReport.h

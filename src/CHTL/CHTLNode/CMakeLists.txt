@@ -21,6 +21,7 @@ set(CHTL_NODE_SOURCES
     CommentNode.cpp
     StyleNode.cpp
     TemplateNode.cpp
+    AdvancedTemplateNode.cpp
     OperatorNode.cpp
 )
 
@@ -31,6 +32,7 @@ set(CHTL_NODE_HEADERS
     CommentNode.h
     StyleNode.h
     TemplateNode.h
+    AdvancedTemplateNode.h
     OperatorNode.h
     ConfigNode.h
 )
