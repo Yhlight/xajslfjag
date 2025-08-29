@@ -1,0 +1,216 @@
+// CHTL JS语法测试文件
+
+// 测试module导入
+module {
+    load: ./utils.cjjs,
+    load: ./components.cjjs,
+    load: ./external.js
+}
+
+// 简化的module语法
+module {
+    ./helper.cjjs
+    ,./config.cjjs
+    ,./api.js
+}
+
+// 测试局部script块和增强选择器
+div
+{
+    id: app;
+    class: main-container;
+    
+    script
+    {
+        // 使用增强选择器
+        {{#app}} -> {
+            console.log('App element selected');
+        }
+        
+        {{.main-container}} -> {
+            this.style.backgroundColor = '#f0f0f0';
+        }
+        
+        // 显式CHTL JS语法
+        {{#app}} -> click {
+            alert('App clicked!');
+        }
+        
+        // 测试listen语法
+        {{#app}}->listen {
+            click: function(e) {
+                console.log('Click event:', e);
+            },
+            mouseover: function(e) {
+                this.style.cursor = 'pointer';
+            },
+            mouseout: function(e) {
+                this.style.cursor = 'default';
+            }
+        }
+        
+        // 测试delegate语法
+        {{#app}}->delegate {
+            '.button': {
+                click: function(e) {
+                    console.log('Delegated button click:', e.target);
+                }
+            },
+            '.input': {
+                focus: function(e) {
+                    e.target.style.borderColor = '#007bff';
+                },
+                blur: function(e) {
+                    e.target.style.borderColor = '#ccc';
+                }
+            }
+        }
+        
+        // 测试animate语法
+        const slideIn = animate {
+            duration: 300,
+            easing: 'ease-in-out',
+            keyframes: [
+                { transform: 'translateX(-100%)', opacity: 0 },
+                { transform: 'translateX(0)', opacity: 1 }
+            ]
+        }
+        
+        const fadeOut = animate {
+            duration: 500,
+            easing: 'ease-out',
+            keyframes: [
+                { opacity: 1 },
+                { opacity: 0 }
+            ]
+        }
+        
+        // 测试虚对象语法
+        vir modalHandler = listen {
+            open: function(content) {
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.innerHTML = content;
+                document.body.appendChild(modal);
+                slideIn.play(modal);
+            },
+            close: function() {
+                const modal = document.querySelector('.modal');
+                if (modal) {
+                    fadeOut.play(modal).then(() => {
+                        modal.remove();
+                    });
+                }
+            }
+        }
+        
+        // 测试事件绑定操作符
+        {{.open-modal}} &-> click {
+            modalHandler.open('<p>这是模态框内容</p>');
+        }
+        
+        {{.close-modal}} &-> click {
+            modalHandler.close();
+        }
+        
+        // 测试带参数的虚对象
+        vir dataManager = {
+            cache: new Map(),
+            
+            get: function(key) {
+                return this.cache.get(key);
+            },
+            
+            set: function(key, value) {
+                this.cache.set(key, value);
+                console.log(`Data set: ${key} = ${value}`);
+            },
+            
+            clear: function() {
+                this.cache.clear();
+                console.log('Cache cleared');
+            }
+        }
+        
+        // 初始化代码
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('CHTL JS initialized');
+            dataManager.set('appName', 'CHTL Test App');
+            dataManager.set('version', '1.0.0');
+        });
+    }
+    
+    // 子元素
+    button
+    {
+        class: button open-modal;
+        text { 打开模态框 }
+    }
+    
+    button
+    {
+        class: button close-modal;
+        text { 关闭模态框 }
+    }
+    
+    input
+    {
+        class: input;
+        type: text;
+        placeholder: 测试输入框;
+    }
+}
+
+// 测试全局script块（受限制的CHTL JS功能）
+script
+{
+    // 全局脚本只能使用标准JavaScript，不能使用CHTL JS特有语法
+    console.log('Global script loaded');
+    
+    // 全局工具函数
+    function globalUtility() {
+        return 'This is a global utility function';
+    }
+    
+    // 全局变量
+    window.CHTL_CONFIG = {
+        debug: true,
+        version: '1.0.0'
+    };
+}
+
+// 测试其他元素的局部脚本
+section
+{
+    id: section-1;
+    
+    script
+    {
+        // 局部脚本可以使用完整的CHTL JS语法
+        {{#section-1}}->listen {
+            scroll: function(e) {
+                console.log('Section scrolled');
+            }
+        }
+        
+        vir sectionController = {
+            init: function() {
+                console.log('Section controller initialized');
+            },
+            
+            highlight: function() {
+                {{#section-1}} -> {
+                    this.style.backgroundColor = '#fffacd';
+                }
+            }
+        }
+        
+        sectionController.init();
+    }
+    
+    div
+    {
+        class: content;
+        text { 这是section内容 }
+    }
+}

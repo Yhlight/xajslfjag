@@ -1,4 +1,7 @@
 #include "BaseNode.h"
+#include "TemplateNode.h"
+#include "CustomNode.h"
+#include "OriginNode.h"
 #include "../CHTLLexer/GlobalMap.h"
 #include <iostream>
 #include <queue>
@@ -550,37 +553,44 @@ std::unique_ptr<BaseNode> NodeFactory::createScriptNode() {
 }
 
 std::unique_ptr<BaseNode> NodeFactory::createTemplateNode(const String& type, const String& name) {
-    NodeType nodeType = NodeType::TEMPLATE;
-    if (type == "Style") nodeType = NodeType::TEMPLATE_STYLE;
-    else if (type == "Element") nodeType = NodeType::TEMPLATE_ELEMENT;
-    else if (type == "Var") nodeType = NodeType::TEMPLATE_VAR;
-    
-    auto node = std::make_unique<BaseNode>(nodeType, name);
-    node->setAttribute("template_type", type);
-    return node;
+    if (type == "Style") {
+        return std::unique_ptr<BaseNode>(new StyleTemplateNode(name));
+    } else if (type == "Element") {
+        return std::unique_ptr<BaseNode>(new ElementTemplateNode(name));
+    } else if (type == "Var") {
+        return std::unique_ptr<BaseNode>(new VarTemplateNode(name));
+    } else {
+        auto node = std::make_unique<BaseNode>(NodeType::TEMPLATE, name);
+        node->setAttribute("template_type", type);
+        return node;
+    }
 }
 
 std::unique_ptr<BaseNode> NodeFactory::createCustomNode(const String& type, const String& name) {
-    NodeType nodeType = NodeType::CUSTOM;
-    if (type == "Style") nodeType = NodeType::CUSTOM_STYLE;
-    else if (type == "Element") nodeType = NodeType::CUSTOM_ELEMENT;
-    else if (type == "Var") nodeType = NodeType::CUSTOM_VAR;
-    
-    auto node = std::make_unique<BaseNode>(nodeType, name);
-    node->setAttribute("custom_type", type);
-    return node;
+    if (type == "Style") {
+        return std::unique_ptr<BaseNode>(new CustomStyleNode(name));
+    } else if (type == "Element") {
+        return std::unique_ptr<BaseNode>(new CustomElementNode(name));
+    } else if (type == "Var") {
+        return std::unique_ptr<BaseNode>(new CustomVarNode(name));
+    } else {
+        auto node = std::make_unique<BaseNode>(NodeType::CUSTOM, name);
+        node->setAttribute("custom_type", type);
+        return node;
+    }
 }
 
 std::unique_ptr<BaseNode> NodeFactory::createOriginNode(const String& type, const String& name) {
-    NodeType nodeType = NodeType::ORIGIN;
-    if (type == "Html") nodeType = NodeType::ORIGIN_HTML;
-    else if (type == "Style") nodeType = NodeType::ORIGIN_STYLE;
-    else if (type == "JavaScript") nodeType = NodeType::ORIGIN_JAVASCRIPT;
-    else nodeType = NodeType::ORIGIN_CUSTOM;
-    
-    auto node = std::make_unique<BaseNode>(nodeType, name);
-    node->setAttribute("origin_type", type);
-    return node;
+    // 注意：这里name参数是内容，不是名称
+    if (type == "Html") {
+        return std::unique_ptr<BaseNode>(new HtmlOriginNode(name));
+    } else if (type == "Style") {
+        return std::unique_ptr<BaseNode>(new StyleOriginNode(name));
+    } else if (type == "JavaScript") {
+        return std::unique_ptr<BaseNode>(new JavaScriptOriginNode(name));
+    } else {
+        return std::unique_ptr<BaseNode>(new CustomOriginNode(type, name));
+    }
 }
 
 std::unique_ptr<BaseNode> NodeFactory::createImportNode(const String& type, const String& source) {

@@ -69,6 +69,9 @@ const StringUnorderedMap KeywordMap::keywordMap = {
     {"from", TokenType::FROM},
     {"as", TokenType::AS},
     {"except", TokenType::EXCEPT},
+    {"@Chtl", TokenType::CHTL},
+    {"@CJmod", TokenType::CJMOD},
+    {"@Config", TokenType::CONFIG},
     {"[Configuration]", TokenType::CONFIGURATION},
     {"[Namespace]", TokenType::NAMESPACE},
     {"inherit", TokenType::INHERIT},
@@ -80,19 +83,26 @@ const StringUnorderedMap KeywordMap::keywordMap = {
     {"at top", TokenType::AT_TOP},
     {"at bottom", TokenType::AT_BOTTOM},
     {"use", TokenType::USE},
-    {"html5", TokenType::HTML5}
+    {"html5", TokenType::HTML5},
+    {"module", TokenType::MODULE},
+    {"listen", TokenType::LISTEN},
+    {"delegate", TokenType::DELEGATE},
+    {"animate", TokenType::ANIMATE},
+    {"vir", TokenType::VIR},
+    {"load", TokenType::LOAD}
 };
 
 const std::unordered_set<String> KeywordMap::chtlKeywords = {
     "text", "style", "[Template]", "[Custom]", "@Style", "@Element", "@Var",
     "[Origin]", "@Html", "@JavaScript", "[Import]", "from", "as", "except",
-    "[Configuration]", "[Namespace]", "inherit", "delete", "insert", "after",
-    "before", "replace", "at top", "at bottom", "use", "html5"
+    "@Chtl", "@CJmod", "@Config", "[Configuration]", "[Namespace]", "inherit",
+    "delete", "insert", "after", "before", "replace", "at top", "at bottom",
+    "use", "html5"
 };
 
 const std::unordered_set<String> KeywordMap::chtljsKeywords = {
-    "script", "module", "load", "listen", "animate", "delegate", "vir", "printMyLove",
-    "iNeverAway"
+    "script", "module", "load", "listen", "animate", "delegate", "vir",
+    "printMyLove", "iNeverAway"
 };
 
 TokenType KeywordMap::getKeywordType(const String& keyword) {

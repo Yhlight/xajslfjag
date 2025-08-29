@@ -8,7 +8,10 @@ bool Token::isKeyword() const {
            type == TokenType::IMPORT || type == TokenType::CONFIGURATION || type == TokenType::NAMESPACE ||
            type == TokenType::INHERIT || type == TokenType::DELETE || type == TokenType::INSERT ||
            type == TokenType::FROM || type == TokenType::AS || type == TokenType::EXCEPT ||
-           type == TokenType::USE || type == TokenType::HTML5;
+           type == TokenType::USE || type == TokenType::HTML5 || type == TokenType::CHTL ||
+           type == TokenType::CJMOD || type == TokenType::CONFIG || type == TokenType::MODULE ||
+           type == TokenType::LISTEN || type == TokenType::DELEGATE || type == TokenType::ANIMATE ||
+           type == TokenType::VIR || type == TokenType::LOAD;
 }
 
 bool Token::isOperator() const {
@@ -70,8 +73,17 @@ String Token::tokenTypeToString(TokenType type) {
         case TokenType::FROM: return "FROM";
         case TokenType::AS: return "AS";
         case TokenType::EXCEPT: return "EXCEPT";
+        case TokenType::CHTL: return "CHTL";
+        case TokenType::CJMOD: return "CJMOD";
+        case TokenType::CONFIG: return "CONFIG";
         case TokenType::CONFIGURATION: return "CONFIGURATION";
         case TokenType::NAMESPACE: return "NAMESPACE";
+        case TokenType::MODULE: return "MODULE";
+        case TokenType::LISTEN: return "LISTEN";
+        case TokenType::DELEGATE: return "DELEGATE";
+        case TokenType::ANIMATE: return "ANIMATE";
+        case TokenType::VIR: return "VIR";
+        case TokenType::LOAD: return "LOAD";
         case TokenType::INHERIT: return "INHERIT";
         case TokenType::DELETE: return "DELETE";
         case TokenType::INSERT: return "INSERT";

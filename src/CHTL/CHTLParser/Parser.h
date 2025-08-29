@@ -66,6 +66,7 @@ public:
     
     // 属性和值解析
     StringUnorderedMap parseAttributes();
+    void parseElementAttributes(ElementNode* element);
     String parseAttributeValue();
     String parseLiteral();
     String parseIdentifier();
@@ -133,6 +134,7 @@ private:
     bool isHTMLElement() const;
     bool isSelector() const;
     bool isCHTLJSSyntax() const;
+    bool isAttribute() const;
     
     // 特定语法解析
     std::unique_ptr<BaseNode> parseBlock();

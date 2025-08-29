@@ -37,6 +37,9 @@ enum class TokenType {
     FROM,                 // from
     AS,                   // as
     EXCEPT,               // except
+    CHTL,                 // @Chtl
+    CJMOD,                // @CJmod
+    CONFIG,               // @Config
     
     // 配置系统
     CONFIGURATION,        // [Configuration]
@@ -98,6 +101,12 @@ enum class TokenType {
     DOUBLE_LBRACE,        // {{
     DOUBLE_RBRACE,        // }}
     EVENT_BIND,           // &->
+    MODULE,               // module
+    LISTEN,               // listen
+    DELEGATE,             // delegate
+    ANIMATE,              // animate
+    VIR,                  // vir
+    LOAD,                 // load
     
     // 注释
     COMMENT_LINE,         // //

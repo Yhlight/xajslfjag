@@ -1,0 +1,137 @@
+// 导入系统语法测试文件
+
+// 测试HTML文件导入
+[Import] @Html from ./components/header.html as HeaderHTML
+
+// 测试CSS文件导入
+[Import] @Style from ./styles/theme.css as ThemeCSS
+
+// 测试JavaScript文件导入
+[Import] @JavaScript from ./scripts/utils.js as UtilsJS
+
+// 测试CHTL文件导入 - 自定义元素
+[Import] [Custom] @Element Button from ./components/button.chtl as CustomButton
+[Import] [Custom] @Element Card from ./components/card.chtl
+[Import] [Custom] @Style ButtonStyle from ./styles/button.chtl as BtnStyle
+
+// 测试模板导入
+[Import] [Template] @Element BaseLayout from ./templates/layout.chtl
+[Import] [Template] @Style DefaultText from ./templates/typography.chtl as TextTemplate
+[Import] [Template] @Var Colors from ./templates/variables.chtl
+
+// 测试CHTL模块导入
+[Import] @Chtl from ./modules/ui.chtl
+[Import] @Chtl from ./modules/forms.cmod
+
+// 测试CJMOD导入
+[Import] @CJmod from ./extensions/animations.cjmod
+
+// 测试配置组导入
+[Import] @Config from ./config/development.chtl as DevConfig
+[Import] [Configuration] @Config Production from ./config/production.chtl
+
+// 测试原始嵌入导入
+[Import] [Origin] @Html CustomElement from ./components/custom.chtl
+[Import] [Origin] @Style AnimationStyles from ./styles/animations.chtl
+[Import] [Origin] @Javascript CustomScripts from ./scripts/custom.chtl
+
+// 测试批量导入
+[Import] [Template] from ./templates/all.chtl
+[Import] [Custom] from ./components/all.chtl
+[Import] [Origin] from ./assets/all.chtl
+
+// 测试通配符导入
+[Import] @Chtl from ./modules.*
+[Import] @Chtl from ./modules.*.chtl
+[Import] @Chtl from ./modules.*.cmod
+[Import] @Chtl from ./modules/*
+[Import] @Chtl from ./modules/*.chtl
+[Import] @Chtl from ./modules/*.cmod
+
+// 测试模块导入
+[Import] @Chtl from UiComponents.*
+[Import] @Chtl from UiComponents.Forms
+[Import] @CJmod from AnimationEffects
+
+// 使用导入的配置
+use @Config DevConfig;
+
+// 使用导入的命名空间元素
+html
+{
+    head
+    {
+        // 使用导入的原始HTML
+        [Origin] @Html CustomElement;
+        
+        style
+        {
+            // 使用导入的CSS
+            [Origin] @Style ThemeCSS;
+            [Origin] @Style AnimationStyles;
+        }
+        
+        script
+        {
+            // 使用导入的JavaScript
+            [Origin] @Javascript UtilsJS;
+            [Origin] @Javascript CustomScripts;
+        }
+    }
+    
+    body
+    {
+        // 使用导入的模板
+        @Element BaseLayout;
+        
+        div
+        {
+            class: container;
+            
+            // 使用导入的自定义元素
+            @Element CustomButton;
+            @Element Card;
+            
+            style
+            {
+                // 使用导入的样式模板
+                @Style TextTemplate;
+                @Style BtnStyle;
+                
+                // 使用导入的变量
+                color: Colors(primary);
+                background: Colors(secondary);
+            }
+            
+            text
+            {
+                这是使用了导入样式的文本
+            }
+        }
+        
+        // 使用命名空间中的元素
+        section
+        {
+            @Element Button from UiComponents.Forms;
+            
+            text
+            {
+                这是来自命名空间的按钮
+            }
+        }
+        
+        // 测试except约束与导入的结合
+        div
+        {
+            except [Custom] @Element Card, [Template] @Element BaseLayout;
+            
+            // 这里不能使用Card和BaseLayout
+            @Element CustomButton;
+            
+            text
+            {
+                这个div中被约束了某些导入元素的使用
+            }
+        }
+    }
+}
