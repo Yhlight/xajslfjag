@@ -107,8 +107,8 @@ std::unordered_map<StateType, std::vector<StateType>> StateManager::initTransiti
 }
 
 StateManager::StateManager() {
-    // 初始化为全局状态
-    pushState(StateType::GLOBAL, "global");
+    // 直接添加初始全局状态，不经过转换检查
+    stateStack_.emplace(StateType::GLOBAL, "global", 0, 0);
 }
 
 void StateManager::pushState(StateType type, const std::string& name, 

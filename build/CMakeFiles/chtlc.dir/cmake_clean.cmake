@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/chtlc.dir/link.d"
-  "CMakeFiles/chtlc.dir/CHTL/main.cpp.o"
-  "CMakeFiles/chtlc.dir/CHTL/main.cpp.o.d"
+  "CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.o"
+  "CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.o.d"
   "chtlc"
   "chtlc.pdb"
 )

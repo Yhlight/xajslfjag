@@ -1,1 +1,1 @@
-/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/chtlc.dir/link.d CMakeFiles/chtlc.dir/CHTL/main.cpp.o -o chtlc  libCHTLCore.a /workspace/src/../ANTLR4/linux/lib/libantlr4-runtime.a
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/chtlc.dir/link.d CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.o -o chtlc  libCHTLCore.a /workspace/src/../ANTLR4/linux/lib/libantlr4-runtime.a

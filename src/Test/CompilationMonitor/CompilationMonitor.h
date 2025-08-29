@@ -146,13 +146,14 @@ public:
     }
     
     ~CompilationTimer() {
-        auto duration = std::chrono::steady_clock::now() - startTime_;
+        [[maybe_unused]] auto duration = std::chrono::steady_clock::now() - startTime_;
         // 自动记录阶段时间
+        // TODO: 实现阶段时间记录
     }
     
 private:
     CompilationMonitor& monitor_;
-    CompilationPhase phase_;
+    [[maybe_unused]] CompilationPhase phase_;
     std::chrono::steady_clock::time_point startTime_;
 };
 

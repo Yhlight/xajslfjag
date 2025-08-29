@@ -471,6 +471,30 @@ CHTL/CHTLNode/BaseNode.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/BaseNode.cpp.s
 .PHONY : CHTL/CHTLNode/BaseNode.cpp.s
 
+CHTL/CHTLNode/NodeImplementations.o: CHTL/CHTLNode/NodeImplementations.cpp.o
+.PHONY : CHTL/CHTLNode/NodeImplementations.o
+
+# target to build an object file
+CHTL/CHTLNode/NodeImplementations.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.o
+.PHONY : CHTL/CHTLNode/NodeImplementations.cpp.o
+
+CHTL/CHTLNode/NodeImplementations.i: CHTL/CHTLNode/NodeImplementations.cpp.i
+.PHONY : CHTL/CHTLNode/NodeImplementations.i
+
+# target to preprocess a source file
+CHTL/CHTLNode/NodeImplementations.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.i
+.PHONY : CHTL/CHTLNode/NodeImplementations.cpp.i
+
+CHTL/CHTLNode/NodeImplementations.s: CHTL/CHTLNode/NodeImplementations.cpp.s
+.PHONY : CHTL/CHTLNode/NodeImplementations.s
+
+# target to generate assembly for a file
+CHTL/CHTLNode/NodeImplementations.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CHTLNode/NodeImplementations.cpp.s
+.PHONY : CHTL/CHTLNode/NodeImplementations.cpp.s
+
 CHTL/CHTLParser/Parser.o: CHTL/CHTLParser/Parser.cpp.o
 .PHONY : CHTL/CHTLParser/Parser.o
 
@@ -543,29 +567,29 @@ CHTL/CMODSystem/CMODPackager.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CHTLCore.dir/build.make CMakeFiles/CHTLCore.dir/CHTL/CMODSystem/CMODPackager.cpp.s
 .PHONY : CHTL/CMODSystem/CMODPackager.cpp.s
 
-CHTL/main.o: CHTL/main.cpp.o
-.PHONY : CHTL/main.o
+CHTL/main_simple.o: CHTL/main_simple.cpp.o
+.PHONY : CHTL/main_simple.o
 
 # target to build an object file
-CHTL/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main.cpp.o
-.PHONY : CHTL/main.cpp.o
+CHTL/main_simple.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.o
+.PHONY : CHTL/main_simple.cpp.o
 
-CHTL/main.i: CHTL/main.cpp.i
-.PHONY : CHTL/main.i
+CHTL/main_simple.i: CHTL/main_simple.cpp.i
+.PHONY : CHTL/main_simple.i
 
 # target to preprocess a source file
-CHTL/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main.cpp.i
-.PHONY : CHTL/main.cpp.i
+CHTL/main_simple.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.i
+.PHONY : CHTL/main_simple.cpp.i
 
-CHTL/main.s: CHTL/main.cpp.s
-.PHONY : CHTL/main.s
+CHTL/main_simple.s: CHTL/main_simple.cpp.s
+.PHONY : CHTL/main_simple.s
 
 # target to generate assembly for a file
-CHTL/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main.cpp.s
-.PHONY : CHTL/main.cpp.s
+CHTL/main_simple.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtlc.dir/build.make CMakeFiles/chtlc.dir/CHTL/main_simple.cpp.s
+.PHONY : CHTL/main_simple.cpp.s
 
 CHTLJS/CHTLJSContext/Context.o: CHTLJS/CHTLJSContext/Context.cpp.o
 .PHONY : CHTLJS/CHTLJSContext/Context.o
@@ -1096,6 +1120,9 @@ help:
 	@echo "... CHTL/CHTLNode/BaseNode.o"
 	@echo "... CHTL/CHTLNode/BaseNode.i"
 	@echo "... CHTL/CHTLNode/BaseNode.s"
+	@echo "... CHTL/CHTLNode/NodeImplementations.o"
+	@echo "... CHTL/CHTLNode/NodeImplementations.i"
+	@echo "... CHTL/CHTLNode/NodeImplementations.s"
 	@echo "... CHTL/CHTLParser/Parser.o"
 	@echo "... CHTL/CHTLParser/Parser.i"
 	@echo "... CHTL/CHTLParser/Parser.s"
@@ -1105,9 +1132,9 @@ help:
 	@echo "... CHTL/CMODSystem/CMODPackager.o"
 	@echo "... CHTL/CMODSystem/CMODPackager.i"
 	@echo "... CHTL/CMODSystem/CMODPackager.s"
-	@echo "... CHTL/main.o"
-	@echo "... CHTL/main.i"
-	@echo "... CHTL/main.s"
+	@echo "... CHTL/main_simple.o"
+	@echo "... CHTL/main_simple.i"
+	@echo "... CHTL/main_simple.s"
 	@echo "... CHTLJS/CHTLJSContext/Context.o"
 	@echo "... CHTLJS/CHTLJSContext/Context.i"
 	@echo "... CHTLJS/CHTLJSContext/Context.s"

@@ -56,6 +56,7 @@ add_library(CHTLCore STATIC
     CHTL/CHTLState/State.cpp
     CHTL/CHTLContext/Context.cpp
     CHTL/CHTLNode/BaseNode.cpp
+    CHTL/CHTLNode/NodeImplementations.cpp
     CHTL/CHTLParser/Parser.cpp
     CHTL/CHTLGenerator/Generator.cpp
     CHTL/CHTLLoader/ImportResolver.cpp
@@ -123,7 +124,7 @@ endif()
 
 # CHTL编译器可执行文件
 add_executable(chtlc
-    CHTL/main.cpp
+    CHTL/main_simple.cpp  # 使用简化版本，避免依赖未完成的模块
 )
 
 target_link_libraries(chtlc PRIVATE CHTLCore)

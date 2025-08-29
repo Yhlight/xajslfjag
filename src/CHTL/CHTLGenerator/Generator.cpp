@@ -452,4 +452,40 @@ void Generator::visitInheritNode(InheritNode* node) { (void)node; }
 void Generator::visitExceptNode(ExceptNode* node) { (void)node; }
 void Generator::visitUseNode(UseNode* node) { (void)node; }
 
+void Generator::generateSelector(SelectorNode* node) {
+    if (!node) return;
+    
+    switch (node->getSelectorType()) {
+        case SelectorNode::SelectorType::CLASS:
+            output_ << "." << node->getSelector();
+            break;
+        case SelectorNode::SelectorType::ID:
+            output_ << "#" << node->getSelector();
+            break;
+        case SelectorNode::SelectorType::TAG:
+            output_ << node->getSelector();
+            break;
+        case SelectorNode::SelectorType::PSEUDO_CLASS:
+            output_ << ":" << node->getSelector();
+            break;
+        case SelectorNode::SelectorType::PSEUDO_ELEMENT:
+            output_ << "::" << node->getSelector();
+            break;
+        case SelectorNode::SelectorType::REFERENCE:
+            output_ << "&";
+            if (!node->getSelector().empty()) {
+                output_ << node->getSelector();
+            }
+            break;
+        case SelectorNode::SelectorType::COMPOUND:
+            // Handle compound selectors
+            for (const auto& child : node->getChildren()) {
+                if (auto childSelector = dynamic_cast<SelectorNode*>(child.get())) {
+                    generateSelector(childSelector);
+                }
+            }
+            break;
+    }
+}
+
 } // namespace CHTL
