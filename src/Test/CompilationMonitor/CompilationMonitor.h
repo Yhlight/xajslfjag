@@ -437,21 +437,31 @@ private:
  * 便捷宏定义
  */
 #define CHTL_MONITOR_START(name) \
-    auto& monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
-    if (monitor) monitor->startMonitoring(name)
+    do { \
+        auto* monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
+        if (monitor) monitor->startMonitoring(name); \
+    } while(0)
 
 #define CHTL_MONITOR_PHASE(phase) \
-    auto& monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
-    if (monitor) monitor->setCurrentPhase(phase)
+    do { \
+        auto* monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
+        if (monitor) monitor->setCurrentPhase(phase); \
+    } while(0)
 
 #define CHTL_MONITOR_HEARTBEAT() \
-    auto& monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
-    if (monitor) monitor->heartbeat()
+    do { \
+        auto* monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
+        if (monitor) monitor->heartbeat(); \
+    } while(0)
 
 #define CHTL_MONITOR_PROGRESS(processed, total) \
-    auto& monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
-    if (monitor) monitor->updateProgress(processed, total)
+    do { \
+        auto* monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
+        if (monitor) monitor->updateProgress(processed, total); \
+    } while(0)
 
 #define CHTL_MONITOR_STOP() \
-    auto& monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
-    if (monitor) monitor->stopMonitoring()
+    do { \
+        auto* monitor = CHTL::Test::GlobalMonitorManager::getInstance().getGlobalMonitor(); \
+        if (monitor) monitor->stopMonitoring(); \
+    } while(0)

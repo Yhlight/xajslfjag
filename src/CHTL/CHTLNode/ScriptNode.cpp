@@ -275,8 +275,20 @@ void CHTLJSListenerNode::addEventListener(const std::string& event, const std::s
     m_eventListeners[event] = handler;
 }
 
+void CHTLJSListenerNode::addEventHandler(const std::string& event, const std::string& handler) {
+    addEventListener(event, handler);
+}
+
 const std::unordered_map<std::string, std::string>& CHTLJSListenerNode::getEventListeners() const {
     return m_eventListeners;
+}
+
+const std::unordered_map<std::string, std::string>& CHTLJSListenerNode::getEventHandlers() const {
+    return getEventListeners();
+}
+
+void CHTLJSListenerNode::setTarget(const CHTLJSSelector& target) {
+    m_target = target;
 }
 
 std::string CHTLJSListenerNode::convertToStandardEventBinding() const {
@@ -393,6 +405,157 @@ std::string CHTLJSDelegateNode::convertToStandardDelegate() const {
     }
     
     return ss.str();
+}
+
+// ========== CHTLJSVirtualObjectNode 实现 ==========
+
+CHTLJSVirtualObjectNode::CHTLJSVirtualObjectNode(const std::string& name) 
+    : ScriptNode(ScriptType::CHTL_JS), m_objectName(name) {
+}
+
+void CHTLJSVirtualObjectNode::setVirtualProperty(const std::string& key, const std::string& value) {
+    m_properties[key] = value;
+}
+
+void CHTLJSVirtualObjectNode::setVirtualFunction(const std::string& key, const std::string& function) {
+    m_functions[key] = function;
+}
+
+std::string CHTLJSVirtualObjectNode::getVirtualProperty(const std::string& key) const {
+    auto it = m_properties.find(key);
+    return it != m_properties.end() ? it->second : "";
+}
+
+std::string CHTLJSVirtualObjectNode::getVirtualFunction(const std::string& key) const {
+    auto it = m_functions.find(key);
+    return it != m_functions.end() ? it->second : "";
+}
+
+std::string CHTLJSVirtualObjectNode::convertToStandardObject() const {
+    std::stringstream ss;
+    
+    // 为每个函数创建全局函数
+    for (const auto& [key, function] : m_functions) {
+        ss << "window." << m_objectName << "_" << key << " = " << function << ";\n";
+    }
+    
+    // 创建虚拟对象的访问器
+    ss << "const " << m_objectName << " = {\n";
+    
+    // 添加属性
+    for (const auto& [key, value] : m_properties) {
+        ss << "  " << key << ": " << value << ",\n";
+    }
+    
+    // 添加函数引用
+    for (const auto& [key, function] : m_functions) {
+        ss << "  " << key << ": window." << m_objectName << "_" << key << ",\n";
+    }
+    
+    ss << "};\n";
+    
+    return ss.str();
+}
+
+// ========== CHTLJSModuleNode 实现 ==========
+
+CHTLJSModuleNode::CHTLJSModuleNode() : ScriptNode(ScriptType::CHTL_JS) {
+}
+
+void CHTLJSModuleNode::addLoadPath(const std::string& path) {
+    m_loadPaths.push_back(path);
+}
+
+const std::vector<std::string>& CHTLJSModuleNode::getLoadPaths() const {
+    return m_loadPaths;
+}
+
+std::string CHTLJSModuleNode::convertToAMDLoader() const {
+    std::stringstream ss;
+    
+    ss << "(function() {\n";
+    ss << "  const loadedModules = new Set();\n";
+    ss << "  const moduleQueue = [];\n";
+    ss << "  \n";
+    ss << "  function loadScript(src) {\n";
+    ss << "    return new Promise((resolve, reject) => {\n";
+    ss << "      if (loadedModules.has(src)) {\n";
+    ss << "        resolve();\n";
+    ss << "        return;\n";
+    ss << "      }\n";
+    ss << "      \n";
+    ss << "      const script = document.createElement('script');\n";
+    ss << "      script.src = src;\n";
+    ss << "      script.onload = () => {\n";
+    ss << "        loadedModules.add(src);\n";
+    ss << "        resolve();\n";
+    ss << "      };\n";
+    ss << "      script.onerror = reject;\n";
+    ss << "      document.head.appendChild(script);\n";
+    ss << "    });\n";
+    ss << "  }\n";
+    ss << "  \n";
+    ss << "  const loadPromises = [\n";
+    
+    for (const auto& path : m_loadPaths) {
+        ss << "    loadScript('" << path << "'),\n";
+    }
+    
+    ss << "  ];\n";
+    ss << "  \n";
+    ss << "  Promise.all(loadPromises).then(() => {\n";
+    ss << "    console.log('All modules loaded successfully');\n";
+    ss << "  }).catch(err => {\n";
+    ss << "    console.error('Module loading failed:', err);\n";
+    ss << "  });\n";
+    ss << "})();\n";
+    
+    return ss.str();
+}
+
+// ========== CHTLJSEnhancedSelectorNode 实现 ==========
+
+CHTLJSEnhancedSelectorNode::CHTLJSEnhancedSelectorNode(const CHTLJSSelector& selector)
+    : ScriptNode(ScriptType::CHTL_JS), m_selector(selector) {
+}
+
+const CHTLJSSelector& CHTLJSEnhancedSelectorNode::getSelector() const {
+    return m_selector;
+}
+
+std::string CHTLJSEnhancedSelectorNode::convertToDOMQuery() const {
+    switch (m_selector.type) {
+        case SelectorType::TAG:
+            if (m_selector.index >= 0) {
+                return "document.getElementsByTagName('" + m_selector.selector + "')[" + std::to_string(m_selector.index) + "]";
+            } else {
+                return "document.getElementsByTagName('" + m_selector.selector + "')";
+            }
+            
+        case SelectorType::CLASS:
+            if (m_selector.index >= 0) {
+                return "document.getElementsByClassName('" + m_selector.selector + "')[" + std::to_string(m_selector.index) + "]";
+            } else {
+                return "document.getElementsByClassName('" + m_selector.selector + "')";
+            }
+            
+        case SelectorType::ID:
+            return "document.getElementById('" + m_selector.selector + "')";
+            
+        case SelectorType::COMPLEX:
+            if (m_selector.index >= 0) {
+                return "document.querySelectorAll('" + m_selector.selector + "')[" + std::to_string(m_selector.index) + "]";
+            } else {
+                return "document.querySelectorAll('" + m_selector.selector + "')";
+            }
+            
+        case SelectorType::REFERENCE:
+            // &引用，需要根据上下文确定
+            return "this"; // 简化处理
+            
+        default:
+            return "document.querySelector('" + m_selector.selector + "')";
+    }
 }
 
 } // namespace CHTL

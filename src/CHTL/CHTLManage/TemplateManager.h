@@ -1,5 +1,7 @@
 #pragma once
 #include "../CHTLNode/AdvancedTemplateNode.h"
+#include "../CHTLNode/ElementNode.h"
+#include "../CHTLNode/StyleNode.h"
 #include "../../Error/ErrorReport.h"
 #include <string>
 #include <unordered_map>
@@ -193,6 +195,26 @@ public:
      * 应用索引访问
      */
     NodePtr applyIndexAccess(NodePtr node, const SpecializationInfo& operation);
+    
+    /**
+     * 应用属性操作
+     */
+    void applyAttributeOperation(NodePtr node, const SpecializationInfo& operation);
+    
+    /**
+     * 应用样式操作
+     */
+    void applyStyleOperation(NodePtr node, const SpecializationInfo& operation);
+    
+    /**
+     * 智能元素查找
+     */
+    std::vector<NodePtr> findElementsBySelector(NodePtr node, const std::string& selector);
+    
+    /**
+     * 复制节点并应用特化
+     */
+    NodePtr cloneAndSpecialize(NodePtr source, const std::vector<SpecializationInfo>& specializations);
     
     // ========== 验证和诊断 ==========
     

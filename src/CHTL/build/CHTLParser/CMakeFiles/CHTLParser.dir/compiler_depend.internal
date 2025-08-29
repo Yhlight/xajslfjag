@@ -169,6 +169,18 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /usr/include/c++/14/bits/quoted_string.h
  /usr/include/c++/14/bits/range_access.h
  /usr/include/c++/14/bits/refwrap.h
+ /usr/include/c++/14/bits/regex.h
+ /usr/include/c++/14/bits/regex.tcc
+ /usr/include/c++/14/bits/regex_automaton.h
+ /usr/include/c++/14/bits/regex_automaton.tcc
+ /usr/include/c++/14/bits/regex_compiler.h
+ /usr/include/c++/14/bits/regex_compiler.tcc
+ /usr/include/c++/14/bits/regex_constants.h
+ /usr/include/c++/14/bits/regex_error.h
+ /usr/include/c++/14/bits/regex_executor.h
+ /usr/include/c++/14/bits/regex_executor.tcc
+ /usr/include/c++/14/bits/regex_scanner.h
+ /usr/include/c++/14/bits/regex_scanner.tcc
  /usr/include/c++/14/bits/requires_hosted.h
  /usr/include/c++/14/bits/shared_ptr.h
  /usr/include/c++/14/bits/shared_ptr_atomic.h
@@ -186,10 +198,12 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /usr/include/c++/14/bits/stl_iterator.h
  /usr/include/c++/14/bits/stl_iterator_base_funcs.h
  /usr/include/c++/14/bits/stl_iterator_base_types.h
+ /usr/include/c++/14/bits/stl_map.h
  /usr/include/c++/14/bits/stl_pair.h
  /usr/include/c++/14/bits/stl_raw_storage_iter.h
  /usr/include/c++/14/bits/stl_stack.h
  /usr/include/c++/14/bits/stl_tempbuf.h
+ /usr/include/c++/14/bits/stl_tree.h
  /usr/include/c++/14/bits/stl_uninitialized.h
  /usr/include/c++/14/bits/stl_vector.h
  /usr/include/c++/14/bits/streambuf.tcc
@@ -205,6 +219,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /usr/include/c++/14/bits/utility.h
  /usr/include/c++/14/bits/vector.tcc
  /usr/include/c++/14/bits/version.h
+ /usr/include/c++/14/bitset
  /usr/include/c++/14/cctype
  /usr/include/c++/14/cerrno
  /usr/include/c++/14/chrono
@@ -248,6 +263,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /usr/include/c++/14/pstl/glue_memory_defs.h
  /usr/include/c++/14/pstl/pstl_config.h
  /usr/include/c++/14/ratio
+ /usr/include/c++/14/regex
  /usr/include/c++/14/sstream
  /usr/include/c++/14/stack
  /usr/include/c++/14/stdexcept
@@ -307,6 +323,8 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o
  /workspace/src/CHTL/CHTLLexer/Type.h
  /workspace/src/Error/ErrorReport.h
  /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h
+ /workspace/src/CHTL/CHTLNode/ElementNode.h
+ /workspace/src/CHTL/CHTLNode/StyleNode.h
  /workspace/src/CHTL/CHTLManage/TemplateManager.h
  /workspace/src/Error/ErrorReport.h
  /workspace/src/CHTL/CHTLLexer/Token.h

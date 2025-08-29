@@ -89,6 +89,38 @@ enum class TokenType {
     // 索引访问
     INDEX_ACCESS,       // [0], [1], etc.
     
+    // CHTL JS 关键字
+    SCRIPT,             // script
+    MODULE,             // module
+    LOAD,               // load
+    LISTEN,             // listen
+    DELEGATE,           // delegate
+    ANIMATE,            // animate
+    VIR,                // vir
+    CLICK,              // click
+    MOUSEENTER,         // mouseenter
+    MOUSELEAVE,         // mouseleave
+    MOUSEMOVE,          // mousemove
+    TARGET,             // target
+    DURATION,           // duration
+    EASING,             // easing
+    BEGIN,              // begin
+    WHEN,               // when
+    END,                // end
+    LOOP,               // loop
+    DIRECTION,          // direction
+    DELAY,              // delay
+    CALLBACK,           // callback
+    AT,                 // at
+    
+    // CHTL JS 操作符
+    ARROW,              // ->
+    BIND_OPERATOR,      // &->
+    
+    // CHTL JS 选择器语法
+    ENHANCED_SELECTOR_START,    // {{
+    ENHANCED_SELECTOR_END,      // }}
+    
     // 特殊符号
     NEWLINE,            // \n
     WHITESPACE,         // 空白字符

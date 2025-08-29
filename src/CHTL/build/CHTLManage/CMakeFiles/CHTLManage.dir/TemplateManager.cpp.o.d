@@ -241,6 +241,8 @@ CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
   /workspace/src/CHTL/CHTLManage/../CHTLNode/TemplateNode.h \
   /workspace/src/CHTL/CHTLManage/../CHTLNode/OperatorNode.h \
+  /workspace/src/CHTL/CHTLManage/../CHTLNode/ElementNode.h \
+  /workspace/src/CHTL/CHTLManage/../CHTLNode/StyleNode.h \
   /workspace/src/CHTL/CHTLManage/../../Error/ErrorReport.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/algorithm \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \

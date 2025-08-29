@@ -20,6 +20,7 @@ set(CHTL_MANAGE_SOURCES
     SelectorAutomationManager.cpp
     ConfigurationManager.cpp
     NamespaceManager.cpp
+    VariableManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
@@ -28,6 +29,7 @@ set(CHTL_MANAGE_HEADERS
     SelectorAutomationManager.h
     ConfigurationManager.h
     NamespaceManager.h
+    VariableManager.h
 )
 
 # 创建静态库

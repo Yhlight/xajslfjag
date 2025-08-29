@@ -269,6 +269,26 @@ CMakeFiles/test_import_system.dir/test_import_system.cpp.o: \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/Context.h \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLState/State.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/regex \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bitset \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/algorithmfwd.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_heap.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/uniform_int_dist.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_constants.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_error.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_automaton.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_automaton.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_scanner.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_scanner.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_compiler.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_compiler.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.tcc \
   /workspace/src/CHTL/CHTLLexer/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/CHTLParser.h \
   /workspace/src/CHTL/CHTLParser/../CHTLLexer/Lexer.h \
@@ -304,6 +324,8 @@ CMakeFiles/test_import_system.dir/test_import_system.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/TemplateManager.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/AdvancedTemplateNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/ElementNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/StyleNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLNode/ImportNode.h \

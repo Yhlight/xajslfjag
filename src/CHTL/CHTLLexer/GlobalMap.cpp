@@ -21,7 +21,11 @@ void GlobalMap::initializeStaticData() {
     // 初始化CHTL关键字
     m_keywords = {
         "text", "style", "html5", "use", "inherit", "delete", "insert",
-        "after", "before", "replace", "at", "top", "bottom", "from", "as", "except"
+        "after", "before", "replace", "at", "top", "bottom", "from", "as", "except",
+        // CHTL JS 关键字
+        "script", "module", "load", "listen", "delegate", "animate", "vir",
+        "click", "mouseenter", "mouseleave", "mousemove", "target", "duration",
+        "easing", "begin", "when", "end", "loop", "direction", "delay", "callback"
     };
     
     // 初始化HTML元素

@@ -78,6 +78,54 @@ if(BUILD_TESTS)
         CHTLManage
     )
     
+    # 创建CHTL JS系统测试程序
+    add_executable(test_chtl_js_system test_chtl_js_system.cpp)
+    target_link_libraries(test_chtl_js_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    # 创建选择器自动化测试程序
+    add_executable(test_selector_automation test_selector_automation.cpp)
+    target_link_libraries(test_selector_automation 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    # 创建模板特化操作测试程序
+    add_executable(test_template_specialization test_template_specialization.cpp)
+    target_link_libraries(test_template_specialization 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    # 创建变量系统测试程序
+    add_executable(test_variable_system test_variable_system.cpp)
+    target_link_libraries(test_variable_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
     # 设置包含目录
     target_include_directories(test_state_context PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../Error

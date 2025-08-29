@@ -2,6 +2,10 @@
 /workspace/src/CHTL/build/CMakeFiles/test_updated_lexer.dir
 /workspace/src/CHTL/build/CMakeFiles/test_complete_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_chtl_syntax.dir
+/workspace/src/CHTL/build/CMakeFiles/test_chtl_js_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_selector_automation.dir
+/workspace/src/CHTL/build/CMakeFiles/test_template_specialization.dir
+/workspace/src/CHTL/build/CMakeFiles/test_variable_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_complete_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_origin_system.dir

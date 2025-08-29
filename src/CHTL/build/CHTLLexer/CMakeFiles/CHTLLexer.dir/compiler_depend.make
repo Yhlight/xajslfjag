@@ -238,6 +238,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/errno.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
+  /usr/include/libintl.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/posix_types.h \
   /usr/include/linux/sched/types.h \
@@ -343,6 +344,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/basic_string.tcc \
   /usr/include/c++/14/bits/char_traits.h \
   /usr/include/c++/14/bits/charconv.h \
+  /usr/include/c++/14/bits/codecvt.h \
   /usr/include/c++/14/bits/concept_check.h \
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
@@ -363,8 +365,11 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/istream.tcc \
   /usr/include/c++/14/bits/locale_classes.h \
   /usr/include/c++/14/bits/locale_classes.tcc \
+  /usr/include/c++/14/bits/locale_conv.h \
   /usr/include/c++/14/bits/locale_facets.h \
   /usr/include/c++/14/bits/locale_facets.tcc \
+  /usr/include/c++/14/bits/locale_facets_nonio.h \
+  /usr/include/c++/14/bits/locale_facets_nonio.tcc \
   /usr/include/c++/14/bits/localefwd.h \
   /usr/include/c++/14/bits/memory_resource.h \
   /usr/include/c++/14/bits/memoryfwd.h \
@@ -379,6 +384,18 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/ptr_traits.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
+  /usr/include/c++/14/bits/regex.h \
+  /usr/include/c++/14/bits/regex.tcc \
+  /usr/include/c++/14/bits/regex_automaton.h \
+  /usr/include/c++/14/bits/regex_automaton.tcc \
+  /usr/include/c++/14/bits/regex_compiler.h \
+  /usr/include/c++/14/bits/regex_compiler.tcc \
+  /usr/include/c++/14/bits/regex_constants.h \
+  /usr/include/c++/14/bits/regex_error.h \
+  /usr/include/c++/14/bits/regex_executor.h \
+  /usr/include/c++/14/bits/regex_executor.tcc \
+  /usr/include/c++/14/bits/regex_scanner.h \
+  /usr/include/c++/14/bits/regex_scanner.tcc \
   /usr/include/c++/14/bits/requires_hosted.h \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
@@ -396,10 +413,12 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
+  /usr/include/c++/14/bits/stl_map.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
+  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -415,6 +434,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/utility.h \
   /usr/include/c++/14/bits/vector.tcc \
   /usr/include/c++/14/bits/version.h \
+  /usr/include/c++/14/bitset \
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
@@ -423,6 +443,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/cstddef \
   /usr/include/c++/14/cstdio \
   /usr/include/c++/14/cstdlib \
+  /usr/include/c++/14/ctime \
   /usr/include/c++/14/cwchar \
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
@@ -441,6 +462,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/istream \
+  /usr/include/c++/14/locale \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
   /usr/include/c++/14/ostream \
@@ -448,6 +470,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
+  /usr/include/c++/14/regex \
   /usr/include/c++/14/sstream \
   /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
@@ -471,7 +494,9 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h \
+  /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
+  /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h \
@@ -980,6 +1005,10 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /workspace/src/Error/ErrorReport.h:
 
+/usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h:
+
 /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
@@ -987,6 +1016,32 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/c++/14/vector:
 
 /usr/include/c++/14/system_error:
+
+/usr/include/c++/14/streambuf:
+
+/usr/include/c++/14/stdexcept:
+
+/usr/include/c++/14/stack:
+
+/usr/include/c++/14/regex:
+
+/usr/include/c++/14/istream:
+
+/usr/include/c++/14/functional:
+
+/usr/include/c++/14/deque:
+
+/usr/include/c++/14/cwctype:
+
+/usr/include/c++/14/bits/vector.tcc:
+
+/usr/include/c++/14/bits/streambuf_iterator.h:
+
+/usr/include/c++/14/bits/streambuf.tcc:
+
+/usr/include/c++/14/bits/stl_tree.h:
+
+/usr/include/c++/14/bits/stl_map.h:
 
 /usr/include/c++/14/bits/char_traits.h:
 
@@ -1010,7 +1065,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/pthread.h:
 
-/usr/include/c++/14/stdexcept:
+/usr/include/c++/14/bits/regex_executor.h:
 
 /usr/include/c++/14/bits/alloc_traits.h:
 
@@ -1023,8 +1078,6 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/stdlib.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
-
-/usr/include/c++/14/istream:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
@@ -1058,9 +1111,11 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+/usr/include/c++/14/sstream:
 
-/usr/include/c++/14/bits/shared_ptr_atomic.h:
+/usr/include/c++/14/bits/stl_algo.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
 /usr/include/c++/14/backward/auto_ptr.h:
 
@@ -1077,8 +1132,6 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
 /usr/include/c++/14/bits/string_view.tcc:
-
-/usr/include/c++/14/streambuf:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
@@ -1102,11 +1155,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
 
-/usr/include/c++/14/bits/ptr_traits.h:
-
 /usr/include/c++/14/bits/allocated_ptr.h:
-
-/usr/include/c++/14/stack:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
@@ -1130,6 +1179,12 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
+/usr/include/c++/14/ostream:
+
+/usr/include/c++/14/compare:
+
+/usr/include/x86_64-linux-gnu/bits/endian.h:
+
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
 /usr/include/linux/sched/types.h:
@@ -1146,9 +1201,9 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/linux/posix_types.h:
 
-/usr/include/c++/14/bits/locale_classes.tcc:
-
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/usr/include/c++/14/locale:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
@@ -1168,13 +1223,15 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
-/usr/include/x86_64-linux-gnu/bits/types.h:
-
 /usr/include/alloca.h:
+
+/usr/include/c++/14/bits/regex_constants.h:
 
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/linux/types.h:
+
+/usr/include/c++/14/bitset:
 
 /workspace/src/CHTL/CHTLLexer/GlobalMap.cpp:
 
@@ -1194,9 +1251,15 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/bits/std_function.h:
 
+/usr/include/c++/14/ios:
+
+/usr/include/asm-generic/int-ll64.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
 /usr/include/c++/14/bits/stl_iterator_base_funcs.h:
+
+/usr/include/c++/14/ctime:
 
 /usr/include/c++/14/ext/numeric_traits.h:
 
@@ -1211,6 +1274,8 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/stdc-predef.h:
 
 /usr/include/x86_64-linux-gnu/asm/types.h:
+
+/usr/include/c++/14/bits/regex_error.h:
 
 /usr/include/asm-generic/errno.h:
 
@@ -1228,6 +1293,10 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
+/usr/include/c++/14/bits/locale_classes.tcc:
+
+/usr/include/libintl.h:
+
 /usr/include/c++/14/bits/stl_tempbuf.h:
 
 /usr/include/linux/stddef.h:
@@ -1242,17 +1311,17 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/new:
 
+/usr/include/c++/14/bits/stl_vector.h:
+
+/usr/include/c++/14/bits/basic_string.tcc:
+
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
 
 /usr/include/c++/14/clocale:
 
-/usr/include/c++/14/compare:
+/usr/include/c++/14/bits/stl_stack.h:
 
-/usr/include/x86_64-linux-gnu/bits/endian.h:
-
-/usr/include/c++/14/ostream:
-
-/usr/include/c++/14/functional:
+/usr/include/c++/14/bits/stl_heap.h:
 
 /usr/include/c++/14/bits/exception_ptr.h:
 
@@ -1300,12 +1369,6 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/bits/locale_facets.h:
 
-/usr/include/c++/14/bits/streambuf.tcc:
-
-/usr/include/asm-generic/int-ll64.h:
-
-/usr/include/c++/14/ios:
-
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h:
@@ -1334,6 +1397,10 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_offsetof.h:
 
+/usr/include/c++/14/bits/shared_ptr_atomic.h:
+
+/usr/include/c++/14/bits/regex_automaton.tcc:
+
 /usr/include/features.h:
 
 /usr/include/c++/14/bits/node_handle.h:
@@ -1347,6 +1414,8 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/c++/14/bits/ostream_insert.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
+
+/usr/include/c++/14/bits/regex_compiler.h:
 
 /usr/include/c++/14/bits/range_access.h:
 
@@ -1363,6 +1432,10 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
 /usr/include/c++/14/bits/deque.tcc:
+
+/usr/include/c++/14/bits/stl_deque.h:
+
+/usr/include/c++/14/bits/unique_ptr.h:
 
 /usr/include/c++/14/bits/unordered_map.h:
 
@@ -1404,7 +1477,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/initializer_list:
 
-/usr/include/c++/14/iosfwd:
+/usr/include/c++/14/bits/locale_conv.h:
 
 /usr/include/c++/14/bits/stl_function.h:
 
@@ -1442,6 +1515,8 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
 
+/usr/include/c++/14/bits/locale_facets_nonio.h:
+
 /usr/include/c++/14/cerrno:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
@@ -1476,34 +1551,34 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/bits/basic_ios.h:
 
+/usr/include/c++/14/bits/codecvt.h:
+
 /usr/include/c++/14/bits/ios_base.h:
+
+/usr/include/c++/14/bits/ptr_traits.h:
+
+/usr/include/c++/14/bits/locale_facets_nonio.tcc:
+
+/usr/include/c++/14/bits/regex.h:
+
+/usr/include/c++/14/bits/regex_scanner.h:
+
+/usr/include/c++/14/bits/regex.tcc:
+
+/usr/include/c++/14/bits/regex_automaton.h:
+
+/usr/include/c++/14/bits/regex_compiler.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/c++/14/bits/regex_executor.tcc:
+
+/usr/include/c++/14/iosfwd:
+
+/usr/include/c++/14/bits/regex_scanner.tcc:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
 /usr/include/c++/14/bits/new_allocator.h:
 
 /usr/include/c++/14/bits/stl_bvector.h:
-
-/usr/include/c++/14/bits/basic_string.tcc:
-
-/usr/include/c++/14/bits/stl_vector.h:
-
-/usr/include/c++/14/bits/unique_ptr.h:
-
-/usr/include/c++/14/bits/stl_deque.h:
-
-/usr/include/c++/14/bits/stl_heap.h:
-
-/usr/include/c++/14/bits/stl_stack.h:
-
-/usr/include/c++/14/deque:
-
-/usr/include/c++/14/bits/streambuf_iterator.h:
-
-/usr/include/c++/14/bits/vector.tcc:
-
-/usr/include/c++/14/cwctype:
-
-/usr/include/c++/14/bits/stl_algo.h:
-
-/usr/include/c++/14/sstream:

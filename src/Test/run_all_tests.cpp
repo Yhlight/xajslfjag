@@ -10,18 +10,18 @@ int main() {
     std::cout << "================" << std::endl;
     
     // 初始化全局编译监视器
-    auto monitor = CompilationMonitorFactory::createDebugMonitor();
-    GlobalMonitorManager::getInstance().setGlobalMonitor(std::move(monitor));
+    auto monitorPtr = CompilationMonitorFactory::createDebugMonitor();
+    GlobalMonitorManager::getInstance().setGlobalMonitor(std::move(monitorPtr));
     GlobalMonitorManager::getInstance().bindToCHTLProject();
-    
-    // 开始监控
-    CHTL_MONITOR_START("CHTL Test Suite");
-    CHTL_MONITOR_PHASE(CompilationPhase::LEXICAL_ANALYSIS);
     
     auto startTime = std::chrono::high_resolution_clock::now();
     bool allTestsPassed = true;
     
     try {
+        // 开始监控
+        CHTL_MONITOR_START("CHTL Test Suite");
+        CHTL_MONITOR_PHASE(CompilationPhase::LEXICAL_ANALYSIS);
+        
         // 运行节点测试
         std::cout << "\n>>> Running Node Tests <<<" << std::endl;
         CHTL_MONITOR_HEARTBEAT();

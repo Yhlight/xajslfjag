@@ -420,6 +420,89 @@ void CHTLContext::setErrorCallback(std::function<void(const std::string&)> callb
     m_errorCallback = callback;
 }
 
+// ========== VarGroup 实现 ==========
+
+void VarGroup::SetVariable(const std::string& name, const std::string& value) {
+    m_variables[name] = value;
+}
+
+std::string VarGroup::GetVariable(const std::string& name) const {
+    auto it = m_variables.find(name);
+    if (it != m_variables.end()) {
+        return it->second;
+    }
+    return "";
+}
+
+bool VarGroup::HasVariable(const std::string& name) const {
+    return m_variables.find(name) != m_variables.end();
+}
+
+const std::unordered_map<std::string, std::string>& VarGroup::GetAllVariables() const {
+    return m_variables;
+}
+
+void VarGroup::Merge(const VarGroup& other) {
+    for (const auto& [name, value] : other.m_variables) {
+        // 只有当前变量组中不存在这个变量时才添加
+        if (m_variables.find(name) == m_variables.end()) {
+            m_variables[name] = value;
+        }
+    }
+}
+
+void VarGroup::Clear() {
+    m_variables.clear();
+}
+
+std::string VarGroup::ReplaceVariables(const std::string& content, const VarGroup& varGroup) {
+    std::regex varPattern(R"(VarGroup\(([^)]+)\))");
+    std::string result = content;
+    std::smatch match;
+    
+    while (std::regex_search(result, match, varPattern)) {
+        std::string varName = match[1].str();
+        std::string replacement = varGroup.GetVariable(varName);
+        
+        if (replacement.empty()) {
+            // 如果变量不存在，保留原始引用
+            replacement = "VarGroup(" + varName + ")";
+        }
+        
+        result = std::regex_replace(result, std::regex("VarGroup\\(" + varName + "\\)"), replacement);
+    }
+    
+    return result;
+}
+
+bool VarGroup::ContainsVariableReferences(const std::string& content) {
+    std::regex varPattern(R"(VarGroup\([^)]+\))");
+    return std::regex_search(content, varPattern);
+}
+
+// ========== CHTLContext 变量系统方法实现 ==========
+
+std::shared_ptr<VarGroup> CHTLContext::GetVarGroup() {
+    return m_varGroup;
+}
+
+void CHTLContext::SetVarGroup(std::shared_ptr<VarGroup> varGroup) {
+    m_varGroup = varGroup;
+}
+
+std::shared_ptr<VarGroup> CHTLContext::CreateVarGroup() {
+    m_varGroup = std::make_shared<VarGroup>();
+    return m_varGroup;
+}
+
+std::string CHTLContext::GetProcessedCSS() const {
+    return m_processedCSS;
+}
+
+void CHTLContext::SetProcessedCSS(const std::string& css) {
+    m_processedCSS = css;
+}
+
 // ========== 私有方法实现 ==========
 
 void CHTLContext::reportError(const std::string& message) {

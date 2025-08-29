@@ -103,10 +103,35 @@ Token Lexer::nextToken() {
         return scanCssSelector('#');
     }
     
-    // &符号
+    // &符号和CHTL JS绑定操作符
     if (c == '&') {
+        if (peekChar() == '-' && peekChar(1) == '>') {
+            advance(); // &
+            advance(); // -
+            advance(); // >
+            return makeToken(TokenType::BIND_OPERATOR, "&->", startPos);
+        }
         advance();
         return makeToken(TokenType::AMPERSAND, "&", startPos);
+    }
+    
+    // CHTL JS箭头操作符
+    if (c == '-' && peekChar() == '>') {
+        advance(); // -
+        advance(); // >
+        return makeToken(TokenType::ARROW, "->", startPos);
+    }
+    
+    // CHTL JS增强选择器
+    if (c == '{' && peekChar() == '{') {
+        advance(); // 第一个{
+        advance(); // 第二个{
+        return makeToken(TokenType::ENHANCED_SELECTOR_START, "{{", startPos);
+    }
+    if (c == '}' && peekChar() == '}') {
+        advance(); // 第一个}
+        advance(); // 第二个}
+        return makeToken(TokenType::ENHANCED_SELECTOR_END, "}}", startPos);
     }
     
     // 标识符或关键字
@@ -533,6 +558,29 @@ TokenType Lexer::getIdentifierType(const std::string& identifier) {
         if (identifier == "from") return TokenType::FROM;
         if (identifier == "as") return TokenType::AS;
         if (identifier == "except") return TokenType::EXCEPT;
+        // CHTL JS 关键字
+        if (identifier == "script") return TokenType::SCRIPT;
+        if (identifier == "module") return TokenType::MODULE;
+        if (identifier == "load") return TokenType::LOAD;
+        if (identifier == "listen") return TokenType::LISTEN;
+        if (identifier == "delegate") return TokenType::DELEGATE;
+        if (identifier == "animate") return TokenType::ANIMATE;
+        if (identifier == "vir") return TokenType::VIR;
+        if (identifier == "click") return TokenType::CLICK;
+        if (identifier == "mouseenter") return TokenType::MOUSEENTER;
+        if (identifier == "mouseleave") return TokenType::MOUSELEAVE;
+        if (identifier == "mousemove") return TokenType::MOUSEMOVE;
+        if (identifier == "target") return TokenType::TARGET;
+        if (identifier == "duration") return TokenType::DURATION;
+        if (identifier == "easing") return TokenType::EASING;
+        if (identifier == "begin") return TokenType::BEGIN;
+        if (identifier == "when") return TokenType::WHEN;
+        if (identifier == "end") return TokenType::END;
+        if (identifier == "loop") return TokenType::LOOP;
+        if (identifier == "direction") return TokenType::DIRECTION;
+        if (identifier == "delay") return TokenType::DELAY;
+        if (identifier == "callback") return TokenType::CALLBACK;
+        if (identifier == "at") return TokenType::AT;
         // 处理复合关键字
         if (identifier == "at" && peekChar() == ' ') {
             // 需要进一步处理 "at top" 和 "at bottom"

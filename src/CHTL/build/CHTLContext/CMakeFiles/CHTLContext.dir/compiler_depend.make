@@ -14,6 +14,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/errno.h \
   /usr/include/features-time64.h \
   /usr/include/features.h \
+  /usr/include/libintl.h \
   /usr/include/linux/errno.h \
   /usr/include/linux/posix_types.h \
   /usr/include/linux/sched/types.h \
@@ -119,6 +120,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/bits/basic_string.tcc \
   /usr/include/c++/14/bits/char_traits.h \
   /usr/include/c++/14/bits/charconv.h \
+  /usr/include/c++/14/bits/codecvt.h \
   /usr/include/c++/14/bits/concept_check.h \
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
@@ -139,8 +141,11 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/bits/istream.tcc \
   /usr/include/c++/14/bits/locale_classes.h \
   /usr/include/c++/14/bits/locale_classes.tcc \
+  /usr/include/c++/14/bits/locale_conv.h \
   /usr/include/c++/14/bits/locale_facets.h \
   /usr/include/c++/14/bits/locale_facets.tcc \
+  /usr/include/c++/14/bits/locale_facets_nonio.h \
+  /usr/include/c++/14/bits/locale_facets_nonio.tcc \
   /usr/include/c++/14/bits/localefwd.h \
   /usr/include/c++/14/bits/memory_resource.h \
   /usr/include/c++/14/bits/memoryfwd.h \
@@ -155,6 +160,18 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/bits/ptr_traits.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
+  /usr/include/c++/14/bits/regex.h \
+  /usr/include/c++/14/bits/regex.tcc \
+  /usr/include/c++/14/bits/regex_automaton.h \
+  /usr/include/c++/14/bits/regex_automaton.tcc \
+  /usr/include/c++/14/bits/regex_compiler.h \
+  /usr/include/c++/14/bits/regex_compiler.tcc \
+  /usr/include/c++/14/bits/regex_constants.h \
+  /usr/include/c++/14/bits/regex_error.h \
+  /usr/include/c++/14/bits/regex_executor.h \
+  /usr/include/c++/14/bits/regex_executor.tcc \
+  /usr/include/c++/14/bits/regex_scanner.h \
+  /usr/include/c++/14/bits/regex_scanner.tcc \
   /usr/include/c++/14/bits/requires_hosted.h \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
@@ -172,10 +189,12 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
+  /usr/include/c++/14/bits/stl_map.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
+  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
@@ -191,6 +210,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/bits/utility.h \
   /usr/include/c++/14/bits/vector.tcc \
   /usr/include/c++/14/bits/version.h \
+  /usr/include/c++/14/bitset \
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/clocale \
@@ -199,6 +219,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/cstddef \
   /usr/include/c++/14/cstdio \
   /usr/include/c++/14/cstdlib \
+  /usr/include/c++/14/ctime \
   /usr/include/c++/14/cwchar \
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
@@ -217,6 +238,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/ios \
   /usr/include/c++/14/iosfwd \
   /usr/include/c++/14/istream \
+  /usr/include/c++/14/locale \
   /usr/include/c++/14/memory \
   /usr/include/c++/14/new \
   /usr/include/c++/14/ostream \
@@ -224,6 +246,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/c++/14/pstl/glue_algorithm_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
+  /usr/include/c++/14/regex \
   /usr/include/c++/14/sstream \
   /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
@@ -247,7 +270,9 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
   /usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr-default.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h \
+  /usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
   /usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h \
+  /usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h \
   /usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h \
@@ -274,11 +299,41 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/lib/llvm-20/lib/clang/20/include/stdarg.h:
 
-/usr/include/x86_64-linux-gnu/bits/locale.h:
+/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
-/usr/include/c++/14/bits/exception.h:
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_wchar_t.h:
 
-/usr/include/c++/14/cctype:
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_size_t.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_offsetof.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_null.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/time_members.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/messages_members.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
+
+/usr/include/c++/14/vector:
+
+/usr/include/c++/14/unordered_set:
 
 /usr/include/c++/14/bits/erase_if.h:
 
@@ -307,8 +362,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/stdlib.h:
 
 /usr/include/c++/14/istream:
-
-/usr/lib/llvm-20/lib/clang/20/include/sanitizer/tsan_interface.h:
 
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
@@ -341,8 +394,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/usr/include/c++/14/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/14/backward/auto_ptr.h:
 
@@ -380,8 +431,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/x86_64-linux-gnu/bits/types/__FILE.h:
 
-/usr/include/c++/14/bits/ptr_traits.h:
-
 /usr/include/c++/14/bits/allocated_ptr.h:
 
 /usr/include/c++/14/stack:
@@ -389,8 +438,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
 /usr/include/c++/14/bits/cxxabi_forced.h:
-
-/usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
@@ -406,17 +453,9 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/locale_facets.tcc:
 
-/usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
-
-/usr/include/locale.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
-/usr/include/linux/posix_types.h:
-
-/usr/include/c++/14/bits/locale_classes.tcc:
-
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
+
+/usr/include/c++/14/locale:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
@@ -430,19 +469,41 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/debug/debug.h:
 
+/usr/include/locale.h:
+
+/usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
 /usr/include/linux/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
-/usr/include/x86_64-linux-gnu/bits/types.h:
+/usr/include/x86_64-linux-gnu/bits/endianness.h:
+
+/usr/lib/llvm-20/lib/clang/20/include/__stddef_nullptr_t.h:
+
+/usr/include/c++/14/bits/stl_uninitialized.h:
+
+/usr/include/c++/14/bits/codecvt.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
+
+/usr/include/c++/14/bits/stl_iterator_base_funcs.h:
+
+/usr/include/wchar.h:
 
 /usr/include/c++/14/bits/charconv.h:
 
 /usr/include/c++/14/bits/basic_ios.tcc:
 
 /workspace/src/CHTL/CHTLContext/Context.cpp:
+
+/usr/include/c++/14/bits/ptr_traits.h:
+
+/usr/include/c++/14/bits/locale_facets_nonio.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
@@ -454,8 +515,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/localefwd.h:
 
-/usr/include/x86_64-linux-gnu/bits/endianness.h:
-
 /usr/include/alloca.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
@@ -465,6 +524,10 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/bits/std_abs.h:
 
 /usr/include/c++/14/pstl/pstl_config.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
@@ -496,14 +559,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/std_function.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
-
-/usr/include/c++/14/bits/stl_iterator_base_funcs.h:
-
-/usr/include/c++/14/ext/numeric_traits.h:
-
-/usr/include/wchar.h:
-
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
 
 /workspace/src/CHTL/CHTLLexer/Type.h:
@@ -520,7 +575,15 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/functexcept.h:
 
+/usr/include/x86_64-linux-gnu/bits/time64.h:
+
+/usr/include/c++/14/bits/regex_constants.h:
+
+/usr/include/c++/14/bits/regex_executor.h:
+
 /usr/include/x86_64-linux-gnu/asm/types.h:
+
+/usr/include/c++/14/bits/regex_error.h:
 
 /usr/include/asm-generic/errno.h:
 
@@ -540,6 +603,10 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/new:
 
+/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
+
+/usr/include/c++/14/clocale:
+
 /usr/include/c++/14/compare:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
@@ -547,6 +614,12 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/ostream:
 
 /usr/include/c++/14/functional:
+
+/usr/include/linux/posix_types.h:
+
+/usr/include/libintl.h:
+
+/usr/include/c++/14/bits/locale_classes.tcc:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types_64.h:
 
@@ -559,8 +632,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
 
 /usr/include/c++/14/bits/uniform_int_dist.h:
-
-/usr/include/c++/14/vector:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -576,9 +647,11 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/locale_classes.h:
 
-/usr/include/c++/14/bits/exception_defines.h:
+/usr/include/x86_64-linux-gnu/bits/locale.h:
 
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
+
+/usr/include/c++/14/bits/exception_defines.h:
 
 /usr/include/c++/14/bits/deque.tcc:
 
@@ -598,13 +671,13 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
-
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/os_defines.h:
-
 /usr/include/features-time64.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/cpu_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
@@ -613,6 +686,10 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/array:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
+
+/usr/include/c++/14/bits/exception.h:
+
+/usr/include/c++/14/cctype:
 
 /usr/include/c++/14/bits/exception_ptr.h:
 
@@ -628,7 +705,9 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/istream.tcc:
 
-/usr/include/c++/14/unordered_set:
+/usr/include/c++/14/bits/locale_conv.h:
+
+/usr/include/c++/14/bits/locale_facets_nonio.h:
 
 /usr/include/c++/14/bits/memory_resource.h:
 
@@ -638,17 +717,13 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/nested_exception.h:
 
-/usr/include/c++/14/bits/stl_uninitialized.h:
+/usr/include/c++/14/bits/shared_ptr_atomic.h:
 
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_nullptr_t.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_offsetof.h:
+/usr/include/c++/14/bits/regex_automaton.tcc:
 
 /usr/include/features.h:
 
 /usr/include/c++/14/bits/node_handle.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_wchar_t.h:
 
 /usr/lib/llvm-20/lib/clang/20/include/__stddef_ptrdiff_t.h:
 
@@ -656,11 +731,29 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/ostream_insert.h:
 
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_max_align_t.h:
+/usr/include/c++/14/bits/regex_compiler.h:
 
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
+
+/usr/include/c++/14/bits/regex.h:
+
+/usr/include/c++/14/bits/regex_scanner.h:
+
+/usr/include/c++/14/bits/regex.tcc:
+
+/usr/include/c++/14/bits/regex_automaton.h:
+
+/usr/include/c++/14/bits/regex_compiler.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/c++/14/bits/regex_executor.tcc:
+
+/usr/include/c++/14/iosfwd:
+
+/usr/include/c++/14/bits/regex_scanner.tcc:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
@@ -680,11 +773,11 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/deque:
 
-/usr/include/c++/14/clocale:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
+/usr/include/c++/14/bits/stl_map.h:
 
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
+
+/usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
@@ -702,6 +795,12 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 
 /usr/include/c++/14/bits/version.h:
 
+/usr/include/c++/14/bitset:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
+
+/usr/include/c++/14/cerrno:
+
 /usr/include/c++/14/concepts:
 
 /usr/include/c++/14/cstddef:
@@ -709,6 +808,10 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/bits/utility.h:
 
 /usr/include/c++/14/cstdio:
+
+/usr/include/c++/14/ext/numeric_traits.h:
+
+/usr/include/c++/14/ctime:
 
 /usr/include/c++/14/cwctype:
 
@@ -719,6 +822,8 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/exception:
 
 /usr/include/c++/14/ext/alloc_traits.h:
+
+/usr/include/c++/14/regex:
 
 /usr/include/c++/14/ext/atomicity.h:
 
@@ -733,8 +838,6 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/bits/postypes.h:
 
 /usr/include/c++/14/initializer_list:
-
-/usr/include/c++/14/iosfwd:
 
 /usr/include/c++/14/bits/stl_function.h:
 
@@ -763,31 +866,3 @@ CHTLContext/CMakeFiles/CHTLContext.dir/Context.cpp.o: /workspace/src/CHTL/CHTLCo
 /usr/include/c++/14/typeinfo:
 
 /usr/include/c++/14/unordered_map:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
-
-/usr/include/c++/14/cerrno:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
-
-/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/cpu_defines.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stdarg___gnuc_va_list.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_header_macro.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_null.h:
-
-/usr/lib/llvm-20/lib/clang/20/include/__stddef_size_t.h:

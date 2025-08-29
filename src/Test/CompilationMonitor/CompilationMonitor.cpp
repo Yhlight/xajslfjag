@@ -571,5 +571,21 @@ void GlobalMonitorManager::bindToCHTLProject() {
     });
 }
 
+void CompilationMonitor::setResourceLimitCallback(std::function<void(const ResourceUsage&)> callback) {
+    m_resourceLimitCallback = callback;
+}
+
+void CompilationMonitor::setTimeoutCallback(std::function<void()> callback) {
+    m_timeoutCallback = callback;
+}
+
+void CompilationMonitor::setPhaseChangeCallback(std::function<void(CompilationPhase, CompilationPhase)> callback) {
+    m_phaseChangeCallback = callback;
+}
+
+void CompilationMonitor::setProgressCallback(std::function<void(double)> callback) {
+    m_progressCallback = callback;
+}
+
 } // namespace Test
 } // namespace CHTL

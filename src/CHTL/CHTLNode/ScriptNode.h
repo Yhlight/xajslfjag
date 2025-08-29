@@ -173,9 +173,24 @@ public:
     void addEventListener(const std::string& event, const std::string& handler);
     
     /**
+     * 添加事件处理器 (别名方法)
+     */
+    void addEventHandler(const std::string& event, const std::string& handler);
+    
+    /**
      * 获取事件监听器
      */
     const std::unordered_map<std::string, std::string>& getEventListeners() const;
+    
+    /**
+     * 获取事件处理器 (别名方法)
+     */
+    const std::unordered_map<std::string, std::string>& getEventHandlers() const;
+    
+    /**
+     * 设置目标选择器
+     */
+    void setTarget(const CHTLJSSelector& target);
     
     /**
      * 转换为标准JavaScript事件绑定
@@ -186,6 +201,7 @@ public:
 
 private:
     std::unordered_map<std::string, std::string> m_eventListeners;
+    CHTLJSSelector m_target;
 };
 
 /**
@@ -260,6 +276,101 @@ public:
 private:
     std::vector<CHTLJSSelector> m_delegateTargets;
     std::unordered_map<std::string, std::string> m_delegateEvents;
+};
+
+/**
+ * CHTL JS虚拟对象节点
+ * 表示vir语法
+ */
+class CHTLJSVirtualObjectNode : public ScriptNode {
+public:
+    /**
+     * 构造函数
+     */
+    CHTLJSVirtualObjectNode(const std::string& name);
+    
+    /**
+     * 设置虚拟对象属性
+     */
+    void setVirtualProperty(const std::string& key, const std::string& value);
+    void setVirtualFunction(const std::string& key, const std::string& function);
+    
+    /**
+     * 获取虚拟对象属性
+     */
+    std::string getVirtualProperty(const std::string& key) const;
+    std::string getVirtualFunction(const std::string& key) const;
+    
+    /**
+     * 转换为标准JavaScript对象
+     */
+    std::string convertToStandardObject() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::CHTLJS_VIRTUAL_OBJECT_NODE; }
+
+private:
+    std::string m_objectName;
+    std::unordered_map<std::string, std::string> m_properties;
+    std::unordered_map<std::string, std::string> m_functions;
+};
+
+/**
+ * CHTL JS模块节点
+ * 表示module{}语法
+ */
+class CHTLJSModuleNode : public ScriptNode {
+public:
+    /**
+     * 构造函数
+     */
+    CHTLJSModuleNode();
+    
+    /**
+     * 添加模块加载路径
+     */
+    void addLoadPath(const std::string& path);
+    
+    /**
+     * 获取所有加载路径
+     */
+    const std::vector<std::string>& getLoadPaths() const;
+    
+    /**
+     * 转换为AMD风格的模块加载器
+     */
+    std::string convertToAMDLoader() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::CHTLJS_MODULE_NODE; }
+
+private:
+    std::vector<std::string> m_loadPaths;
+};
+
+/**
+ * CHTL JS增强选择器节点
+ * 表示{{selector}}语法
+ */
+class CHTLJSEnhancedSelectorNode : public ScriptNode {
+public:
+    /**
+     * 构造函数
+     */
+    CHTLJSEnhancedSelectorNode(const CHTLJSSelector& selector);
+    
+    /**
+     * 获取选择器
+     */
+    const CHTLJSSelector& getSelector() const;
+    
+    /**
+     * 转换为DOM查询
+     */
+    std::string convertToDOMQuery() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::CHTLJS_ENHANCED_SELECTOR_NODE; }
+
+private:
+    CHTLJSSelector m_selector;
 };
 
 } // namespace CHTL

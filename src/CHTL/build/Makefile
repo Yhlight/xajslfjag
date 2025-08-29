@@ -169,6 +169,58 @@ test_chtl_syntax/fast:
 .PHONY : test_chtl_syntax/fast
 
 #=============================================================================
+# Target rules for targets named test_chtl_js_system
+
+# Build rule for target.
+test_chtl_js_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chtl_js_system
+.PHONY : test_chtl_js_system
+
+# fast build rule for target.
+test_chtl_js_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_js_system.dir/build.make CMakeFiles/test_chtl_js_system.dir/build
+.PHONY : test_chtl_js_system/fast
+
+#=============================================================================
+# Target rules for targets named test_selector_automation
+
+# Build rule for target.
+test_selector_automation: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_selector_automation
+.PHONY : test_selector_automation
+
+# fast build rule for target.
+test_selector_automation/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_selector_automation.dir/build.make CMakeFiles/test_selector_automation.dir/build
+.PHONY : test_selector_automation/fast
+
+#=============================================================================
+# Target rules for targets named test_template_specialization
+
+# Build rule for target.
+test_template_specialization: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_template_specialization
+.PHONY : test_template_specialization
+
+# fast build rule for target.
+test_template_specialization/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_specialization.dir/build.make CMakeFiles/test_template_specialization.dir/build
+.PHONY : test_template_specialization/fast
+
+#=============================================================================
+# Target rules for targets named test_variable_system
+
+# Build rule for target.
+test_variable_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_variable_system
+.PHONY : test_variable_system
+
+# fast build rule for target.
+test_variable_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_variable_system.dir/build.make CMakeFiles/test_variable_system.dir/build
+.PHONY : test_variable_system/fast
+
+#=============================================================================
 # Target rules for targets named test_template_system
 
 # Build rule for target.
@@ -702,6 +754,30 @@ debug_parse_simple.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parse_simple.dir/build.make CMakeFiles/debug_parse_simple.dir/debug_parse_simple.cpp.s
 .PHONY : debug_parse_simple.cpp.s
 
+test_chtl_js_system.o: test_chtl_js_system.cpp.o
+.PHONY : test_chtl_js_system.o
+
+# target to build an object file
+test_chtl_js_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_js_system.dir/build.make CMakeFiles/test_chtl_js_system.dir/test_chtl_js_system.cpp.o
+.PHONY : test_chtl_js_system.cpp.o
+
+test_chtl_js_system.i: test_chtl_js_system.cpp.i
+.PHONY : test_chtl_js_system.i
+
+# target to preprocess a source file
+test_chtl_js_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_js_system.dir/build.make CMakeFiles/test_chtl_js_system.dir/test_chtl_js_system.cpp.i
+.PHONY : test_chtl_js_system.cpp.i
+
+test_chtl_js_system.s: test_chtl_js_system.cpp.s
+.PHONY : test_chtl_js_system.s
+
+# target to generate assembly for a file
+test_chtl_js_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_js_system.dir/build.make CMakeFiles/test_chtl_js_system.dir/test_chtl_js_system.cpp.s
+.PHONY : test_chtl_js_system.cpp.s
+
 test_chtl_syntax.o: test_chtl_syntax.cpp.o
 .PHONY : test_chtl_syntax.o
 
@@ -918,6 +994,30 @@ test_origin_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.s
 .PHONY : test_origin_system.cpp.s
 
+test_selector_automation.o: test_selector_automation.cpp.o
+.PHONY : test_selector_automation.o
+
+# target to build an object file
+test_selector_automation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_selector_automation.dir/build.make CMakeFiles/test_selector_automation.dir/test_selector_automation.cpp.o
+.PHONY : test_selector_automation.cpp.o
+
+test_selector_automation.i: test_selector_automation.cpp.i
+.PHONY : test_selector_automation.i
+
+# target to preprocess a source file
+test_selector_automation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_selector_automation.dir/build.make CMakeFiles/test_selector_automation.dir/test_selector_automation.cpp.i
+.PHONY : test_selector_automation.cpp.i
+
+test_selector_automation.s: test_selector_automation.cpp.s
+.PHONY : test_selector_automation.s
+
+# target to generate assembly for a file
+test_selector_automation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_selector_automation.dir/build.make CMakeFiles/test_selector_automation.dir/test_selector_automation.cpp.s
+.PHONY : test_selector_automation.cpp.s
+
 test_simple_custom.o: test_simple_custom.cpp.o
 .PHONY : test_simple_custom.o
 
@@ -990,6 +1090,30 @@ test_state_context.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/test_state_context.cpp.s
 .PHONY : test_state_context.cpp.s
 
+test_template_specialization.o: test_template_specialization.cpp.o
+.PHONY : test_template_specialization.o
+
+# target to build an object file
+test_template_specialization.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_specialization.dir/build.make CMakeFiles/test_template_specialization.dir/test_template_specialization.cpp.o
+.PHONY : test_template_specialization.cpp.o
+
+test_template_specialization.i: test_template_specialization.cpp.i
+.PHONY : test_template_specialization.i
+
+# target to preprocess a source file
+test_template_specialization.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_specialization.dir/build.make CMakeFiles/test_template_specialization.dir/test_template_specialization.cpp.i
+.PHONY : test_template_specialization.cpp.i
+
+test_template_specialization.s: test_template_specialization.cpp.s
+.PHONY : test_template_specialization.s
+
+# target to generate assembly for a file
+test_template_specialization.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_specialization.dir/build.make CMakeFiles/test_template_specialization.dir/test_template_specialization.cpp.s
+.PHONY : test_template_specialization.cpp.s
+
 test_template_system.o: test_template_system.cpp.o
 .PHONY : test_template_system.o
 
@@ -1038,6 +1162,30 @@ test_updated_lexer.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/test_updated_lexer.cpp.s
 .PHONY : test_updated_lexer.cpp.s
 
+test_variable_system.o: test_variable_system.cpp.o
+.PHONY : test_variable_system.o
+
+# target to build an object file
+test_variable_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_variable_system.dir/build.make CMakeFiles/test_variable_system.dir/test_variable_system.cpp.o
+.PHONY : test_variable_system.cpp.o
+
+test_variable_system.i: test_variable_system.cpp.i
+.PHONY : test_variable_system.i
+
+# target to preprocess a source file
+test_variable_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_variable_system.dir/build.make CMakeFiles/test_variable_system.dir/test_variable_system.cpp.i
+.PHONY : test_variable_system.cpp.i
+
+test_variable_system.s: test_variable_system.cpp.s
+.PHONY : test_variable_system.s
+
+# target to generate assembly for a file
+test_variable_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_variable_system.dir/build.make CMakeFiles/test_variable_system.dir/test_variable_system.cpp.s
+.PHONY : test_variable_system.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -1064,6 +1212,7 @@ help:
 	@echo "... debug_namespace_tokens"
 	@echo "... debug_parse_simple"
 	@echo "... run_all_tests"
+	@echo "... test_chtl_js_system"
 	@echo "... test_chtl_syntax"
 	@echo "... test_compilation_monitor"
 	@echo "... test_complete_system"
@@ -1075,11 +1224,14 @@ help:
 	@echo "... test_lexer"
 	@echo "... test_namespace_system"
 	@echo "... test_origin_system"
+	@echo "... test_selector_automation"
 	@echo "... test_simple_custom"
 	@echo "... test_simple_namespace"
 	@echo "... test_state_context"
+	@echo "... test_template_specialization"
 	@echo "... test_template_system"
 	@echo "... test_updated_lexer"
+	@echo "... test_variable_system"
 	@echo "... debug_config_tokens.o"
 	@echo "... debug_config_tokens.i"
 	@echo "... debug_config_tokens.s"
@@ -1098,6 +1250,9 @@ help:
 	@echo "... debug_parse_simple.o"
 	@echo "... debug_parse_simple.i"
 	@echo "... debug_parse_simple.s"
+	@echo "... test_chtl_js_system.o"
+	@echo "... test_chtl_js_system.i"
+	@echo "... test_chtl_js_system.s"
 	@echo "... test_chtl_syntax.o"
 	@echo "... test_chtl_syntax.i"
 	@echo "... test_chtl_syntax.s"
@@ -1125,6 +1280,9 @@ help:
 	@echo "... test_origin_system.o"
 	@echo "... test_origin_system.i"
 	@echo "... test_origin_system.s"
+	@echo "... test_selector_automation.o"
+	@echo "... test_selector_automation.i"
+	@echo "... test_selector_automation.s"
 	@echo "... test_simple_custom.o"
 	@echo "... test_simple_custom.i"
 	@echo "... test_simple_custom.s"
@@ -1134,12 +1292,18 @@ help:
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"
+	@echo "... test_template_specialization.o"
+	@echo "... test_template_specialization.i"
+	@echo "... test_template_specialization.s"
 	@echo "... test_template_system.o"
 	@echo "... test_template_system.i"
 	@echo "... test_template_system.s"
 	@echo "... test_updated_lexer.o"
 	@echo "... test_updated_lexer.i"
 	@echo "... test_updated_lexer.s"
+	@echo "... test_variable_system.o"
+	@echo "... test_variable_system.i"
+	@echo "... test_variable_system.s"
 .PHONY : help
 
 

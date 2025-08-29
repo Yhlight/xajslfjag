@@ -31,6 +31,9 @@ enum class CHTLNodeType {
     CHTLJS_LISTENER_NODE,   // CHTL JS监听器节点
     CHTLJS_ANIMATION_NODE,  // CHTL JS动画节点
     CHTLJS_DELEGATE_NODE,   // CHTL JS委托节点
+    CHTLJS_VIRTUAL_OBJECT_NODE, // CHTL JS虚拟对象节点
+    CHTLJS_MODULE_NODE,     // CHTL JS模块节点
+    CHTLJS_ENHANCED_SELECTOR_NODE, // CHTL JS增强选择器节点
     
     // 模板节点
     TEMPLATE_STYLE_NODE,    // 样式组模板节点

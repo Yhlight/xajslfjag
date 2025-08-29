@@ -366,6 +366,12 @@ std::string BaseNode::getNodeTypeString() const {
         case CHTLNodeType::INLINE_STYLE_NODE: return "INLINE_STYLE";
         case CHTLNodeType::SELECTOR_STYLE_NODE: return "SELECTOR_STYLE";
         case CHTLNodeType::SCRIPT_NODE: return "SCRIPT";
+        case CHTLNodeType::CHTLJS_LISTENER_NODE: return "CHTLJS_LISTENER";
+        case CHTLNodeType::CHTLJS_ANIMATION_NODE: return "CHTLJS_ANIMATION";
+        case CHTLNodeType::CHTLJS_DELEGATE_NODE: return "CHTLJS_DELEGATE";
+        case CHTLNodeType::CHTLJS_VIRTUAL_OBJECT_NODE: return "CHTLJS_VIRTUAL_OBJECT";
+        case CHTLNodeType::CHTLJS_MODULE_NODE: return "CHTLJS_MODULE";
+        case CHTLNodeType::CHTLJS_ENHANCED_SELECTOR_NODE: return "CHTLJS_ENHANCED_SELECTOR";
         case CHTLNodeType::TEMPLATE_STYLE_NODE: return "TEMPLATE_STYLE";
         case CHTLNodeType::TEMPLATE_ELEMENT_NODE: return "TEMPLATE_ELEMENT";
         case CHTLNodeType::TEMPLATE_VAR_NODE: return "TEMPLATE_VAR";

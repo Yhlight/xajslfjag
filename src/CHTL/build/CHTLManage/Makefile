@@ -250,6 +250,30 @@ TemplateManager.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.s
 .PHONY : TemplateManager.cpp.s
 
+VariableManager.o: VariableManager.cpp.o
+.PHONY : VariableManager.o
+
+# target to build an object file
+VariableManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.o
+.PHONY : VariableManager.cpp.o
+
+VariableManager.i: VariableManager.cpp.i
+.PHONY : VariableManager.i
+
+# target to preprocess a source file
+VariableManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.i
+.PHONY : VariableManager.cpp.i
+
+VariableManager.s: VariableManager.cpp.s
+.PHONY : VariableManager.s
+
+# target to generate assembly for a file
+VariableManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.s
+.PHONY : VariableManager.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -274,6 +298,9 @@ help:
 	@echo "... TemplateManager.o"
 	@echo "... TemplateManager.i"
 	@echo "... TemplateManager.s"
+	@echo "... VariableManager.o"
+	@echo "... VariableManager.i"
+	@echo "... VariableManager.s"
 .PHONY : help
 
 

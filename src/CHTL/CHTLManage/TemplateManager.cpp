@@ -486,21 +486,298 @@ void TemplateManager::applySpecializations(NodePtr node, const std::vector<Speci
 }
 
 void TemplateManager::applyDeleteOperation(NodePtr node, const SpecializationInfo& operation) {
-    // 简化实现：记录删除操作
-    (void)node;
-    (void)operation;
+    if (!node) return;
+    
+    // 根据目标类型执行删除操作
+    if (operation.target.empty()) {
+        // 删除指定索引的子节点
+        if (operation.index >= 0 && static_cast<size_t>(operation.index) < node->getChildCount()) {
+            // 获取要删除的子节点
+            auto children = node->getChildren();
+            if (static_cast<size_t>(operation.index) < children.size()) {
+                // 创建新的子节点列表，排除要删除的节点
+                std::vector<std::shared_ptr<BaseNode>> newChildren;
+                for (size_t i = 0; i < children.size(); ++i) {
+                    if (i != static_cast<size_t>(operation.index)) {
+                        newChildren.push_back(children[i]);
+                    }
+                }
+                
+                // 清除原有子节点并添加新的
+                node->clearChildren();
+                for (auto child : newChildren) {
+                    node->addChild(child);
+                }
+            }
+        }
+    } else {
+        // 删除指定名称/标签的子节点
+        auto children = node->getChildren();
+        std::vector<std::shared_ptr<BaseNode>> newChildren;
+        
+        for (auto child : children) {
+            bool shouldDelete = false;
+            
+            // 检查是否匹配删除条件
+            if (auto elementChild = std::dynamic_pointer_cast<ElementNode>(child)) {
+                if (elementChild->getTagName() == operation.target) {
+                    shouldDelete = true;
+                }
+            } else if (child->getName() == operation.target) {
+                shouldDelete = true;
+            }
+            
+            if (!shouldDelete) {
+                newChildren.push_back(child);
+            }
+        }
+        
+        if (newChildren.size() != children.size()) {
+            // 有节点被删除，更新子节点列表
+            node->clearChildren();
+            for (auto child : newChildren) {
+                node->addChild(child);
+            }
+        }
+    }
+    
+    updateStatistics("delete_operations_applied");
 }
 
 void TemplateManager::applyInsertOperation(NodePtr node, const SpecializationInfo& operation) {
-    // 简化实现：记录插入操作
-    (void)node;
-    (void)operation;
+    if (!node) return;
+    
+    // 根据插入位置执行插入操作
+    auto children = node->getChildren();
+    std::vector<std::shared_ptr<BaseNode>> newChildren;
+    
+    bool inserted = false;
+    
+    if (operation.index >= 0) {
+        // 在指定索引位置插入
+        size_t insertIndex = static_cast<size_t>(operation.index);
+        
+        for (size_t i = 0; i < children.size(); ++i) {
+            if (i == insertIndex && !inserted) {
+                // 在指定位置插入新内容
+                for (auto newContent : operation.content) {
+                    newChildren.push_back(newContent);
+                }
+                inserted = true;
+            }
+            newChildren.push_back(children[i]);
+        }
+        
+        // 如果索引超出范围，在末尾插入
+        if (!inserted) {
+            for (auto newContent : operation.content) {
+                newChildren.push_back(newContent);
+            }
+        }
+    } else if (!operation.target.empty()) {
+        // 相对于指定目标插入
+        for (auto child : children) {
+            bool isTargetMatch = false;
+            
+            if (auto elementChild = std::dynamic_pointer_cast<ElementNode>(child)) {
+                isTargetMatch = (elementChild->getTagName() == operation.target);
+            } else {
+                isTargetMatch = (child->getName() == operation.target);
+            }
+            
+            if (isTargetMatch) {
+                // 根据插入位置决定顺序
+                if (operation.position == InsertPosition::BEFORE) {
+                    // 在目标前插入
+                    for (auto newContent : operation.content) {
+                        newChildren.push_back(newContent);
+                    }
+                    newChildren.push_back(child);
+                } else if (operation.position == InsertPosition::AFTER) {
+                    // 在目标后插入
+                    newChildren.push_back(child);
+                    for (auto newContent : operation.content) {
+                        newChildren.push_back(newContent);
+                    }
+                } else if (operation.position == InsertPosition::REPLACE) {
+                    // 替换目标
+                    for (auto newContent : operation.content) {
+                        newChildren.push_back(newContent);
+                    }
+                    // 不添加原节点（替换）
+                } else {
+                    // 默认在后插入
+                    newChildren.push_back(child);
+                    for (auto newContent : operation.content) {
+                        newChildren.push_back(newContent);
+                    }
+                }
+                inserted = true;
+            } else {
+                newChildren.push_back(child);
+            }
+        }
+        
+        // 如果没有找到目标，在末尾插入
+        if (!inserted) {
+            for (auto newContent : operation.content) {
+                newChildren.push_back(newContent);
+            }
+        }
+    } else {
+        // 在末尾插入
+        newChildren = children;
+        for (auto newContent : operation.content) {
+            newChildren.push_back(newContent);
+        }
+    }
+    
+    // 更新子节点列表
+    node->clearChildren();
+    for (auto child : newChildren) {
+        node->addChild(child);
+    }
+    
+    updateStatistics("insert_operations_applied");
 }
 
 NodePtr TemplateManager::applyIndexAccess(NodePtr node, const SpecializationInfo& operation) {
-    // 简化实现：返回原节点
-    (void)operation;
-    return node;
+    if (!node || operation.index < 0) {
+        return node;
+    }
+    
+    // 索引访问：返回指定索引的子节点
+    if (static_cast<size_t>(operation.index) < node->getChildCount()) {
+        auto child = node->getChild(operation.index);
+        if (child) {
+            // 创建shared_ptr包装
+            return std::shared_ptr<BaseNode>(child, [](BaseNode*){/* 不删除，由父节点管理 */});
+        }
+    }
+    
+    // 索引超出范围，返回空节点
+    updateStatistics("index_access_operations");
+    return nullptr;
+}
+
+void TemplateManager::applyAttributeOperation(NodePtr node, const SpecializationInfo& operation) {
+    if (!node) return;
+    
+    auto elementNode = std::dynamic_pointer_cast<ElementNode>(node);
+    if (!elementNode) return;
+    
+    // 根据操作类型处理属性
+    if (operation.type == SpecializationType::DELETE_PROPERTY) {
+        // 删除指定属性
+        if (operation.target == "class") {
+            elementNode->setClass("");
+        } else if (operation.target == "id") {
+            elementNode->setId("");
+        }
+        // 对于其他属性，需要扩展ElementNode来支持通用属性操作
+    } else if (operation.type == SpecializationType::INSERT_ELEMENT) {
+        // 添加或修改属性
+        if (operation.target == "class") {
+            if (elementNode->getClass().empty()) {
+                elementNode->setClass(operation.value);
+            } else {
+                elementNode->addClass(operation.value);
+            }
+        } else if (operation.target == "id") {
+            elementNode->setId(operation.value);
+        }
+    }
+    
+    updateStatistics("attribute_operations_applied");
+}
+
+void TemplateManager::applyStyleOperation(NodePtr node, const SpecializationInfo& operation) {
+    if (!node) return;
+    
+    auto elementNode = std::dynamic_pointer_cast<ElementNode>(node);
+    if (!elementNode) return;
+    
+    // 操作元素的样式块
+    auto styleNode = elementNode->getStyleNode();
+    if (!styleNode && operation.type == SpecializationType::INSERT_ELEMENT) {
+        // 创建新的样式节点
+        auto newStyleNode = std::make_shared<StyleNode>();
+        elementNode->setStyleNode(newStyleNode);
+        styleNode = newStyleNode.get();
+    }
+    
+    if (styleNode) {
+        auto styleNodePtr = std::dynamic_pointer_cast<StyleNode>(
+            std::shared_ptr<BaseNode>(styleNode, [](BaseNode*){/* 不删除，由父节点管理 */})
+        );
+        
+        if (operation.type == SpecializationType::DELETE_PROPERTY) {
+            // 删除样式块的特定内容
+            // 这里需要根据operation.target来删除特定的CSS规则
+        } else if (operation.type == SpecializationType::INSERT_ELEMENT) {
+            // 添加新的样式规则
+            if (styleNodePtr && !operation.value.empty()) {
+                std::string currentContent = styleNodePtr->toString();
+                std::string newContent = currentContent + "\n" + operation.value;
+                // 更新样式内容（需要扩展StyleNode API）
+            }
+        }
+    }
+    
+    updateStatistics("style_operations_applied");
+}
+
+std::vector<NodePtr> TemplateManager::findElementsBySelector(NodePtr node, const std::string& selector) {
+    std::vector<NodePtr> results;
+    if (!node) return results;
+    
+    // 简单的选择器匹配实现
+    std::function<void(NodePtr)> search = [&](NodePtr current) {
+        if (auto elementNode = std::dynamic_pointer_cast<ElementNode>(current)) {
+            bool matches = false;
+            
+            if (selector.empty()) {
+                matches = true;
+            } else if (selector[0] == '.') {
+                // 类选择器
+                std::string className = selector.substr(1);
+                matches = elementNode->hasClass(className);
+            } else if (selector[0] == '#') {
+                // ID选择器
+                std::string idName = selector.substr(1);
+                matches = (elementNode->getId() == idName);
+            } else {
+                // 标签选择器
+                matches = (elementNode->getTagName() == selector);
+            }
+            
+            if (matches) {
+                results.push_back(current);
+            }
+        }
+        
+        // 递归搜索子节点
+        for (auto child : current->getChildren()) {
+            search(child);
+        }
+    };
+    
+    search(node);
+    return results;
+}
+
+NodePtr TemplateManager::cloneAndSpecialize(NodePtr source, const std::vector<SpecializationInfo>& specializations) {
+    if (!source) return nullptr;
+    
+    // 克隆源节点
+    NodePtr cloned = source->clone();
+    if (!cloned) return nullptr;
+    
+    // 应用所有特化操作
+    applySpecializations(cloned, specializations);
+    
+    updateStatistics("nodes_cloned_and_specialized");
+    return cloned;
 }
 
 std::string TemplateManager::resolveVariableReference(const std::string& varGroupName, 

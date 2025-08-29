@@ -24,16 +24,36 @@ enum class AutomationSelectorType {
  * 自动化规则
  */
 struct AutomationRule {
+    // 样式自动化控制
     bool enableStyleAutoClass = true;     // 样式自动添加类选择器
     bool enableStyleAutoId = true;        // 样式自动添加ID选择器
+    
+    // 脚本自动化控制
     bool enableScriptAutoClass = false;   // 脚本自动添加类选择器
     bool enableScriptAutoId = false;      // 脚本自动添加ID选择器
+    
+    // 自动化限制
     int maxAutoSelectors = 10;             // 最大自动选择器数量
+    int initialClassIndex = 1;             // 自动类名初始索引
+    int initialIdIndex = 1;                // 自动ID初始索引
+    
+    // 引用规则设置
+    AutomationSelectorType styleReferencePreference = AutomationSelectorType::CLASS_SELECTOR;  // 样式&引用优先选择类
+    AutomationSelectorType scriptReferencePreference = AutomationSelectorType::ID_SELECTOR;    // 脚本&引用优先选择ID
+    
+    // 名称生成规则
+    std::string classPrefix = "auto-class-";   // 自动类名前缀
+    std::string idPrefix = "auto-id-";         // 自动ID前缀
     
     /**
      * 从配置节点加载规则
      */
     void loadFromConfig(const ConfigurationNode* configNode);
+    
+    /**
+     * 应用配置设置
+     */
+    void applyConfigSettings(const std::unordered_map<std::string, std::string>& settings);
 };
 
 /**
@@ -226,6 +246,36 @@ public:
      * 规范化选择器名称
      */
     std::string normalizeSelector(const std::string& selectorName) const;
+    
+    /**
+     * 生成自动类名
+     */
+    std::string generateAutoClassName(int index = -1) const;
+    
+    /**
+     * 生成自动ID名
+     */
+    std::string generateAutoIdName(int index = -1) const;
+    
+    /**
+     * 检查元素是否已有指定类型的属性
+     */
+    bool hasAttribute(std::shared_ptr<ElementNode> element, const std::string& attributeName) const;
+    
+    /**
+     * 为元素添加属性
+     */
+    void addAttribute(std::shared_ptr<ElementNode> element, const std::string& attributeName, const std::string& value);
+    
+    /**
+     * 从配置管理器加载自动化规则
+     */
+    void loadAutomationRulesFromConfig(const std::unordered_map<std::string, std::string>& configSettings);
+    
+    /**
+     * 处理增强选择器的自动化
+     */
+    void processEnhancedSelectorAutomation(std::shared_ptr<ElementNode> element, const std::vector<SelectorInfo>& enhancedSelectors);
 
 private:
     AutomationRule m_automationRules;                                      // 自动化规则

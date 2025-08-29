@@ -245,9 +245,38 @@ CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.o: \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/Context.h \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
   /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLState/State.h \
-  /workspace/src/CHTL/CHTLLexer/../../Error/ErrorReport.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/regex \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bitset \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/locale \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets_nonio.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ctime \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/time_members.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/messages_members.h \
+  /usr/include/libintl.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/codecvt.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets_nonio.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_conv.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/algorithmfwd.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_heap.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/uniform_int_dist.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_tree.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_map.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_constants.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_error.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_automaton.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_automaton.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_scanner.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_scanner.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_compiler.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_compiler.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.tcc \
+  /workspace/src/CHTL/CHTLLexer/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/CHTLParser.h \
   /workspace/src/CHTL/CHTLParser/../CHTLLexer/Lexer.h \
   /workspace/src/CHTL/CHTLParser/../CHTLLexer/Token.h \
@@ -268,27 +297,35 @@ CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/OriginNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/NamespaceNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/ImportNode.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/fstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/basic_file.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/c++io.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fstream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/filesystem \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_fwd.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cstdint \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/chrono.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ratio \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/limits \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_path.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iomanip \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/quoted_string.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/codecvt \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_dir.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fs_ops.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/ScriptNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/ConstraintNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/CHTLIOStream.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../../Util/FileSystem/FileSystem.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/fstream \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/codecvt.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/basic_file.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/c++io.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/fstream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/chrono \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/chrono.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ratio \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cstdint \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/limits \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ctime \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/parse_numbers.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../CHTLLexer/Token.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../CHTLNode/BaseNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLIOStream/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/TemplateManager.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/AdvancedTemplateNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/ElementNode.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/StyleNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLParser/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLManage/ConfigurationManager.h \

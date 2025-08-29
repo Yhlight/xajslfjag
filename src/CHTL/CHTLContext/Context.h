@@ -7,6 +7,7 @@
 #include <vector>
 #include <memory>
 #include <stack>
+#include <regex>
 
 namespace CHTL {
 
@@ -60,6 +61,60 @@ public:
     
     // 获取字符串表示
     std::string toString() const;
+};
+
+/**
+ * 变量组类 - 管理CHTL变量系统
+ */
+class VarGroup {
+public:
+    /**
+     * 构造函数
+     */
+    VarGroup() = default;
+    
+    /**
+     * 设置变量
+     */
+    void SetVariable(const std::string& name, const std::string& value);
+    
+    /**
+     * 获取变量
+     */
+    std::string GetVariable(const std::string& name) const;
+    
+    /**
+     * 检查变量是否存在
+     */
+    bool HasVariable(const std::string& name) const;
+    
+    /**
+     * 获取所有变量
+     */
+    const std::unordered_map<std::string, std::string>& GetAllVariables() const;
+    
+    /**
+     * 合并另一个变量组（用于继承）
+     */
+    void Merge(const VarGroup& other);
+    
+    /**
+     * 清除所有变量
+     */
+    void Clear();
+    
+    /**
+     * 解析变量替换 VarGroup(varName)
+     */
+    static std::string ReplaceVariables(const std::string& content, const VarGroup& varGroup);
+    
+    /**
+     * 检查是否包含变量引用
+     */
+    static bool ContainsVariableReferences(const std::string& content);
+
+private:
+    std::unordered_map<std::string, std::string> m_variables;
 };
 
 /**
@@ -349,6 +404,33 @@ public:
      * 设置错误回调
      */
     void setErrorCallback(std::function<void(const std::string&)> callback);
+    
+    // ========== 变量系统 ==========
+    
+    /**
+     * 获取当前变量组
+     */
+    std::shared_ptr<VarGroup> GetVarGroup();
+    
+    /**
+     * 设置变量组
+     */
+    void SetVarGroup(std::shared_ptr<VarGroup> varGroup);
+    
+    /**
+     * 创建新的变量组
+     */
+    std::shared_ptr<VarGroup> CreateVarGroup();
+    
+    /**
+     * 获取处理后的CSS内容
+     */
+    std::string GetProcessedCSS() const;
+    
+    /**
+     * 设置处理后的CSS内容
+     */
+    void SetProcessedCSS(const std::string& css);
 
 private:
     std::stack<ScopeInfo> m_scopeStack;                     // 作用域栈
@@ -356,6 +438,8 @@ private:
     SelectorContext m_selectorContext;                      // 选择器上下文
     std::unordered_map<std::string, std::vector<std::string>> m_inheritanceMap; // 继承关系映射
     std::function<void(const std::string&)> m_errorCallback; // 错误回调
+    std::shared_ptr<VarGroup> m_varGroup;                   // 当前变量组
+    std::string m_processedCSS;                             // 处理后的CSS内容
     
     /**
      * 报告错误

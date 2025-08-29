@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o.d"
+  "CMakeFiles/CHTLManage.dir/VariableManager.cpp.o"
+  "CMakeFiles/CHTLManage.dir/VariableManager.cpp.o.d"
   "libCHTLManage.a"
   "libCHTLManage.pdb"
 )

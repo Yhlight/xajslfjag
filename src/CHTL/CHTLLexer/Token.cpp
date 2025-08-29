@@ -70,6 +70,38 @@ std::string Token::getTypeString() const {
         case TokenType::IDENTIFIER: return "IDENTIFIER";
         case TokenType::INDEX_ACCESS: return "INDEX_ACCESS";
         
+        // CHTL JS 关键字
+        case TokenType::SCRIPT: return "SCRIPT";
+        case TokenType::MODULE: return "MODULE";
+        case TokenType::LOAD: return "LOAD";
+        case TokenType::LISTEN: return "LISTEN";
+        case TokenType::DELEGATE: return "DELEGATE";
+        case TokenType::ANIMATE: return "ANIMATE";
+        case TokenType::VIR: return "VIR";
+        case TokenType::CLICK: return "CLICK";
+        case TokenType::MOUSEENTER: return "MOUSEENTER";
+        case TokenType::MOUSELEAVE: return "MOUSELEAVE";
+        case TokenType::MOUSEMOVE: return "MOUSEMOVE";
+        case TokenType::TARGET: return "TARGET";
+        case TokenType::DURATION: return "DURATION";
+        case TokenType::EASING: return "EASING";
+        case TokenType::BEGIN: return "BEGIN";
+        case TokenType::WHEN: return "WHEN";
+        case TokenType::END: return "END";
+        case TokenType::LOOP: return "LOOP";
+        case TokenType::DIRECTION: return "DIRECTION";
+        case TokenType::DELAY: return "DELAY";
+        case TokenType::CALLBACK: return "CALLBACK";
+        case TokenType::AT: return "AT";
+        
+        // CHTL JS 操作符
+        case TokenType::ARROW: return "ARROW";
+        case TokenType::BIND_OPERATOR: return "BIND_OPERATOR";
+        
+        // CHTL JS 选择器语法
+        case TokenType::ENHANCED_SELECTOR_START: return "ENHANCED_SELECTOR_START";
+        case TokenType::ENHANCED_SELECTOR_END: return "ENHANCED_SELECTOR_END";
+        
         case TokenType::NEWLINE: return "NEWLINE";
         case TokenType::WHITESPACE: return "WHITESPACE";
         case TokenType::EOF_TOKEN: return "EOF_TOKEN";
@@ -88,7 +120,14 @@ bool Token::isKeyword() const {
         TokenType::FROM, TokenType::AS, TokenType::EXCEPT,
         TokenType::TEMPLATE, TokenType::CUSTOM, TokenType::ORIGIN, TokenType::IMPORT,
         TokenType::NAMESPACE, TokenType::CONFIGURATION, TokenType::INFO, TokenType::EXPORT,
-        TokenType::NAME, TokenType::ORIGIN_TYPE
+        TokenType::NAME, TokenType::ORIGIN_TYPE,
+        // CHTL JS 关键字
+        TokenType::SCRIPT, TokenType::MODULE, TokenType::LOAD, TokenType::LISTEN,
+        TokenType::DELEGATE, TokenType::ANIMATE, TokenType::VIR, TokenType::CLICK,
+        TokenType::MOUSEENTER, TokenType::MOUSELEAVE, TokenType::MOUSEMOVE,
+        TokenType::TARGET, TokenType::DURATION, TokenType::EASING, TokenType::BEGIN,
+        TokenType::WHEN, TokenType::END, TokenType::LOOP, TokenType::DIRECTION,
+        TokenType::DELAY, TokenType::CALLBACK, TokenType::AT
     };
     return keywords.find(type) != keywords.end();
 }

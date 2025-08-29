@@ -194,6 +194,53 @@ private:
      */
     NodePtr parseScriptBlock();
     
+    // ========== CHTL JS 解析 ==========
+    
+    /**
+     * 解析CHTL JS语法
+     */
+    NodePtr parseCHTLJS();
+    
+    /**
+     * 解析模块定义
+     */
+    NodePtr parseModule();
+    
+    /**
+     * 解析监听器
+     */
+    NodePtr parseListener();
+    
+    /**
+     * 解析动画
+     */
+    NodePtr parseAnimation();
+    
+    /**
+     * 解析事件委托
+     */
+    NodePtr parseDelegate();
+    
+    /**
+     * 解析虚拟对象
+     */
+    NodePtr parseVirtualObject();
+    
+    /**
+     * 解析增强选择器
+     */
+    NodePtr parseEnhancedSelector();
+    
+    /**
+     * 解析CHTL JS选择器
+     */
+    CHTLJSSelector parseCHTLJSSelector();
+    
+    /**
+     * 解析事件绑定操作符
+     */
+    NodePtr parseEventBinding();
+    
     /**
      * 解析属性
      */
