@@ -20,6 +20,14 @@ Parser::Parser(std::unique_ptr<Lexer> lexer, const ParserConfig& config)
     : lexer(std::move(lexer)), config(config), debugMode(false), currentDepth(0) {
     // 获取第一个token
     advance();
+    
+    // 初始化选择器自动化管理器
+    SelectorAutomationConfig autoConfig;
+    autoConfig.disableStyleAutoAddClass = !config.enableStyleAutomation;
+    autoConfig.disableScriptAutoAddClass = !config.enableScriptAutomation;
+    
+    selectorAutomation = std::make_shared<SelectorAutomationManager>(autoConfig);
+    referenceRuleManager = std::make_shared<ReferenceRuleManager>();
 }
 
 // 主解析方法
@@ -44,6 +52,14 @@ std::unique_ptr<BaseNode> Parser::parseDocument() {
                 break;
             }
         }
+    }
+    
+    // 在解析完成后处理引用规则和选择器自动化
+    if (document) {
+        processReferenceRules(document.get());
+        
+        // 递归处理所有元素节点的选择器自动化
+        processDocumentSelectorAutomation(document.get());
     }
     
     return document;
@@ -1247,6 +1263,55 @@ std::unique_ptr<BaseNode> Parser::parseOriginTypeConfiguration() {
     consume(TokenType::RBRACE, "期望 '}'");
     
     return originTypeConfigNode;
+}
+
+// 选择器自动化处理实现
+void Parser::processSelectorAutomation(BaseNode* elementNode) {
+    if (!elementNode || !selectorAutomation) return;
+    
+    // 自动添加选择器到元素
+    selectorAutomation->autoAddSelectorsToElement(elementNode);
+    
+    // 处理子节点中的样式和脚本块
+    for (auto& child : elementNode->getChildren()) {
+        if (child->getType() == NodeType::STYLE) {
+            processStyleBlockSelectors(elementNode, child.get());
+        } else if (child->getType() == NodeType::SCRIPT) {
+            processScriptBlockSelectors(elementNode, child.get());
+        }
+    }
+}
+
+void Parser::processStyleBlockSelectors(BaseNode* elementNode, BaseNode* styleNode) {
+    if (!selectorAutomation) return;
+    
+    selectorAutomation->processLocalStyleSelectors(elementNode, styleNode);
+}
+
+void Parser::processScriptBlockSelectors(BaseNode* elementNode, BaseNode* scriptNode) {
+    if (!selectorAutomation) return;
+    
+    selectorAutomation->processLocalScriptSelectors(elementNode, scriptNode);
+}
+
+void Parser::processReferenceRules(BaseNode* documentNode) {
+    if (!referenceRuleManager || !selectorAutomation) return;
+    
+    referenceRuleManager->processReferences(documentNode, *selectorAutomation);
+}
+
+void Parser::processDocumentSelectorAutomation(BaseNode* documentNode) {
+    if (!documentNode) return;
+    
+    // 递归处理所有元素节点
+    if (documentNode->getType() == NodeType::ELEMENT) {
+        processSelectorAutomation(documentNode);
+    }
+    
+    // 递归处理子节点
+    for (auto& child : documentNode->getChildren()) {
+        processDocumentSelectorAutomation(child.get());
+    }
 }
 
 } // namespace CHTL

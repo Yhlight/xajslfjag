@@ -5,6 +5,7 @@
 #include "../CHTLNode/BaseNode.h"
 #include "../CHTLContext/Context.h"
 #include "../CHTLState/State.h"
+#include "../CHTLSelector/SelectorAutomation.h"
 
 namespace CHTL {
 
@@ -73,6 +74,13 @@ public:
     String getCurrentScope() const;
     bool isInNamespaceScope() const;
     
+    // 选择器自动化处理
+    void processSelectorAutomation(BaseNode* elementNode);
+    void processStyleBlockSelectors(BaseNode* elementNode, BaseNode* styleNode);
+    void processScriptBlockSelectors(BaseNode* elementNode, BaseNode* scriptNode);
+    void processReferenceRules(BaseNode* documentNode);
+    void processDocumentSelectorAutomation(BaseNode* documentNode);
+    
     // 特例化解析
     std::unique_ptr<class IndexAccessNode> parseIndexAccess();
     std::unique_ptr<class NoValueStyleNode> parseNoValueStyle();
@@ -118,6 +126,8 @@ private:
     ParserConfig config;
     std::shared_ptr<Context> context;
     std::shared_ptr<StateManager> stateManager;
+    std::shared_ptr<SelectorAutomationManager> selectorAutomation;
+    std::shared_ptr<ReferenceRuleManager> referenceRuleManager;
     std::vector<ParseError> errors;
     bool debugMode;
     size_t currentDepth;

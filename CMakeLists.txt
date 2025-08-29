@@ -38,6 +38,7 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLGenerator/Generator.cpp
     src/CHTL/CHTLState/State.cpp
     src/CHTL/CHTLIOStream/FileStream.cpp
+    src/CHTL/CHTLSelector/SelectorAutomation.cpp
     
     # CHTL JS Lexer - 基础功能
     src/CHTLJS/CHTLJSLexer/Token.cpp

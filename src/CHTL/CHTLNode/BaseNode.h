@@ -128,6 +128,10 @@ public:
     BaseNode* getChild(size_t index) const;
     size_t getChildCount() const { return children.size(); }
     
+    // 获取所有子节点（为了兼容性）
+    const std::vector<std::unique_ptr<BaseNode>>& getChildren() const { return children; }
+    std::vector<std::unique_ptr<BaseNode>>& getChildren() { return children; }
+    
     // 属性操作
     void setAttribute(const String& name, const String& value);
     String getAttribute(const String& name, const String& defaultValue = "") const;
