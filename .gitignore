@@ -5,6 +5,15 @@ lib/
 obj/
 out/
 
+# 临时和测试文件
+temp/
+tmp/
+*.tmp
+test_*
+example_*
+*_test_*
+*_demo_*
+
 # CMake生成的文件
 CMakeCache.txt
 CMakeFiles/

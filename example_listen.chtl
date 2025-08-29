@@ -1,9 +1,0 @@
-[Template] ListenExample {
-    button {
-        script {
-            {{.button}}->listen {
-                click: () => console.log('clicked')
-            };
-        }
-    }
-}
