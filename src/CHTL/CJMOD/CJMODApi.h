@@ -6,6 +6,10 @@
 #include <unordered_map>
 #include <functional>
 #include <variant>
+#include <regex>
+#include <sstream>
+#include <chrono>
+#include <cstdlib>
 
 namespace CHTL {
 
@@ -180,17 +184,106 @@ namespace Syntax {
 }
 
 /**
+ * CJMOD运行时系统
+ * 提供动态值获取和运行时编译支持
+ */
+class CJMODRuntime {
+public:
+    CJMODRuntime();
+    ~CJMODRuntime() = default;
+    
+    /**
+     * 初始化运行时环境
+     */
+    bool initialize();
+    
+    /**
+     * 设置运行时变量
+     */
+    void setRuntimeVariable(const std::string& name, const CJMODValue& value);
+    
+    /**
+     * 获取运行时变量
+     */
+    CJMODValue getRuntimeVariable(const std::string& name) const;
+    
+    /**
+     * 注册运行时函数
+     */
+    void registerRuntimeFunction(const std::string& name, 
+                                std::function<CJMODValue(const std::vector<CJMODValue>&)> func);
+    
+    /**
+     * 调用运行时函数
+     */
+    CJMODValue callRuntimeFunction(const std::string& name, const std::vector<CJMODValue>& args);
+    
+    /**
+     * 动态编译代码
+     */
+    std::string compileAtRuntime(const std::string& code);
+    
+    /**
+     * 执行运行时代码
+     */
+    CJMODValue executeRuntimeCode(const std::string& code);
+    
+    /**
+     * 获取运行时上下文
+     */
+    std::unordered_map<std::string, CJMODValue> getRuntimeContext() const;
+    
+    /**
+     * 清理运行时环境
+     */
+    void cleanup();
+    
+    /**
+     * 验证运行时安全性
+     */
+    bool validateRuntimeSafety(const std::string& code);
+
+private:
+    std::unordered_map<std::string, CJMODValue> m_runtimeVariables;
+    std::unordered_map<std::string, std::function<CJMODValue(const std::vector<CJMODValue>&)>> m_runtimeFunctions;
+    bool m_initialized;
+    
+    /**
+     * 解析运行时表达式
+     */
+    CJMODValue parseRuntimeExpression(const std::string& expression);
+};
+
+/**
  * CJMOD扫描器
+ * 增强支持运行时动态扫描
  */
 class CJMODScanner {
 public:
     CJMODScanner();
+    CJMODScanner(std::shared_ptr<CJMODRuntime> runtime);
     ~CJMODScanner() = default;
     
     /**
      * 扫描CJMOD代码
      */
     bool scan(const std::string& code);
+    
+    /**
+     * 运行时动态扫描
+     * 支持动态值获取和运行时绑定
+     */
+    bool scanWithRuntime(const std::string& code);
+    
+    /**
+     * 设置运行时环境
+     */
+    void setRuntime(std::shared_ptr<CJMODRuntime> runtime);
+    
+    /**
+     * 获取运行时扫描结果
+     */
+    std::vector<std::string> getRuntimeScanResults() const;
     
     /**
      * 双指针扫描机制
@@ -253,6 +346,11 @@ private:
     std::vector<std::string> m_keywordBuffer;
     std::vector<std::string> m_fragmentBuffer;
     
+    // 运行时支持
+    std::shared_ptr<CJMODRuntime> m_runtime;
+    std::vector<std::string> m_runtimeScanResults;
+    bool m_runtimeEnabled;
+    
     /**
      * 扫描函数定义
      */
@@ -292,6 +390,14 @@ private:
     size_t findKeywordPosition(const std::string& code, const std::string& keyword);
     std::string extractPrefixFragment(const std::string& code, size_t keywordPos);
     bool isValidCJMODFragment(const std::string& fragment);
+    
+    /**
+     * 运行时扫描辅助方法
+     */
+    void scanRuntimeVariables(const std::string& code);
+    void scanRuntimeFunctions(const std::string& code);
+    std::string resolveRuntimeReferences(const std::string& code);
+    bool needsRuntimeResolution(const std::string& fragment);
 };
 
 /**
@@ -450,12 +556,18 @@ private:
 class CJMODAPIManager {
 public:
     CJMODAPIManager();
+    CJMODAPIManager(std::shared_ptr<CJMODRuntime> runtime);
     ~CJMODAPIManager() = default;
     
     /**
      * 初始化API系统
      */
     bool initialize();
+    
+    /**
+     * 设置运行时环境
+     */
+    void setRuntime(std::shared_ptr<CJMODRuntime> runtime);
     
     /**
      * 分析CJMOD代码
@@ -509,6 +621,7 @@ private:
     std::unique_ptr<CJMODScanner> m_scanner;
     std::unique_ptr<CJMODGenerator> m_generator;
     std::unique_ptr<VirtualObjectBinder> m_virtualBinder;
+    std::shared_ptr<CJMODRuntime> m_runtime;
     
     bool m_initialized;
     bool m_debugMode;

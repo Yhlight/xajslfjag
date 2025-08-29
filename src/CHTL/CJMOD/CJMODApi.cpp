@@ -390,9 +390,179 @@ bool validateSyntax(const std::string& code, std::vector<std::string>& errors) {
 
 } // namespace Syntax
 
+// ========== CJMODRuntime 实现 ==========
+
+CJMODRuntime::CJMODRuntime() : m_initialized(false) {
+    // 初始化运行时环境
+}
+
+bool CJMODRuntime::initialize() {
+    if (m_initialized) return true;
+    
+    // 注册内置运行时函数
+    registerRuntimeFunction("getCurrentTime", [](const std::vector<CJMODValue>&) -> CJMODValue {
+        auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now().time_since_epoch()
+        ).count();
+        return static_cast<double>(timestamp);
+    });
+    
+    registerRuntimeFunction("random", [](const std::vector<CJMODValue>&) -> CJMODValue {
+        return static_cast<double>(rand()) / RAND_MAX;
+    });
+    
+    registerRuntimeFunction("concat", [](const std::vector<CJMODValue>& args) -> CJMODValue {
+        std::string result;
+        for (const auto& arg : args) {
+            if (std::holds_alternative<std::string>(arg)) {
+                result += std::get<std::string>(arg);
+            }
+        }
+        return result;
+    });
+    
+    m_initialized = true;
+    return true;
+}
+
+void CJMODRuntime::setRuntimeVariable(const std::string& name, const CJMODValue& value) {
+    m_runtimeVariables[name] = value;
+}
+
+CJMODValue CJMODRuntime::getRuntimeVariable(const std::string& name) const {
+    auto it = m_runtimeVariables.find(name);
+    if (it != m_runtimeVariables.end()) {
+        return it->second;
+    }
+    return std::string(""); // 默认返回空字符串
+}
+
+void CJMODRuntime::registerRuntimeFunction(const std::string& name, 
+                                          std::function<CJMODValue(const std::vector<CJMODValue>&)> func) {
+    m_runtimeFunctions[name] = func;
+}
+
+CJMODValue CJMODRuntime::callRuntimeFunction(const std::string& name, const std::vector<CJMODValue>& args) {
+    auto it = m_runtimeFunctions.find(name);
+    if (it != m_runtimeFunctions.end()) {
+        return it->second(args);
+    }
+    return std::string(""); // 默认返回空字符串
+}
+
+std::string CJMODRuntime::compileAtRuntime(const std::string& code) {
+    // 运行时编译：解析代码中的运行时变量和函数调用
+    std::string result = code;
+    
+    // 解析运行时变量引用 ${variableName}
+    std::regex varPattern(R"(\$\{([^}]+)\})");
+    std::smatch match;
+    
+    auto searchStart = result.cbegin();
+    while (std::regex_search(searchStart, result.cend(), match, varPattern)) {
+        std::string varName = match[1].str();
+        CJMODValue varValue = getRuntimeVariable(varName);
+        
+        std::string valueStr = std::visit([](const auto& val) -> std::string {
+            if constexpr (std::is_same_v<std::decay_t<decltype(val)>, std::string>) {
+                return val;
+            } else {
+                return std::to_string(val);
+            }
+        }, varValue);
+        
+        result.replace(match.position(0), match.length(0), valueStr);
+        searchStart = result.cbegin() + match.position(0) + valueStr.length();
+    }
+    
+    // 解析运行时函数调用 @{functionName(args)}
+    std::regex funcPattern(R"(@\{([^(]+)\(([^)]*)\)\})");
+    searchStart = result.cbegin();
+    while (std::regex_search(searchStart, result.cend(), match, funcPattern)) {
+        std::string funcName = match[1].str();
+        std::string argsStr = match[2].str();
+        
+        // 简单的参数解析（实际应该更复杂）
+        std::vector<CJMODValue> args;
+        if (!argsStr.empty()) {
+            // 这里简化处理，实际需要更完整的参数解析
+            args.push_back(argsStr);
+        }
+        
+        CJMODValue funcResult = callRuntimeFunction(funcName, args);
+        std::string resultStr = std::visit([](const auto& val) -> std::string {
+            if constexpr (std::is_same_v<std::decay_t<decltype(val)>, std::string>) {
+                return val;
+            } else {
+                return std::to_string(val);
+            }
+        }, funcResult);
+        
+        result.replace(match.position(0), match.length(0), resultStr);
+        searchStart = result.cbegin() + match.position(0) + resultStr.length();
+    }
+    
+    return result;
+}
+
+CJMODValue CJMODRuntime::executeRuntimeCode(const std::string& code) {
+    // 执行运行时代码（简化版本）
+    std::string compiledCode = compileAtRuntime(code);
+    return parseRuntimeExpression(compiledCode);
+}
+
+std::unordered_map<std::string, CJMODValue> CJMODRuntime::getRuntimeContext() const {
+    return m_runtimeVariables;
+}
+
+void CJMODRuntime::cleanup() {
+    m_runtimeVariables.clear();
+    m_runtimeFunctions.clear();
+    m_initialized = false;
+}
+
+CJMODValue CJMODRuntime::parseRuntimeExpression(const std::string& expression) {
+    // 简化的表达式解析
+    if (expression.empty()) return std::string("");
+    
+    // 尝试解析为数字
+    try {
+        if (expression.find('.') != std::string::npos) {
+            return std::stod(expression);
+        } else {
+            return std::stoi(expression);
+        }
+    } catch (...) {
+        // 解析失败，返回字符串
+        return expression;
+    }
+}
+
+bool CJMODRuntime::validateRuntimeSafety(const std::string& code) {
+    // 简单的安全性验证
+    // 检查是否包含危险操作
+    std::vector<std::string> dangerousPatterns = {
+        "eval(", "new Function(", "setTimeout(", "setInterval(",
+        "document.write(", "innerHTML", "outerHTML"
+    };
+    
+    for (const auto& pattern : dangerousPatterns) {
+        if (code.find(pattern) != std::string::npos) {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 // ========== CJMODScanner 实现 ==========
 
-CJMODScanner::CJMODScanner() : m_frontPointer(0), m_backPointer(0) {
+CJMODScanner::CJMODScanner() : m_frontPointer(0), m_backPointer(0), m_runtimeEnabled(false) {
+    initializePointers();
+}
+
+CJMODScanner::CJMODScanner(std::shared_ptr<CJMODRuntime> runtime) 
+    : m_frontPointer(0), m_backPointer(0), m_runtime(runtime), m_runtimeEnabled(true) {
     initializePointers();
 }
 
@@ -685,13 +855,28 @@ CJMODAPIManager::CJMODAPIManager()
     : m_initialized(false), m_debugMode(false) {
 }
 
+CJMODAPIManager::CJMODAPIManager(std::shared_ptr<CJMODRuntime> runtime)
+    : m_initialized(false), m_debugMode(false), m_runtime(runtime) {
+}
+
 bool CJMODAPIManager::initialize() {
     if (m_initialized) return true;
     
     try {
-        m_scanner = std::make_unique<CJMODScanner>();
+        // 创建扫描器，如果有运行时环境则使用运行时支持
+        if (m_runtime) {
+            m_scanner = std::make_unique<CJMODScanner>(m_runtime);
+        } else {
+            m_scanner = std::make_unique<CJMODScanner>();
+        }
+        
         m_generator = std::make_unique<CJMODGenerator>();
         m_virtualBinder = std::make_unique<VirtualObjectBinder>();
+        
+        // 初始化运行时环境（如果存在）
+        if (m_runtime) {
+            m_runtime->initialize();
+        }
         
         m_initialized = true;
         updateStats("initialization_success");
@@ -704,6 +889,15 @@ bool CJMODAPIManager::initialize() {
     }
 }
 
+void CJMODAPIManager::setRuntime(std::shared_ptr<CJMODRuntime> runtime) {
+    m_runtime = runtime;
+    
+    // 如果扫描器已经创建，更新其运行时环境
+    if (m_scanner) {
+        m_scanner->setRuntime(runtime);
+    }
+}
+
 SyntaxAnalysisResult CJMODAPIManager::analyzeSyntax(const std::string& code) {
     updateStats("syntax_analysis");
     return Syntax::analyze(code);
@@ -713,7 +907,13 @@ bool CJMODAPIManager::scanCode(const std::string& code) {
     if (!m_initialized) return false;
     
     updateStats("code_scans");
-    return m_scanner->scan(code);
+    
+    // 如果有运行时环境，使用运行时扫描
+    if (m_runtime) {
+        return m_scanner->scanWithRuntime(code);
+    } else {
+        return m_scanner->scan(code);
+    }
 }
 
 std::string CJMODAPIManager::generateBindings(const SyntaxAnalysisResult& analysis) {
@@ -954,6 +1154,93 @@ bool CJMODScanner::isValidCJMODFragment(const std::string& fragment) {
     }
     
     return false;
+}
+
+// ========== CJMODScanner 运行时方法实现 ==========
+
+bool CJMODScanner::scanWithRuntime(const std::string& code) {
+    if (!m_runtimeEnabled || !m_runtime) {
+        return scan(code); // 回退到普通扫描
+    }
+    
+    cleanup();
+    m_runtimeScanResults.clear();
+    
+    // 运行时代码解析
+    std::string runtimeResolvedCode = resolveRuntimeReferences(code);
+    
+    // 扫描运行时变量和函数
+    scanRuntimeVariables(runtimeResolvedCode);
+    scanRuntimeFunctions(runtimeResolvedCode);
+    
+    // 执行标准扫描
+    scanFunctions(runtimeResolvedCode);
+    scanVariables(runtimeResolvedCode);
+    scanTypes(runtimeResolvedCode);
+    scanImports(runtimeResolvedCode);
+    
+    return true;
+}
+
+void CJMODScanner::setRuntime(std::shared_ptr<CJMODRuntime> runtime) {
+    m_runtime = runtime;
+    m_runtimeEnabled = (runtime != nullptr);
+}
+
+std::vector<std::string> CJMODScanner::getRuntimeScanResults() const {
+    return m_runtimeScanResults;
+}
+
+void CJMODScanner::scanRuntimeVariables(const std::string& code) {
+    if (!m_runtime) return;
+    
+    // 扫描运行时变量引用 ${variableName}
+    std::regex varPattern(R"(\$\{([^}]+)\})");
+    std::smatch match;
+    
+    auto searchStart = code.cbegin();
+    while (std::regex_search(searchStart, code.cend(), match, varPattern)) {
+        std::string varName = match[1].str();
+        
+        // 记录运行时变量使用
+        m_runtimeScanResults.push_back("runtime_var:" + varName);
+        updateStats("runtime_variables");
+        
+        searchStart = match.suffix().first;
+    }
+}
+
+void CJMODScanner::scanRuntimeFunctions(const std::string& code) {
+    if (!m_runtime) return;
+    
+    // 扫描运行时函数调用 @{functionName(args)}
+    std::regex funcPattern(R"(@\{([^(]+)\(([^)]*)\)\})");
+    std::smatch match;
+    
+    auto searchStart = code.cbegin();
+    while (std::regex_search(searchStart, code.cend(), match, funcPattern)) {
+        std::string funcName = match[1].str();
+        std::string argsStr = match[2].str();
+        
+        // 记录运行时函数使用
+        m_runtimeScanResults.push_back("runtime_func:" + funcName + "(" + argsStr + ")");
+        updateStats("runtime_functions");
+        
+        searchStart = match.suffix().first;
+    }
+}
+
+std::string CJMODScanner::resolveRuntimeReferences(const std::string& code) {
+    if (!m_runtime) return code;
+    
+    // 使用运行时编译器解析代码
+    return m_runtime->compileAtRuntime(code);
+}
+
+bool CJMODScanner::needsRuntimeResolution(const std::string& fragment) {
+    // 检查是否包含运行时引用
+    return fragment.find("${") != std::string::npos || 
+           fragment.find("@{") != std::string::npos;
 }
 
 } // namespace CHTL

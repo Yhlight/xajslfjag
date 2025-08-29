@@ -26,6 +26,8 @@
 /workspace/src/CHTL/build/CMakeFiles/test_constraint_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_final_simple.dir
 /workspace/src/CHTL/build/CMakeFiles/test_short_term_goals_simple.dir
+/workspace/src/CHTL/build/CMakeFiles/test_cjmod_runtime.dir
+/workspace/src/CHTL/build/CMakeFiles/test_cjmod_complete_integration.dir
 /workspace/src/CHTL/build/CMakeFiles/edit_cache.dir
 /workspace/src/CHTL/build/CMakeFiles/rebuild_cache.dir
 /workspace/src/CHTL/build/CMakeFiles/list_install_components.dir

@@ -120,6 +120,8 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/test_constraint_system.dir/DependInfo.cmake"
   "CMakeFiles/test_final_simple.dir/DependInfo.cmake"
   "CMakeFiles/test_short_term_goals_simple.dir/DependInfo.cmake"
+  "CMakeFiles/test_cjmod_runtime.dir/DependInfo.cmake"
+  "CMakeFiles/test_cjmod_complete_integration.dir/DependInfo.cmake"
   "CHTLError/CMakeFiles/CHTLError.dir/DependInfo.cmake"
   "CHTLFileSystem/CMakeFiles/CHTLFileSystem.dir/DependInfo.cmake"
   "CHTLLexer/CMakeFiles/CHTLLexer.dir/DependInfo.cmake"

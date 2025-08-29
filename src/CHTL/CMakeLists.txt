@@ -571,4 +571,18 @@ if(BUILD_TESTS)
         CHTLCJMOD
     )
     
+    # CJMOD运行时系统测试
+    add_executable(test_cjmod_runtime test_cjmod_runtime.cpp)
+    target_link_libraries(test_cjmod_runtime 
+        CHTLError
+        CHTLCJMOD
+    )
+    
+    # CJMOD完整集成测试
+    add_executable(test_cjmod_complete_integration test_cjmod_complete_integration.cpp)
+    target_link_libraries(test_cjmod_complete_integration 
+        CHTLError
+        CHTLCJMOD
+    )
+    
 endif()

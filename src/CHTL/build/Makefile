@@ -526,6 +526,32 @@ test_short_term_goals_simple/fast:
 .PHONY : test_short_term_goals_simple/fast
 
 #=============================================================================
+# Target rules for targets named test_cjmod_runtime
+
+# Build rule for target.
+test_cjmod_runtime: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_cjmod_runtime
+.PHONY : test_cjmod_runtime
+
+# fast build rule for target.
+test_cjmod_runtime/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_runtime.dir/build.make CMakeFiles/test_cjmod_runtime.dir/build
+.PHONY : test_cjmod_runtime/fast
+
+#=============================================================================
+# Target rules for targets named test_cjmod_complete_integration
+
+# Build rule for target.
+test_cjmod_complete_integration: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_cjmod_complete_integration
+.PHONY : test_cjmod_complete_integration
+
+# fast build rule for target.
+test_cjmod_complete_integration/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_complete_integration.dir/build.make CMakeFiles/test_cjmod_complete_integration.dir/build
+.PHONY : test_cjmod_complete_integration/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -937,6 +963,54 @@ test_chtl_syntax.s: test_chtl_syntax.cpp.s
 test_chtl_syntax.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/test_chtl_syntax.cpp.s
 .PHONY : test_chtl_syntax.cpp.s
+
+test_cjmod_complete_integration.o: test_cjmod_complete_integration.cpp.o
+.PHONY : test_cjmod_complete_integration.o
+
+# target to build an object file
+test_cjmod_complete_integration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_complete_integration.dir/build.make CMakeFiles/test_cjmod_complete_integration.dir/test_cjmod_complete_integration.cpp.o
+.PHONY : test_cjmod_complete_integration.cpp.o
+
+test_cjmod_complete_integration.i: test_cjmod_complete_integration.cpp.i
+.PHONY : test_cjmod_complete_integration.i
+
+# target to preprocess a source file
+test_cjmod_complete_integration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_complete_integration.dir/build.make CMakeFiles/test_cjmod_complete_integration.dir/test_cjmod_complete_integration.cpp.i
+.PHONY : test_cjmod_complete_integration.cpp.i
+
+test_cjmod_complete_integration.s: test_cjmod_complete_integration.cpp.s
+.PHONY : test_cjmod_complete_integration.s
+
+# target to generate assembly for a file
+test_cjmod_complete_integration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_complete_integration.dir/build.make CMakeFiles/test_cjmod_complete_integration.dir/test_cjmod_complete_integration.cpp.s
+.PHONY : test_cjmod_complete_integration.cpp.s
+
+test_cjmod_runtime.o: test_cjmod_runtime.cpp.o
+.PHONY : test_cjmod_runtime.o
+
+# target to build an object file
+test_cjmod_runtime.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_runtime.dir/build.make CMakeFiles/test_cjmod_runtime.dir/test_cjmod_runtime.cpp.o
+.PHONY : test_cjmod_runtime.cpp.o
+
+test_cjmod_runtime.i: test_cjmod_runtime.cpp.i
+.PHONY : test_cjmod_runtime.i
+
+# target to preprocess a source file
+test_cjmod_runtime.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_runtime.dir/build.make CMakeFiles/test_cjmod_runtime.dir/test_cjmod_runtime.cpp.i
+.PHONY : test_cjmod_runtime.cpp.i
+
+test_cjmod_runtime.s: test_cjmod_runtime.cpp.s
+.PHONY : test_cjmod_runtime.s
+
+# target to generate assembly for a file
+test_cjmod_runtime.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_runtime.dir/build.make CMakeFiles/test_cjmod_runtime.dir/test_cjmod_runtime.cpp.s
+.PHONY : test_cjmod_runtime.cpp.s
 
 test_complete_chtl_features.o: test_complete_chtl_features.cpp.o
 .PHONY : test_complete_chtl_features.o
@@ -1453,6 +1527,8 @@ help:
 	@echo "... run_all_tests"
 	@echo "... test_chtl_js_system"
 	@echo "... test_chtl_syntax"
+	@echo "... test_cjmod_complete_integration"
+	@echo "... test_cjmod_runtime"
 	@echo "... test_compilation_monitor"
 	@echo "... test_complete_chtl_features"
 	@echo "... test_complete_system"
@@ -1499,6 +1575,12 @@ help:
 	@echo "... test_chtl_syntax.o"
 	@echo "... test_chtl_syntax.i"
 	@echo "... test_chtl_syntax.s"
+	@echo "... test_cjmod_complete_integration.o"
+	@echo "... test_cjmod_complete_integration.i"
+	@echo "... test_cjmod_complete_integration.s"
+	@echo "... test_cjmod_runtime.o"
+	@echo "... test_cjmod_runtime.i"
+	@echo "... test_cjmod_runtime.s"
 	@echo "... test_complete_chtl_features.o"
 	@echo "... test_complete_chtl_features.i"
 	@echo "... test_complete_chtl_features.s"
