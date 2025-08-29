@@ -421,7 +421,7 @@ std::string CHTLModuleLoader::findModule(const std::string& moduleName, CHTLFile
     return "";
 }
 
-ModuleInfo CHTLModuleLoader::getModuleInfo(const std::string& moduleName) {
+CHTLModuleLoader::ModuleInfo CHTLModuleLoader::getModuleInfo(const std::string& moduleName) {
     auto it = m_moduleCache.find(moduleName);
     if (it != m_moduleCache.end()) {
         return it->second;
@@ -429,7 +429,7 @@ ModuleInfo CHTLModuleLoader::getModuleInfo(const std::string& moduleName) {
     
     std::string modulePath = findModule(moduleName);
     if (!modulePath.empty()) {
-        ModuleInfo info = parseModuleInfo(modulePath);
+        auto info = parseModuleInfo(modulePath);
         m_moduleCache[moduleName] = info;
         return info;
     }
@@ -512,7 +512,7 @@ std::string CHTLModuleLoader::searchInPath(const std::string& path, const std::s
     return "";
 }
 
-ModuleInfo CHTLModuleLoader::parseModuleInfo(const std::string& modulePath) {
+CHTLModuleLoader::ModuleInfo CHTLModuleLoader::parseModuleInfo(const std::string& modulePath) {
     ModuleInfo info;
     info.path = modulePath;
     info.name = Util::Path::getBaseName(modulePath);
@@ -609,11 +609,11 @@ bool CHTLProjectManager::saveProject() {
     return success;
 }
 
-const ProjectInfo& CHTLProjectManager::getProjectInfo() const {
+const CHTLProjectManager::ProjectInfo& CHTLProjectManager::getProjectInfo() const {
     return m_projectInfo;
 }
 
-void CHTLProjectManager::setProjectInfo(const ProjectInfo& info) {
+void CHTLProjectManager::setProjectInfo(const CHTLProjectManager::ProjectInfo& info) {
     m_projectInfo = info;
 }
 

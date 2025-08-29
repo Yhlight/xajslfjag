@@ -172,13 +172,16 @@ public:
      * 写入选项
      */
     struct WriteOptions {
-        CHTLEncoding encoding = CHTLEncoding::UTF8;     // 输出编码
-        bool addBOM = false;                            // 是否添加BOM
-        bool createDirectory = true;                    // 是否自动创建目录
-        bool backup = false;                            // 是否备份原文件
-        std::string indentation = "    ";               // 缩进字符
-        std::string lineEnding = "\n";                  // 行结束符
-        bool prettyPrint = true;                        // 是否格式化输出
+        CHTLEncoding encoding;     // 输出编码
+        bool addBOM;               // 是否添加BOM
+        bool createDirectory;      // 是否自动创建目录
+        bool backup;               // 是否备份原文件
+        std::string indentation;   // 缩进字符
+        std::string lineEnding;    // 行结束符
+        bool prettyPrint;          // 是否格式化输出
+        
+        WriteOptions() : encoding(CHTLEncoding::UTF8), addBOM(false), createDirectory(true),
+                        backup(false), indentation("    "), lineEnding("\n"), prettyPrint(true) {}
     };
     
     /**

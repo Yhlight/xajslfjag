@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLIOStream.a CMakeFiles/CHTLIOStream.dir/CHTLIOStream.cpp.o
+/usr/bin/ranlib libCHTLIOStream.a

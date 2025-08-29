@@ -27,17 +27,18 @@ void LocalStyleManager::processLocalStyleBlock(StyleNode* styleNode, ElementNode
     switch (styleNode->getStyleType()) {
         case StyleNodeType::LOCAL_STYLE:
             // 处理局部样式块的所有功能
-            processLocalStyleFeatures(styleNode, parentElement);
+            processInlineStyle(styleNode);
+            processSelectorStyles(styleNode, parentElement);
             break;
             
         case StyleNodeType::INLINE_STYLE:
             // 处理内联样式
-            processInlineStyleProperties(styleNode, parentElement);
+            processInlineStyle(styleNode);
             break;
             
         case StyleNodeType::SELECTOR_STYLE:
             // 处理选择器样式
-            processSelectorStyleBlock(styleNode, parentElement);
+            processSelectorStyles(styleNode, parentElement);
             break;
     }
 }
@@ -70,7 +71,7 @@ std::vector<StyleRule> LocalStyleManager::processSelectorStyles(const StyleNode*
     if (styleNode->hasSelector()) {
         StyleRule rule;
         rule.originalSelector = styleNode->getSelector();
-        rule.selector = processSelector(rule.originalSelector, parentElement);
+        rule.selector = processContextSelector(rule.originalSelector, parentElement);
         rule.properties = styleNode->getCssProperties();
         rule.type = parseSelector(rule.originalSelector);
         rule.targetElement = parentElement;
@@ -524,33 +525,6 @@ std::string LocalStyleManager::formatCSSRule(const StyleRule& rule) {
 }
 
 // 简化实现的其他方法
-void LocalStyleManager::processLocalStyleFeatures(StyleNode* styleNode, ElementNode* parentElement) {
-    // 综合处理局部样式块的所有功能
-    processInlineStyleProperties(styleNode, parentElement);
-    processSelectorStyleBlock(styleNode, parentElement);
-}
-
-void LocalStyleManager::processInlineStyleProperties(StyleNode* styleNode, ElementNode* parentElement) {
-    std::string inlineStyle = processInlineStyle(styleNode);
-    if (!inlineStyle.empty()) {
-        parentElement->setAttribute("style", inlineStyle);
-    }
-}
-
-void LocalStyleManager::processSelectorStyleBlock(StyleNode* styleNode, ElementNode* parentElement) {
-    processSelectorStyles(styleNode, parentElement);
-}
-
-std::string LocalStyleManager::processSelector(const std::string& selector, ElementNode* element) {
-    std::string processed = selector;
-    
-    // 处理上下文选择器
-    if (selector.find('&') != std::string::npos) {
-        processed = processContextSelector(selector, element);
-    }
-    
-    return processed;
-}
 
 // ========== LocalStyleManagerFactory 实现 ==========
 

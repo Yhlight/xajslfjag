@@ -143,6 +143,32 @@ test_updated_lexer/fast:
 .PHONY : test_updated_lexer/fast
 
 #=============================================================================
+# Target rules for targets named test_complete_system
+
+# Build rule for target.
+test_complete_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_complete_system
+.PHONY : test_complete_system
+
+# fast build rule for target.
+test_complete_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_system.dir/build.make CMakeFiles/test_complete_system.dir/build
+.PHONY : test_complete_system/fast
+
+#=============================================================================
+# Target rules for targets named test_chtl_syntax
+
+# Build rule for target.
+test_chtl_syntax: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_chtl_syntax
+.PHONY : test_chtl_syntax
+
+# fast build rule for target.
+test_chtl_syntax/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/build
+.PHONY : test_chtl_syntax/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -154,6 +180,19 @@ CHTLError: cmake_check_build_system
 CHTLError/fast:
 	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/build
 .PHONY : CHTLError/fast
+
+#=============================================================================
+# Target rules for targets named CHTLFileSystem
+
+# Build rule for target.
+CHTLFileSystem: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLFileSystem
+.PHONY : CHTLFileSystem
+
+# fast build rule for target.
+CHTLFileSystem/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLFileSystem/CMakeFiles/CHTLFileSystem.dir/build.make CHTLFileSystem/CMakeFiles/CHTLFileSystem.dir/build
+.PHONY : CHTLFileSystem/fast
 
 #=============================================================================
 # Target rules for targets named CHTLLexer
@@ -206,6 +245,158 @@ CHTLContext: cmake_check_build_system
 CHTLContext/fast:
 	$(MAKE) $(MAKESILENT) -f CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTLContext/CMakeFiles/CHTLContext.dir/build
 .PHONY : CHTLContext/fast
+
+#=============================================================================
+# Target rules for targets named CHTLNode
+
+# Build rule for target.
+CHTLNode: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLNode
+.PHONY : CHTLNode
+
+# fast build rule for target.
+CHTLNode/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/build
+.PHONY : CHTLNode/fast
+
+#=============================================================================
+# Target rules for targets named CHTLIOStream
+
+# Build rule for target.
+CHTLIOStream: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLIOStream
+.PHONY : CHTLIOStream
+
+# fast build rule for target.
+CHTLIOStream/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build.make CHTLIOStream/CMakeFiles/CHTLIOStream.dir/build
+.PHONY : CHTLIOStream/fast
+
+#=============================================================================
+# Target rules for targets named CHTLParser
+
+# Build rule for target.
+CHTLParser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLParser
+.PHONY : CHTLParser
+
+# fast build rule for target.
+CHTLParser/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLParser/CMakeFiles/CHTLParser.dir/build.make CHTLParser/CMakeFiles/CHTLParser.dir/build
+.PHONY : CHTLParser/fast
+
+#=============================================================================
+# Target rules for targets named CHTLGenerator
+
+# Build rule for target.
+CHTLGenerator: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLGenerator
+.PHONY : CHTLGenerator
+
+# fast build rule for target.
+CHTLGenerator/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLGenerator/CMakeFiles/CHTLGenerator.dir/build.make CHTLGenerator/CMakeFiles/CHTLGenerator.dir/build
+.PHONY : CHTLGenerator/fast
+
+#=============================================================================
+# Target rules for targets named CHTLManage
+
+# Build rule for target.
+CHTLManage: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLManage
+.PHONY : CHTLManage
+
+# fast build rule for target.
+CHTLManage/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/build
+.PHONY : CHTLManage/fast
+
+#=============================================================================
+# Target rules for targets named CHTLTest
+
+# Build rule for target.
+CHTLTest: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLTest
+.PHONY : CHTLTest
+
+# fast build rule for target.
+CHTLTest/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLTest/CMakeFiles/CHTLTest.dir/build.make CHTLTest/CMakeFiles/CHTLTest.dir/build
+.PHONY : CHTLTest/fast
+
+#=============================================================================
+# Target rules for targets named run_all_tests
+
+# Build rule for target.
+run_all_tests: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 run_all_tests
+.PHONY : run_all_tests
+
+# fast build rule for target.
+run_all_tests/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLTest/CMakeFiles/run_all_tests.dir/build.make CHTLTest/CMakeFiles/run_all_tests.dir/build
+.PHONY : run_all_tests/fast
+
+#=============================================================================
+# Target rules for targets named test_compilation_monitor
+
+# Build rule for target.
+test_compilation_monitor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_compilation_monitor
+.PHONY : test_compilation_monitor
+
+# fast build rule for target.
+test_compilation_monitor/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLTest/CMakeFiles/test_compilation_monitor.dir/build.make CHTLTest/CMakeFiles/test_compilation_monitor.dir/build
+.PHONY : test_compilation_monitor/fast
+
+test_chtl_syntax.o: test_chtl_syntax.cpp.o
+.PHONY : test_chtl_syntax.o
+
+# target to build an object file
+test_chtl_syntax.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/test_chtl_syntax.cpp.o
+.PHONY : test_chtl_syntax.cpp.o
+
+test_chtl_syntax.i: test_chtl_syntax.cpp.i
+.PHONY : test_chtl_syntax.i
+
+# target to preprocess a source file
+test_chtl_syntax.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/test_chtl_syntax.cpp.i
+.PHONY : test_chtl_syntax.cpp.i
+
+test_chtl_syntax.s: test_chtl_syntax.cpp.s
+.PHONY : test_chtl_syntax.s
+
+# target to generate assembly for a file
+test_chtl_syntax.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/test_chtl_syntax.cpp.s
+.PHONY : test_chtl_syntax.cpp.s
+
+test_complete_system.o: test_complete_system.cpp.o
+.PHONY : test_complete_system.o
+
+# target to build an object file
+test_complete_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_system.dir/build.make CMakeFiles/test_complete_system.dir/test_complete_system.cpp.o
+.PHONY : test_complete_system.cpp.o
+
+test_complete_system.i: test_complete_system.cpp.i
+.PHONY : test_complete_system.i
+
+# target to preprocess a source file
+test_complete_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_system.dir/build.make CMakeFiles/test_complete_system.dir/test_complete_system.cpp.i
+.PHONY : test_complete_system.cpp.i
+
+test_complete_system.s: test_complete_system.cpp.s
+.PHONY : test_complete_system.s
+
+# target to generate assembly for a file
+test_complete_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_system.dir/build.make CMakeFiles/test_complete_system.dir/test_complete_system.cpp.s
+.PHONY : test_complete_system.cpp.s
 
 test_state_context.o: test_state_context.cpp.o
 .PHONY : test_state_context.o
@@ -265,11 +456,28 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... CHTLContext"
 	@echo "... CHTLError"
+	@echo "... CHTLFileSystem"
+	@echo "... CHTLGenerator"
+	@echo "... CHTLIOStream"
 	@echo "... CHTLLexer"
+	@echo "... CHTLManage"
+	@echo "... CHTLNode"
+	@echo "... CHTLParser"
 	@echo "... CHTLState"
+	@echo "... CHTLTest"
+	@echo "... run_all_tests"
+	@echo "... test_chtl_syntax"
+	@echo "... test_compilation_monitor"
+	@echo "... test_complete_system"
 	@echo "... test_lexer"
 	@echo "... test_state_context"
 	@echo "... test_updated_lexer"
+	@echo "... test_chtl_syntax.o"
+	@echo "... test_chtl_syntax.i"
+	@echo "... test_chtl_syntax.s"
+	@echo "... test_complete_system.o"
+	@echo "... test_complete_system.i"
+	@echo "... test_complete_system.s"
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"

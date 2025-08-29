@@ -36,6 +36,33 @@ CHTLError_IS_TOP_LEVEL:STATIC=OFF
 CHTLError_SOURCE_DIR:STATIC=/workspace/src/Error
 
 //Value Computed by CMake
+CHTLFileSystem_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLFileSystem
+
+//Value Computed by CMake
+CHTLFileSystem_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLFileSystem_SOURCE_DIR:STATIC=/workspace/src/Util/FileSystem
+
+//Value Computed by CMake
+CHTLGenerator_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLGenerator
+
+//Value Computed by CMake
+CHTLGenerator_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLGenerator_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLGenerator
+
+//Value Computed by CMake
+CHTLIOStream_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLIOStream
+
+//Value Computed by CMake
+CHTLIOStream_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLIOStream_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLIOStream
+
+//Value Computed by CMake
 CHTLLexer_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLLexer
 
 //Value Computed by CMake
@@ -45,6 +72,33 @@ CHTLLexer_IS_TOP_LEVEL:STATIC=OFF
 CHTLLexer_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLLexer
 
 //Value Computed by CMake
+CHTLManage_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLManage
+
+//Value Computed by CMake
+CHTLManage_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLManage_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLManage
+
+//Value Computed by CMake
+CHTLNode_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLNode
+
+//Value Computed by CMake
+CHTLNode_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLNode_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLNode
+
+//Value Computed by CMake
+CHTLParser_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLParser
+
+//Value Computed by CMake
+CHTLParser_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLParser_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLParser
+
+//Value Computed by CMake
 CHTLState_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLState
 
 //Value Computed by CMake
@@ -52,6 +106,15 @@ CHTLState_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 CHTLState_SOURCE_DIR:STATIC=/workspace/src/CHTL/CHTLState
+
+//Value Computed by CMake
+CHTLTest_BINARY_DIR:STATIC=/workspace/src/CHTL/build/CHTLTest
+
+//Value Computed by CMake
+CHTLTest_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLTest_SOURCE_DIR:STATIC=/workspace/src/Test
 
 //Value Computed by CMake
 CHTL_BINARY_DIR:STATIC=/workspace/src/CHTL/build
@@ -322,6 +385,8 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Test CMAKE_HAVE_LIBC_PTHREAD
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/workspace/src/CHTL
@@ -344,7 +409,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=12
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
@@ -389,6 +454,8 @@ CMAKE_TAPI-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //linker supports push/pop state
 _CMAKE_CXX_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE
 //linker supports push/pop state

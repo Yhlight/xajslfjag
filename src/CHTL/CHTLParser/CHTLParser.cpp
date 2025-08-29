@@ -212,14 +212,14 @@ NodePtr CHTLParser::parseElement() {
     parseAttributes(element.get());
     
     // 解析元素体
-    if (match(TokenType::LBRACE)) {
+    if (match(TokenType::LEFT_BRACE)) {
         advance(); // 消费 {
         
         enterScope(CHTLNodeType::ELEMENT_NODE);
         parseBlockContent(element);
         exitScope();
         
-        if (!consume(TokenType::RBRACE, "Expected '}' after element body")) {
+        if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after element body")) {
             return nullptr;
         }
     }
@@ -236,12 +236,12 @@ NodePtr CHTLParser::parseText() {
     textNode->setPosition(currentToken().position);
     updateStatistics("text_nodes");
     
-    if (!consume(TokenType::LBRACE, "Expected '{' after 'text'")) {
+    if (!consume(TokenType::LEFT_BRACE, "Expected '{' after 'text'")) {
         return nullptr;
     }
     
     // 解析文本内容
-    if (match({TokenType::DOUBLE_QUOTED_STRING, TokenType::SINGLE_QUOTED_STRING, TokenType::IDENTIFIER})) {
+    if (match({TokenType::DOUBLE_QUOTED_STRING, TokenType::SINGLE_QUOTED_STRING, TokenType::IDENTIFIER, TokenType::UNQUOTED_LITERAL})) {
         std::string content = parseLiteralValue();
         textNode->setContent(content);
         
@@ -257,7 +257,7 @@ NodePtr CHTLParser::parseText() {
         advance();
     }
     
-    if (!consume(TokenType::RBRACE, "Expected '}' after text content")) {
+    if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after text content")) {
         return nullptr;
     }
     
@@ -300,29 +300,50 @@ NodePtr CHTLParser::parseStyleBlock() {
     styleNode->setPosition(currentToken().position);
     updateStatistics("style_blocks");
     
-    if (!consume(TokenType::LBRACE, "Expected '{' after 'style'")) {
+    if (!consume(TokenType::LEFT_BRACE, "Expected '{' after 'style'")) {
         return nullptr;
     }
     
     enterScope(CHTLNodeType::STYLE_NODE);
     
     // 解析样式内容
-    while (!match(TokenType::RBRACE) && !isAtEnd()) {
-        if (match(TokenType::CLASS_SELECTOR) || match(TokenType::ID_SELECTOR)) {
+    while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (match(TokenType::CLASS_SELECTOR) || match(TokenType::ID_SELECTOR) || match(TokenType::AMPERSAND)) {
             // 选择器样式
             std::string selector = currentToken().value;
-            styleNode->setSelector(selector);
             advance();
             
-            if (match(TokenType::LBRACE)) {
+            // 处理&后面的伪类或伪元素，如&:hover, &::before
+            if (selector == "&" && match(TokenType::COLON)) {
+                selector += currentToken().value; // 添加:hover等
+                advance();
+                
+                // 检查是否为伪元素(::)
+                if (match(TokenType::COLON)) {
+                    selector += currentToken().value; // 添加第二个:
+                    advance();
+                }
+                
+                // 添加伪类/伪元素名称
+                if (match(TokenType::IDENTIFIER)) {
+                    selector += currentToken().value;
+                    advance();
+                }
+            }
+            
+            styleNode->setSelector(selector);
+            
+            if (match(TokenType::LEFT_BRACE)) {
                 advance();
                 // 解析CSS属性
-                while (!match(TokenType::RBRACE) && !isAtEnd()) {
+                while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
                     if (match(TokenType::IDENTIFIER)) {
                         std::string property = currentToken().value;
                         advance();
                         
-                        if (consume(TokenType::COLON, "Expected ':' after CSS property")) {
+                        // CE对等式：支持冒号或等号
+                        if (match(TokenType::COLON) || match(TokenType::EQUAL)) {
+                            advance(); // 消费冒号或等号
                             std::string value = parseLiteralValue();
                             styleNode->addCssProperty(property, value);
                             advance();
@@ -335,7 +356,7 @@ NodePtr CHTLParser::parseStyleBlock() {
                     }
                 }
                 
-                if (!consume(TokenType::RBRACE, "Expected '}' after selector block")) {
+                if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after selector block")) {
                     break;
                 }
             }
@@ -344,7 +365,9 @@ NodePtr CHTLParser::parseStyleBlock() {
             std::string property = currentToken().value;
             advance();
             
-            if (consume(TokenType::COLON, "Expected ':' after CSS property")) {
+            // CE对等式：支持冒号或等号
+            if (match(TokenType::COLON) || match(TokenType::EQUAL)) {
+                advance(); // 消费冒号或等号
                 std::string value = parseLiteralValue();
                 styleNode->addCssProperty(property, value);
                 advance();
@@ -359,7 +382,7 @@ NodePtr CHTLParser::parseStyleBlock() {
     
     exitScope();
     
-    if (!consume(TokenType::RBRACE, "Expected '}' after style block")) {
+    if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after style block")) {
         return nullptr;
     }
     
@@ -367,7 +390,8 @@ NodePtr CHTLParser::parseStyleBlock() {
 }
 
 void CHTLParser::parseAttributes(ElementNode* element) {
-    while (match(TokenType::IDENTIFIER) && peekToken().type == TokenType::COLON) {
+    while (match(TokenType::IDENTIFIER) && 
+           (peekToken().type == TokenType::COLON || peekToken().type == TokenType::EQUAL)) {
         if (!parseAttribute(element)) {
             break;
         }
@@ -382,9 +406,12 @@ bool CHTLParser::parseAttribute(ElementNode* element) {
     std::string attrName = currentToken().value;
     advance();
     
-    if (!consume(TokenType::COLON, "Expected ':' after attribute name")) {
+    // CE对等式：支持冒号或等号
+    if (!match(TokenType::COLON) && !match(TokenType::EQUAL)) {
+        reportError("Expected ':' or '=' after attribute name");
         return false;
     }
+    advance(); // 消费冒号或等号
     
     std::string attrValue = parseLiteralValue();
     advance();
@@ -404,7 +431,7 @@ bool CHTLParser::parseAttribute(ElementNode* element) {
 
 const Token& CHTLParser::currentToken() const {
     if (m_currentIndex >= m_tokens.size()) {
-        static Token eofToken(TokenType::END_OF_FILE, "", Position());
+        static Token eofToken(TokenType::EOF_TOKEN, "", Position());
         return eofToken;
     }
     return m_tokens[m_currentIndex];
@@ -414,21 +441,21 @@ const Token& CHTLParser::nextToken() {
     if (m_currentIndex + 1 < m_tokens.size()) {
         return m_tokens[m_currentIndex + 1];
     }
-    static Token eofToken(TokenType::END_OF_FILE, "", Position());
+    static Token eofToken(TokenType::EOF_TOKEN, "", Position());
     return eofToken;
 }
 
 const Token& CHTLParser::peekToken(size_t offset) const {
     size_t index = m_currentIndex + offset;
     if (index >= m_tokens.size()) {
-        static Token eofToken(TokenType::END_OF_FILE, "", Position());
+        static Token eofToken(TokenType::EOF_TOKEN, "", Position());
         return eofToken;
     }
     return m_tokens[index];
 }
 
 bool CHTLParser::isAtEnd() const {
-    return m_currentIndex >= m_tokens.size() || currentToken().type == TokenType::END_OF_FILE;
+    return m_currentIndex >= m_tokens.size() || currentToken().type == TokenType::EOF_TOKEN;
 }
 
 void CHTLParser::advance() {
@@ -522,7 +549,7 @@ void CHTLParser::exitScope() {
 }
 
 void CHTLParser::parseBlockContent(NodePtr parent) {
-    while (!match(TokenType::RBRACE) && !isAtEnd()) {
+    while (!match(TokenType::RIGHT_BRACE) && !isAtEnd()) {
         NodePtr child = nullptr;
         
         if (match(TokenType::HTML_ELEMENT)) {
@@ -554,7 +581,7 @@ std::string CHTLParser::parseLiteralValue() {
         case TokenType::DOUBLE_QUOTED_STRING:
         case TokenType::SINGLE_QUOTED_STRING:
         case TokenType::IDENTIFIER:
-        case TokenType::NUMBER:
+        case TokenType::UNQUOTED_LITERAL:
             return token.value;
         default:
             return "";

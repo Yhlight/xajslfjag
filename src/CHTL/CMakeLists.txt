@@ -66,6 +66,18 @@ if(BUILD_TESTS)
         CHTLTest
     )
     
+    # 创建CHTL语法测试程序
+    add_executable(test_chtl_syntax test_chtl_syntax.cpp)
+    target_link_libraries(test_chtl_syntax 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
     # 设置包含目录
     target_include_directories(test_state_context PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../Error
@@ -97,5 +109,15 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLGenerator
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
         ${CMAKE_CURRENT_SOURCE_DIR}/../Test
+    )
+    
+    target_include_directories(test_chtl_syntax PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
     )
 endif()

@@ -100,6 +100,11 @@ test_state_context: CHTLError/libCHTLError.a
 test_state_context: CHTLLexer/libCHTLLexer.a
 test_state_context: CHTLState/libCHTLState.a
 test_state_context: CHTLContext/libCHTLContext.a
+test_state_context: CHTLNode/libCHTLNode.a
+test_state_context: CHTLTest/libCHTLTest.a
+test_state_context: CHTLNode/libCHTLNode.a
+test_state_context: CHTLLexer/libCHTLLexer.a
+test_state_context: CHTLContext/libCHTLContext.a
 test_state_context: CHTLLexer/libCHTLLexer.a
 test_state_context: CHTLContext/libCHTLContext.a
 test_state_context: CHTLError/libCHTLError.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLGenerator.a
+/usr/bin/ranlib libCHTLGenerator.a
