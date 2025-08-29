@@ -51,7 +51,7 @@ public:
     
     // 状态操作
     CHTLState getCurrentState() const { return currentState; }
-    void setState(CHTLState newState);
+    virtual void setState(CHTLState newState);
     bool canTransitionTo(CHTLState targetState, const String& token = "") const;
     bool transitionTo(CHTLState targetState, const String& token = "");
     
@@ -85,7 +85,7 @@ public:
     std::vector<StateTransition> getAvailableTransitions() const;
     
     // 错误处理
-    void enterErrorState(const String& reason);
+    virtual void enterErrorState(const String& reason);
     String getErrorReason() const { return errorReason; }
     bool recoverFromError();
     

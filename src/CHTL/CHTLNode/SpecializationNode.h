@@ -115,7 +115,6 @@ public:
     
 private:
     String positionToString() const;
-    void parseTargetSelector(const String& selector);
 };
 
 // 索引访问节点

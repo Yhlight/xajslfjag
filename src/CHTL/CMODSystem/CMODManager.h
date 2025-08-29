@@ -179,7 +179,8 @@ public:
         String compressionLevel = "normal"; // 压缩级别：none, fast, normal, best
     };
     
-    explicit CMODPackager(const PackagingOptions& options = PackagingOptions{});
+    CMODPackager();
+    explicit CMODPackager(const PackagingOptions& options);
     
     // 打包方法
     bool packageDirectory(const String& sourceDir, const String& outputPath);
@@ -253,7 +254,8 @@ public:
         String extractionPath = "";         // 解压路径
     };
     
-    explicit CMODUnpacker(const UnpackingOptions& options = UnpackingOptions{});
+    CMODUnpacker();
+    explicit CMODUnpacker(const UnpackingOptions& options);
     
     // 解包方法
     bool unpackage(const String& cmodPath, const String& outputDir);
@@ -439,8 +441,10 @@ private:
 class CMODFactory {
 public:
     static std::unique_ptr<CMODPackage> loadPackage(const String& packagePath);
-    static std::unique_ptr<CMODPackager> createPackager(const CMODPackager::PackagingOptions& options = {});
-    static std::unique_ptr<CMODUnpacker> createUnpacker(const CMODUnpacker::UnpackingOptions& options = {});
+    static std::unique_ptr<CMODPackager> createPackager();
+    static std::unique_ptr<CMODPackager> createPackager(const CMODPackager::PackagingOptions& options);
+    static std::unique_ptr<CMODUnpacker> createUnpacker();
+    static std::unique_ptr<CMODUnpacker> createUnpacker(const CMODUnpacker::UnpackingOptions& options);
     static std::unique_ptr<CMODManager> createManager(const CMODManager::ManagerConfig& config = {});
     
     // 便捷方法

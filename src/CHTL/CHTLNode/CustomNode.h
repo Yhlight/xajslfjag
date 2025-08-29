@@ -284,10 +284,12 @@ public:
         const CustomVarNode& base, 
         const CustomVarNode& derived);
     
+    // 参数替换工具
+    static String substituteParameters(const String& text, const StringUnorderedMap& parameters);
+    
 private:
     static void applyDeletions(StringUnorderedMap& properties, const StringVector& deletions);
     static void applyInsertions(StringVector& sequence, const std::vector<CustomNode::InsertionPoint>& insertions);
-    static String substituteParameters(const String& text, const StringUnorderedMap& parameters);
 };
 
 // 自定义解析器

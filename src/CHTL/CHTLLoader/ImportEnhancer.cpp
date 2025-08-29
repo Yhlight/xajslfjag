@@ -447,11 +447,11 @@ String ImportEnhancer::extractFilenamePattern(const String& pattern) const {
 // ========== ImportPathResolver 实现 ==========
 
 String ImportPathResolver::resolveStandardPath(const String& importPath, const String& currentFile) {
-    if (isAbsolutePath(importPath)) {
+    if (ImportEnhancer::isAbsolutePath(importPath)) {
         return getCanonicalPath(importPath);
     }
     
-    if (isRelativePath(importPath)) {
+    if (ImportEnhancer::isRelativePath(importPath)) {
         String baseDir = currentFile.empty() ? "." : getDirectoryFromPath(currentFile);
         return getCanonicalPath(joinPaths(baseDir, importPath));
     }

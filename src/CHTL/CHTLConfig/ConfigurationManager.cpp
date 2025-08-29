@@ -399,7 +399,7 @@ StringVector ConfigurationManager::getConfigNames() const {
 
 ConfigurationManager ConfigurationManager::createDefaultManager() {
     ConfigurationManager manager;
-    return manager;
+    return std::move(manager);
 }
 
 KeywordConfig ConfigurationManager::createDefaultKeywordConfig(const String& configKey) {

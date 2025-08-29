@@ -305,7 +305,8 @@ public:
         bool cacheResults = true;
     };
     
-    explicit ImportResolver(const ResolveOptions& options = ResolveOptions{});
+    ImportResolver();
+    explicit ImportResolver(const ResolveOptions& options);
     
     // 路径解析
     String resolvePath(const String& sourcePath, const String& currentDir = "") const;

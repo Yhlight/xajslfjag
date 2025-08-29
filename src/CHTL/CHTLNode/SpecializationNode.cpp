@@ -267,20 +267,16 @@ InsertPosition InsertNode::parseInsertPosition(const String& positionString) {
 }
 
 String InsertNode::parseTargetSelector(const String& selectorString) {
-    // 解析类似 "div[0]" 的选择器
+    // 解析类似 "div[0]" 的选择器，返回元素名
     std::regex indexRegex(R"((\w+)\[(\d+)\])");
     std::smatch match;
     
     if (std::regex_match(selectorString, match, indexRegex)) {
-        elementName = match[1].str();
-        targetIndex = std::stoul(match[2].str());
-        isIndexed = true;
-        return elementName;
+        // 如果是索引形式，返回元素名
+        return match[1].str();
     }
     
-    // 简单选择器
-    elementName = selectorString;
-    isIndexed = false;
+    // 简单选择器，直接返回
     return selectorString;
 }
 
@@ -295,9 +291,7 @@ String InsertNode::positionToString() const {
     }
 }
 
-void InsertNode::parseTargetSelector(const String& selector) {
-    parseTargetSelector(selector);
-}
+
 
 // ========== IndexAccessNode 实现 ==========
 

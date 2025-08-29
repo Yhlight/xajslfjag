@@ -623,10 +623,11 @@ std::unique_ptr<BaseNode> Parser::parseDelete() {
     
     Position startPos = currentToken.position;
     
-    if (!consume(TokenType::DELETE)) {
+    if (!check(TokenType::DELETE)) {
         reportError("期望 'delete' 关键字", "EXPECT_DELETE");
         return nullptr;
     }
+    consume(TokenType::DELETE);
     
     // 收集删除目标
     StringVector targets;
@@ -701,10 +702,11 @@ std::unique_ptr<BaseNode> Parser::parseInsert() {
     
     Position startPos = currentToken.position;
     
-    if (!consume(TokenType::INSERT)) {
+    if (!check(TokenType::INSERT)) {
         reportError("期望 'insert' 关键字", "EXPECT_INSERT");
         return nullptr;
     }
+    consume(TokenType::INSERT);
     
     // 解析插入位置
     InsertPosition position = InsertPosition::AFTER; // 默认
@@ -814,7 +816,7 @@ Token Parser::nextToken() {
     return Token(TokenType::EOF_TOKEN, "", Position{});
 }
 
-Token Parser::peekToken(size_t lookahead) {
+Token Parser::peekToken(size_t lookahead) const {
     if (lexer) {
         return lexer->peekToken(lookahead);
     }
@@ -892,10 +894,11 @@ std::unique_ptr<ConstraintNode> Parser::parseExcept() {
     // except span, [Custom] @Element Box;
     Position startPos = currentToken.position;
     
-    if (!consume(TokenType::EXCEPT)) {
+    if (!check(TokenType::EXCEPT)) {
         reportError("期望 'except' 关键字", "EXPECT_EXCEPT");
         return nullptr;
     }
+    consume(TokenType::EXCEPT);
     
     // 解析约束目标列表
     StringVector targets = parseConstraintTargets();
@@ -1031,10 +1034,11 @@ std::unique_ptr<IndexAccessNode> Parser::parseIndexAccess() {
     Position startPos = currentToken.position;
     advance();
     
-    if (!consume(TokenType::LEFT_BRACKET)) {
+    if (!check(TokenType::LEFT_BRACKET)) {
         reportError("期望 '['", "EXPECT_LEFT_BRACKET");
         return nullptr;
     }
+    consume(TokenType::LEFT_BRACKET);
     
     if (currentToken.type != TokenType::LITERAL_NUMBER) {
         reportError("期望索引数字", "EXPECT_INDEX_NUMBER");
@@ -1044,10 +1048,11 @@ std::unique_ptr<IndexAccessNode> Parser::parseIndexAccess() {
     size_t index = std::stoul(currentToken.value);
     advance();
     
-    if (!consume(TokenType::RIGHT_BRACKET)) {
+    if (!check(TokenType::RIGHT_BRACKET)) {
         reportError("期望 ']'", "EXPECT_RIGHT_BRACKET");
         return nullptr;
     }
+    consume(TokenType::RIGHT_BRACKET);
     
     auto indexNode = std::make_unique<IndexAccessNode>(elementName, index, startPos);
     
@@ -1119,17 +1124,19 @@ std::unique_ptr<BaseNode> Parser::parseNameConfiguration() {
     
     Position startPos = currentToken.position;
     
-    if (!consume(TokenType::NAME)) {
+    if (!check(TokenType::NAME)) {
         reportError("期望 '[Name]' 关键字", "EXPECT_NAME");
         return nullptr;
     }
+    consume(TokenType::NAME);
     
     auto nameConfigNode = std::make_unique<BaseNode>(NodeType::CONFIG_NAME, "Name", startPos);
     
-    if (!consume(TokenType::LBRACE)) {
+    if (!check(TokenType::LBRACE)) {
         reportError("期望 '{'", "EXPECT_LBRACE");
         return nullptr;
     }
+    consume(TokenType::LBRACE);
     
     // 解析名称配置项
     while (!check(TokenType::RBRACE) && !isAtEnd()) {
@@ -1137,10 +1144,11 @@ std::unique_ptr<BaseNode> Parser::parseNameConfiguration() {
             String configKey = currentToken.value;
             advance();
             
-            if (!consume(TokenType::EQUALS)) {
+            if (!check(TokenType::EQUALS)) {
                 reportError("期望 '='", "EXPECT_EQUALS");
                 continue;
             }
+            consume(TokenType::EQUALS);
             
             // 解析配置值
             String configValue;
@@ -1185,17 +1193,19 @@ std::unique_ptr<BaseNode> Parser::parseOriginTypeConfiguration() {
     
     Position startPos = currentToken.position;
     
-    if (!consume(TokenType::ORIGIN_TYPE)) {
+    if (!check(TokenType::ORIGIN_TYPE)) {
         reportError("期望 '[OriginType]' 关键字", "EXPECT_ORIGIN_TYPE");
         return nullptr;
     }
+    consume(TokenType::ORIGIN_TYPE);
     
     auto originTypeConfigNode = std::make_unique<BaseNode>(NodeType::CONFIG_ORIGIN_TYPE, "OriginType", startPos);
     
-    if (!consume(TokenType::LBRACE)) {
+    if (!check(TokenType::LBRACE)) {
         reportError("期望 '{'", "EXPECT_LBRACE");
         return nullptr;
     }
+    consume(TokenType::LBRACE);
     
     // 解析原始类型配置项
     while (!check(TokenType::RBRACE) && !isAtEnd()) {
@@ -1203,10 +1213,11 @@ std::unique_ptr<BaseNode> Parser::parseOriginTypeConfiguration() {
             String configKey = currentToken.value;
             advance();
             
-            if (!consume(TokenType::EQUALS)) {
+            if (!check(TokenType::EQUALS)) {
                 reportError("期望 '='", "EXPECT_EQUALS");
                 continue;
             }
+            consume(TokenType::EQUALS);
             
             // 解析配置值 (应该是@开头的类型名)
             String configValue = currentToken.value;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Util/Common.h"
+#include "../../Util/Common.h"
 #include "../CHTLNode/BaseNode.h"
 #include "ConfigNode.h"
 #include <unordered_map>
@@ -58,6 +58,12 @@ private:
 public:
     ConfigurationManager();
     ~ConfigurationManager() = default;
+    
+    // 禁止拷贝，允许移动
+    ConfigurationManager(const ConfigurationManager&) = delete;
+    ConfigurationManager& operator=(const ConfigurationManager&) = delete;
+    ConfigurationManager(ConfigurationManager&&) = default;
+    ConfigurationManager& operator=(ConfigurationManager&&) = default;
     
     // 配置节点管理
     void addNamedConfig(const String& name, std::unique_ptr<ConfigNode> config);

@@ -26,6 +26,7 @@ enum class TokenType {
     AT_STYLE,             // @Style
     AT_ELEMENT,           // @Element
     AT_VAR,               // @Var
+    AT,                   // @ (通用@符号)
     
     // 原始嵌入
     ORIGIN,               // [Origin]
@@ -66,6 +67,8 @@ enum class TokenType {
     RBRACE,               // }
     LBRACKET,             // [
     RBRACKET,             // ]
+    LEFT_BRACKET,         // [ (别名，向后兼容)
+    RIGHT_BRACKET,        // ] (别名，向后兼容)
     LPAREN,               // (
     RPAREN,               // )
     SEMICOLON,            // ;

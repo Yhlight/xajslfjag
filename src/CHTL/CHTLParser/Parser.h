@@ -91,7 +91,6 @@ public:
     std::unique_ptr<BaseNode> parseExpression();
     std::unique_ptr<BaseNode> parseVariableReference();
     std::unique_ptr<BaseNode> parseFunctionCall();
-    std::unique_ptr<BaseNode> parseIndexAccess();
     
     // 状态和上下文
     void setContext(std::shared_ptr<Context> ctx) { context = ctx; }
@@ -126,7 +125,7 @@ private:
     // Token操作
     Token currentToken;
     Token nextToken();
-    Token peekToken(size_t lookahead = 1);
+    Token peekToken(size_t lookahead = 1) const;
     bool match(TokenType type);
     bool check(TokenType type) const;
     Token consume(TokenType type, const String& errorMessage = "");
