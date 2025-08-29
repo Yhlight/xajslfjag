@@ -568,4 +568,161 @@ StringVector SpecializationManager::detectConflicts(const std::vector<BaseNode*>
     return conflicts;
 }
 
+// ========== NoValueStyleGroupNode 实现 ==========
+
+NoValueStyleGroupNode::NoValueStyleGroupNode(const String& name, const Position& pos)
+    : BaseNode(NodeType::CUSTOM, name, pos), groupName(name) {
+}
+
+void NoValueStyleGroupNode::addProperty(const String& property) {
+    if (isValidProperty(property)) {
+        properties.push_back(property);
+    }
+}
+
+void NoValueStyleGroupNode::addProperties(const StringVector& props) {
+    for (const auto& prop : props) {
+        addProperty(prop);
+    }
+}
+
+void NoValueStyleGroupNode::addAssignment(const String& property, const String& value) {
+    if (isValidProperty(property) && !value.empty()) {
+        assignments[property] = value;
+    }
+}
+
+bool NoValueStyleGroupNode::hasProperty(const String& property) const {
+    return std::find(properties.begin(), properties.end(), property) != properties.end();
+}
+
+String NoValueStyleGroupNode::toString() const {
+    std::ostringstream oss;
+    oss << "[Custom] @Style " << groupName << " {\n";
+    
+    // 无值属性
+    for (const auto& prop : properties) {
+        oss << "    " << prop << ";\n";
+    }
+    
+    // 特例化赋值
+    if (!assignments.empty()) {
+        oss << "    // 特例化赋值\n";
+        for (const auto& [property, value] : assignments) {
+            oss << "    " << property << ": " << value << ";\n";
+        }
+    }
+    
+    oss << "}";
+    return oss.str();
+}
+
+String NoValueStyleGroupNode::toCSS() const {
+    std::ostringstream oss;
+    
+    for (const auto& [property, value] : assignments) {
+        oss << property << ": " << value << ";\n";
+    }
+    
+    return oss.str();
+}
+
+std::unique_ptr<NoValueStyleGroupNode> NoValueStyleGroupNode::createNoValueGroup(const String& name, const Position& pos) {
+    return std::make_unique<NoValueStyleGroupNode>(name, pos);
+}
+
+StringVector NoValueStyleGroupNode::parsePropertyList(const String& propertyString) {
+    StringVector result;
+    std::istringstream iss(propertyString);
+    String property;
+    
+    while (std::getline(iss, property, ',')) {
+        // 去除空白和分号
+        property.erase(0, property.find_first_not_of(" \t"));
+        property.erase(property.find_last_not_of(" \t;") + 1);
+        
+        if (!property.empty()) {
+            result.push_back(property);
+        }
+    }
+    
+    return result;
+}
+
+bool NoValueStyleGroupNode::isValidProperty(const String& property) const {
+    // 基本的CSS属性名验证
+    return !property.empty() && property.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_") == String::npos;
+}
+
+// ========== VariableSpecializationNode 实现 ==========
+
+VariableSpecializationNode::VariableSpecializationNode(const String& groupName, const String& varName, const Position& pos)
+    : BaseNode(NodeType::TEMPLATE, groupName + "." + varName, pos), 
+      variableGroupName(groupName), variableName(varName), isGlobalSpecialization(false) {
+}
+
+void VariableSpecializationNode::setNewValue(const String& value) {
+    if (isValidValue(value)) {
+        newValue = value;
+    }
+}
+
+String VariableSpecializationNode::getSpecializationExpression() const {
+    return variableGroupName + "(" + variableName + " = " + newValue + ")";
+}
+
+String VariableSpecializationNode::toString() const {
+    std::ostringstream oss;
+    oss << variableGroupName << "(" << variableName;
+    
+    if (!newValue.empty()) {
+        oss << " = " << newValue;
+    }
+    
+    oss << ")";
+    return oss.str();
+}
+
+String VariableSpecializationNode::toCSSVariable() const {
+    return "var(--" + variableGroupName + "-" + variableName + ", " + newValue + ")";
+}
+
+std::unique_ptr<VariableSpecializationNode> VariableSpecializationNode::createSpecialization(
+    const String& groupName, const String& varName, const String& value, const Position& pos) {
+    auto node = std::make_unique<VariableSpecializationNode>(groupName, varName, pos);
+    node->setNewValue(value);
+    return node;
+}
+
+std::tuple<String, String, String> VariableSpecializationNode::parseVariableSpecialization(const String& expression) {
+    // 解析 ThemeColor(tableColor = rgb(145, 155, 200)) 的格式
+    std::regex varRegex(R"((\w+)\s*\(\s*(\w+)\s*=\s*([^)]+)\s*\))");
+    std::smatch match;
+    
+    if (std::regex_match(expression, match, varRegex)) {
+        return std::make_tuple(match[1].str(), match[2].str(), match[3].str());
+    }
+    
+    // 简单调用 ThemeColor(tableColor)
+    std::regex simpleRegex(R"((\w+)\s*\(\s*(\w+)\s*\))");
+    if (std::regex_match(expression, match, simpleRegex)) {
+        return std::make_tuple(match[1].str(), match[2].str(), "");
+    }
+    
+    return std::make_tuple("", "", "");
+}
+
+bool VariableSpecializationNode::isVariableSpecializationSyntax(const String& input) {
+    std::regex varRegex(R"(\w+\s*\(\s*\w+\s*(=\s*[^)]+)?\s*\))");
+    return std::regex_match(input, varRegex);
+}
+
+bool VariableSpecializationNode::isValidVariableName(const String& name) const {
+    return !name.empty() && name.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_") == String::npos;
+}
+
+bool VariableSpecializationNode::isValidValue(const String& value) const {
+    return !value.empty();
+}
+
 } // namespace CHTL

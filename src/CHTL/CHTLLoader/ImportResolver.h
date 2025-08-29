@@ -55,6 +55,8 @@ enum class ImportTypeDetail {
     WILDCARD_CMOD,
     WILDCARD_CHTL,
     WILDCARD_ALL,
+    WILDCARD_DIRECTORY,
+    WILDCARD_RECURSIVE,
     
     UNKNOWN
 };
@@ -98,6 +100,11 @@ struct ImportResolveOptions {
     
     // 默认搜索路径
     StringVector getDefaultSearchPaths() const;
+    
+    // 通配符配置
+    bool enableRecursiveWildcard = true;    // 启用递归通配符 **
+    size_t maxWildcardDepth = 5;           // 通配符最大深度
+    size_t maxWildcardResults = 100;       // 通配符最大结果数
     StringVector getDefaultModuleDirectories() const;
     StringVector getDefaultOfficialModulePaths() const;
 };
@@ -229,6 +236,14 @@ public:
     // 通配符解析
     std::vector<ResolvedPath> resolveWildcard(const String& wildcardPattern, const String& currentDirectory = "") const;
     std::vector<ResolvedPath> resolveDirectoryImports(const String& directoryPath, const String& filePattern = "*") const;
+    std::vector<ResolvedPath> resolveRecursiveWildcard(const String& baseDirectory, const String& pattern) const;
+    std::vector<ResolvedPath> resolveGlobPattern(const String& globPattern, const String& currentDirectory = "") const;
+    
+    // 高级通配符特性
+    std::vector<ResolvedPath> resolveWildcardWithFilters(const String& pattern, const StringVector& includeExtensions, const StringVector& excludePatterns) const;
+    std::vector<ResolvedPath> resolveMultipleWildcards(const StringVector& patterns, const String& currentDirectory = "") const;
+    bool isWildcardPattern(const String& pattern) const;
+    String expandWildcardPath(const String& pattern, const String& currentDirectory) const;
     
     // 类型特定解析
     ResolvedPath resolveTemplateImport(const String& templateType, const String& templateName, const String& sourcePath) const;

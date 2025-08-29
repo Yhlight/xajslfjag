@@ -404,7 +404,20 @@ std::unique_ptr<BaseNode> Parser::parseCustom() {
     consume(TokenType::LBRACE, "期望 '{'");
     
     while (!check(TokenType::RBRACE) && !isAtEnd()) {
-        if (auto child = parseStatement()) {
+        // 检查特例化操作
+        if (check(TokenType::DELETE)) {
+            if (auto deleteNode = parseDeleteOperation()) {
+                customNode->addChild(std::move(deleteNode));
+            }
+        } else if (check(TokenType::INSERT)) {
+            if (auto insertNode = parseInsertOperation()) {
+                customNode->addChild(std::move(insertNode));
+            }
+        } else if (isIndexAccess()) {
+            if (auto indexNode = parseIndexAccess()) {
+                customNode->addChild(std::move(indexNode));
+            }
+        } else if (auto child = parseStatement()) {
             customNode->addChild(std::move(child));
         }
     }
@@ -1403,6 +1416,254 @@ void Parser::processDocumentSelectorAutomation(BaseNode* documentNode) {
     for (auto& child : documentNode->getChildren()) {
         processDocumentSelectorAutomation(child.get());
     }
+}
+
+// ========== 特例化操作解析方法 ==========
+
+std::unique_ptr<BaseNode> Parser::parseDeleteOperation() {
+    Position pos = currentToken.position;
+    advance(); // 消费 'delete'
+    
+    auto deleteNode = std::make_unique<DeleteNode>(pos);
+    
+    // 解析删除目标
+    do {
+        if (check(TokenType::AT_STYLE) || check(TokenType::AT_ELEMENT) || check(TokenType::AT_VAR)) {
+            // 删除继承: delete @Style WhiteText;
+            String inheritanceTarget = currentToken.value;
+            advance();
+            if (check(TokenType::IDENTIFIER)) {
+                inheritanceTarget += " " + currentToken.value;
+                advance();
+            }
+            deleteNode->setInheritanceTarget(inheritanceTarget);
+        } else if (check(TokenType::IDENTIFIER)) {
+            String target = currentToken.value;
+            advance();
+            
+            // 检查是否是索引访问
+            if (check(TokenType::LBRACKET)) {
+                advance(); // 消费 '['
+                if (check(TokenType::NUMBER)) {
+                    size_t index = std::stoul(currentToken.value);
+                    advance();
+                    consume(TokenType::RBRACKET, "期望 ']'");
+                    deleteNode->setElementTarget(target, index);
+                } else {
+                    reportError("期望索引数字", "INVALID_INDEX");
+                }
+            } else {
+                deleteNode->addTarget(target);
+            }
+        }
+        
+        // 检查是否有更多目标
+        if (check(TokenType::COMMA)) {
+            advance();
+        } else {
+            break;
+        }
+    } while (!isAtEnd() && !check(TokenType::SEMICOLON));
+    
+    consume(TokenType::SEMICOLON, "期望 ';'");
+    return deleteNode;
+}
+
+std::unique_ptr<BaseNode> Parser::parseInsertOperation() {
+    Position pos = currentToken.position;
+    advance(); // 消费 'insert'
+    
+    // 解析插入位置
+    InsertPosition position = InsertPosition::AFTER;
+    if (check(TokenType::AFTER)) {
+        position = InsertPosition::AFTER;
+        advance();
+    } else if (check(TokenType::BEFORE)) {
+        position = InsertPosition::BEFORE;
+        advance();
+    } else if (check(TokenType::REPLACE)) {
+        position = InsertPosition::REPLACE;
+        advance();
+    } else if (check(TokenType::AT_TOP)) {
+        position = InsertPosition::AT_TOP;
+        advance();
+    } else if (check(TokenType::AT_BOTTOM)) {
+        position = InsertPosition::AT_BOTTOM;
+        advance();
+    }
+    
+    auto insertNode = std::make_unique<InsertNode>(position, pos);
+    
+    // 解析目标选择器
+    if (position != InsertPosition::AT_TOP && position != InsertPosition::AT_BOTTOM) {
+        if (check(TokenType::IDENTIFIER)) {
+            String target = currentToken.value;
+            advance();
+            
+            // 检查索引访问
+            if (check(TokenType::LBRACKET)) {
+                advance();
+                if (check(TokenType::NUMBER)) {
+                    size_t index = std::stoul(currentToken.value);
+                    advance();
+                    consume(TokenType::RBRACKET, "期望 ']'");
+                    insertNode->setIndexedTarget(target, index);
+                } else {
+                    reportError("期望索引数字", "INVALID_INDEX");
+                }
+            } else {
+                insertNode->setTarget(target);
+            }
+        }
+    }
+    
+    // 解析插入内容
+    consume(TokenType::LBRACE, "期望 '{'");
+    
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (auto content = parseStatement()) {
+            insertNode->addContent(std::move(content));
+        }
+    }
+    
+    consume(TokenType::RBRACE, "期望 '}'");
+    return insertNode;
+}
+
+std::unique_ptr<BaseNode> Parser::parseIndexAccess() {
+    Position pos = currentToken.position;
+    
+    // 解析元素名
+    String elementName = consume(TokenType::IDENTIFIER, "期望元素名").value;
+    
+    // 解析索引
+    consume(TokenType::LBRACKET, "期望 '['");
+    size_t index = std::stoul(consume(TokenType::NUMBER, "期望索引数字").value);
+    consume(TokenType::RBRACKET, "期望 ']'");
+    
+    auto indexNode = std::make_unique<IndexAccessNode>(elementName, index, pos);
+    
+    // 解析索引访问的内容
+    if (check(TokenType::LBRACE)) {
+        advance();
+        
+        if (auto content = parseStatement()) {
+            indexNode->setContent(std::move(content));
+        }
+        
+        consume(TokenType::RBRACE, "期望 '}'");
+    }
+    
+    return indexNode;
+}
+
+bool Parser::isIndexAccess() {
+    // 检查是否为索引访问语法: element[index]
+    if (check(TokenType::IDENTIFIER)) {
+        // 向前看一个 token
+        size_t savePos = lexer->getCurrentPosition();
+        advance();
+        bool isIndex = check(TokenType::LBRACKET);
+        lexer->setPosition(savePos);
+        return isIndex;
+    }
+    return false;
+}
+
+// ========== 无值样式组解析 ==========
+
+std::unique_ptr<BaseNode> Parser::parseNoValueStyleGroup() {
+    Position pos = currentToken.position;
+    
+    // 已经在parseCustom中解析了 [Custom] @Style GroupName
+    String groupName = previousToken().value;
+    
+    auto styleGroup = std::make_unique<NoValueStyleGroupNode>(groupName, pos);
+    
+    consume(TokenType::LBRACE, "期望 '{'");
+    
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (check(TokenType::IDENTIFIER)) {
+            String property = currentToken.value;
+            advance();
+            
+            // 检查是否有值
+            if (check(TokenType::COLON) || check(TokenType::EQUALS)) {
+                advance(); // 消费 ':' 或 '='
+                String value = consume(TokenType::IDENTIFIER, "期望属性值").value;
+                styleGroup->addAssignment(property, value);
+            } else {
+                // 无值属性
+                styleGroup->addProperty(property);
+            }
+            
+            // 消费可选的分号或逗号
+            if (check(TokenType::SEMICOLON) || check(TokenType::COMMA)) {
+                advance();
+            }
+        } else {
+            advance(); // 跳过未识别的 token
+        }
+    }
+    
+    consume(TokenType::RBRACE, "期望 '}'");
+    return styleGroup;
+}
+
+// ========== 变量组特例化解析 ==========
+
+std::unique_ptr<BaseNode> Parser::parseVariableSpecialization() {
+    Position pos = currentToken.position;
+    
+    // 解析变量组名: ThemeColor(
+    String groupName = consume(TokenType::IDENTIFIER, "期望变量组名").value;
+    consume(TokenType::LPAREN, "期望 '('");
+    
+    // 解析变量名
+    String varName = consume(TokenType::IDENTIFIER, "期望变量名").value;
+    
+    auto varNode = std::make_unique<VariableSpecializationNode>(groupName, varName, pos);
+    
+    // 检查是否有特例化赋值
+    if (check(TokenType::EQUALS)) {
+        advance(); // 消费 '='
+        
+        // 解析新值（可能是复杂表达式）
+        String newValue;
+        int parenCount = 0;
+        
+        while (!isAtEnd() && (parenCount > 0 || !check(TokenType::RPAREN))) {
+            if (check(TokenType::LPAREN)) parenCount++;
+            if (check(TokenType::RPAREN)) parenCount--;
+            
+            if (parenCount > 0 || !check(TokenType::RPAREN)) {
+                newValue += currentToken.value + " ";
+                advance();
+            }
+        }
+        
+        // 去除尾随空格
+        if (!newValue.empty() && newValue.back() == ' ') {
+            newValue.pop_back();
+        }
+        
+        varNode->setNewValue(newValue);
+    }
+    
+    consume(TokenType::RPAREN, "期望 ')'");
+    return varNode;
+}
+
+bool Parser::isVariableSpecialization() {
+    // 检查是否为变量特例化语法: VariableName(
+    if (check(TokenType::IDENTIFIER)) {
+        size_t savePos = lexer->getCurrentPosition();
+        advance();
+        bool isVar = check(TokenType::LPAREN);
+        lexer->setPosition(savePos);
+        return isVar;
+    }
+    return false;
 }
 
 } // namespace CHTL

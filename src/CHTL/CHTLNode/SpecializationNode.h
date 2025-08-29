@@ -214,4 +214,77 @@ public:
     static StringVector detectConflicts(const std::vector<BaseNode*>& specializationNodes);
 };
 
+// 无值样式组节点
+class NoValueStyleGroupNode : public BaseNode {
+public:
+    String groupName;             // 样式组名称
+    StringVector properties;      // 无值属性列表
+    std::unordered_map<String, String> assignments; // 特例化赋值
+    
+    explicit NoValueStyleGroupNode(const String& name, const Position& pos = Position());
+    ~NoValueStyleGroupNode() override = default;
+    
+    // 添加无值属性
+    void addProperty(const String& property);
+    void addProperties(const StringVector& props);
+    
+    // 添加特例化赋值
+    void addAssignment(const String& property, const String& value);
+    
+    // 检查是否有特例化
+    bool hasAssignments() const { return !assignments.empty(); }
+    bool hasProperty(const String& property) const;
+    
+    // 序列化
+    virtual String toString() const override;
+    String toCSS() const;
+    
+    // 静态工厂方法
+    static std::unique_ptr<NoValueStyleGroupNode> createNoValueGroup(const String& name, const Position& pos = Position());
+    
+    // 解析无值样式组语法
+    static StringVector parsePropertyList(const String& propertyString);
+    
+private:
+    // 验证属性名
+    bool isValidProperty(const String& property) const;
+};
+
+// 变量组特例化节点
+class VariableSpecializationNode : public BaseNode {
+public:
+    String variableGroupName;     // 变量组名称
+    String variableName;          // 变量名
+    String newValue;              // 新值
+    bool isGlobalSpecialization;  // 是否为全局特例化
+    
+    explicit VariableSpecializationNode(const String& groupName, const String& varName, const Position& pos = Position());
+    ~VariableSpecializationNode() override = default;
+    
+    // 设置特例化值
+    void setNewValue(const String& value);
+    void setGlobalScope(bool global) { isGlobalSpecialization = global; }
+    
+    // 获取特例化信息
+    String getSpecializationExpression() const;
+    bool hasNewValue() const { return !newValue.empty(); }
+    
+    // 序列化
+    virtual String toString() const override;
+    String toCSSVariable() const;
+    
+    // 静态工厂方法
+    static std::unique_ptr<VariableSpecializationNode> createSpecialization(
+        const String& groupName, const String& varName, const String& value, const Position& pos = Position());
+    
+    // 解析变量特例化语法: ThemeColor(tableColor = rgb(145, 155, 200))
+    static std::tuple<String, String, String> parseVariableSpecialization(const String& expression);
+    static bool isVariableSpecializationSyntax(const String& input);
+    
+private:
+    // 验证变量名和值
+    bool isValidVariableName(const String& name) const;
+    bool isValidValue(const String& value) const;
+};
+
 } // namespace CHTL

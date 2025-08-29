@@ -48,6 +48,9 @@ set(CHTL_CORE_SOURCES
     
     # CHTL JS Lexer - 基础功能
     src/CHTLJS/CHTLJSLexer/Token.cpp
+    
+    # CHTL JS 增强语法节点 - 新增
+    src/CHTLJS/CHTLJSNode/EnhancedNode.cpp
     src/CHTLJS/CHTLJSLexer/GlobalMap.cpp
     src/CHTLJS/CHTLJSLexer/Lexer.cpp
     src/CHTLJS/CHTLJSIOStream/JSFileStream.cpp

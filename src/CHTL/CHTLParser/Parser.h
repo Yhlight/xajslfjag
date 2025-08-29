@@ -178,6 +178,19 @@ private:
     String parseStringLiteral();
     String parseUnquotedLiteral();
     
+    // 特例化操作解析
+    std::unique_ptr<BaseNode> parseDeleteOperation();
+    std::unique_ptr<BaseNode> parseInsertOperation();
+    std::unique_ptr<BaseNode> parseIndexAccess();
+    bool isIndexAccess();
+    
+    // 无值样式组解析
+    std::unique_ptr<BaseNode> parseNoValueStyleGroup();
+    
+    // 变量组特例化解析
+    std::unique_ptr<BaseNode> parseVariableSpecialization();
+    bool isVariableSpecialization();
+    
     // 模板系统解析
     std::unique_ptr<BaseNode> parseTemplateStyle();
     std::unique_ptr<BaseNode> parseTemplateElement();

@@ -85,6 +85,9 @@ enum class TokenType {
     UNDERSCORE,           // _
     ELLIPSIS,             // ...
     DOLLAR,               // $
+    NUMBER,               // 数字 (用于索引访问)
+    PIPE,                 // | (用于某些语法)
+    TILDE,                // ~ (用于CSS选择器)
     
     // 通用分类 (为了向后兼容测试代码)
     OPERATOR,             // 操作符通用类型
@@ -115,6 +118,29 @@ enum class TokenType {
     ANIMATE,              // animate
     VIR,                  // vir
     LOAD,                 // load
+    TARGET,               // target
+    DURATION,             // duration
+    EASING,               // easing
+    BEGIN,                // begin
+    WHEN,                 // when
+    END,                  // end
+    LOOP,                 // loop
+    DIRECTION,            // direction
+    DELAY,                // delay
+    CALLBACK,             // callback
+    AT_SYMBOL,            // at (在when中使用)
+    
+    // 新增事件绑定操作符
+    TWO_WAY_BIND,         // <-> (双向绑定)
+    COMPUTED,             // => (计算属性)
+    CONDITIONAL,          // ?: (条件渲染)
+    LIST_RENDER,          // *: (列表渲染)
+    WATCHER,              // ~> (监听器)
+    STREAM,               // |> (事件流)
+    
+    // 通配符和路径
+    WILDCARD,             // * (通配符)
+    PATH_SEPARATOR,       // / 或 \\
     
     // 注释
     COMMENT_LINE,         // //
