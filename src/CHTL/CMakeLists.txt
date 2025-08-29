@@ -18,6 +18,8 @@ add_subdirectory(../Error CHTLError)
 add_subdirectory(CHTLLexer)
 add_subdirectory(CHTLState)
 add_subdirectory(CHTLContext)
+add_subdirectory(CHTLNode)
+add_subdirectory(../Test CHTLTest)
 
 # 如果需要构建测试程序
 option(BUILD_TESTS "Build test programs" ON)
@@ -30,6 +32,8 @@ if(BUILD_TESTS)
         CHTLLexer 
         CHTLState 
         CHTLContext
+        CHTLNode
+        CHTLTest
     )
     
     # 创建更新后的lexer测试程序
@@ -47,6 +51,8 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Test
     )
     
     target_include_directories(test_updated_lexer PRIVATE
@@ -54,5 +60,7 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Test
     )
 endif()
