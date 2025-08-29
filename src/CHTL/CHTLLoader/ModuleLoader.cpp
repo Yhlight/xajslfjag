@@ -9,7 +9,7 @@
 namespace CHTL {
 
 // ModuleLoader实现
-ModuleLoader::ModuleLoader(const ModuleLoaderConfig& config) 
+AdvancedModuleLoader::AdvancedModuleLoader(const ModuleLoaderConfig& config) 
     : config(config) {
     // 初始化搜索路径
     initializeSearchPaths();
@@ -23,7 +23,7 @@ ModuleLoader::ModuleLoader(const ModuleLoaderConfig& config)
     supportedExtensions[".js"] = ModuleType::JAVASCRIPT;
 }
 
-LoadResult ModuleLoader::loadModule(const String& modulePath, ModuleType expectedType) {
+LoadResult AdvancedModuleLoader::loadModule(const String& modulePath, ModuleType expectedType) {
     LoadResult result;
     result.success = false;
     
@@ -92,7 +92,7 @@ LoadResult ModuleLoader::loadModule(const String& modulePath, ModuleType expecte
     return result;
 }
 
-String ModuleLoader::resolveModulePath(const String& modulePath, ModuleType expectedType) {
+String AdvancedModuleLoader::resolveModulePath(const String& modulePath, ModuleType expectedType) {
     // 检查是否是绝对路径
     if (std::filesystem::path(modulePath).is_absolute()) {
         if (std::filesystem::exists(modulePath)) {
@@ -114,7 +114,7 @@ String ModuleLoader::resolveModulePath(const String& modulePath, ModuleType expe
     }
 }
 
-String ModuleLoader::resolveExactFile(const String& filePath) {
+String AdvancedModuleLoader::resolveExactFile(const String& filePath) {
     // 按照搜索路径顺序查找
     for (const auto& searchPath : searchPaths) {
         std::filesystem::path fullPath = std::filesystem::path(searchPath) / filePath;
@@ -126,7 +126,7 @@ String ModuleLoader::resolveExactFile(const String& filePath) {
     return "";
 }
 
-String ModuleLoader::resolveFileByName(const String& fileName, ModuleType expectedType) {
+String AdvancedModuleLoader::resolveFileByName(const String& fileName, ModuleType expectedType) {
     // 根据期望类型确定扩展名优先级
     StringVector extensions = getExtensionsByPriority(expectedType);
     
@@ -142,7 +142,7 @@ String ModuleLoader::resolveFileByName(const String& fileName, ModuleType expect
     return "";
 }
 
-StringVector ModuleLoader::getExtensionsByPriority(ModuleType type) {
+StringVector AdvancedModuleLoader::getExtensionsByPriority(ModuleType type) {
     switch (type) {
         case ModuleType::CHTL:
             return {".cmod", ".chtl"};
@@ -161,7 +161,7 @@ StringVector ModuleLoader::getExtensionsByPriority(ModuleType type) {
     }
 }
 
-ModuleType ModuleLoader::detectModuleType(const String& filePath) {
+ModuleType AdvancedModuleLoader::detectModuleType(const String& filePath) {
     std::filesystem::path path(filePath);
     String extension = path.extension().string();
     
@@ -173,7 +173,7 @@ ModuleType ModuleLoader::detectModuleType(const String& filePath) {
     return ModuleType::UNKNOWN;
 }
 
-String ModuleLoader::loadFileContent(const String& filePath) {
+String AdvancedModuleLoader::loadFileContent(const String& filePath) {
     std::ifstream file(filePath, std::ios::binary);
     if (!file.is_open()) {
         return "";
@@ -184,7 +184,7 @@ String ModuleLoader::loadFileContent(const String& filePath) {
     return content.str();
 }
 
-LoadResult ModuleLoader::parseModule(const String& content, ModuleType type, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseModule(const String& content, ModuleType type, const String& filePath) {
     LoadResult result;
     result.modulePath = filePath;
     result.moduleType = type;
@@ -220,7 +220,7 @@ LoadResult ModuleLoader::parseModule(const String& content, ModuleType type, con
     return result;
 }
 
-LoadResult ModuleLoader::parseCHTLModule(const String& content, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseCHTLModule(const String& content, const String& filePath) {
     LoadResult result;
     result.success = false;
     
@@ -253,7 +253,7 @@ LoadResult ModuleLoader::parseCHTLModule(const String& content, const String& fi
     return result;
 }
 
-LoadResult ModuleLoader::parseCHTLJSModule(const String& content, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseCHTLJSModule(const String& content, const String& filePath) {
     LoadResult result;
     result.success = true; // CHTL JS模块暂时直接成功
     result.rawContent = content;
@@ -264,7 +264,7 @@ LoadResult ModuleLoader::parseCHTLJSModule(const String& content, const String& 
     return result;
 }
 
-LoadResult ModuleLoader::parseHTMLModule(const String& content, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseHTMLModule(const String& content, const String& filePath) {
     LoadResult result;
     result.success = true;
     result.rawContent = content;
@@ -275,7 +275,7 @@ LoadResult ModuleLoader::parseHTMLModule(const String& content, const String& fi
     return result;
 }
 
-LoadResult ModuleLoader::parseCSSModule(const String& content, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseCSSModule(const String& content, const String& filePath) {
     LoadResult result;
     result.success = true;
     result.rawContent = content;
@@ -286,7 +286,7 @@ LoadResult ModuleLoader::parseCSSModule(const String& content, const String& fil
     return result;
 }
 
-LoadResult ModuleLoader::parseJavaScriptModule(const String& content, const String& filePath) {
+LoadResult AdvancedModuleLoader::parseJavaScriptModule(const String& content, const String& filePath) {
     LoadResult result;
     result.success = true;
     result.rawContent = content;
@@ -297,14 +297,14 @@ LoadResult ModuleLoader::parseJavaScriptModule(const String& content, const Stri
     return result;
 }
 
-void ModuleLoader::extractModuleExports(LoadResult& result) {
+void AdvancedModuleLoader::extractModuleExports(LoadResult& result) {
     if (!result.ast) return;
     
     // 遍历AST提取导出信息
     extractExportsFromNode(result.ast.get(), result);
 }
 
-void ModuleLoader::extractExportsFromNode(BaseNode* node, LoadResult& result) {
+void AdvancedModuleLoader::extractExportsFromNode(BaseNode* node, LoadResult& result) {
     if (!node) return;
     
     // 检查是否是导出节点
@@ -326,14 +326,14 @@ void ModuleLoader::extractExportsFromNode(BaseNode* node, LoadResult& result) {
     }
 }
 
-void ModuleLoader::extractModuleImports(LoadResult& result) {
+void AdvancedModuleLoader::extractModuleImports(LoadResult& result) {
     if (!result.ast) return;
     
     // 遍历AST提取导入信息
     extractImportsFromNode(result.ast.get(), result);
 }
 
-void ModuleLoader::extractImportsFromNode(BaseNode* node, LoadResult& result) {
+void AdvancedModuleLoader::extractImportsFromNode(BaseNode* node, LoadResult& result) {
     if (!node) return;
     
     // 检查是否是导入节点
@@ -352,7 +352,7 @@ void ModuleLoader::extractImportsFromNode(BaseNode* node, LoadResult& result) {
     }
 }
 
-void ModuleLoader::extractCHTLJSFeatures(LoadResult& result) {
+void AdvancedModuleLoader::extractCHTLJSFeatures(LoadResult& result) {
     const String& content = result.rawContent;
     
     // 提取module块中的load语句
@@ -377,7 +377,7 @@ void ModuleLoader::extractCHTLJSFeatures(LoadResult& result) {
     }
 }
 
-void ModuleLoader::extractHTMLReferences(LoadResult& result) {
+void AdvancedModuleLoader::extractHTMLReferences(LoadResult& result) {
     const String& content = result.rawContent;
     
     // 提取link标签中的CSS引用
@@ -406,7 +406,7 @@ void ModuleLoader::extractHTMLReferences(LoadResult& result) {
     }
 }
 
-void ModuleLoader::extractCSSImports(LoadResult& result) {
+void AdvancedModuleLoader::extractCSSImports(LoadResult& result) {
     const String& content = result.rawContent;
     
     // 提取@import语句
@@ -423,7 +423,7 @@ void ModuleLoader::extractCSSImports(LoadResult& result) {
     }
 }
 
-void ModuleLoader::extractJavaScriptImports(LoadResult& result) {
+void AdvancedModuleLoader::extractJavaScriptImports(LoadResult& result) {
     const String& content = result.rawContent;
     
     // 提取ES6 import语句
@@ -452,7 +452,7 @@ void ModuleLoader::extractJavaScriptImports(LoadResult& result) {
     }
 }
 
-void ModuleLoader::loadModuleDependencies(LoadResult& result) {
+void AdvancedModuleLoader::loadModuleDependencies(LoadResult& result) {
     for (const auto& dependency : result.dependencies) {
         if (!dependency.modulePath.empty()) {
             ModuleType depType = stringToModuleType(dependency.importType);
@@ -477,7 +477,7 @@ bool ModuleLoader::isModuleCached(const String& modulePath) {
     return moduleCache.find(modulePath) != moduleCache.end();
 }
 
-LoadResult ModuleLoader::getCachedModule(const String& modulePath) {
+LoadResult AdvancedModuleLoader::getCachedModule(const String& modulePath) {
     auto it = moduleCache.find(modulePath);
     if (it != moduleCache.end()) {
         return it->second;
@@ -489,7 +489,7 @@ LoadResult ModuleLoader::getCachedModule(const String& modulePath) {
     return result;
 }
 
-void ModuleLoader::cacheModule(const String& modulePath, const LoadResult& result) {
+void AdvancedModuleLoader::cacheModule(const String& modulePath, const LoadResult& result) {
     if (moduleCache.size() >= config.maxCacheSize) {
         // 简单的LRU清理策略
         moduleCache.clear();
@@ -498,7 +498,7 @@ void ModuleLoader::cacheModule(const String& modulePath, const LoadResult& resul
     moduleCache[modulePath] = result;
 }
 
-void ModuleLoader::initializeSearchPaths() {
+void AdvancedModuleLoader::initializeSearchPaths() {
     searchPaths.clear();
     
     // 添加当前目录
@@ -518,7 +518,7 @@ void ModuleLoader::initializeSearchPaths() {
     }
 }
 
-String ModuleLoader::moduleTypeToString(ModuleType type) {
+String AdvancedModuleLoader::moduleTypeToString(ModuleType type) {
     switch (type) {
         case ModuleType::CHTL: return "CHTL";
         case ModuleType::CMOD: return "CMOD";
@@ -531,7 +531,7 @@ String ModuleLoader::moduleTypeToString(ModuleType type) {
     }
 }
 
-ModuleType ModuleLoader::stringToModuleType(const String& typeStr) {
+ModuleType AdvancedModuleLoader::stringToModuleType(const String& typeStr) {
     if (typeStr == "CHTL") return ModuleType::CHTL;
     if (typeStr == "CMOD") return ModuleType::CMOD;
     if (typeStr == "CHTL_JS") return ModuleType::CHTL_JS;
@@ -541,7 +541,7 @@ ModuleType ModuleLoader::stringToModuleType(const String& typeStr) {
     return ModuleType::UNKNOWN;
 }
 
-String ModuleLoader::nodeTypeToString(NodeType type) {
+String AdvancedModuleLoader::nodeTypeToString(NodeType type) {
     switch (type) {
         case NodeType::TEMPLATE: return "Template";
         case NodeType::CUSTOM: return "Custom";
@@ -551,11 +551,11 @@ String ModuleLoader::nodeTypeToString(NodeType type) {
     }
 }
 
-void ModuleLoader::clearCache() {
+void AdvancedModuleLoader::clearCache() {
     moduleCache.clear();
 }
 
-void ModuleLoader::setConfig(const ModuleLoaderConfig& newConfig) {
+void AdvancedModuleLoader::setConfig(const ModuleLoaderConfig& newConfig) {
     config = newConfig;
     initializeSearchPaths();
 }
@@ -564,7 +564,7 @@ ModuleLoaderConfig ModuleLoader::getConfig() const {
     return config;
 }
 
-StringVector ModuleLoader::getSearchPaths() const {
+StringVector AdvancedModuleLoader::getSearchPaths() const {
     return searchPaths;
 }
 

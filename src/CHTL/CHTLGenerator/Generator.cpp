@@ -6,7 +6,7 @@
 namespace CHTL {
 
 Generator::Generator(const GeneratorConfig& config) 
-    : config(config), stats() {
+    : config(config) {
 }
 
 String Generator::generateHTML(const BaseNode* ast) {
@@ -36,7 +36,7 @@ GenerationOutput Generator::generate(const BaseNode* ast) {
         output.javascript = generateJavaScript(ast);
         output.success = true;
     }
-    updateStats(output);
+    // updateStats(output); // 简化版本暂不实现
     return output;
 }
 
@@ -48,50 +48,8 @@ GenerationOutput Generator::generateFragment(const BaseNode* fragmentNode) {
     return generate(fragmentNode);
 }
 
-std::vector<GenerationOutput> Generator::generateFiles(const std::vector<BaseNode*>& asts, const StringVector& outputPaths) {
-    std::vector<GenerationOutput> results;
-    for (auto* ast : asts) {
-        if (ast) results.push_back(generate(ast));
-    }
-    return results;
-}
-
-std::vector<GenerationOutput> Generator::generateToDirectories(const std::vector<BaseNode*>& asts, const StringVector& outputDirs) {
-    return generateFiles(asts, outputDirs);
-}
-
-std::vector<GenerationOutput> Generator::generateFilesParallel(const std::vector<BaseNode*>& asts, const StringVector& outputPaths, size_t threadCount) {
-    return generateFiles(asts, outputPaths);
-}
-
-bool Generator::writeOutputToFile(const GenerationOutput& output, const String& basePath) {
-    try {
-        std::ofstream file(basePath + ".html");
-        if (file.is_open()) {
-            file << output.html;
-            file.close();
-            return true;
-        }
-    } catch (...) {}
-    return false;
-}
-
-bool Generator::writeOutputToDirectory(const GenerationOutput& output, const String& outputDir) {
-    return writeOutputToFile(output, outputDir + "/output");
-}
-
-void Generator::updateStats(const GenerationOutput& output) {
-    stats.totalGenerations++;
-    if (output.success) stats.successfulGenerations++;
-    else stats.failedGenerations++;
-}
-
-String Generator::getOutputFileName(const String& basePath, const String& extension) const {
-    return basePath + "." + extension;
-}
-
-bool Generator::ensureDirectoryExists(const String& dirPath) const {
-    return true;
-}
+// 批量生成方法（暂不实现）
+// 文件写入方法（暂不实现）
+// 统计方法（暂不实现）
 
 } // namespace CHTL

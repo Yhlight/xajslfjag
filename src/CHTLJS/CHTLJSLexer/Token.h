@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Util/Common.h"
+#include "../../CHTL/CHTLLexer/Token.h"  // 导入Position定义
 #include <unordered_map>
 
 namespace CHTL {

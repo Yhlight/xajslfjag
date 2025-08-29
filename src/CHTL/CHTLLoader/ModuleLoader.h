@@ -3,9 +3,17 @@
 #include "../../Util/Common.h"
 #include "ImportResolver.h"
 #include "../CHTLNode/BaseNode.h"
+#include <thread>
+#include <future>
+#include <condition_variable>
+#include <atomic>
+#include <mutex>
 #include "../CHTLContext/Context.h"
 
 namespace CHTL {
+
+// 前向声明
+struct ModuleContent;
 
 // 模块类型
 enum class ModuleType {
@@ -53,7 +61,29 @@ struct ModuleContent {
     bool isLoaded;                  // 是否已加载
     bool isParsed;                  // 是否已解析
     
+    // 构造函数
     ModuleContent() : type(ModuleType::UNKNOWN_MODULE), loadTime(0.0), isLoaded(false), isParsed(false) {}
+    
+    // 禁止拷贝，允许移动
+    ModuleContent(const ModuleContent&) = delete;
+    ModuleContent& operator=(const ModuleContent&) = delete;
+    ModuleContent(ModuleContent&&) = default;
+    ModuleContent& operator=(ModuleContent&&) = default;
+};
+
+// 加载结果
+struct LoadResult {
+    bool success = false;
+    String errorMessage;
+    ModuleContent content;
+    StringVector warnings;
+    double loadTime = 0.0;
+    
+    LoadResult() = default;
+    LoadResult(LoadResult&&) = default;
+    LoadResult& operator=(LoadResult&&) = default;
+    LoadResult(const LoadResult&) = delete;
+    LoadResult& operator=(const LoadResult&) = delete;
 };
 
 // 模块缓存
@@ -67,8 +97,8 @@ public:
         bool isDirty;
         
         CacheEntry() : cacheTime(0.0), lastAccess(0.0), accessCount(0), isDirty(false) {}
-        explicit CacheEntry(const ModuleContent& moduleContent) 
-            : content(moduleContent), accessCount(1), isDirty(false) {
+        explicit CacheEntry(ModuleContent&& moduleContent) 
+            : content(std::move(moduleContent)), accessCount(1), isDirty(false) {
             cacheTime = getCurrentTime();
             lastAccess = cacheTime;
         }
@@ -77,7 +107,7 @@ public:
     explicit ModuleCache(size_t maxSize = 500, double timeoutMinutes = 120.0);
     
     // 缓存操作
-    void put(const String& modulePath, const ModuleContent& content);
+    void put(const String& modulePath, ModuleContent&& content);
     bool has(const String& modulePath) const;
     ModuleContent get(const String& modulePath);
     void remove(const String& modulePath);
