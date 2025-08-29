@@ -71,6 +71,9 @@ add_library(CHTLCore STATIC
     
     # Utilities
     Util/ZIPUtil/ZIPUtil.cpp
+    
+    # Error handling
+    Error/ErrorReport.cpp
 )
 
 target_link_libraries(CHTLCore PUBLIC Threads::Threads)
@@ -93,6 +96,12 @@ if(BUILD_TESTS)
         Test/CHTLTestSuite.cpp
         Test/CHTLSyntaxTests.cpp
         Test/CHTLJSSyntaxTests.cpp
+        Test/UtilTest/StringUtilTest.cpp
+        Test/UtilTest/FileSystemTest.cpp
+        Test/UtilTest/ErrorReportTest.cpp
+        Test/TokenTestUtil/TokenPrint.cpp
+        Test/ASTTestUtil/ASTPrint.cpp
+        Test/CompilationMonitor/CompilationMonitor.cpp
     )
     
     target_link_libraries(chtl_tests PRIVATE CHTLCore)

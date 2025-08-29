@@ -6,6 +6,8 @@
 #include <chrono>
 #include "../CompilerDispatcher/CompilerDispatcher.h"
 #include "../CHTL/CHTLIOStream/CHTLFileSystem.h"
+#include "../Error/ErrorReport.h"
+#include "../Test/CompilationMonitor/CompilationMonitor.h"
 
 void printUsage(const char* program) {
     std::cout << "CHTL Compiler v1.0.0\n";
@@ -27,6 +29,25 @@ void printUsage(const char* program) {
 
 int main(int argc, char* argv[]) {
     using namespace CHTL;
+    using namespace CHTL::Test;
+    
+    // 初始化错误报告系统
+    auto& errorReport = ErrorReport::getInstance();
+    errorReport.addReporter(std::make_shared<ConsoleErrorReporter>(true));
+    
+    // 初始化编译监视器
+    auto& monitorManager = MonitorManager::getInstance();
+    auto& compilationMonitor = monitorManager.getCompilationMonitor();
+    compilationMonitor.setTimeout(std::chrono::minutes(5));  // 5分钟超时
+    compilationMonitor.setMemoryLimit(2ULL * 1024 * 1024 * 1024);  // 2GB内存限制
+    
+    // 设置超时回调
+    compilationMonitor.setTimeoutCallback([]() {
+        ErrorReport::getInstance().fatal("Compilation timeout - possible infinite loop detected");
+    });
+    
+    // 开始监视
+    compilationMonitor.start();
     
     if (argc < 2) {
         printUsage(argv[0]);
@@ -87,21 +108,28 @@ int main(int argc, char* argv[]) {
             inputFile = arg;
         }
         else {
-            std::cerr << "Unknown option: " << arg << "\n";
+            ErrorBuilder(ErrorLevel::ERROR, ErrorType::SYNTAX_ERROR)
+                .withMessage("Unknown command line option: " + arg)
+                .report();
             printUsage(argv[0]);
             return 1;
         }
     }
     
     if (inputFile.empty()) {
-        std::cerr << "Error: No input file specified\n";
+        ErrorBuilder(ErrorLevel::ERROR, ErrorType::SYNTAX_ERROR)
+            .withMessage("No input file specified")
+            .report();
         printUsage(argv[0]);
         return 1;
     }
     
     // 检查输入文件是否存在
     if (!FileSystem::exists(inputFile)) {
-        std::cerr << "Error: Input file not found: " << inputFile << "\n";
+        ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+            .withMessage("Input file not found")
+            .atLocation(inputFile, 0, 0)
+            .report();
         return 1;
     }
     
@@ -126,11 +154,11 @@ int main(int argc, char* argv[]) {
         
         // 设置错误处理
         dispatcher->setErrorHandler([](const std::string& error) {
-            std::cerr << "Error: " << error << "\n";
+            ErrorReport::getInstance().error(error);
         });
         
         dispatcher->setWarningHandler([](const std::string& warning) {
-            std::cerr << "Warning: " << warning << "\n";
+            ErrorReport::getInstance().warning(warning);
         });
         
         if (debug) {
@@ -167,9 +195,9 @@ int main(int argc, char* argv[]) {
                         if (watchResult.success) {
                             std::cout << "Recompilation successful!\n";
                         } else {
-                            std::cerr << "Recompilation failed!\n";
+                            ErrorReport::getInstance().error("Recompilation failed");
                             for (const auto& error : watchResult.errors) {
-                                std::cerr << "Error: " << error << "\n";
+                                ErrorReport::getInstance().error(error);
                             }
                         }
                     }
@@ -183,20 +211,43 @@ int main(int argc, char* argv[]) {
                 }
             }
             
+            // 停止监视器并生成报告
+            compilationMonitor.stop();
+            
+            if (debug) {
+                std::cout << monitorManager.generateFullReport();
+            }
+            
             return 0;
         } else {
-            std::cerr << "Compilation failed!\n";
+            ErrorReport::getInstance().error("Compilation failed");
             for (const auto& error : result.errors) {
-                std::cerr << "Error: " << error << "\n";
+                ErrorReport::getInstance().error(error);
             }
             for (const auto& warning : result.warnings) {
-                std::cerr << "Warning: " << warning << "\n";
+                ErrorReport::getInstance().warning(warning);
             }
+            
+            // 停止监视器并生成报告
+            compilationMonitor.stop();
+            
+            if (debug) {
+                std::cout << monitorManager.generateFullReport();
+            }
+            
             return 1;
         }
         
     } catch (const std::exception& e) {
-        std::cerr << "Fatal error: " << e.what() << "\n";
+        ErrorReport::getInstance().fatal(std::string("Unhandled exception: ") + e.what());
+        
+        // 停止监视器并生成报告
+        compilationMonitor.stop();
+        
+        if (debug) {
+            std::cout << monitorManager.generateFullReport();
+        }
+        
         return 1;
     }
 }

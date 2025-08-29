@@ -1,6 +1,7 @@
 #include "CJMODPackager.h"
 #include "../../CHTL/CHTLIOStream/CHTLFileSystem.h"
 #include "../../Util/ZIPUtil/ZIPUtil.h"
+#include "../../Error/ErrorReport.h"
 #include <filesystem>
 #include <fstream>
 #include <sstream>
@@ -652,8 +653,69 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
         return false;
     }
     
-    // TODO: 实现从目录加载（开发模式）
-    return false;
+    // 实现从目录加载（开发模式）
+    std::filesystem::path dirPath(path);
+    
+    if (!std::filesystem::exists(dirPath) || !std::filesystem::is_directory(dirPath)) {
+        ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+            .withMessage("CJMOD directory not found: " + path)
+            .atLocation(path, 0, 0)
+            .report();
+        return false;
+    }
+    
+    try {
+        // 加载manifest.json
+        std::filesystem::path manifestPath = dirPath / "manifest.json";
+        if (!std::filesystem::exists(manifestPath)) {
+            ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+                .withMessage("manifest.json not found in CJMOD directory")
+                .atLocation(manifestPath.string(), 0, 0)
+                .report();
+            return false;
+        }
+        
+        std::ifstream manifestFile(manifestPath);
+        std::stringstream buffer;
+        buffer << manifestFile.rdbuf();
+        info = parseManifest(buffer.str());
+        
+        // 加载extension.so/dll
+        std::filesystem::path extensionPath = dirPath / "extension";
+        #ifdef _WIN32
+        extensionPath += ".dll";
+        #else
+        extensionPath += ".so";
+        #endif
+        
+        if (std::filesystem::exists(extensionPath)) {
+            info.hasExtension = true;
+            info.extensionPath = extensionPath.string();
+        }
+        
+        // 加载syntax目录
+        std::filesystem::path syntaxDir = dirPath / "syntax";
+        if (std::filesystem::exists(syntaxDir) && std::filesystem::is_directory(syntaxDir)) {
+            for (const auto& entry : std::filesystem::directory_iterator(syntaxDir)) {
+                if (entry.path().extension() == ".json") {
+                    std::ifstream file(entry.path());
+                    std::stringstream syntaxBuffer;
+                    syntaxBuffer << file.rdbuf();
+                    info.syntaxDefinitions[entry.path().stem().string()] = syntaxBuffer.str();
+                }
+            }
+        }
+        
+        return true;
+        
+    } catch (const std::exception& e) {
+        ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+            .withMessage("Failed to load CJMOD from directory")
+            .withDetail(e.what())
+            .atLocation(path, 0, 0)
+            .report();
+        return false;
+    }
 }
 
 std::shared_ptr<CJMODStructure> CJMODLoader::getModule(const std::string& moduleName) const {

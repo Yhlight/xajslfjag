@@ -1,6 +1,7 @@
 #include "Generator.h"
 #include <algorithm>
 #include <unordered_set>
+#include "../../Error/ErrorReport.h"
 
 namespace CHTL {
 
@@ -325,8 +326,39 @@ void Generator::applyAutoIds(ElementNode* element) {
 }
 
 std::string Generator::replaceVariables(const std::string& value) {
-    // TODO: 实现变量替换逻辑
-    return value;
+    // 实现变量替换逻辑
+    std::string result = value;
+    size_t pos = 0;
+    
+    while ((pos = result.find("@", pos)) != std::string::npos) {
+        // 查找变量名的结束位置
+        size_t endPos = pos + 1;
+        while (endPos < result.length() && 
+               (std::isalnum(result[endPos]) || result[endPos] == '_')) {
+            endPos++;
+        }
+        
+        if (endPos > pos + 1) {
+            std::string varName = result.substr(pos + 1, endPos - pos - 1);
+            
+            // 在当前上下文中查找变量
+            auto it = templateVars_.find(varName);
+            if (it != templateVars_.end()) {
+                result.replace(pos, endPos - pos, it->second);
+                pos += it->second.length();
+            } else {
+                // 变量未定义
+                ErrorBuilder(ErrorLevel::WARNING, ErrorType::REFERENCE_ERROR)
+                    .withMessage("Undefined variable: @" + varName)
+                    .report();
+                pos = endPos;
+            }
+        } else {
+            pos++;
+        }
+    }
+    
+    return result;
 }
 
 void Generator::write(const std::string& text) {
