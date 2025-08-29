@@ -339,6 +339,490 @@ private:
     void addBuildError(const String& error);
 };
 
+// 高级自定义类型处理器 - 完善边界情况和高级特性
+class AdvancedCustomOriginTypeHandler : public CustomOriginTypeHandler {
+public:
+    virtual ~AdvancedCustomOriginTypeHandler() = default;
+    
+    // 高级验证
+    virtual bool validateSemantics(const String& content) const = 0;
+    virtual bool validateSecurity(const String& content) const = 0;
+    virtual StringVector getSemanticErrors(const String& content) const = 0;
+    virtual StringVector getSecurityWarnings(const String& content) const = 0;
+    
+    // 增量编译支持
+    virtual bool supportsIncrementalCompilation() const = 0;
+    virtual String compileIncremental(const String& content, const String& previousContent, 
+                                    const StringUnorderedMap& options = {}) const = 0;
+    virtual StringVector getChangedSections(const String& content, const String& previousContent) const = 0;
+    
+    // 优化和压缩
+    virtual String optimize(const String& content, const StringUnorderedMap& options = {}) const = 0;
+    virtual String minify(const String& content) const = 0;
+    virtual String beautify(const String& content) const = 0;
+    virtual size_t estimateOutputSize(const String& content) const = 0;
+    
+    // 依赖分析增强
+    virtual StringVector analyzeDependencyGraph(const String& content) const = 0;
+    virtual StringVector getCircularDependencies(const String& content) const = 0;
+    virtual StringUnorderedMap getDependencyVersions(const String& content) const = 0;
+    virtual bool hasConflictingDependencies(const String& content) const = 0;
+    
+    // 代码生成和转换
+    virtual String generateWrapper(const String& content, const String& wrapperType = "module") const = 0;
+    virtual String generateBindings(const String& content, const String& targetLanguage) const = 0;
+    virtual String extractInterface(const String& content) const = 0;
+    virtual String generateDocumentation(const String& content) const = 0;
+    
+    // 运行时支持
+    virtual bool supportsHotReload() const = 0;
+    virtual String generateHotReloadCode(const String& content) const = 0;
+    virtual StringVector getWatchedFiles(const String& content) const = 0;
+    virtual String generateSourceMap(const String& content) const = 0;
+    
+    // 元数据和分析
+    virtual StringUnorderedMap extractMetrics(const String& content) const = 0;
+    virtual size_t getComplexityScore(const String& content) const = 0;
+    virtual StringVector getUsedFeatures(const String& content) const = 0;
+    virtual StringVector getSuggestions(const String& content) const = 0;
+    
+    // 安全和沙箱
+    virtual StringVector getSecurityRisks(const String& content) const = 0;
+    virtual String sanitizeContent(const String& content) const = 0;
+    virtual bool isContentSafe(const String& content) const = 0;
+    virtual StringUnorderedMap getPermissions(const String& content) const = 0;
+    
+    // 缓存和性能
+    virtual String getCacheKey(const String& content, const StringUnorderedMap& options = {}) const = 0;
+    virtual bool isCacheable(const String& content) const = 0;
+    virtual size_t estimateCompilationTime(const String& content) const = 0;
+    virtual StringVector getOptimizationHints(const String& content) const = 0;
+};
+
+// TypeScript/JavaScript 高级处理器
+class TypeScriptAdvancedHandler : public AdvancedCustomOriginTypeHandler {
+public:
+    // 基础接口
+    bool validateContent(const String& content) const override;
+    String transformContent(const String& content, const String& targetFormat = "js") const override;
+    StringVector extractDependencies(const String& content) const override;
+    StringVector getSupportedExtensions() const override { return {".ts", ".tsx", ".js", ".jsx"}; }
+    String getMimeType() const override { return "text/typescript"; }
+    bool requiresCompilation() const override { return true; }
+    String compile(const String& content, const StringUnorderedMap& options = {}) const override;
+    String getSyntaxHighlighting() const override { return "typescript"; }
+    
+    // 高级特性
+    bool validateSemantics(const String& content) const override;
+    bool validateSecurity(const String& content) const override;
+    StringVector getSemanticErrors(const String& content) const override;
+    StringVector getSecurityWarnings(const String& content) const override;
+    
+    bool supportsIncrementalCompilation() const override { return true; }
+    String compileIncremental(const String& content, const String& previousContent, 
+                            const StringUnorderedMap& options = {}) const override;
+    StringVector getChangedSections(const String& content, const String& previousContent) const override;
+    
+    String optimize(const String& content, const StringUnorderedMap& options = {}) const override;
+    String minify(const String& content) const override;
+    String beautify(const String& content) const override;
+    size_t estimateOutputSize(const String& content) const override;
+    
+    StringVector analyzeDependencyGraph(const String& content) const override;
+    StringVector getCircularDependencies(const String& content) const override;
+    StringUnorderedMap getDependencyVersions(const String& content) const override;
+    bool hasConflictingDependencies(const String& content) const override;
+    
+    String generateWrapper(const String& content, const String& wrapperType = "module") const override;
+    String generateBindings(const String& content, const String& targetLanguage) const override;
+    String extractInterface(const String& content) const override;
+    String generateDocumentation(const String& content) const override;
+    
+    bool supportsHotReload() const override { return true; }
+    String generateHotReloadCode(const String& content) const override;
+    StringVector getWatchedFiles(const String& content) const override;
+    String generateSourceMap(const String& content) const override;
+    
+    StringUnorderedMap extractMetrics(const String& content) const override;
+    size_t getComplexityScore(const String& content) const override;
+    StringVector getUsedFeatures(const String& content) const override;
+    StringVector getSuggestions(const String& content) const override;
+    
+    StringVector getSecurityRisks(const String& content) const override;
+    String sanitizeContent(const String& content) const override;
+    bool isContentSafe(const String& content) const override;
+    StringUnorderedMap getPermissions(const String& content) const override;
+    
+    String getCacheKey(const String& content, const StringUnorderedMap& options = {}) const override;
+    bool isCacheable(const String& content) const override { return true; }
+    size_t estimateCompilationTime(const String& content) const override;
+    StringVector getOptimizationHints(const String& content) const override;
+    
+private:
+    // TypeScript 特定方法
+    StringVector extractTypeDefinitions(const String& content) const;
+    StringVector extractInterfaces(const String& content) const;
+    StringVector extractClasses(const String& content) const;
+    StringVector extractFunctions(const String& content) const;
+    StringUnorderedMap extractModuleExports(const String& content) const;
+    bool hasTypeErrors(const String& content) const;
+    String transpileToJavaScript(const String& content, const StringUnorderedMap& options = {}) const;
+    String generateTypeDeclarations(const String& content) const;
+};
+
+// CSS 高级处理器 (SCSS/Less/PostCSS)
+class CSSAdvancedHandler : public AdvancedCustomOriginTypeHandler {
+public:
+    // 基础接口
+    bool validateContent(const String& content) const override;
+    String transformContent(const String& content, const String& targetFormat = "css") const override;
+    StringVector extractDependencies(const String& content) const override;
+    StringVector getSupportedExtensions() const override { return {".css", ".scss", ".sass", ".less", ".stylus"}; }
+    String getMimeType() const override { return "text/css"; }
+    bool requiresCompilation() const override { return true; }
+    String compile(const String& content, const StringUnorderedMap& options = {}) const override;
+    String getSyntaxHighlighting() const override { return "scss"; }
+    
+    // 高级特性
+    bool validateSemantics(const String& content) const override;
+    bool validateSecurity(const String& content) const override;
+    StringVector getSemanticErrors(const String& content) const override;
+    StringVector getSecurityWarnings(const String& content) const override;
+    
+    bool supportsIncrementalCompilation() const override { return true; }
+    String compileIncremental(const String& content, const String& previousContent, 
+                            const StringUnorderedMap& options = {}) const override;
+    StringVector getChangedSections(const String& content, const String& previousContent) const override;
+    
+    String optimize(const String& content, const StringUnorderedMap& options = {}) const override;
+    String minify(const String& content) const override;
+    String beautify(const String& content) const override;
+    size_t estimateOutputSize(const String& content) const override;
+    
+    StringVector analyzeDependencyGraph(const String& content) const override;
+    StringVector getCircularDependencies(const String& content) const override;
+    StringUnorderedMap getDependencyVersions(const String& content) const override;
+    bool hasConflictingDependencies(const String& content) const override;
+    
+    String generateWrapper(const String& content, const String& wrapperType = "module") const override;
+    String generateBindings(const String& content, const String& targetLanguage) const override;
+    String extractInterface(const String& content) const override;
+    String generateDocumentation(const String& content) const override;
+    
+    bool supportsHotReload() const override { return true; }
+    String generateHotReloadCode(const String& content) const override;
+    StringVector getWatchedFiles(const String& content) const override;
+    String generateSourceMap(const String& content) const override;
+    
+    StringUnorderedMap extractMetrics(const String& content) const override;
+    size_t getComplexityScore(const String& content) const override;
+    StringVector getUsedFeatures(const String& content) const override;
+    StringVector getSuggestions(const String& content) const override;
+    
+    StringVector getSecurityRisks(const String& content) const override;
+    String sanitizeContent(const String& content) const override;
+    bool isContentSafe(const String& content) const override;
+    StringUnorderedMap getPermissions(const String& content) const override;
+    
+    String getCacheKey(const String& content, const StringUnorderedMap& options = {}) const override;
+    bool isCacheable(const String& content) const override { return true; }
+    size_t estimateCompilationTime(const String& content) const override;
+    StringVector getOptimizationHints(const String& content) const override;
+    
+private:
+    // CSS 特定方法
+    StringVector extractSelectors(const String& content) const;
+    StringVector extractVariables(const String& content) const;
+    StringVector extractMixins(const String& content) const;
+    StringVector extractImports(const String& content) const;
+    StringUnorderedMap extractProperties(const String& content) const;
+    String autoprefixCSS(const String& content) const;
+    String optimizeSelectors(const String& content) const;
+    String removeUnusedRules(const String& content) const;
+};
+
+// WebAssembly 高级处理器
+class WasmAdvancedHandler : public AdvancedCustomOriginTypeHandler {
+public:
+    // 基础接口
+    bool validateContent(const String& content) const override;
+    String transformContent(const String& content, const String& targetFormat = "wasm") const override;
+    StringVector extractDependencies(const String& content) const override;
+    StringVector getSupportedExtensions() const override { return {".wasm", ".wat", ".c", ".cpp", ".rust"}; }
+    String getMimeType() const override { return "application/wasm"; }
+    bool requiresCompilation() const override { return true; }
+    String compile(const String& content, const StringUnorderedMap& options = {}) const override;
+    String getSyntaxHighlighting() const override { return "wasm"; }
+    
+    // 高级特性
+    bool validateSemantics(const String& content) const override;
+    bool validateSecurity(const String& content) const override;
+    StringVector getSemanticErrors(const String& content) const override;
+    StringVector getSecurityWarnings(const String& content) const override;
+    
+    bool supportsIncrementalCompilation() const override { return false; }
+    String compileIncremental(const String& content, const String& previousContent, 
+                            const StringUnorderedMap& options = {}) const override;
+    StringVector getChangedSections(const String& content, const String& previousContent) const override;
+    
+    String optimize(const String& content, const StringUnorderedMap& options = {}) const override;
+    String minify(const String& content) const override;
+    String beautify(const String& content) const override;
+    size_t estimateOutputSize(const String& content) const override;
+    
+    StringVector analyzeDependencyGraph(const String& content) const override;
+    StringVector getCircularDependencies(const String& content) const override;
+    StringUnorderedMap getDependencyVersions(const String& content) const override;
+    bool hasConflictingDependencies(const String& content) const override;
+    
+    String generateWrapper(const String& content, const String& wrapperType = "js") const override;
+    String generateBindings(const String& content, const String& targetLanguage) const override;
+    String extractInterface(const String& content) const override;
+    String generateDocumentation(const String& content) const override;
+    
+    bool supportsHotReload() const override { return false; }
+    String generateHotReloadCode(const String& content) const override;
+    StringVector getWatchedFiles(const String& content) const override;
+    String generateSourceMap(const String& content) const override;
+    
+    StringUnorderedMap extractMetrics(const String& content) const override;
+    size_t getComplexityScore(const String& content) const override;
+    StringVector getUsedFeatures(const String& content) const override;
+    StringVector getSuggestions(const String& content) const override;
+    
+    StringVector getSecurityRisks(const String& content) const override;
+    String sanitizeContent(const String& content) const override;
+    bool isContentSafe(const String& content) const override;
+    StringUnorderedMap getPermissions(const String& content) const override;
+    
+    String getCacheKey(const String& content, const StringUnorderedMap& options = {}) const override;
+    bool isCacheable(const String& content) const override { return true; }
+    size_t estimateCompilationTime(const String& content) const override;
+    StringVector getOptimizationHints(const String& content) const override;
+    
+private:
+    // WASM 特定方法
+    StringVector extractExports(const String& content) const;
+    StringVector extractImports(const String& content) const;
+    StringVector extractFunctions(const String& content) const;
+    StringUnorderedMap extractMemoryLayout(const String& content) const;
+    bool validateWatSyntax(const String& content) const;
+    String generateJavaScriptBindings(const String& content) const;
+    String optimizeWasm(const String& content) const;
+};
+
+// 高级自定义原始嵌入节点 - 完善所有边界情况
+class AdvancedCustomOriginNode : public CustomOriginNode {
+public:
+    // 高级编译和处理状态
+    enum class ProcessingState {
+        RAW,                    // 原始状态
+        VALIDATED,              // 已验证
+        PREPROCESSED,           // 已预处理
+        COMPILED,               // 已编译
+        OPTIMIZED,              // 已优化
+        CACHED,                 // 已缓存
+        ERROR                   // 错误状态
+    };
+    
+    // 缓存管理
+    struct CompilationCache {
+        String cacheKey;                          // 缓存键
+        String cachedContent;                     // 缓存内容
+        StringUnorderedMap metadata;              // 元数据
+        std::chrono::milliseconds timestamp;      // 时间戳
+        size_t hitCount;                         // 命中次数
+        bool isValid;                            // 是否有效
+    };
+    
+    // 依赖跟踪
+    struct DependencyInfo {
+        String path;                             // 路径
+        String version;                          // 版本
+        String hash;                             // 内容哈希
+        bool isOptional;                         // 是否可选
+        bool isCircular;                         // 是否循环依赖
+        StringVector childDependencies;          // 子依赖
+    };
+    
+    // 性能监控
+    struct PerformanceMetrics {
+        std::chrono::milliseconds compilationTime;
+        std::chrono::milliseconds validationTime;
+        std::chrono::milliseconds optimizationTime;
+        size_t inputSize;
+        size_t outputSize;
+        size_t memoryUsage;
+        size_t cacheHits;
+        size_t cacheMisses;
+    };
+    
+private:
+    ProcessingState currentState;
+    std::shared_ptr<AdvancedCustomOriginTypeHandler> advancedHandler;
+    CompilationCache cache;
+    std::vector<DependencyInfo> dependencyTree;
+    PerformanceMetrics metrics;
+    StringUnorderedMap processingOptions;
+    StringVector processingErrors;
+    StringVector processingWarnings;
+    bool enableIncrementalCompilation;
+    bool enableHotReload;
+    bool enableSecurityValidation;
+    String previousContent;
+    
+public:
+    explicit AdvancedCustomOriginNode(CustomOriginType type, const String& identifier, const Position& pos = Position());
+    ~AdvancedCustomOriginNode() override = default;
+    
+    // 状态管理
+    ProcessingState getProcessingState() const { return currentState; }
+    void setProcessingState(ProcessingState state) { currentState = state; }
+    bool isStateValid() const;
+    String getStateDescription() const;
+    
+    // 高级处理器管理
+    void setAdvancedHandler(std::shared_ptr<AdvancedCustomOriginTypeHandler> handler);
+    std::shared_ptr<AdvancedCustomOriginTypeHandler> getAdvancedHandler() const { return advancedHandler; }
+    bool hasAdvancedHandler() const { return advancedHandler != nullptr; }
+    
+    // 增强编译流程
+    bool compileAdvanced(const StringUnorderedMap& options = {});
+    bool compileIncremental(const String& newContent);
+    bool validateAndCompile();
+    bool optimizeAndCompile();
+    
+    // 高级验证
+    bool validateSyntax() const;
+    bool validateSemantics() const;
+    bool validateSecurity() const;
+    StringVector getAllValidationErrors() const;
+    StringVector getSecurityWarnings() const;
+    
+    // 缓存管理
+    void enableCaching(bool enable = true);
+    bool isCachingEnabled() const;
+    bool isCacheValid() const;
+    void invalidateCache();
+    String getCacheKey() const;
+    bool loadFromCache(const String& key);
+    bool saveToCache();
+    CompilationCache getCacheInfo() const { return cache; }
+    
+    // 依赖管理增强
+    void buildDependencyTree();
+    std::vector<DependencyInfo> getDependencyTree() const { return dependencyTree; }
+    StringVector getCircularDependencies() const;
+    bool hasConflictingDependencies() const;
+    void resolveDependencies();
+    bool updateDependency(const String& path, const String& newVersion);
+    
+    // 性能监控
+    PerformanceMetrics getPerformanceMetrics() const { return metrics; }
+    void resetMetrics();
+    void recordCompilationTime(std::chrono::milliseconds time);
+    void recordValidationTime(std::chrono::milliseconds time);
+    void recordOptimizationTime(std::chrono::milliseconds time);
+    double getCompressionRatio() const;
+    size_t getMemoryFootprint() const;
+    
+    // 增量处理
+    void enableIncrementalProcessing(bool enable = true) { enableIncrementalCompilation = enable; }
+    bool isIncrementalProcessingEnabled() const { return enableIncrementalCompilation; }
+    StringVector getChangedSections(const String& newContent) const;
+    bool processChanges(const String& newContent);
+    
+    // 热重载支持
+    void enableHotReload(bool enable = true) { enableHotReload = enable; }
+    bool isHotReloadEnabled() const { return enableHotReload; }
+    String generateHotReloadCode() const;
+    StringVector getWatchedFiles() const;
+    bool reload();
+    
+    // 安全和沙箱
+    void enableSecurityValidation(bool enable = true) { enableSecurityValidation = enable; }
+    bool isSecurityValidationEnabled() const { return enableSecurityValidation; }
+    StringVector getSecurityRisks() const;
+    String sanitizeContent() const;
+    bool isContentSafe() const;
+    StringUnorderedMap getRequiredPermissions() const;
+    
+    // 代码生成和转换
+    String generateWrapper(const String& wrapperType = "module") const;
+    String generateBindings(const String& targetLanguage) const;
+    String extractInterface() const;
+    String generateDocumentation() const;
+    String generateSourceMap() const;
+    
+    // 优化和压缩
+    String optimize(const StringUnorderedMap& options = {}) const;
+    String minify() const;
+    String beautify() const;
+    StringVector getOptimizationHints() const;
+    
+    // 分析和诊断
+    StringUnorderedMap extractMetrics() const;
+    size_t getComplexityScore() const;
+    StringVector getUsedFeatures() const;
+    StringVector getSuggestions() const;
+    String generateReport() const;
+    
+    // 处理选项管理
+    void setProcessingOption(const String& key, const String& value);
+    String getProcessingOption(const String& key) const;
+    bool hasProcessingOption(const String& key) const;
+    void removeProcessingOption(const String& key);
+    StringUnorderedMap getAllProcessingOptions() const { return processingOptions; }
+    
+    // 错误和警告管理
+    StringVector getProcessingErrors() const { return processingErrors; }
+    StringVector getProcessingWarnings() const { return processingWarnings; }
+    void addProcessingError(const String& error);
+    void addProcessingWarning(const String& warning);
+    void clearProcessingMessages();
+    bool hasProcessingErrors() const { return !processingErrors.empty(); }
+    bool hasProcessingWarnings() const { return !processingWarnings.empty(); }
+    
+    // 序列化增强
+    String toAdvancedString() const;
+    String toDetailedJSON() const;
+    String toProcessingReport() const;
+    String toDependencyGraph() const;
+    String toPerformanceReport() const;
+    
+    // 克隆增强
+    std::unique_ptr<BaseNode> cloneAdvanced() const;
+    std::unique_ptr<AdvancedCustomOriginNode> cloneWithState() const;
+    
+    // 静态工厂方法
+    static std::unique_ptr<AdvancedCustomOriginNode> createTypeScript(const String& content, const Position& pos = Position());
+    static std::unique_ptr<AdvancedCustomOriginNode> createAdvancedCSS(const String& content, const Position& pos = Position());
+    static std::unique_ptr<AdvancedCustomOriginNode> createWebAssembly(const String& content, const Position& pos = Position());
+    static std::unique_ptr<AdvancedCustomOriginNode> createFromFile(const String& filePath, const Position& pos = Position());
+    static std::unique_ptr<AdvancedCustomOriginNode> createWithAdvancedHandler(
+        CustomOriginType type, const String& identifier, 
+        std::shared_ptr<AdvancedCustomOriginTypeHandler> handler,
+        const String& content, const Position& pos = Position());
+    
+    // 工具方法
+    static String calculateContentHash(const String& content);
+    static bool isContentChanged(const String& content1, const String& content2);
+    static ProcessingState parseProcessingState(const String& stateString);
+    static String processingStateToString(ProcessingState state);
+    
+private:
+    // 内部方法
+    void initializeAdvancedFeatures();
+    void updateProcessingState();
+    bool executeProcessingPipeline();
+    void recordMetric(const String& metric, const String& value);
+    void updateCache();
+    bool shouldRecompile() const;
+    String generateCacheKey() const;
+    void validateProcessingOptions() const;
+    void cleanupResources();
+};
+
 // 工具函数
 namespace CustomOriginUtils {
     // 内容检测
@@ -367,6 +851,30 @@ namespace CustomOriginUtils {
     String optimizeContent(const String& content, CustomOriginType type);
     String minifyContent(const String& content, CustomOriginType type);
     String beautifyContent(const String& content, CustomOriginType type);
+    
+    // 高级工具函数
+    String calculateSHA256(const String& content);
+    String generateUniqueId();
+    bool isValidPath(const String& path);
+    String resolvePath(const String& basePath, const String& relativePath);
+    StringVector splitPath(const String& path);
+    String joinPath(const StringVector& pathParts);
+    
+    // 性能工具
+    std::chrono::milliseconds measureExecutionTime(std::function<void()> func);
+    size_t calculateMemoryUsage(const String& content);
+    double calculateCompressionRatio(const String& original, const String& compressed);
+    
+    // 安全工具
+    bool containsSuspiciousContent(const String& content);
+    String sanitizeForExecution(const String& content);
+    StringVector extractPotentialThreats(const String& content);
+    
+    // 缓存工具
+    String generateCacheKey(const String& content, const StringUnorderedMap& options);
+    bool isCacheExpired(const std::chrono::milliseconds& timestamp, size_t maxAge);
+    String serializeCacheData(const StringUnorderedMap& data);
+    StringUnorderedMap deserializeCacheData(const String& serialized);
 }
 
 } // namespace CHTL

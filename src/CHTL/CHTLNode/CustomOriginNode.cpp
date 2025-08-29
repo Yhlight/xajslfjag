@@ -1214,4 +1214,487 @@ String beautifyContent(const String& content, CustomOriginType type) {
 
 } // namespace CustomOriginUtils
 
+// ========== TypeScriptAdvancedHandler 实现 ==========
+
+bool TypeScriptAdvancedHandler::validateContent(const String& content) const {
+    // 基本 TypeScript/JavaScript 语法验证
+    return !content.empty() && (
+        content.find("function") != String::npos ||
+        content.find("class") != String::npos ||
+        content.find("interface") != String::npos ||
+        content.find("const") != String::npos ||
+        content.find("let") != String::npos ||
+        content.find("var") != String::npos
+    );
+}
+
+String TypeScriptAdvancedHandler::transformContent(const String& content, const String& targetFormat) const {
+    if (targetFormat == "js") {
+        return transpileToJavaScript(content);
+    } else if (targetFormat == "d.ts") {
+        return generateTypeDeclarations(content);
+    }
+    return content;
+}
+
+StringVector TypeScriptAdvancedHandler::extractDependencies(const String& content) const {
+    StringVector deps;
+    
+    // 提取 import 语句
+    std::regex importRegex(R"(import\s+.*?\s+from\s+['"]([^'"]+)['"])");
+    std::sregex_iterator iter(content.begin(), content.end(), importRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        deps.push_back(iter->str(1));
+    }
+    
+    // 提取 require 语句
+    std::regex requireRegex(R"(require\s*\(\s*['"]([^'"]+)['"]\s*\))");
+    iter = std::sregex_iterator(content.begin(), content.end(), requireRegex);
+    
+    for (; iter != end; ++iter) {
+        deps.push_back(iter->str(1));
+    }
+    
+    return deps;
+}
+
+String TypeScriptAdvancedHandler::compile(const String& content, const StringUnorderedMap& options) const {
+    return transpileToJavaScript(content, options);
+}
+
+bool TypeScriptAdvancedHandler::validateSemantics(const String& content) const {
+    return !hasTypeErrors(content);
+}
+
+bool TypeScriptAdvancedHandler::validateSecurity(const String& content) const {
+    // 安全检查
+    StringVector dangerousPatterns = {"eval(", "Function(", "document.write", "innerHTML ="};
+    for (const String& pattern : dangerousPatterns) {
+        if (content.find(pattern) != String::npos) {
+            return false;
+        }
+    }
+    return true;
+}
+
+StringVector TypeScriptAdvancedHandler::getSemanticErrors(const String& content) const {
+    StringVector errors;
+    if (hasTypeErrors(content)) {
+        errors.push_back("TypeScript type errors detected");
+    }
+    return errors;
+}
+
+StringVector TypeScriptAdvancedHandler::getSecurityWarnings(const String& content) const {
+    StringVector warnings;
+    if (content.find("eval(") != String::npos) {
+        warnings.push_back("Use of eval() function detected - potential security risk");
+    }
+    if (content.find("innerHTML") != String::npos) {
+        warnings.push_back("Use of innerHTML - potential XSS vulnerability");
+    }
+    return warnings;
+}
+
+String TypeScriptAdvancedHandler::compileIncremental(const String& content, const String& previousContent, 
+                                                    const StringUnorderedMap& options) const {
+    auto changedSections = getChangedSections(content, previousContent);
+    if (changedSections.empty()) {
+        return previousContent; // 无变化
+    }
+    
+    // 增量编译逻辑
+    return compile(content, options);
+}
+
+StringVector TypeScriptAdvancedHandler::getChangedSections(const String& content, const String& previousContent) const {
+    StringVector changes;
+    
+    auto currentFunctions = extractFunctions(content);
+    auto previousFunctions = extractFunctions(previousContent);
+    
+    for (const String& func : currentFunctions) {
+        if (std::find(previousFunctions.begin(), previousFunctions.end(), func) == previousFunctions.end()) {
+            changes.push_back("Function added: " + func);
+        }
+    }
+    
+    return changes;
+}
+
+String TypeScriptAdvancedHandler::optimize(const String& content, const StringUnorderedMap& options) const {
+    String optimized = content;
+    
+    // 移除注释
+    std::regex commentRegex(R"(//.*?$|/\*.*?\*/)");
+    optimized = std::regex_replace(optimized, commentRegex, "");
+    
+    // 移除多余空格
+    std::regex spaceRegex(R"(\s+)");
+    optimized = std::regex_replace(optimized, spaceRegex, " ");
+    
+    return optimized;
+}
+
+String TypeScriptAdvancedHandler::minify(const String& content) const {
+    String minified = optimize(content);
+    
+    // 移除换行
+    std::regex newlineRegex(R"(\n)");
+    minified = std::regex_replace(minified, newlineRegex, "");
+    
+    return minified;
+}
+
+String TypeScriptAdvancedHandler::beautify(const String& content) const {
+    // 简化的美化实现
+    String beautified = content;
+    
+    // 添加适当的缩进和换行
+    std::regex braceRegex(R"(\{)");
+    beautified = std::regex_replace(beautified, braceRegex, "{\n    ");
+    
+    return beautified;
+}
+
+size_t TypeScriptAdvancedHandler::estimateOutputSize(const String& content) const {
+    // 估算编译后的大小
+    return content.size() * 1.2; // TypeScript 编译后通常会稍微增大
+}
+
+StringVector TypeScriptAdvancedHandler::analyzeDependencyGraph(const String& content) const {
+    return extractDependencies(content);
+}
+
+StringVector TypeScriptAdvancedHandler::getCircularDependencies(const String& content) const {
+    // 简化的循环依赖检测
+    StringVector circular;
+    auto deps = extractDependencies(content);
+    
+    // 检查是否有依赖指向自己
+    for (const String& dep : deps) {
+        if (dep == "." || dep == "./" || dep.find("../") == 0) {
+            circular.push_back(dep);
+        }
+    }
+    
+    return circular;
+}
+
+StringUnorderedMap TypeScriptAdvancedHandler::getDependencyVersions(const String& content) const {
+    StringUnorderedMap versions;
+    // 从 package.json 或其他配置中提取版本信息
+    return versions;
+}
+
+bool TypeScriptAdvancedHandler::hasConflictingDependencies(const String& content) const {
+    return false; // 简化实现
+}
+
+String TypeScriptAdvancedHandler::generateWrapper(const String& content, const String& wrapperType) const {
+    std::ostringstream oss;
+    
+    if (wrapperType == "module") {
+        oss << "(function(module, exports) {\n";
+        oss << content << "\n";
+        oss << "})(this.module || {}, this.exports || {});\n";
+    } else if (wrapperType == "iife") {
+        oss << "(function() {\n";
+        oss << content << "\n";
+        oss << "})();\n";
+    } else {
+        return content;
+    }
+    
+    return oss.str();
+}
+
+String TypeScriptAdvancedHandler::generateBindings(const String& content, const String& targetLanguage) const {
+    if (targetLanguage == "c++") {
+        return "// C++ bindings for TypeScript code\n" + content;
+    } else if (targetLanguage == "python") {
+        return "# Python bindings for TypeScript code\n" + content;
+    }
+    return content;
+}
+
+String TypeScriptAdvancedHandler::extractInterface(const String& content) const {
+    std::ostringstream oss;
+    auto interfaces = extractInterfaces(content);
+    
+    for (const String& interface : interfaces) {
+        oss << interface << "\n";
+    }
+    
+    return oss.str();
+}
+
+String TypeScriptAdvancedHandler::generateDocumentation(const String& content) const {
+    std::ostringstream oss;
+    
+    oss << "# TypeScript Documentation\n\n";
+    
+    auto functions = extractFunctions(content);
+    if (!functions.empty()) {
+        oss << "## Functions\n";
+        for (const String& func : functions) {
+            oss << "- " << func << "\n";
+        }
+        oss << "\n";
+    }
+    
+    auto classes = extractClasses(content);
+    if (!classes.empty()) {
+        oss << "## Classes\n";
+        for (const String& cls : classes) {
+            oss << "- " << cls << "\n";
+        }
+        oss << "\n";
+    }
+    
+    return oss.str();
+}
+
+String TypeScriptAdvancedHandler::generateHotReloadCode(const String& content) const {
+    std::ostringstream oss;
+    
+    oss << "// Hot reload wrapper\n";
+    oss << "if (module.hot) {\n";
+    oss << "  module.hot.accept(() => {\n";
+    oss << "    console.log('Module reloaded');\n";
+    oss << "  });\n";
+    oss << "}\n\n";
+    oss << content;
+    
+    return oss.str();
+}
+
+StringVector TypeScriptAdvancedHandler::getWatchedFiles(const String& content) const {
+    return extractDependencies(content);
+}
+
+String TypeScriptAdvancedHandler::generateSourceMap(const String& content) const {
+    return "// Source map placeholder for: " + content.substr(0, 50) + "...";
+}
+
+StringUnorderedMap TypeScriptAdvancedHandler::extractMetrics(const String& content) const {
+    StringUnorderedMap metrics;
+    
+    metrics["lines"] = std::to_string(std::count(content.begin(), content.end(), '\n'));
+    metrics["functions"] = std::to_string(extractFunctions(content).size());
+    metrics["classes"] = std::to_string(extractClasses(content).size());
+    metrics["interfaces"] = std::to_string(extractInterfaces(content).size());
+    
+    return metrics;
+}
+
+size_t TypeScriptAdvancedHandler::getComplexityScore(const String& content) const {
+    size_t complexity = 0;
+    
+    // 简化的复杂度计算
+    complexity += std::count_if(content.begin(), content.end(), [](char c) { return c == '{'; });
+    complexity += std::count_if(content.begin(), content.end(), [](char c) { return c == '('; });
+    
+    return complexity;
+}
+
+StringVector TypeScriptAdvancedHandler::getUsedFeatures(const String& content) const {
+    StringVector features;
+    
+    if (content.find("class") != String::npos) features.push_back("classes");
+    if (content.find("interface") != String::npos) features.push_back("interfaces");
+    if (content.find("async") != String::npos) features.push_back("async/await");
+    if (content.find("=>") != String::npos) features.push_back("arrow functions");
+    
+    return features;
+}
+
+StringVector TypeScriptAdvancedHandler::getSuggestions(const String& content) const {
+    StringVector suggestions;
+    
+    if (content.find("var ") != String::npos) {
+        suggestions.push_back("Consider using 'const' or 'let' instead of 'var'");
+    }
+    
+    if (content.find("any") != String::npos) {
+        suggestions.push_back("Consider using more specific types instead of 'any'");
+    }
+    
+    return suggestions;
+}
+
+StringVector TypeScriptAdvancedHandler::getSecurityRisks(const String& content) const {
+    return getSecurityWarnings(content);
+}
+
+String TypeScriptAdvancedHandler::sanitizeContent(const String& content) const {
+    String sanitized = content;
+    
+    // 移除危险的函数调用
+    sanitized = std::regex_replace(sanitized, std::regex(R"(eval\s*\([^)]*\))"), "/* eval removed */");
+    
+    return sanitized;
+}
+
+bool TypeScriptAdvancedHandler::isContentSafe(const String& content) const {
+    return validateSecurity(content);
+}
+
+StringUnorderedMap TypeScriptAdvancedHandler::getPermissions(const String& content) const {
+    StringUnorderedMap permissions;
+    
+    if (content.find("fetch") != String::npos) {
+        permissions["network"] = "required";
+    }
+    
+    if (content.find("localStorage") != String::npos) {
+        permissions["storage"] = "required";
+    }
+    
+    return permissions;
+}
+
+String TypeScriptAdvancedHandler::getCacheKey(const String& content, const StringUnorderedMap& options) const {
+    std::hash<String> hasher;
+    String optionsStr;
+    for (const auto& [key, value] : options) {
+        optionsStr += key + "=" + value + ";";
+    }
+    
+    return std::to_string(hasher(content + optionsStr));
+}
+
+size_t TypeScriptAdvancedHandler::estimateCompilationTime(const String& content) const {
+    // 基于内容大小估算编译时间（毫秒）
+    return content.size() / 1000 + 100; // 每1000字符约1毫秒，基础100毫秒
+}
+
+StringVector TypeScriptAdvancedHandler::getOptimizationHints(const String& content) const {
+    StringVector hints;
+    
+    if (content.size() > 10000) {
+        hints.push_back("Consider splitting large files into smaller modules");
+    }
+    
+    if (getComplexityScore(content) > 100) {
+        hints.push_back("High complexity detected - consider refactoring");
+    }
+    
+    return hints;
+}
+
+// TypeScript 特定方法实现
+StringVector TypeScriptAdvancedHandler::extractTypeDefinitions(const String& content) const {
+    StringVector types;
+    
+    std::regex typeRegex(R"(type\s+(\w+)\s*=)");
+    std::sregex_iterator iter(content.begin(), content.end(), typeRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        types.push_back(iter->str(1));
+    }
+    
+    return types;
+}
+
+StringVector TypeScriptAdvancedHandler::extractInterfaces(const String& content) const {
+    StringVector interfaces;
+    
+    std::regex interfaceRegex(R"(interface\s+(\w+))");
+    std::sregex_iterator iter(content.begin(), content.end(), interfaceRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        interfaces.push_back(iter->str(1));
+    }
+    
+    return interfaces;
+}
+
+StringVector TypeScriptAdvancedHandler::extractClasses(const String& content) const {
+    StringVector classes;
+    
+    std::regex classRegex(R"(class\s+(\w+))");
+    std::sregex_iterator iter(content.begin(), content.end(), classRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        classes.push_back(iter->str(1));
+    }
+    
+    return classes;
+}
+
+StringVector TypeScriptAdvancedHandler::extractFunctions(const String& content) const {
+    StringVector functions;
+    
+    std::regex functionRegex(R"(function\s+(\w+)\s*\(|(\w+)\s*:\s*\([^)]*\)\s*=>|(\w+)\s*\([^)]*\)\s*\{)");
+    std::sregex_iterator iter(content.begin(), content.end(), functionRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        if (!iter->str(1).empty()) {
+            functions.push_back(iter->str(1));
+        } else if (!iter->str(2).empty()) {
+            functions.push_back(iter->str(2));
+        } else if (!iter->str(3).empty()) {
+            functions.push_back(iter->str(3));
+        }
+    }
+    
+    return functions;
+}
+
+StringUnorderedMap TypeScriptAdvancedHandler::extractModuleExports(const String& content) const {
+    StringUnorderedMap exports;
+    
+    std::regex exportRegex(R"(export\s+.*?(\w+))");
+    std::sregex_iterator iter(content.begin(), content.end(), exportRegex);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        exports[iter->str(1)] = "exported";
+    }
+    
+    return exports;
+}
+
+bool TypeScriptAdvancedHandler::hasTypeErrors(const String& content) const {
+    // 简化的类型错误检测
+    return content.find("// @ts-expect-error") != String::npos ||
+           content.find("// @ts-ignore") != String::npos;
+}
+
+String TypeScriptAdvancedHandler::transpileToJavaScript(const String& content, const StringUnorderedMap& options) const {
+    String js = content;
+    
+    // 移除 TypeScript 类型注解
+    js = std::regex_replace(js, std::regex(R"(:\s*\w+(\[\])?(\s*\|\s*\w+)*\s*(?=[,;=)])"), "");
+    js = std::regex_replace(js, std::regex(R"(interface\s+\w+\s*\{[^}]*\})"), "");
+    js = std::regex_replace(js, std::regex(R"(type\s+\w+\s*=\s*[^;]+;)"), "");
+    
+    return js;
+}
+
+String TypeScriptAdvancedHandler::generateTypeDeclarations(const String& content) const {
+    std::ostringstream oss;
+    
+    oss << "// Generated type declarations\n\n";
+    
+    auto interfaces = extractInterfaces(content);
+    for (const String& interface : interfaces) {
+        oss << "export interface " << interface << ";\n";
+    }
+    
+    auto types = extractTypeDefinitions(content);
+    for (const String& type : types) {
+        oss << "export type " << type << ";\n";
+    }
+    
+    return oss.str();
+}
+
 } // namespace CHTL
