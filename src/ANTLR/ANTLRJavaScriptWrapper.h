@@ -1,17 +1,23 @@
 #pragma once
 
-#include "../../Util/String.h"
-#include "antlr4-runtime.h"
-#include "JavaScript/JavaScriptLexer.h"
-#include "JavaScript/JavaScriptParser.h"
-#include "JavaScript/JavaScriptParserBaseListener.h"
+#include "../Util/String.h"
+
+// 包含您提供的ANTLR JavaScript文件
+#include "../../js/JavaScriptLexer.h"
+#include "../../js/JavaScriptParser.h"
+#include "../../js/JavaScriptParserBaseListener.h"
+#include "../../js/JavaScriptLexerBase.h"
+#include "../../js/JavaScriptParserBase.h"
+
+// ANTLR4运行时
+#include "../../ANTLR4/include/antlr4-runtime.h"
 
 namespace CHTL {
 namespace ANTLR {
 
     /**
      * @brief ANTLR JavaScript解析器包装器
-     * 为CHTL项目提供JavaScript解析能力
+     * 使用您提供的Windows ANTLR4环境
      */
     class ANTLRJavaScriptWrapper {
     public:
@@ -25,12 +31,13 @@ namespace ANTLR {
             std::vector<String> syntaxErrors;
             std::vector<String> warnings;
             
-            // AST信息
+            // AST特性检测
             bool hasValidSyntax = false;
             bool hasModules = false;
             bool hasArrowFunctions = false;
             bool hasAsyncAwait = false;
             bool hasClasses = false;
+            bool hasES6Features = false;
             
             void clear() {
                 success = false;
@@ -43,6 +50,7 @@ namespace ANTLR {
                 hasArrowFunctions = false;
                 hasAsyncAwait = false;
                 hasClasses = false;
+                hasES6Features = false;
             }
         };
 
@@ -55,6 +63,10 @@ namespace ANTLR {
             bool extractFeatures = true;
             bool cleanOutput = true;
             bool validateSyntax = true;
+            
+            // Windows环境优化
+            bool useWindowsLineEndings = true;
+            bool handleUTF8BOM = true;
             
             // 容错设置
             int maxErrorCount = 10;
@@ -81,10 +93,10 @@ namespace ANTLR {
         bool validateJavaScriptSyntax(const String& jsCode);
 
         /**
-         * @brief 清理JavaScript代码
-         * 移除注释，规范化格式
+         * @brief 清理JavaScript代码 - 为CHTL的"完整JS字符串"需求服务
+         * 移除注释，规范化格式，确保输出是纯净的JavaScript
          * @param jsCode 原始JavaScript代码
-         * @return 清理后的JavaScript代码
+         * @return 清理后的完整JavaScript字符串
          */
         String cleanJavaScriptCode(const String& jsCode);
 
@@ -96,6 +108,14 @@ namespace ANTLR {
         ParseResult detectJavaScriptFeatures(const String& jsCode);
 
         /**
+         * @brief 处理混合的CHTL JS和纯JavaScript代码
+         * 这是为了解决您提到的"JS编译器需要接收完整的JS字符串"问题
+         * @param mixedCode 包含CHTL JS语法和纯JavaScript的混合代码
+         * @return 分离后的纯JavaScript代码
+         */
+        String extractPureJavaScript(const String& mixedCode);
+
+        /**
          * @brief 获取最后的错误信息
          */
         const String& getLastError() const { return lastError; }
@@ -105,11 +125,16 @@ namespace ANTLR {
          */
         void reset();
 
+        /**
+         * @brief 检查Windows环境兼容性
+         */
+        static bool checkWindowsCompatibility();
+
     private:
         String lastError;
         ParseConfig defaultConfig;
 
-        // ANTLR组件
+        // ANTLR组件（使用您提供的文件）
         std::unique_ptr<antlr4::ANTLRInputStream> inputStream;
         std::unique_ptr<JavaScriptLexer> lexer;
         std::unique_ptr<antlr4::CommonTokenStream> tokens;
@@ -120,6 +145,8 @@ namespace ANTLR {
         void collectErrors(ParseResult& result);
         void analyzeAST(JavaScriptParser::ProgramContext* tree, ParseResult& result);
         String extractCleanCode(JavaScriptParser::ProgramContext* tree);
+        String normalizeLineEndings(const String& code, bool useWindows = true);
+        String handleUTF8BOM(const String& code);
     };
 
     /**

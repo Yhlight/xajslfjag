@@ -4,6 +4,8 @@
 #include "../CHTL/CHTLGenerator/Generator.h"
 #include "../CHTLJS/CHTLJSParser/Parser.h"
 #include "../CHTLJS/CHTLJSGenerator/Generator.h"
+#include "../ANTLR/ANTLRJavaScriptWrapper.h"
+#include "../ANTLR/ANTLRCSSWrapper.h"
 #include <algorithm>
 #include <future>
 #include <thread>
@@ -11,9 +13,21 @@
 namespace CHTL {
 
 // CompilerDispatcher实现
-CompilerDispatcher::CompilerDispatcher(const CompilerConfig& config)
-    : config(config), totalFragments(0), processedFragments(0) {
-    initializeCompilers();
+CompilerDispatcher::CompilerDispatcher(const DispatcherConfig& config)
+    : config(config), cacheEnabled(config.enableCaching), debugMode(false), shouldStop(false) {
+    // 初始化ANTLR组件
+    antlrJSWrapper = std::make_unique<ANTLR::ANTLRJavaScriptWrapper>();
+    antlrCSSWrapper = std::make_unique<ANTLR::ANTLRCSSWrapper>();
+    
+    // 初始化其他组件
+    scanner = std::make_unique<CHTLUnifiedScanner>();
+    chtlParser = std::make_unique<Parser>();
+    generator = std::make_unique<Generator>();
+    
+    // 启动工作线程
+    if (config.maxConcurrentTasks > 0) {
+        startWorkerThreads();
+    }
 }
 
 CompilerDispatcher::~CompilerDispatcher() {
@@ -552,6 +566,136 @@ String CompilationResult::getWarningSummary() const {
         summary += std::to_string(i + 1) + ". " + warnings[i] + "\n";
     }
     return summary;
+}
+
+// ANTLR编译器管理方法
+void CompilerDispatcher::setANTLRJavaScriptWrapper(std::unique_ptr<ANTLR::ANTLRJavaScriptWrapper> wrapper) {
+    antlrJSWrapper = std::move(wrapper);
+}
+
+void CompilerDispatcher::setANTLRCSSWrapper(std::unique_ptr<ANTLR::ANTLRCSSWrapper> wrapper) {
+    antlrCSSWrapper = std::move(wrapper);
+}
+
+bool CompilerDispatcher::isANTLREnabled() const {
+    return (antlrJSWrapper != nullptr && antlrCSSWrapper != nullptr);
+}
+
+// ANTLR编译方法
+CompilationResult CompilerDispatcher::compileJavaScriptWithANTLR(const String& jsCode) {
+    CompilationResult result;
+    result.success = false;
+    
+    if (!antlrJSWrapper) {
+        result.errors.push_back("ANTLR JavaScript wrapper not initialized");
+        return result;
+    }
+    
+    try {
+        auto parseResult = antlrJSWrapper->parseJavaScript(jsCode);
+        
+        if (parseResult.success) {
+            result.javascript = parseResult.cleanedJavaScript;
+            result.success = true;
+            
+            // 添加特性检测信息到warnings（作为信息提示）
+            if (parseResult.hasModules) {
+                result.warnings.push_back("JavaScript contains ES6 modules");
+            }
+            if (parseResult.hasArrowFunctions) {
+                result.warnings.push_back("JavaScript contains arrow functions");
+            }
+            if (parseResult.hasAsyncAwait) {
+                result.warnings.push_back("JavaScript contains async/await");
+            }
+            if (parseResult.hasClasses) {
+                result.warnings.push_back("JavaScript contains ES6 classes");
+            }
+        } else {
+            result.errors.push_back("ANTLR JavaScript parsing failed: " + parseResult.errorMessage);
+            for (const auto& error : parseResult.syntaxErrors) {
+                result.errors.push_back("Syntax error: " + error);
+            }
+        }
+        
+    } catch (const std::exception& e) {
+        result.errors.push_back("ANTLR JavaScript compilation exception: " + String(e.what()));
+    }
+    
+    return result;
+}
+
+CompilationResult CompilerDispatcher::compileCSSWithANTLR(const String& cssCode) {
+    CompilationResult result;
+    result.success = false;
+    
+    if (!antlrCSSWrapper) {
+        result.errors.push_back("ANTLR CSS wrapper not initialized");
+        return result;
+    }
+    
+    try {
+        auto parseResult = antlrCSSWrapper->parseCSS(cssCode);
+        
+        if (parseResult.success) {
+            result.css = parseResult.cleanedCSS;
+            result.success = true;
+            
+            // 添加特性检测信息到warnings
+            if (parseResult.hasMediaQueries) {
+                result.warnings.push_back("CSS contains media queries");
+            }
+            if (parseResult.hasKeyframes) {
+                result.warnings.push_back("CSS contains keyframe animations");
+            }
+            if (parseResult.hasCustomProperties) {
+                result.warnings.push_back("CSS contains custom properties (CSS variables)");
+            }
+            if (parseResult.hasGridLayout) {
+                result.warnings.push_back("CSS contains CSS Grid layout");
+            }
+            if (parseResult.hasFlexbox) {
+                result.warnings.push_back("CSS contains Flexbox layout");
+            }
+            if (parseResult.hasReferenceSelectors) {
+                result.warnings.push_back("CSS contains CHTL reference selectors (&)");
+            }
+        } else {
+            result.errors.push_back("ANTLR CSS parsing failed: " + parseResult.errorMessage);
+            for (const auto& error : parseResult.syntaxErrors) {
+                result.errors.push_back("Syntax error: " + error);
+            }
+        }
+        
+    } catch (const std::exception& e) {
+        result.errors.push_back("ANTLR CSS compilation exception: " + String(e.what()));
+    }
+    
+    return result;
+}
+
+bool CompilerDispatcher::validateJavaScriptSyntax(const String& jsCode) {
+    if (!antlrJSWrapper) {
+        return false;
+    }
+    
+    try {
+        return antlrJSWrapper->validateJavaScriptSyntax(jsCode);
+    } catch (...) {
+        return false;
+    }
+}
+
+bool CompilerDispatcher::validateCSSSyntax(const String& cssCode) {
+    if (!antlrCSSWrapper) {
+        return false;
+    }
+    
+    try {
+        return antlrCSSWrapper->validateCSSSyntax(cssCode);
+    } catch (...) {
+        return false;
+    }
 }
 
 } // namespace CHTL

@@ -5,6 +5,8 @@
 #include "../CHTL/CHTLParser/Parser.h"
 #include "../CHTL/CHTLGenerator/Generator.h"
 #include "../CHTLJS/CHTLJSParser/CHTLJSParser.h"
+#include "../ANTLR/ANTLRJavaScriptWrapper.h"
+#include "../ANTLR/ANTLRCSSWrapper.h"
 
 namespace CHTL {
 
@@ -111,6 +113,17 @@ public:
     void setGenerator(std::unique_ptr<Generator> generator);
     void setScanner(std::unique_ptr<CHTLUnifiedScanner> scanner);
     
+    // ANTLR编译器管理
+    void setANTLRJavaScriptWrapper(std::unique_ptr<ANTLR::ANTLRJavaScriptWrapper> wrapper);
+    void setANTLRCSSWrapper(std::unique_ptr<ANTLR::ANTLRCSSWrapper> wrapper);
+    bool isANTLREnabled() const;
+    
+    // ANTLR编译方法
+    CompilationResult compileJavaScriptWithANTLR(const String& jsCode);
+    CompilationResult compileCSSWithANTLR(const String& cssCode);
+    bool validateJavaScriptSyntax(const String& jsCode);
+    bool validateCSSSyntax(const String& cssCode);
+    
     // 缓存管理
     void enableCache(bool enable) { cacheEnabled = enable; }
     bool isCacheEnabled() const { return cacheEnabled; }
@@ -158,6 +171,10 @@ private:
     StringVector errors;
     CompilationStats stats;
     bool debugMode;
+    
+    // ANTLR集成组件
+    std::unique_ptr<ANTLR::ANTLRJavaScriptWrapper> antlrJSWrapper;
+    std::unique_ptr<ANTLR::ANTLRCSSWrapper> antlrCSSWrapper;
     
     // 编译核心逻辑
     CompilationResult compileInternal(const String& source, const String& sourcePath);

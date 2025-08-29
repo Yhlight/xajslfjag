@@ -58,12 +58,32 @@ set(CHTL_CORE_SOURCES
     
     # ZIP Utility
     src/Util/ZIPUtil/ZIPManager.cpp
+    
+    # ANTLR Integration
+    src/ANTLR/ANTLRJavaScriptWrapper.cpp
+    src/ANTLR/ANTLRCSSWrapper.cpp
+    
+    # ANTLR Generated JavaScript Files
+    js/JavaScriptLexer.cpp
+    js/JavaScriptParser.cpp
+    js/JavaScriptParserBase.cpp
+    js/JavaScriptLexerBase.cpp
+    js/JavaScriptParserBaseListener.cpp
+    js/JavaScriptParserListener.cpp
+    
+    # ANTLR Generated CSS Files
+    css/css3Lexer.cpp
+    css/css3Parser.cpp
+    css/css3ParserBaseListener.cpp
+    css/css3ParserListener.cpp
 )
 
 # 包含目录
 set(CHTL_INCLUDE_DIRS
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/js
+    ${CMAKE_CURRENT_SOURCE_DIR}/css
 )
 
 # 创建CHTL核心库
@@ -73,11 +93,16 @@ add_library(chtl_core STATIC ${CHTL_CORE_SOURCES})
 target_include_directories(chtl_core PUBLIC 
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/js>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/css>
     $<INSTALL_INTERFACE:include>
 )
 
-# 链接线程库
-target_link_libraries(chtl_core PUBLIC Threads::Threads)
+# 链接库
+target_link_libraries(chtl_core PUBLIC 
+    Threads::Threads
+    ${CMAKE_CURRENT_SOURCE_DIR}/ANTLR4/lib/antlr4-runtime-static.lib
+)
 
 # 设置编译器特定选项
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
