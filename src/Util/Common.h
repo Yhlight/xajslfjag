@@ -49,7 +49,7 @@ namespace CHTL {
         StringVector split(const String& str, const String& delimiter);
         String join(const StringVector& parts, const String& delimiter);
         bool startsWith(const String& str, const String& prefix);
-        bool endsWith(const String& str, const suffix);
+        bool endsWith(const String& str, const String& suffix);
         String toLowerCase(const String& str);
         String toUpperCase(const String& str);
         bool isValidIdentifier(const String& str);
