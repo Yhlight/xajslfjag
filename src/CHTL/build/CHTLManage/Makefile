@@ -178,6 +178,30 @@ LocalStyleManager.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.s
 .PHONY : LocalStyleManager.cpp.s
 
+NamespaceManager.o: NamespaceManager.cpp.o
+.PHONY : NamespaceManager.o
+
+# target to build an object file
+NamespaceManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o
+.PHONY : NamespaceManager.cpp.o
+
+NamespaceManager.i: NamespaceManager.cpp.i
+.PHONY : NamespaceManager.i
+
+# target to preprocess a source file
+NamespaceManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.i
+.PHONY : NamespaceManager.cpp.i
+
+NamespaceManager.s: NamespaceManager.cpp.s
+.PHONY : NamespaceManager.s
+
+# target to generate assembly for a file
+NamespaceManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.s
+.PHONY : NamespaceManager.cpp.s
+
 SelectorAutomationManager.o: SelectorAutomationManager.cpp.o
 .PHONY : SelectorAutomationManager.o
 
@@ -241,6 +265,9 @@ help:
 	@echo "... LocalStyleManager.o"
 	@echo "... LocalStyleManager.i"
 	@echo "... LocalStyleManager.s"
+	@echo "... NamespaceManager.o"
+	@echo "... NamespaceManager.i"
+	@echo "... NamespaceManager.s"
 	@echo "... SelectorAutomationManager.o"
 	@echo "... SelectorAutomationManager.i"
 	@echo "... SelectorAutomationManager.s"

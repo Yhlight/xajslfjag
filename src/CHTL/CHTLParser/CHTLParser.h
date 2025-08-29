@@ -363,6 +363,16 @@ private:
     NodePtr parseNamespace();
     
     /**
+     * 解析约束语句
+     */
+    NodePtr parseConstraint();
+    
+    /**
+     * 解析约束项
+     */
+    ConstraintItem parseConstraintItem();
+    
+    /**
      * 解析[Name]配置
      */
     NodePtr parseNameConfig();

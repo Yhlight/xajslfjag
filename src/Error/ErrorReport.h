@@ -63,6 +63,10 @@ enum class ErrorType {
     SPECIALIZATION_ERROR,       // 特例化错误
     VARIABLE_NOT_FOUND,         // 变量未找到
     
+    // 约束系统错误
+    CONSTRAINT_VIOLATION,       // 约束违反
+    CONSTRAINT_ERROR,           // 约束错误
+    
     // 其他错误
     INTERNAL_ERROR,             // 内部错误
     UNKNOWN_ERROR               // 未知错误

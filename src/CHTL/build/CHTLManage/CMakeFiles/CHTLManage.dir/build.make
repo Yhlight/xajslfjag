@@ -128,12 +128,27 @@ CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.s"
 	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLManage/ConfigurationManager.cpp -o CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.s
 
+CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o: CHTLManage/CMakeFiles/CHTLManage.dir/flags.make
+CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o: /workspace/src/CHTL/CHTLManage/NamespaceManager.cpp
+CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o: CHTLManage/CMakeFiles/CHTLManage.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o -MF CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o.d -o CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o -c /workspace/src/CHTL/CHTLManage/NamespaceManager.cpp
+
+CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.i"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CHTL/CHTLManage/NamespaceManager.cpp > CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.i
+
+CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.s"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLManage/NamespaceManager.cpp -o CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.s
+
 # Object files for target CHTLManage
 CHTLManage_OBJECTS = \
 "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o" \
 "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o" \
 "CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o" \
-"CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o"
+"CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o" \
+"CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o"
 
 # External object files for target CHTLManage
 CHTLManage_EXTERNAL_OBJECTS =
@@ -142,9 +157,10 @@ CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManag
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o
+CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/build.make
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library libCHTLManage.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libCHTLManage.a"
 	cd /workspace/src/CHTL/build/CHTLManage && $(CMAKE_COMMAND) -P CMakeFiles/CHTLManage.dir/cmake_clean_target.cmake
 	cd /workspace/src/CHTL/build/CHTLManage && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLManage.dir/link.txt --verbose=$(VERBOSE)
 

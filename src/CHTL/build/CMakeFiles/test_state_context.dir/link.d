@@ -7,6 +7,11 @@ test_state_context: \
   CHTLLexer/libCHTLLexer.a \
   CHTLState/libCHTLState.a \
   CHTLContext/libCHTLContext.a \
+  CHTLNode/libCHTLNode.a \
+  CHTLTest/libCHTLTest.a \
+  CHTLNode/libCHTLNode.a \
+  CHTLLexer/libCHTLLexer.a \
+  CHTLContext/libCHTLContext.a \
   CHTLLexer/libCHTLLexer.a \
   CHTLContext/libCHTLContext.a \
   CHTLError/libCHTLError.a \
@@ -52,6 +57,16 @@ CHTLError/libCHTLError.a:
 CHTLLexer/libCHTLLexer.a:
 
 CHTLState/libCHTLState.a:
+
+CHTLContext/libCHTLContext.a:
+
+CHTLNode/libCHTLNode.a:
+
+CHTLTest/libCHTLTest.a:
+
+CHTLNode/libCHTLNode.a:
+
+CHTLLexer/libCHTLLexer.a:
 
 CHTLContext/libCHTLContext.a:
 

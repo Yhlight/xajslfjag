@@ -245,6 +245,13 @@ NodePtr CHTLParser::parseTopLevel() {
             // 原始嵌入使用（不带[Origin]前缀）
             return parseOriginUsage();
             
+        case TokenType::EXCEPT:
+            if (m_options.enableConstraints) {
+                return parseConstraint();
+            }
+            advance();
+            return nullptr;
+            
         default:
             reportError("Unexpected token: " + getTokenString(token));
             advance();
@@ -2018,6 +2025,105 @@ NodePtr CHTLParser::parseUse() {
     
     updateStatistics("use_statements");
     return useNode;
+}
+
+// ========== 约束系统解析实现 ==========
+
+NodePtr CHTLParser::parseConstraint() {
+    if (!consume(TokenType::EXCEPT, "Expected 'except'")) {
+        return nullptr;
+    }
+    
+    auto constraintNode = std::make_shared<ConstraintNode>();
+    
+    // 解析约束项列表，支持逗号分隔
+    do {
+        ConstraintItem item = parseConstraintItem();
+        constraintNode->addConstraintItem(item);
+        
+        if (match(TokenType::COMMA)) {
+            advance(); // consume comma
+        } else {
+            break;
+        }
+    } while (!isAtEnd());
+    
+    // 消费分号
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+    
+    updateStatistics("constraint_statements");
+    return constraintNode;
+}
+
+ConstraintItem CHTLParser::parseConstraintItem() {
+    ConstraintItem item;
+    
+    if (match(TokenType::HTML_ELEMENT)) {
+        // HTML元素约束: except span;
+        item.targetType = ConstraintTargetType::HTML_ELEMENT;
+        item.targetName = currentToken().value;
+        advance();
+    } else if (match(TokenType::IDENTIFIER)) {
+        // HTML元素约束: except div;
+        item.targetType = ConstraintTargetType::HTML_ELEMENT;
+        item.targetName = currentToken().value;
+        advance();
+    } else if (match(TokenType::TEMPLATE)) {
+        // 模板约束: except [Template] @Element Box;
+        advance(); // consume [Template]
+        item.targetType = ConstraintTargetType::TEMPLATE_TYPE;
+        
+        if (match({TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR})) {
+            item.targetSubType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                item.targetName = currentToken().value;
+                item.targetType = ConstraintTargetType::TEMPLATE_OBJECT;
+                advance();
+            }
+        }
+    } else if (match(TokenType::CUSTOM)) {
+        // 自定义约束: except [Custom] @Element Box;
+        advance(); // consume [Custom]
+        item.targetType = ConstraintTargetType::CUSTOM_TYPE;
+        
+        if (match({TokenType::AT_STYLE, TokenType::AT_ELEMENT, TokenType::AT_VAR})) {
+            item.targetSubType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                item.targetName = currentToken().value;
+                item.targetType = ConstraintTargetType::CUSTOM_OBJECT;
+                advance();
+            }
+        }
+    } else if (match(TokenType::ORIGIN)) {
+        // 原始嵌入约束: except [Origin] @Html;
+        advance(); // consume [Origin]
+        item.targetType = ConstraintTargetType::ORIGIN_TYPE;
+        
+        if (match({TokenType::AT_HTML, TokenType::AT_STYLE, TokenType::AT_JAVASCRIPT, TokenType::AT_CUSTOM_TYPE})) {
+            item.targetSubType = currentToken().value;
+            advance();
+            
+            if (match(TokenType::IDENTIFIER)) {
+                item.targetName = currentToken().value;
+                item.targetType = ConstraintTargetType::ORIGIN_OBJECT;
+                advance();
+            }
+        }
+    } else if (match(TokenType::AT_HTML)) {
+        // @Html类型约束: except @Html;
+        item.targetType = ConstraintTargetType::HTML_TYPE;
+        advance();
+    } else {
+        reportError("Expected constraint target");
+    }
+    
+    return item;
 }
 
 // ========== CHTLParserFactory 实现 ==========

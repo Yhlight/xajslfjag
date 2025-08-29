@@ -343,6 +343,36 @@ public:
      * 检查循环导入
      */
     bool hasCircularImport(const std::string& filePath) const;
+    
+    /**
+     * 加载文件内容
+     */
+    std::string loadFileContent(const std::string& filePath) const;
+    
+    /**
+     * 检查循环依赖
+     */
+    bool hasCircularDependency(const std::string& filePath) const;
+    
+    /**
+     * 添加依赖关系
+     */
+    void addDependency(const std::string& from, const std::string& to);
+    
+    /**
+     * 检查模块目录结构
+     */
+    bool checkModuleStructure(const std::string& directory) const;
+    
+    /**
+     * 获取模块信息
+     */
+    std::unordered_map<std::string, std::string> getModuleInfo(const std::string& modulePath) const;
+    
+    /**
+     * 解析带名原始嵌入
+     */
+    std::string createNamedOriginEmbed(const std::string& content, const std::string& type, const std::string& name) const;
 
 private:
     std::string m_officialModuleDirectory;          // 官方模块目录
@@ -368,26 +398,6 @@ private:
     std::string normalizePath(const std::string& path) const;
     
     /**
-     * 检查模块目录结构
-     */
-    bool checkModuleStructure(const std::string& directory) const;
-    
-    /**
-     * 加载文件内容
-     */
-    std::string loadFileContent(const std::string& filePath) const;
-    
-    /**
-     * 检查循环依赖
-     */
-    bool hasCircularDependency(const std::string& filePath) const;
-    
-    /**
-     * 添加依赖关系
-     */
-    void addDependency(const std::string& from, const std::string& to);
-    
-    /**
      * 解析CMOD模块
      */
     bool loadCMODModule(const std::string& modulePath);
@@ -396,16 +406,6 @@ private:
      * 解析CJMOD模块
      */
     bool loadCJMODModule(const std::string& modulePath);
-    
-    /**
-     * 获取模块信息
-     */
-    std::unordered_map<std::string, std::string> getModuleInfo(const std::string& modulePath) const;
-    
-    /**
-     * 解析带名原始嵌入
-     */
-    std::string createNamedOriginEmbed(const std::string& content, const std::string& type, const std::string& name) const;
 };
 
 

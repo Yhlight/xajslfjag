@@ -19,6 +19,7 @@ set(CHTL_MANAGE_SOURCES
     TemplateManager.cpp
     SelectorAutomationManager.cpp
     ConfigurationManager.cpp
+    NamespaceManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
@@ -26,6 +27,7 @@ set(CHTL_MANAGE_HEADERS
     TemplateManager.h
     SelectorAutomationManager.h
     ConfigurationManager.h
+    NamespaceManager.h
 )
 
 # 创建静态库

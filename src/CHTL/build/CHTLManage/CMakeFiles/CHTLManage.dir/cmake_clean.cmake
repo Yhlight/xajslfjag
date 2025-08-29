@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o.d"
+  "CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o"
+  "CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o"

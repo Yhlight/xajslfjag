@@ -9,6 +9,15 @@
 /workspace/src/CHTL/build/CMakeFiles/debug_config_tokens.dir
 /workspace/src/CHTL/build/CMakeFiles/test_config_debug.dir
 /workspace/src/CHTL/build/CMakeFiles/debug_parse_simple.dir
+/workspace/src/CHTL/build/CMakeFiles/test_import_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_namespace_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_simple_namespace.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_namespace_tokens.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_namespace_parser.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_namespace_parsing_detailed.dir
+/workspace/src/CHTL/build/CMakeFiles/test_simple_custom.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_custom_element_parsing.dir
+/workspace/src/CHTL/build/CMakeFiles/test_constraint_system.dir
 /workspace/src/CHTL/build/CMakeFiles/edit_cache.dir
 /workspace/src/CHTL/build/CMakeFiles/rebuild_cache.dir
 /workspace/src/CHTL/build/CHTLError/CMakeFiles/CHTLError.dir

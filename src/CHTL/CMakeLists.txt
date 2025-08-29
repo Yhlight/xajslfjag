@@ -264,4 +264,201 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
     )
+    
+    # 创建导入系统测试程序
+    add_executable(test_import_system test_import_system.cpp)
+    target_link_libraries(test_import_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+    )
+    
+    target_include_directories(test_import_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+    )
+    
+    # 创建命名空间系统测试程序
+    add_executable(test_namespace_system test_namespace_system.cpp)
+    target_link_libraries(test_namespace_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_namespace_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 简单命名空间测试
+    add_executable(test_simple_namespace test_simple_namespace.cpp)
+    target_link_libraries(test_simple_namespace 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_simple_namespace PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 命名空间词法调试
+    add_executable(debug_namespace_tokens debug_namespace_tokens.cpp)
+    target_link_libraries(debug_namespace_tokens 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(debug_namespace_tokens PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 命名空间解析调试
+    add_executable(debug_namespace_parser debug_namespace_parser.cpp)
+    target_link_libraries(debug_namespace_parser 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(debug_namespace_parser PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 详细命名空间解析调试
+    add_executable(debug_namespace_parsing_detailed debug_namespace_parsing_detailed.cpp)
+    target_link_libraries(debug_namespace_parsing_detailed 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(debug_namespace_parsing_detailed PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 简单自定义节点测试
+    add_executable(test_simple_custom test_simple_custom.cpp)
+    target_link_libraries(test_simple_custom 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_simple_custom PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 自定义元素解析调试
+    add_executable(debug_custom_element_parsing debug_custom_element_parsing.cpp)
+    target_link_libraries(debug_custom_element_parsing 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(debug_custom_element_parsing PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+
+    # 约束系统测试
+    add_executable(test_constraint_system test_constraint_system.cpp)
+    target_link_libraries(test_constraint_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_constraint_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+    
 endif()

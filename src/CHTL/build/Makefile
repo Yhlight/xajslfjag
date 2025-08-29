@@ -260,6 +260,123 @@ debug_parse_simple/fast:
 .PHONY : debug_parse_simple/fast
 
 #=============================================================================
+# Target rules for targets named test_import_system
+
+# Build rule for target.
+test_import_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_import_system
+.PHONY : test_import_system
+
+# fast build rule for target.
+test_import_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_import_system.dir/build.make CMakeFiles/test_import_system.dir/build
+.PHONY : test_import_system/fast
+
+#=============================================================================
+# Target rules for targets named test_namespace_system
+
+# Build rule for target.
+test_namespace_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_namespace_system
+.PHONY : test_namespace_system
+
+# fast build rule for target.
+test_namespace_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_namespace_system.dir/build.make CMakeFiles/test_namespace_system.dir/build
+.PHONY : test_namespace_system/fast
+
+#=============================================================================
+# Target rules for targets named test_simple_namespace
+
+# Build rule for target.
+test_simple_namespace: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_simple_namespace
+.PHONY : test_simple_namespace
+
+# fast build rule for target.
+test_simple_namespace/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_namespace.dir/build.make CMakeFiles/test_simple_namespace.dir/build
+.PHONY : test_simple_namespace/fast
+
+#=============================================================================
+# Target rules for targets named debug_namespace_tokens
+
+# Build rule for target.
+debug_namespace_tokens: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_namespace_tokens
+.PHONY : debug_namespace_tokens
+
+# fast build rule for target.
+debug_namespace_tokens/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_tokens.dir/build.make CMakeFiles/debug_namespace_tokens.dir/build
+.PHONY : debug_namespace_tokens/fast
+
+#=============================================================================
+# Target rules for targets named debug_namespace_parser
+
+# Build rule for target.
+debug_namespace_parser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_namespace_parser
+.PHONY : debug_namespace_parser
+
+# fast build rule for target.
+debug_namespace_parser/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/build
+.PHONY : debug_namespace_parser/fast
+
+#=============================================================================
+# Target rules for targets named debug_namespace_parsing_detailed
+
+# Build rule for target.
+debug_namespace_parsing_detailed: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_namespace_parsing_detailed
+.PHONY : debug_namespace_parsing_detailed
+
+# fast build rule for target.
+debug_namespace_parsing_detailed/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parsing_detailed.dir/build.make CMakeFiles/debug_namespace_parsing_detailed.dir/build
+.PHONY : debug_namespace_parsing_detailed/fast
+
+#=============================================================================
+# Target rules for targets named test_simple_custom
+
+# Build rule for target.
+test_simple_custom: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_simple_custom
+.PHONY : test_simple_custom
+
+# fast build rule for target.
+test_simple_custom/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_custom.dir/build.make CMakeFiles/test_simple_custom.dir/build
+.PHONY : test_simple_custom/fast
+
+#=============================================================================
+# Target rules for targets named debug_custom_element_parsing
+
+# Build rule for target.
+debug_custom_element_parsing: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_custom_element_parsing
+.PHONY : debug_custom_element_parsing
+
+# fast build rule for target.
+debug_custom_element_parsing/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_custom_element_parsing.dir/build.make CMakeFiles/debug_custom_element_parsing.dir/build
+.PHONY : debug_custom_element_parsing/fast
+
+#=============================================================================
+# Target rules for targets named test_constraint_system
+
+# Build rule for target.
+test_constraint_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_constraint_system
+.PHONY : test_constraint_system
+
+# fast build rule for target.
+test_constraint_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/build
+.PHONY : test_constraint_system/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -465,6 +582,102 @@ debug_config_tokens.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_tokens.dir/build.make CMakeFiles/debug_config_tokens.dir/debug_config_tokens.cpp.s
 .PHONY : debug_config_tokens.cpp.s
 
+debug_custom_element_parsing.o: debug_custom_element_parsing.cpp.o
+.PHONY : debug_custom_element_parsing.o
+
+# target to build an object file
+debug_custom_element_parsing.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_custom_element_parsing.dir/build.make CMakeFiles/debug_custom_element_parsing.dir/debug_custom_element_parsing.cpp.o
+.PHONY : debug_custom_element_parsing.cpp.o
+
+debug_custom_element_parsing.i: debug_custom_element_parsing.cpp.i
+.PHONY : debug_custom_element_parsing.i
+
+# target to preprocess a source file
+debug_custom_element_parsing.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_custom_element_parsing.dir/build.make CMakeFiles/debug_custom_element_parsing.dir/debug_custom_element_parsing.cpp.i
+.PHONY : debug_custom_element_parsing.cpp.i
+
+debug_custom_element_parsing.s: debug_custom_element_parsing.cpp.s
+.PHONY : debug_custom_element_parsing.s
+
+# target to generate assembly for a file
+debug_custom_element_parsing.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_custom_element_parsing.dir/build.make CMakeFiles/debug_custom_element_parsing.dir/debug_custom_element_parsing.cpp.s
+.PHONY : debug_custom_element_parsing.cpp.s
+
+debug_namespace_parser.o: debug_namespace_parser.cpp.o
+.PHONY : debug_namespace_parser.o
+
+# target to build an object file
+debug_namespace_parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/debug_namespace_parser.cpp.o
+.PHONY : debug_namespace_parser.cpp.o
+
+debug_namespace_parser.i: debug_namespace_parser.cpp.i
+.PHONY : debug_namespace_parser.i
+
+# target to preprocess a source file
+debug_namespace_parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/debug_namespace_parser.cpp.i
+.PHONY : debug_namespace_parser.cpp.i
+
+debug_namespace_parser.s: debug_namespace_parser.cpp.s
+.PHONY : debug_namespace_parser.s
+
+# target to generate assembly for a file
+debug_namespace_parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parser.dir/build.make CMakeFiles/debug_namespace_parser.dir/debug_namespace_parser.cpp.s
+.PHONY : debug_namespace_parser.cpp.s
+
+debug_namespace_parsing_detailed.o: debug_namespace_parsing_detailed.cpp.o
+.PHONY : debug_namespace_parsing_detailed.o
+
+# target to build an object file
+debug_namespace_parsing_detailed.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parsing_detailed.dir/build.make CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed.cpp.o
+.PHONY : debug_namespace_parsing_detailed.cpp.o
+
+debug_namespace_parsing_detailed.i: debug_namespace_parsing_detailed.cpp.i
+.PHONY : debug_namespace_parsing_detailed.i
+
+# target to preprocess a source file
+debug_namespace_parsing_detailed.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parsing_detailed.dir/build.make CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed.cpp.i
+.PHONY : debug_namespace_parsing_detailed.cpp.i
+
+debug_namespace_parsing_detailed.s: debug_namespace_parsing_detailed.cpp.s
+.PHONY : debug_namespace_parsing_detailed.s
+
+# target to generate assembly for a file
+debug_namespace_parsing_detailed.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_parsing_detailed.dir/build.make CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed.cpp.s
+.PHONY : debug_namespace_parsing_detailed.cpp.s
+
+debug_namespace_tokens.o: debug_namespace_tokens.cpp.o
+.PHONY : debug_namespace_tokens.o
+
+# target to build an object file
+debug_namespace_tokens.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_tokens.dir/build.make CMakeFiles/debug_namespace_tokens.dir/debug_namespace_tokens.cpp.o
+.PHONY : debug_namespace_tokens.cpp.o
+
+debug_namespace_tokens.i: debug_namespace_tokens.cpp.i
+.PHONY : debug_namespace_tokens.i
+
+# target to preprocess a source file
+debug_namespace_tokens.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_tokens.dir/build.make CMakeFiles/debug_namespace_tokens.dir/debug_namespace_tokens.cpp.i
+.PHONY : debug_namespace_tokens.cpp.i
+
+debug_namespace_tokens.s: debug_namespace_tokens.cpp.s
+.PHONY : debug_namespace_tokens.s
+
+# target to generate assembly for a file
+debug_namespace_tokens.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_namespace_tokens.dir/build.make CMakeFiles/debug_namespace_tokens.dir/debug_namespace_tokens.cpp.s
+.PHONY : debug_namespace_tokens.cpp.s
+
 debug_parse_simple.o: debug_parse_simple.cpp.o
 .PHONY : debug_parse_simple.o
 
@@ -609,6 +822,78 @@ test_configuration_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_configuration_system.dir/build.make CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.s
 .PHONY : test_configuration_system.cpp.s
 
+test_constraint_system.o: test_constraint_system.cpp.o
+.PHONY : test_constraint_system.o
+
+# target to build an object file
+test_constraint_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/test_constraint_system.cpp.o
+.PHONY : test_constraint_system.cpp.o
+
+test_constraint_system.i: test_constraint_system.cpp.i
+.PHONY : test_constraint_system.i
+
+# target to preprocess a source file
+test_constraint_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/test_constraint_system.cpp.i
+.PHONY : test_constraint_system.cpp.i
+
+test_constraint_system.s: test_constraint_system.cpp.s
+.PHONY : test_constraint_system.s
+
+# target to generate assembly for a file
+test_constraint_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/test_constraint_system.cpp.s
+.PHONY : test_constraint_system.cpp.s
+
+test_import_system.o: test_import_system.cpp.o
+.PHONY : test_import_system.o
+
+# target to build an object file
+test_import_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_import_system.dir/build.make CMakeFiles/test_import_system.dir/test_import_system.cpp.o
+.PHONY : test_import_system.cpp.o
+
+test_import_system.i: test_import_system.cpp.i
+.PHONY : test_import_system.i
+
+# target to preprocess a source file
+test_import_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_import_system.dir/build.make CMakeFiles/test_import_system.dir/test_import_system.cpp.i
+.PHONY : test_import_system.cpp.i
+
+test_import_system.s: test_import_system.cpp.s
+.PHONY : test_import_system.s
+
+# target to generate assembly for a file
+test_import_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_import_system.dir/build.make CMakeFiles/test_import_system.dir/test_import_system.cpp.s
+.PHONY : test_import_system.cpp.s
+
+test_namespace_system.o: test_namespace_system.cpp.o
+.PHONY : test_namespace_system.o
+
+# target to build an object file
+test_namespace_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_namespace_system.dir/build.make CMakeFiles/test_namespace_system.dir/test_namespace_system.cpp.o
+.PHONY : test_namespace_system.cpp.o
+
+test_namespace_system.i: test_namespace_system.cpp.i
+.PHONY : test_namespace_system.i
+
+# target to preprocess a source file
+test_namespace_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_namespace_system.dir/build.make CMakeFiles/test_namespace_system.dir/test_namespace_system.cpp.i
+.PHONY : test_namespace_system.cpp.i
+
+test_namespace_system.s: test_namespace_system.cpp.s
+.PHONY : test_namespace_system.s
+
+# target to generate assembly for a file
+test_namespace_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_namespace_system.dir/build.make CMakeFiles/test_namespace_system.dir/test_namespace_system.cpp.s
+.PHONY : test_namespace_system.cpp.s
+
 test_origin_system.o: test_origin_system.cpp.o
 .PHONY : test_origin_system.o
 
@@ -632,6 +917,54 @@ test_origin_system.s: test_origin_system.cpp.s
 test_origin_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.s
 .PHONY : test_origin_system.cpp.s
+
+test_simple_custom.o: test_simple_custom.cpp.o
+.PHONY : test_simple_custom.o
+
+# target to build an object file
+test_simple_custom.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_custom.dir/build.make CMakeFiles/test_simple_custom.dir/test_simple_custom.cpp.o
+.PHONY : test_simple_custom.cpp.o
+
+test_simple_custom.i: test_simple_custom.cpp.i
+.PHONY : test_simple_custom.i
+
+# target to preprocess a source file
+test_simple_custom.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_custom.dir/build.make CMakeFiles/test_simple_custom.dir/test_simple_custom.cpp.i
+.PHONY : test_simple_custom.cpp.i
+
+test_simple_custom.s: test_simple_custom.cpp.s
+.PHONY : test_simple_custom.s
+
+# target to generate assembly for a file
+test_simple_custom.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_custom.dir/build.make CMakeFiles/test_simple_custom.dir/test_simple_custom.cpp.s
+.PHONY : test_simple_custom.cpp.s
+
+test_simple_namespace.o: test_simple_namespace.cpp.o
+.PHONY : test_simple_namespace.o
+
+# target to build an object file
+test_simple_namespace.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_namespace.dir/build.make CMakeFiles/test_simple_namespace.dir/test_simple_namespace.cpp.o
+.PHONY : test_simple_namespace.cpp.o
+
+test_simple_namespace.i: test_simple_namespace.cpp.i
+.PHONY : test_simple_namespace.i
+
+# target to preprocess a source file
+test_simple_namespace.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_namespace.dir/build.make CMakeFiles/test_simple_namespace.dir/test_simple_namespace.cpp.i
+.PHONY : test_simple_namespace.cpp.i
+
+test_simple_namespace.s: test_simple_namespace.cpp.s
+.PHONY : test_simple_namespace.s
+
+# target to generate assembly for a file
+test_simple_namespace.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_simple_namespace.dir/build.make CMakeFiles/test_simple_namespace.dir/test_simple_namespace.cpp.s
+.PHONY : test_simple_namespace.cpp.s
 
 test_state_context.o: test_state_context.cpp.o
 .PHONY : test_state_context.o
@@ -725,6 +1058,10 @@ help:
 	@echo "... CHTLState"
 	@echo "... CHTLTest"
 	@echo "... debug_config_tokens"
+	@echo "... debug_custom_element_parsing"
+	@echo "... debug_namespace_parser"
+	@echo "... debug_namespace_parsing_detailed"
+	@echo "... debug_namespace_tokens"
 	@echo "... debug_parse_simple"
 	@echo "... run_all_tests"
 	@echo "... test_chtl_syntax"
@@ -733,14 +1070,31 @@ help:
 	@echo "... test_complete_template_system"
 	@echo "... test_config_debug"
 	@echo "... test_configuration_system"
+	@echo "... test_constraint_system"
+	@echo "... test_import_system"
 	@echo "... test_lexer"
+	@echo "... test_namespace_system"
 	@echo "... test_origin_system"
+	@echo "... test_simple_custom"
+	@echo "... test_simple_namespace"
 	@echo "... test_state_context"
 	@echo "... test_template_system"
 	@echo "... test_updated_lexer"
 	@echo "... debug_config_tokens.o"
 	@echo "... debug_config_tokens.i"
 	@echo "... debug_config_tokens.s"
+	@echo "... debug_custom_element_parsing.o"
+	@echo "... debug_custom_element_parsing.i"
+	@echo "... debug_custom_element_parsing.s"
+	@echo "... debug_namespace_parser.o"
+	@echo "... debug_namespace_parser.i"
+	@echo "... debug_namespace_parser.s"
+	@echo "... debug_namespace_parsing_detailed.o"
+	@echo "... debug_namespace_parsing_detailed.i"
+	@echo "... debug_namespace_parsing_detailed.s"
+	@echo "... debug_namespace_tokens.o"
+	@echo "... debug_namespace_tokens.i"
+	@echo "... debug_namespace_tokens.s"
 	@echo "... debug_parse_simple.o"
 	@echo "... debug_parse_simple.i"
 	@echo "... debug_parse_simple.s"
@@ -759,9 +1113,24 @@ help:
 	@echo "... test_configuration_system.o"
 	@echo "... test_configuration_system.i"
 	@echo "... test_configuration_system.s"
+	@echo "... test_constraint_system.o"
+	@echo "... test_constraint_system.i"
+	@echo "... test_constraint_system.s"
+	@echo "... test_import_system.o"
+	@echo "... test_import_system.i"
+	@echo "... test_import_system.s"
+	@echo "... test_namespace_system.o"
+	@echo "... test_namespace_system.i"
+	@echo "... test_namespace_system.s"
 	@echo "... test_origin_system.o"
 	@echo "... test_origin_system.i"
 	@echo "... test_origin_system.s"
+	@echo "... test_simple_custom.o"
+	@echo "... test_simple_custom.i"
+	@echo "... test_simple_custom.s"
+	@echo "... test_simple_namespace.o"
+	@echo "... test_simple_namespace.i"
+	@echo "... test_simple_namespace.s"
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"
