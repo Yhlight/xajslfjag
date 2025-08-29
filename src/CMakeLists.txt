@@ -40,6 +40,9 @@ endif()
 
 # 包含目录
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+if(USE_ANTLR)
+    include_directories(${ANTLR4_INCLUDE_DIR})
+endif()
 
 # CHTL核心库
 add_library(CHTLCore STATIC
@@ -69,9 +72,16 @@ add_library(CHTLCore STATIC
     CHTLJS/CHTLJSState/State.cpp
     CHTLJS/CHTLJSContext/Context.cpp
     CHTLJS/CHTLJSNode/BaseNode.cpp
+    CHTLJS/CHTLJSNode/ModuleNode.cpp
     CHTLJS/CHTLJSParser/Parser.cpp
     CHTLJS/CHTLJSGenerator/Generator.cpp
+    CHTLJS/CHTLJSGenerator/ModuleGenerator.cpp
+    CHTLJS/CHTLJSLoader/CJMODLoader.cpp
+    CHTLJS/CHTLJSManage/VirtualObjectManager.cpp
+    CHTLJS/CHTLJSIOStream/CHTLJSFileSystem.cpp
     CHTLJS/CJMODSystem/CJMODPackager.cpp
+    CHTLJS/CJMODSystem/CJMODScanner.cpp
+    CHTLJS/CJMODSystem/Runtime/CJMODRuntime.cpp
     CHTLJS/CJMODSystem/API/CJMODApi.cpp
     
     # CSS & JS Compilers
@@ -88,10 +98,27 @@ add_library(CHTLCore STATIC
     Error/ErrorReport.cpp
 )
 
+# 如果使用ANTLR，添加生成的文件
+if(USE_ANTLR)
+    target_sources(CHTLCore PRIVATE
+        # CSS ANTLR生成的文件
+        CSS/generated/src/CSS/CSSSimpleLexer.cpp
+        CSS/generated/src/CSS/CSSSimpleParser.cpp
+        CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp
+        CSS/generated/src/CSS/CSSSimpleVisitor.cpp
+        
+        # JavaScript ANTLR生成的文件
+        JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp
+        JS/generated/Grammars/JavaScript/JavaScriptParserParser.cpp
+        JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp
+        JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp
+    )
+endif()
+
 target_link_libraries(CHTLCore PUBLIC Threads::Threads)
 
 if(USE_ANTLR)
-    target_link_libraries(CHTLCore PUBLIC antlr4-runtime)
+    target_link_libraries(CHTLCore PUBLIC ${ANTLR4_LIB})
 endif()
 
 # CHTL编译器可执行文件
