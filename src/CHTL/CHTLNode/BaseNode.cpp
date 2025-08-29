@@ -2,6 +2,8 @@
 #include "TemplateNode.h"
 #include "CustomNode.h"
 #include "OriginNode.h"
+#include "ConstraintNode.h"
+#include "SpecializationNode.h"
 #include "../CHTLLexer/GlobalMap.h"
 #include <iostream>
 #include <queue>
@@ -621,6 +623,61 @@ std::unique_ptr<BaseNode> NodeFactory::createCHTLJSNode(NodeType type, const Str
     auto node = std::make_unique<BaseNode>(type, content);
     node->setAttribute("chtljs_content", content);
     return node;
+}
+
+std::unique_ptr<ConstraintNode> NodeFactory::createConstraintNode(const String& constraintType, const String& targets, const String& scope) {
+    ConstraintType type = ConstraintType::PRECISE; // 默认精确约束
+    
+    if (constraintType == "precise") {
+        type = ConstraintType::PRECISE;
+    } else if (constraintType == "type") {
+        type = ConstraintType::TYPE;
+    } else if (constraintType == "global") {
+        type = ConstraintType::GLOBAL;
+    }
+    
+    auto constraint = std::make_unique<ConstraintNode>(type);
+    
+    // 解析约束目标
+    auto targetList = ConstraintNode::parseConstraintTargets(targets);
+    constraint->targets = targetList;
+    
+    if (!scope.empty()) {
+        constraint->scope = scope;
+    }
+    
+    return constraint;
+}
+
+std::unique_ptr<DeleteNode> NodeFactory::createDeleteNode(const String& operationType, const String& targets) {
+    auto targetList = DeleteNode::parseDeleteTargets(targets);
+    auto deleteType = DeleteNode::determineOperationType(targets);
+    
+    auto deleteNode = std::make_unique<DeleteNode>();
+    deleteNode->addTargets(targetList);
+    deleteNode->operationType = deleteType;
+    
+    return deleteNode;
+}
+
+std::unique_ptr<InsertNode> NodeFactory::createInsertNode(const String& position, const String& target) {
+    auto insertPos = InsertNode::parseInsertPosition(position);
+    auto insertNode = std::make_unique<InsertNode>(insertPos);
+    
+    if (!target.empty()) {
+        insertNode->setTarget(target);
+    }
+    
+    return insertNode;
+}
+
+std::unique_ptr<IndexAccessNode> NodeFactory::createIndexAccessNode(const String& elementName, size_t index) {
+    return IndexAccessNode::createIndexAccess(elementName, index);
+}
+
+std::unique_ptr<NoValueStyleNode> NodeFactory::createNoValueStyleNode(const String& properties) {
+    auto propertyList = NoValueStyleNode::parseNoValueProperties(properties);
+    return NoValueStyleNode::createNoValueStyle(propertyList);
 }
 
 } // namespace CHTL

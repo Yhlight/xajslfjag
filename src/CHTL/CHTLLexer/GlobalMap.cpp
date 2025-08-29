@@ -53,7 +53,7 @@ bool HTMLElementMap::isInlineElement(const String& name) {
 }
 
 // 关键字映射实现
-const StringUnorderedMap KeywordMap::keywordMap = {
+const std::unordered_map<String, TokenType> KeywordMap::keywordMap = {
     {"text", TokenType::TEXT},
     {"style", TokenType::STYLE},
     {"script", TokenType::SCRIPT},
@@ -73,6 +73,8 @@ const StringUnorderedMap KeywordMap::keywordMap = {
     {"@CJmod", TokenType::CJMOD},
     {"@Config", TokenType::CONFIG},
     {"[Configuration]", TokenType::CONFIGURATION},
+    {"[Name]", TokenType::NAME},
+    {"[OriginType]", TokenType::ORIGIN_TYPE},
     {"[Namespace]", TokenType::NAMESPACE},
     {"inherit", TokenType::INHERIT},
     {"delete", TokenType::DELETE},
@@ -133,7 +135,7 @@ const std::unordered_set<String> CSSPropertyMap::cssProperties = {
     "box-shadow", "border-radius", "outline", "resize", "box-sizing"
 };
 
-const StringUnorderedMap CSSPropertyMap::shorthandMap = {
+const std::unordered_map<String, StringVector> CSSPropertyMap::shorthandMap = {
     {"margin", {"margin-top", "margin-right", "margin-bottom", "margin-left"}},
     {"padding", {"padding-top", "padding-right", "padding-bottom", "padding-left"}},
     {"border", {"border-width", "border-style", "border-color"}},
@@ -223,7 +225,7 @@ const std::unordered_map<char, TokenType> SymbolMap::singleCharMap = {
     {'$', TokenType::DOLLAR}
 };
 
-const StringUnorderedMap SymbolMap::twoCharMap = {
+const std::unordered_map<String, TokenType> SymbolMap::twoCharMap = {
     {"->", TokenType::ARROW},
     {"::", TokenType::DOUBLE_COLON},
     {"&->", TokenType::EVENT_BIND},
@@ -258,7 +260,7 @@ const std::unordered_set<String> CJMODSyntaxMap::cjmodFunctions = {
     "printMyLove", "iNeverAway", "listen", "animate", "delegate"
 };
 
-const StringUnorderedMap CJMODSyntaxMap::functionParameters = {
+const std::unordered_map<String, StringVector> CJMODSyntaxMap::functionParameters = {
     {"printMyLove", {"url", "mode", "width", "height", "scale"}},
     {"animate", {"target", "duration", "easing", "begin", "when", "end", "loop", "direction", "delay", "callback"}},
     {"listen", {"click", "mouseenter", "mouseleave", "mousemove", "keydown", "keyup"}},

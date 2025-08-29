@@ -55,6 +55,8 @@ public:
     std::unique_ptr<BaseNode> parseOrigin();
     std::unique_ptr<BaseNode> parseImport();
     std::unique_ptr<BaseNode> parseConfiguration();
+    std::unique_ptr<BaseNode> parseNameConfiguration();
+    std::unique_ptr<BaseNode> parseOriginTypeConfiguration();
     std::unique_ptr<BaseNode> parseNamespace();
     std::unique_ptr<BaseNode> parseComment();
     
@@ -63,6 +65,19 @@ public:
     std::unique_ptr<BaseNode> parseDelete();
     std::unique_ptr<BaseNode> parseInsert();
     std::unique_ptr<BaseNode> parseUse();
+    
+    // 约束解析
+    std::unique_ptr<class ConstraintNode> parseConstraint();
+    std::unique_ptr<class ConstraintNode> parseExcept();
+    StringVector parseConstraintTargets();
+    String getCurrentScope() const;
+    bool isInNamespaceScope() const;
+    
+    // 特例化解析
+    std::unique_ptr<class IndexAccessNode> parseIndexAccess();
+    std::unique_ptr<class NoValueStyleNode> parseNoValueStyle();
+    bool isIndexAccessSyntax(const String& input) const;
+    bool isNoValueStyleSyntax(const String& input) const;
     
     // 属性和值解析
     StringUnorderedMap parseAttributes();

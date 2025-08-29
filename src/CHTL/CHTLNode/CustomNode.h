@@ -7,6 +7,13 @@ namespace CHTL {
 // 自定义基类
 class CustomNode : public BaseNode {
 public:
+    struct InsertionPoint {
+        String position;  // after, before, replace, at top, at bottom
+        String target;
+        String content;
+        size_t index;     // 用于索引访问
+    };
+    
     String customType;  // Style, Element, Var
     String customName;
     StringUnorderedMap customProperties;
@@ -14,13 +21,6 @@ public:
     StringVector deletionTargets;
     std::vector<InsertionPoint> insertionPoints;
     bool isExported;
-    
-    struct InsertionPoint {
-        String position;  // after, before, replace, at top, at bottom
-        String target;
-        String content;
-        size_t index;     // 用于索引访问
-    };
     
     CustomNode(NodeType type, const String& cType, const String& cName, const Position& pos = Position())
         : BaseNode(type, cName, pos), customType(cType), customName(cName), isExported(false) {}
@@ -87,7 +87,13 @@ public:
     void addOptionalProperty(const String& property);
     void removeOptionalProperty(const String& property);
     bool isOptionalProperty(const String& property) const;
-    StringVector getOptionalProperties() const { return optionalProperties; }
+    StringVector getOptionalProperties() const { 
+        StringVector result;
+        for (const auto& prop : optionalProperties) {
+            result.push_back(prop.first);
+        }
+        return result;
+    }
     
     // 必需属性管理
     void addRequiredProperty(const String& property);

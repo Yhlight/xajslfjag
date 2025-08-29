@@ -1,4 +1,8 @@
 #include "Parser.h"
+#include "../CHTLNode/ConstraintNode.h"
+#include "../CHTLNode/SpecializationNode.h"
+#include "../CHTLConfig/ConfigurationManager.h"
+#include "../CHTLLoader/ImportEnhancer.h"
 #include "../CHTLLexer/GlobalMap.h"
 #include <iostream>
 
@@ -82,6 +86,10 @@ std::unique_ptr<BaseNode> Parser::parseStatement() {
             return parseImport();
         case TokenType::CONFIGURATION:
             return parseConfiguration();
+        case TokenType::NAME:
+            return parseNameConfiguration();
+        case TokenType::ORIGIN_TYPE:
+            return parseOriginTypeConfiguration();
         case TokenType::NAMESPACE:
             return parseNamespace();
         case TokenType::INHERIT:
@@ -92,6 +100,8 @@ std::unique_ptr<BaseNode> Parser::parseStatement() {
             return parseInsert();
         case TokenType::USE:
             return parseUse();
+        case TokenType::EXCEPT:
+            return parseExcept();
         case TokenType::HTML_ELEMENT:
         case TokenType::IDENTIFIER:
             return parseElement();
@@ -369,13 +379,14 @@ std::unique_ptr<BaseNode> Parser::parseOrigin() {
     return originNode;
 }
 
-// 导入解析
+// 导入解析 (增强版)
 std::unique_ptr<BaseNode> Parser::parseImport() {
     Position pos = currentToken.position;
     advance(); // 消费 '[Import]'
     
     // 解析导入类型
     String importType;
+    bool isOriginImport = false;
     
     if (check(TokenType::AT_HTML)) {
         importType = "Html";
@@ -392,28 +403,117 @@ std::unique_ptr<BaseNode> Parser::parseImport() {
     } else if (check(TokenType::CONFIG)) {
         importType = "Config";
         advance();
+    } else if (check(TokenType::ORIGIN)) {
+        // [Import] [Origin] @Vue as CustomVue from "..."
+        advance(); // 消费 '[Origin]'
+        isOriginImport = true;
+        
+        // 解析原始类型
+        if (currentToken.value.find("@") == 0) {
+            importType = currentToken.value.substr(1); // 移除@前缀
+            advance();
+        } else {
+            reportError("期望原始类型 (如@Vue)", "EXPECT_ORIGIN_TYPE");
+            return nullptr;
+        }
     } else {
         reportError("期望导入类型", "MISSING_IMPORT_TYPE");
         return nullptr;
     }
     
+    // 解析可选的 as 语法 (对于原始嵌入)
+    String asClause;
+    if (isOriginImport && check(TokenType::AS)) {
+        advance(); // 消费 'as'
+        String aliasName = consume(TokenType::IDENTIFIER, "期望别名").value;
+        asClause = importType + " as " + aliasName;
+    }
+    
     // 解析 from 关键字
     consume(TokenType::FROM, "期望 'from'");
     
-    // 解析源路径
+    // 解析源路径 (支持通配符)
     String sourcePath = parseLiteral();
     
-    auto importNode = NodeFactory::createImportNode(importType, sourcePath);
-    importNode->position = pos;
+    // 使用Import增强器处理导入
+    auto& importEnhancer = getGlobalImportEnhancer();
     
-    // 可选的 as 重命名
-    if (check(TokenType::AS)) {
-        advance();
-        String alias = consume(TokenType::IDENTIFIER, "期望别名").value;
-        importNode->setAttribute("alias", alias);
+    // 检查是否为通配符路径
+    if (importEnhancer.isWildcardPath(sourcePath)) {
+        // 处理通配符导入
+        auto wildcardPaths = importEnhancer.processWildcardImports(importType, sourcePath);
+        
+        if (!wildcardPaths.empty()) {
+            // 为第一个匹配的路径创建导入节点
+            auto importNode = importEnhancer.processEnhancedImport(importType, wildcardPaths[0], asClause);
+            importNode->position = pos;
+            
+            // 标记为通配符导入
+            importNode->setWildcardImport(true);
+            
+            // 存储所有匹配的路径
+            for (size_t i = 1; i < wildcardPaths.size(); ++i) {
+                importNode->importMetadata["wildcard_path_" + std::to_string(i)] = wildcardPaths[i];
+            }
+            
+            return std::unique_ptr<BaseNode>(importNode.release());
+        } else {
+            reportError("未找到匹配通配符模式的文件: " + sourcePath, "WILDCARD_NO_MATCH");
+            return nullptr;
+        }
+    } else {
+        // 处理标准导入
+        auto importNode = importEnhancer.processEnhancedImport(importType, sourcePath, asClause);
+        importNode->position = pos;
+        
+        // 验证路径
+        if (!importEnhancer.validateImportPath(sourcePath)) {
+            reportError("无效的导入路径: " + sourcePath, "INVALID_IMPORT_PATH");
+        }
+        
+        // 处理原始嵌入的别名
+        if (isOriginImport && !asClause.empty()) {
+            auto& namedOriginManager = getGlobalNamedOriginManager();
+            auto [originType, aliasName] = importEnhancer.parseAsClause(asClause);
+            
+            if (!aliasName.empty()) {
+                // 注册命名原始嵌入
+                NamedOriginConfig config(originType, aliasName);
+                namedOriginManager.registerNamedOrigin(aliasName, config);
+                
+                // 设置ImportNode的原始嵌入信息
+                importNode->importMetadata["is_named_origin"] = "true";
+                importNode->importMetadata["origin_type"] = originType;
+                importNode->importMetadata["alias_name"] = aliasName;
+            }
+        }
+        
+        // 解析可选的 as 语法 (对于其他类型的导入)
+        if (!isOriginImport && check(TokenType::AS)) {
+            advance();
+            String alias = consume(TokenType::IDENTIFIER, "期望别名").value;
+            importNode->setAlias(alias);
+        }
+        
+        // 解析可选的 except 语法
+        if (check(TokenType::EXCEPT)) {
+            advance();
+            
+            // 解析排除项列表
+            while (!isAtEnd() && currentToken.type != TokenType::SEMICOLON) {
+                if (currentToken.type == TokenType::IDENTIFIER) {
+                    importNode->addExceptItem(currentToken.value);
+                    advance();
+                }
+                
+                if (check(TokenType::COMMA)) {
+                    advance();
+                }
+            }
+        }
+        
+        return std::unique_ptr<BaseNode>(importNode.release());
     }
-    
-    return importNode;
 }
 
 // 配置解析
@@ -474,23 +574,211 @@ std::unique_ptr<BaseNode> Parser::parseComment() {
     return commentNode;
 }
 
-// 继承、删除、插入、使用操作（简化实现）
+// 继承解析（完整实现）
 std::unique_ptr<BaseNode> Parser::parseInherit() {
-    auto node = std::make_unique<BaseNode>(NodeType::INHERIT, currentToken.value, currentToken.position);
+    Position startPos = currentToken.position;
+    advance(); // 跳过 'inherit'
+    
+    // 期待 @Type Name 格式
+    if (currentToken.type != TokenType::AT) {
+        reportError("Expected '@' after 'inherit'");
+        return nullptr;
+    }
+    advance(); // 跳过 '@'
+    
+    if (currentToken.type != TokenType::IDENTIFIER) {
+        reportError("Expected type identifier after '@'");
+        return nullptr;
+    }
+    
+    String inheritanceType = currentToken.value;
     advance();
-    return node;
+    
+    if (currentToken.type != TokenType::IDENTIFIER) {
+        reportError("Expected name identifier after type");
+        return nullptr;
+    }
+    
+    String inheritanceName = currentToken.value;
+    advance();
+    
+    // 创建继承节点
+    auto inheritNode = std::make_unique<BaseNode>(NodeType::INHERIT, 
+                                                  "inherit @" + inheritanceType + " " + inheritanceName, 
+                                                  startPos);
+    
+    // 设置继承信息作为属性
+    inheritNode->setAttribute("inheritanceType", inheritanceType);
+    inheritNode->setAttribute("inheritanceName", inheritanceName);
+    inheritNode->setAttribute("isExplicit", "true");
+    
+    return inheritNode;
 }
 
 std::unique_ptr<BaseNode> Parser::parseDelete() {
-    auto node = std::make_unique<BaseNode>(NodeType::DELETE, currentToken.value, currentToken.position);
-    advance();
-    return node;
+    // delete line-height, border;
+    // delete @Style WhiteText;
+    // delete span;
+    // delete div[1];
+    
+    Position startPos = currentToken.position;
+    
+    if (!consume(TokenType::DELETE)) {
+        reportError("期望 'delete' 关键字", "EXPECT_DELETE");
+        return nullptr;
+    }
+    
+    // 收集删除目标
+    StringVector targets;
+    String targetsString;
+    
+    while (!isAtEnd() && currentToken.type != TokenType::SEMICOLON) {
+        if (!targetsString.empty()) {
+            targetsString += " ";
+        }
+        targetsString += currentToken.value;
+        advance();
+        
+        // 处理逗号分隔
+        if (currentToken.type == TokenType::COMMA) {
+            targets.push_back(targetsString);
+            targetsString.clear();
+            advance(); // 消费逗号
+        }
+    }
+    
+    // 添加最后一个目标
+    if (!targetsString.empty()) {
+        targets.push_back(targetsString);
+    }
+    
+    if (targets.empty()) {
+        reportError("delete 后必须指定删除目标", "EXPECT_DELETE_TARGETS");
+        return nullptr;
+    }
+    
+    // 创建删除节点
+    auto deleteNode = std::make_unique<DeleteNode>(startPos);
+    
+    // 确定删除类型并设置目标
+    if (targets.size() == 1) {
+        String target = targets[0];
+        
+        // 检查是否为继承删除
+        if (target.find("@Style") != String::npos || 
+            target.find("@Element") != String::npos || 
+            target.find("@Var") != String::npos) {
+            deleteNode->setInheritanceTarget(target);
+        }
+        // 检查是否为索引访问元素删除
+        else if (IndexAccessNode::isIndexAccessSyntax(target)) {
+            auto [elementName, index] = IndexAccessNode::parseIndexAccess(target);
+            deleteNode->setElementTarget(elementName, index);
+        }
+        // 普通元素删除
+        else if (HTMLElementMap::isHTMLElement(target)) {
+            deleteNode->setElementTarget(target);
+        }
+        // 默认为属性删除
+        else {
+            deleteNode->addTarget(target);
+        }
+    } else {
+        // 多个目标，通常是属性删除
+        deleteNode->addTargets(targets);
+    }
+    
+    // 消费分号
+    consume(TokenType::SEMICOLON);
+    
+    return std::unique_ptr<BaseNode>(deleteNode.release());
 }
 
 std::unique_ptr<BaseNode> Parser::parseInsert() {
-    auto node = std::make_unique<BaseNode>(NodeType::INSERT, currentToken.value, currentToken.position);
-    advance();
-    return node;
+    // insert after div[0] { ... }
+    // insert before span { ... }
+    // insert at top { ... }
+    
+    Position startPos = currentToken.position;
+    
+    if (!consume(TokenType::INSERT)) {
+        reportError("期望 'insert' 关键字", "EXPECT_INSERT");
+        return nullptr;
+    }
+    
+    // 解析插入位置
+    InsertPosition position = InsertPosition::AFTER; // 默认
+    String target;
+    
+    if (currentToken.value == "after") {
+        position = InsertPosition::AFTER;
+        advance();
+        
+        // 获取目标选择器
+        if (currentToken.type != TokenType::LBRACE) {
+            target = currentToken.value;
+            advance();
+        }
+    }
+    else if (currentToken.value == "before") {
+        position = InsertPosition::BEFORE;
+        advance();
+        
+        if (currentToken.type != TokenType::LBRACE) {
+            target = currentToken.value;
+            advance();
+        }
+    }
+    else if (currentToken.value == "replace") {
+        position = InsertPosition::REPLACE;
+        advance();
+        
+        if (currentToken.type != TokenType::LBRACE) {
+            target = currentToken.value;
+            advance();
+        }
+    }
+    else if (currentToken.value == "at") {
+        advance();
+        if (currentToken.value == "top") {
+            position = InsertPosition::AT_TOP;
+            advance();
+        }
+        else if (currentToken.value == "bottom") {
+            position = InsertPosition::AT_BOTTOM;
+            advance();
+        }
+        else {
+            reportError("期望 'top' 或 'bottom'", "EXPECT_TOP_BOTTOM");
+            return nullptr;
+        }
+    }
+    
+    // 创建插入节点
+    auto insertNode = std::make_unique<InsertNode>(position, startPos);
+    if (!target.empty()) {
+        insertNode->setTarget(target);
+    }
+    
+    // 解析插入内容块
+    if (check(TokenType::LBRACE)) {
+        advance(); // 消费 '{'
+        
+        // 解析块内容
+        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+            if (auto content = parseStatement()) {
+                insertNode->addContent(std::move(content));
+            }
+        }
+        
+        consume(TokenType::RBRACE, "期望 '}'");
+    }
+    else {
+        reportError("期望插入内容块 '{'", "EXPECT_INSERT_BLOCK");
+        return nullptr;
+    }
+    
+    return std::unique_ptr<BaseNode>(insertNode.release());
 }
 
 std::unique_ptr<BaseNode> Parser::parseUse() {
@@ -587,6 +875,367 @@ bool Parser::isAtEnd() const {
 bool Parser::isAttribute() const {
     return currentToken.type == TokenType::IDENTIFIER && 
            (peekToken().type == TokenType::COLON || peekToken().type == TokenType::EQUALS);
+}
+
+// ========== 约束解析实现 ==========
+
+std::unique_ptr<ConstraintNode> Parser::parseConstraint() {
+    if (currentToken.type == TokenType::EXCEPT) {
+        return parseExcept();
+    }
+    
+    reportError("期望约束关键字", "EXPECT_CONSTRAINT");
+    return nullptr;
+}
+
+std::unique_ptr<ConstraintNode> Parser::parseExcept() {
+    // except span, [Custom] @Element Box;
+    Position startPos = currentToken.position;
+    
+    if (!consume(TokenType::EXCEPT)) {
+        reportError("期望 'except' 关键字", "EXPECT_EXCEPT");
+        return nullptr;
+    }
+    
+    // 解析约束目标列表
+    StringVector targets = parseConstraintTargets();
+    if (targets.empty()) {
+        reportError("except 后必须指定约束目标", "EXPECT_CONSTRAINT_TARGETS");
+        return nullptr;
+    }
+    
+    // 确定约束类型
+    ConstraintType constraintType = ConstraintType::PRECISE; // 默认精确约束
+    
+    // 检查是否为类型约束
+    for (const auto& target : targets) {
+        if (target == "@Html" || target == "[Custom]" || target == "[Template]") {
+            constraintType = ConstraintType::TYPE;
+            break;
+        }
+    }
+    
+    // 检查是否为全局约束 - 通过上下文判断
+    String currentScope = getCurrentScope();
+    if (isInNamespaceScope()) {
+        constraintType = ConstraintType::GLOBAL;
+    }
+    
+    // 创建约束节点
+    auto constraint = std::make_unique<ConstraintNode>(constraintType, startPos);
+    
+    // 解析约束目标
+    for (const auto& targetStr : targets) {
+        auto target = ConstraintNode::parseConstraintTarget(targetStr);
+        constraint->addTarget(target);
+    }
+    
+    // 设置作用域
+    if (constraintType == ConstraintType::GLOBAL) {
+        constraint->scope = currentScope;
+    }
+    
+    // 消费分号
+    consume(TokenType::SEMICOLON);
+    
+    return constraint;
+}
+
+StringVector Parser::parseConstraintTargets() {
+    StringVector targets;
+    
+    while (!isAtEnd() && currentToken.type != TokenType::SEMICOLON) {
+        String target;
+        
+        // 解析一个约束目标
+        if (currentToken.type == TokenType::LEFT_BRACKET) {
+            // [Custom] @Element Box 或 [Template] @Style 等
+            target += currentToken.value;
+            advance();
+            
+            // 解析括号内的内容
+            while (!isAtEnd() && currentToken.type != TokenType::RIGHT_BRACKET) {
+                target += currentToken.value;
+                advance();
+            }
+            
+            if (currentToken.type == TokenType::RIGHT_BRACKET) {
+                target += currentToken.value;
+                advance();
+            }
+            
+            // 继续解析后续内容 (@Element, @Style 等)
+            while (!isAtEnd() && 
+                   currentToken.type != TokenType::COMMA && 
+                   currentToken.type != TokenType::SEMICOLON) {
+                target += " " + currentToken.value;
+                advance();
+            }
+        }
+        else if (currentToken.type == TokenType::AT_HTML ||
+                 currentToken.type == TokenType::AT_STYLE ||
+                 currentToken.type == TokenType::AT_JAVASCRIPT) {
+            // @Html, @Style, @JavaScript
+            target = currentToken.value;
+            advance();
+        }
+        else if (currentToken.value.find("@") == 0) {
+            // 自定义原始嵌入类型 @Vue
+            target = currentToken.value;
+            advance();
+        }
+        else {
+            // HTML元素名或其他标识符
+            target = currentToken.value;
+            advance();
+        }
+        
+        if (!target.empty()) {
+            targets.push_back(target);
+        }
+        
+        // 处理逗号分隔
+        if (currentToken.type == TokenType::COMMA) {
+            advance();
+        }
+    }
+    
+    return targets;
+}
+
+// 辅助方法
+String Parser::getCurrentScope() const {
+    // 遍历解析栈，找到当前的命名空间
+    if (context) {
+        return context->getCurrentNamespace();
+    }
+    
+    return ""; // 默认全局作用域
+}
+
+bool Parser::isInNamespaceScope() const {
+    // 检查当前是否在命名空间内部
+    if (context) {
+        return !context->getCurrentNamespace().empty();
+    }
+    
+    return false;
+}
+
+// ========== 特例化解析实现 ==========
+
+std::unique_ptr<IndexAccessNode> Parser::parseIndexAccess() {
+    // div[1] { ... }
+    
+    String elementName = currentToken.value;
+    Position startPos = currentToken.position;
+    advance();
+    
+    if (!consume(TokenType::LEFT_BRACKET)) {
+        reportError("期望 '['", "EXPECT_LEFT_BRACKET");
+        return nullptr;
+    }
+    
+    if (currentToken.type != TokenType::LITERAL_NUMBER) {
+        reportError("期望索引数字", "EXPECT_INDEX_NUMBER");
+        return nullptr;
+    }
+    
+    size_t index = std::stoul(currentToken.value);
+    advance();
+    
+    if (!consume(TokenType::RIGHT_BRACKET)) {
+        reportError("期望 ']'", "EXPECT_RIGHT_BRACKET");
+        return nullptr;
+    }
+    
+    auto indexNode = std::make_unique<IndexAccessNode>(elementName, index, startPos);
+    
+    // 解析内容块 (可选)
+    if (check(TokenType::LBRACE)) {
+        advance(); // 消费 '{'
+        
+        // 解析块内容
+        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+            if (auto content = parseStatement()) {
+                indexNode->setContent(std::move(content));
+                break; // 索引访问通常只包含一个内容节点
+            }
+        }
+        
+        consume(TokenType::RBRACE, "期望 '}'");
+    }
+    
+    return indexNode;
+}
+
+std::unique_ptr<NoValueStyleNode> Parser::parseNoValueStyle() {
+    // color, font-size;
+    
+    Position startPos = currentToken.position;
+    StringVector properties;
+    
+    // 收集属性名称
+    while (!isAtEnd() && currentToken.type != TokenType::SEMICOLON) {
+        if (currentToken.type == TokenType::IDENTIFIER) {
+            properties.push_back(currentToken.value);
+            advance();
+        }
+        
+        // 处理逗号分隔
+        if (currentToken.type == TokenType::COMMA) {
+            advance();
+        } else if (currentToken.type != TokenType::SEMICOLON) {
+            break; // 遇到非逗号非分号，停止解析
+        }
+    }
+    
+    if (properties.empty()) {
+        reportError("无值样式组必须包含至少一个属性", "EXPECT_PROPERTIES");
+        return nullptr;
+    }
+    
+    // 消费分号
+    consume(TokenType::SEMICOLON);
+    
+    auto noValueNode = std::make_unique<NoValueStyleNode>(startPos);
+    noValueNode->addProperties(properties);
+    
+    return noValueNode;
+}
+
+bool Parser::isIndexAccessSyntax(const String& input) const {
+    return IndexAccessNode::isIndexAccessSyntax(input);
+}
+
+bool Parser::isNoValueStyleSyntax(const String& input) const {
+    return NoValueStyleNode::isNoValueStyleSyntax(input);
+}
+
+// ========== 配置解析实现 ==========
+
+std::unique_ptr<BaseNode> Parser::parseNameConfiguration() {
+    // [Name] { CUSTOM_STYLE = [@Style, @style, @CSS]; ... }
+    
+    Position startPos = currentToken.position;
+    
+    if (!consume(TokenType::NAME)) {
+        reportError("期望 '[Name]' 关键字", "EXPECT_NAME");
+        return nullptr;
+    }
+    
+    auto nameConfigNode = std::make_unique<BaseNode>(NodeType::CONFIG_NAME, "Name", startPos);
+    
+    if (!consume(TokenType::LBRACE)) {
+        reportError("期望 '{'", "EXPECT_LBRACE");
+        return nullptr;
+    }
+    
+    // 解析名称配置项
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (currentToken.type == TokenType::IDENTIFIER) {
+            String configKey = currentToken.value;
+            advance();
+            
+            if (!consume(TokenType::EQUALS)) {
+                reportError("期望 '='", "EXPECT_EQUALS");
+                continue;
+            }
+            
+            // 解析配置值
+            String configValue;
+            
+            // 处理组选项语法 [option1, option2, ...]
+            if (check(TokenType::LEFT_BRACKET)) {
+                configValue += currentToken.value;
+                advance();
+                
+                while (!check(TokenType::RIGHT_BRACKET) && !isAtEnd()) {
+                    configValue += currentToken.value;
+                    advance();
+                }
+                
+                if (check(TokenType::RIGHT_BRACKET)) {
+                    configValue += currentToken.value;
+                    advance();
+                }
+            } else {
+                // 单一配置值
+                configValue = currentToken.value;
+                advance();
+            }
+            
+            // 添加为属性
+            nameConfigNode->setAttribute(configKey, configValue);
+            
+            // 消费分号
+            consume(TokenType::SEMICOLON);
+        } else {
+            advance(); // 跳过无法识别的token
+        }
+    }
+    
+    consume(TokenType::RBRACE, "期望 '}'");
+    
+    return nameConfigNode;
+}
+
+std::unique_ptr<BaseNode> Parser::parseOriginTypeConfiguration() {
+    // [OriginType] { ORIGINTYPE_VUE = @Vue; ... }
+    
+    Position startPos = currentToken.position;
+    
+    if (!consume(TokenType::ORIGIN_TYPE)) {
+        reportError("期望 '[OriginType]' 关键字", "EXPECT_ORIGIN_TYPE");
+        return nullptr;
+    }
+    
+    auto originTypeConfigNode = std::make_unique<BaseNode>(NodeType::CONFIG_ORIGIN_TYPE, "OriginType", startPos);
+    
+    if (!consume(TokenType::LBRACE)) {
+        reportError("期望 '{'", "EXPECT_LBRACE");
+        return nullptr;
+    }
+    
+    // 解析原始类型配置项
+    while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        if (currentToken.type == TokenType::IDENTIFIER) {
+            String configKey = currentToken.value;
+            advance();
+            
+            if (!consume(TokenType::EQUALS)) {
+                reportError("期望 '='", "EXPECT_EQUALS");
+                continue;
+            }
+            
+            // 解析配置值 (应该是@开头的类型名)
+            String configValue = currentToken.value;
+            advance();
+            
+            // 验证原始类型格式
+            if (configKey.find("ORIGINTYPE_") != 0) {
+                reportError("原始类型配置键必须以 'ORIGINTYPE_' 开头", "INVALID_ORIGIN_TYPE_KEY");
+                continue;
+            }
+            
+            if (configValue.empty() || configValue[0] != '@') {
+                reportError("原始类型值必须以 '@' 开头", "INVALID_ORIGIN_TYPE_VALUE");
+                continue;
+            }
+            
+            // 添加为属性
+            originTypeConfigNode->setAttribute(configKey, configValue);
+            
+            // 消费分号
+            consume(TokenType::SEMICOLON);
+        } else {
+            advance(); // 跳过无法识别的token
+        }
+    }
+    
+    consume(TokenType::RBRACE, "期望 '}'");
+    
+    return originTypeConfigNode;
 }
 
 } // namespace CHTL

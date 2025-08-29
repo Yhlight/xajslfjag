@@ -84,6 +84,18 @@ enum class NodeType {
     CHTLJS_VIR_OBJECT,  // 虚对象
     CHTLJS_MODULE,      // CHTL JS模块
     
+    // 约束系统
+    CONSTRAINT,         // 约束节点
+    CONSTRAINT_PRECISE, // 精确约束
+    CONSTRAINT_TYPE,    // 类型约束
+    CONSTRAINT_GLOBAL,  // 全局约束
+    
+    // 特例化系统
+    DELETE_NODE,        // 删除操作节点
+    INSERT_NODE,        // 插入操作节点
+    INDEX_ACCESS_NODE,  // 索引访问节点
+    NO_VALUE_STYLE,     // 无值样式组节点
+    
     // 特殊
     UNKNOWN             // 未知节点
 };
@@ -297,6 +309,15 @@ public:
     static std::unique_ptr<BaseNode> createConfigNode();
     static std::unique_ptr<BaseNode> createNamespaceNode(const String& name);
     static std::unique_ptr<BaseNode> createCHTLJSNode(NodeType type, const String& content);
+    
+    // 约束节点创建
+    static std::unique_ptr<class ConstraintNode> createConstraintNode(const String& constraintType, const String& targets, const String& scope = "");
+    
+    // 特例化节点创建
+    static std::unique_ptr<class DeleteNode> createDeleteNode(const String& operationType, const String& targets);
+    static std::unique_ptr<class InsertNode> createInsertNode(const String& position, const String& target);
+    static std::unique_ptr<class IndexAccessNode> createIndexAccessNode(const String& elementName, size_t index);
+    static std::unique_ptr<class NoValueStyleNode> createNoValueStyleNode(const String& properties);
 };
 
 } // namespace CHTL

@@ -29,7 +29,7 @@ public:
     static bool isCHTLJSKeyword(const String& word);
     
 private:
-    static const StringUnorderedMap keywordMap;
+    static const std::unordered_map<String, TokenType> keywordMap;
     static const std::unordered_set<String> chtlKeywords;
     static const std::unordered_set<String> chtljsKeywords;
 };
@@ -43,7 +43,7 @@ public:
     
 private:
     static const std::unordered_set<String> cssProperties;
-    static const StringUnorderedMap shorthandMap;
+    static const std::unordered_map<String, StringVector> shorthandMap;
 };
 
 // JavaScript事件映射表
@@ -72,7 +72,7 @@ public:
     
 private:
     static const std::unordered_map<char, TokenType> singleCharMap;
-    static const StringUnorderedMap twoCharMap;
+    static const std::unordered_map<String, TokenType> twoCharMap;
 };
 
 // CJMOD API 语法映射
@@ -85,7 +85,7 @@ public:
     
 private:
     static const std::unordered_set<String> cjmodFunctions;
-    static const StringUnorderedMap functionParameters;
+    static const std::unordered_map<String, StringVector> functionParameters;
     static const std::unordered_set<String> placeholders;
 };
 

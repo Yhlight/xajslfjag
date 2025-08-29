@@ -22,6 +22,12 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLNode/TemplateNode.cpp
     src/CHTL/CHTLNode/CustomNode.cpp
     src/CHTL/CHTLNode/OriginNode.cpp
+    src/CHTL/CHTLNode/ConstraintNode.cpp
+    src/CHTL/CHTLNode/SpecializationNode.cpp
+    src/CHTL/CHTLConfig/ConfigurationManager.cpp
+    src/CHTL/CHTLLoader/ImportEnhancer.cpp
+    src/CHTL/CMODSystem/CMODManager.cpp
+    src/CHTL/CHTLNode/InheritanceManager.cpp
     src/CHTL/CHTLGenerator/Generator.cpp
     src/CHTL/CHTLLoader/ModuleLoader.cpp
     src/CHTL/CHTLManage/NamespaceResolver.cpp
