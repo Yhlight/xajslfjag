@@ -308,19 +308,47 @@ CompilationResult CompilerDispatcher::compileFragments(const std::vector<CodeFra
                 }
                 
                 case FragmentType::CSS: {
-                    // CSS片段直接添加到CSS输出
-                    cssOutput << fragment.content;
-                    if (!fragment.content.empty() && !CHTL::Util::StringUtils::ends_with(fragment.content, "\n")) {
-                        cssOutput << "\n";
+                    // 使用CSS解析器处理CSS片段
+                    if (!cssParser) {
+                        CSS::CSSParserConfig cssConfig;
+                        cssParser = std::make_unique<CSS::Parser>(cssConfig);
+                    }
+                    
+                    auto cssResult = cssParser->parse(fragment.content);
+                    if (cssResult.success) {
+                        cssOutput << cssResult.css;
+                        if (!cssResult.css.empty() && !CHTL::Util::StringUtils::ends_with(cssResult.css, "\n")) {
+                            cssOutput << "\n";
+                        }
+                    } else {
+                        for (const auto& error : cssResult.errors) {
+                            result.addError("CSS解析错误: " + error);
+                        }
+                        // 解析失败时仍然输出原始内容
+                        cssOutput << fragment.content;
                     }
                     break;
                 }
                 
                 case FragmentType::JAVASCRIPT: {
-                    // JavaScript片段直接添加到JS输出
-                    jsOutput << fragment.content;
-                    if (!fragment.content.empty() && !CHTL::Util::StringUtils::ends_with(fragment.content, "\n")) {
-                        jsOutput << "\n";
+                    // 使用JS解析器处理JavaScript片段
+                    if (!jsParser) {
+                        JS::JSParserConfig jsConfig;
+                        jsParser = std::make_unique<JS::Parser>(jsConfig);
+                    }
+                    
+                    auto jsResult = jsParser->parse(fragment.content);
+                    if (jsResult.success) {
+                        jsOutput << jsResult.javascript;
+                        if (!jsResult.javascript.empty() && !CHTL::Util::StringUtils::ends_with(jsResult.javascript, "\n")) {
+                            jsOutput << "\n";
+                        }
+                    } else {
+                        for (const auto& error : jsResult.errors) {
+                            result.addError("JavaScript解析错误: " + error);
+                        }
+                        // 解析失败时仍然输出原始内容
+                        jsOutput << fragment.content;
                     }
                     break;
                 }

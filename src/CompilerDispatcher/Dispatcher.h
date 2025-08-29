@@ -4,9 +4,8 @@
 #include "../Scanner/UnifiedScanner.h"
 #include "../CHTL/CHTLParser/Parser.h"
 #include "../CHTLJS/CHTLJSParser/EnhancedParser.h"
-// TODO: CSS和JS解析器将在后续阶段实现
-// #include "../CSS/CSSParser/Parser.h"
-// #include "../JS/JSParser/Parser.h"
+#include "../CSS/CSSParser/Parser.h"
+#include "../JS/JSParser/Parser.h"
 
 namespace CHTL {
 
@@ -62,9 +61,8 @@ private:
     // 编译器实例
     std::unique_ptr<CHTL::Parser> chtlParser;
     std::unique_ptr<CHTLJS::CHTLJSEnhancedParser> chtljsParser;
-    // TODO: CSS和JS解析器将在后续阶段实现
-    // std::unique_ptr<CSS::Parser> cssParser;
-    // std::unique_ptr<JS::Parser> jsParser;
+    std::unique_ptr<CSS::Parser> cssParser;
+    std::unique_ptr<JS::Parser> jsParser;
     
     // 内部状态
     StringVector currentErrors;
@@ -143,9 +141,8 @@ class CompilerFactory {
 public:
     static std::unique_ptr<CHTL::Parser> createCHTLParser(const CHTL::ParserConfig& config);
     static std::unique_ptr<CHTLJS::CHTLJSEnhancedParser> createCHTLJSParser(const CHTLJS::CHTLJSParserConfig& config);
-    // TODO: CSS和JS解析器将在后续阶段实现
-    // static std::unique_ptr<CSS::Parser> createCSSParser(const CSS::ParserConfig& config);
-    // static std::unique_ptr<JS::Parser> createJSParser(const JS::ParserConfig& config);
+    static std::unique_ptr<CSS::Parser> createCSSParser(const CSS::CSSParserConfig& config);
+    static std::unique_ptr<JS::Parser> createJSParser(const JS::JSParserConfig& config);
 };
 
 // 辅助函数

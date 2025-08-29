@@ -68,9 +68,19 @@ set(CHTL_CORE_SOURCES
     
     # Compiler Dispatcher
     src/CompilerDispatcher/Dispatcher.cpp
+    src/CSS/CSSParser/Parser.cpp
+    src/JS/JSParser/Parser.cpp
     
     # Module System
     src/Module/ModuleManager.cpp
+    
+    # ANTLR Generated Sources
+    third-party/antlr/generated/CSS/CSSLexer.cpp
+    third-party/antlr/generated/CSS/CSSParser.cpp
+    third-party/antlr/generated/CSS/CSSParserBaseListener.cpp
+    third-party/antlr/generated/JS/SimpleJSLexer.cpp
+    third-party/antlr/generated/JS/SimpleJSParser.cpp
+    third-party/antlr/generated/JS/SimpleJSParserBaseListener.cpp
     
     # Test System
     src/Test/UtilTest/UtilTestSuite.cpp
@@ -91,6 +101,10 @@ add_library(chtl_core STATIC ${CHTL_CORE_SOURCES})
 # 设置包含目录
 target_include_directories(chtl_core 
     PUBLIC ${CHTL_INCLUDE_DIRS}
+    PRIVATE 
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/CSS
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/JS
 )
 
 # 设置编译器特定的选项
@@ -131,6 +145,14 @@ install(DIRECTORY src/
     DESTINATION include/chtl
     FILES_MATCHING PATTERN "*.h"
 )
+
+# 链接ANTLR4运行时库
+if(WIN32)
+    target_link_libraries(chtl_core ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib/antlr4-runtime-static.lib)
+else()
+    # Linux/macOS平台可能需要不同的库文件
+    target_link_libraries(chtl_core ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib/antlr4-runtime-static.lib)
+endif()
 
 # 显示构建信息
 message(STATUS "CHTL build configuration complete")
