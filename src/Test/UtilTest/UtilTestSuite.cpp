@@ -1,6 +1,7 @@
 #include "UtilTestSuite.h"
 #include <iostream>
 #include <sstream>
+#include <iomanip>  // for std::setprecision
 #include <algorithm>
 #include <chrono>
 #include <random>

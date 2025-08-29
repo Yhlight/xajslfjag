@@ -12,36 +12,36 @@ namespace CHTLJS::IO {
 class JSFileStream : public Util::FileSystem {
 public:
     JSFileStream();
-    explicit JSFileStream(const String& filePath);
+    explicit JSFileStream(const CHTL::String& filePath);
     virtual ~JSFileStream();
 
     // CHTL JS特定的文件操作
-    bool openCHTLJSFile(const String& filePath);
-    bool openJSFile(const String& filePath);
-    bool openCJJSFile(const String& filePath);
+    bool openCHTLJSFile(const CHTL::String& filePath);
+    bool openJSFile(const CHTL::String& filePath);
+    bool openCJJSFile(const CHTL::String& filePath);
     
     // CHTL JS内容处理
-    String readCHTLJSContent();
-    StringVector extractCHTLJSBlocks();
-    StringVector extractJSBlocks();
+    CHTL::String readCHTLJSContent();
+    CHTL::StringVector extractCHTLJSBlocks();
+    CHTL::StringVector extractJSBlocks();
     
     // 模块相关操作
-    StringVector extractModuleImports();
-    String extractModuleDefinition();
-    bool writeModuleOutput(const String& content);
+    CHTL::StringVector extractModuleImports();
+    CHTL::String extractModuleDefinition();
+    bool writeModuleOutput(const CHTL::String& content);
     
     // CJMOD支持
-    StringVector extractCJMODSyntax();
-    bool processCJMODFile(const String& inputPath, const String& outputPath);
+    CHTL::StringVector extractCJMODSyntax();
+    bool processCJMODFile(const CHTL::String& inputPath, const CHTL::String& outputPath);
     
     // 增量编译支持
     bool hasFileChanged() const;
-    String getFileHash() const;
+    CHTL::String getFileHash() const;
     void updateFileCache();
     
     // CHTL JS语法验证
-    bool validateCHTLJSSyntax(const String& content);
-    StringVector findSyntaxErrors(const String& content);
+    bool validateCHTLJSSyntax(const CHTL::String& content);
+    CHTL::StringVector findSyntaxErrors(const CHTL::String& content);
     
     // 性能优化
     void enableCHTLJSOptimization(bool enable = true);
@@ -49,23 +49,23 @@ public:
     
 private:
     std::unique_ptr<std::fstream> fileStream_;
-    String currentFilePath_;
-    String fileHash_;
+    CHTL::String currentFilePath_;
+    CHTL::String fileHash_;
     bool optimizationEnabled_;
     
     // 缓存系统
     struct FileCache {
-        String lastHash;
-        String lastContent;
+        CHTL::String lastHash;
+        CHTL::String lastContent;
         std::time_t lastModified;
     };
     FileCache cache_;
     
     // CHTL JS解析辅助
-    String extractBetweenMarkers(const String& content, const String& startMarker, const String& endMarker);
-    StringVector tokenizeCHTLJS(const String& content);
-    bool validateBraceMatching(const String& content);
-    String calculateMD5Hash(const String& content);
+    CHTL::String extractBetweenMarkers(const CHTL::String& content, const CHTL::String& startMarker, const CHTL::String& endMarker);
+    CHTL::StringVector tokenizeCHTLJS(const CHTL::String& content);
+    bool validateBraceMatching(const CHTL::String& content);
+    CHTL::String calculateMD5Hash(const CHTL::String& content) const;
 };
 
 // CHTL JS文件处理工具
@@ -80,31 +80,31 @@ public:
         UNKNOWN
     };
     
-    static FileType detectFileType(const String& filePath);
-    static FileType detectContentType(const String& content);
+    static FileType detectFileType(const CHTL::String& filePath);
+    static FileType detectContentType(const CHTL::String& content);
     
     // CHTL JS预处理
-    static String preprocessCHTLJS(const String& content);
-    static String extractCHTLJSScript(const String& content);
-    static String extractPureJS(const String& content);
+    static CHTL::String preprocessCHTLJS(const CHTL::String& content);
+    static CHTL::String extractCHTLJSScript(const CHTL::String& content);
+    static CHTL::String extractPureJS(const CHTL::String& content);
     
     // 模块处理
-    static StringVector extractModuleDependencies(const String& content);
-    static String generateModuleWrapper(const String& content, const String& moduleName);
+    static CHTL::StringVector extractModuleDependencies(const CHTL::String& content);
+    static CHTL::String generateModuleWrapper(const CHTL::String& content, const CHTL::String& moduleName);
     
     // CJMOD处理
-    static StringVector findCJMODKeywords(const String& content);
-    static String processCJMODSyntax(const String& content);
+    static CHTL::StringVector findCJMODKeywords(const CHTL::String& content);
+    static CHTL::String processCJMODSyntax(const CHTL::String& content);
     
     // 优化处理
-    static String minifyCHTLJS(const String& content);
-    static String beautifyCHTLJS(const String& content);
+    static CHTL::String minifyCHTLJS(const CHTL::String& content);
+    static CHTL::String beautifyCHTLJS(const CHTL::String& content);
+    static CHTL::StringVector splitIntoBlocks(const CHTL::String& content);
     
 private:
-    static bool containsCHTLJSMarkers(const String& content);
-    static bool containsModuleSyntax(const String& content);
-    static String normalizeLineEndings(const String& content);
-    static StringVector splitIntoBlocks(const String& content);
+    static bool containsCHTLJSMarkers(const CHTL::String& content);
+    static bool containsModuleSyntax(const CHTL::String& content);
+    static CHTL::String normalizeLineEndings(const CHTL::String& content);
 };
 
 // CHTL JS异步文件处理器
@@ -114,15 +114,15 @@ public:
     ~AsyncCHTLJSProcessor();
     
     // 异步文件处理
-    void processFileAsync(const String& inputPath, const String& outputPath, 
+    void processFileAsync(const CHTL::String& inputPath, const CHTL::String& outputPath, 
                          std::function<void(bool)> callback);
     
     // 批量处理
-    void processBatchAsync(const StringVector& inputPaths, const String& outputDir,
+    void processBatchAsync(const CHTL::StringVector& inputPaths, const CHTL::String& outputDir,
                           std::function<void(size_t, size_t)> progressCallback);
     
     // 监控文件变化
-    void watchFile(const String& filePath, std::function<void(const String&)> changeCallback);
+    void watchFile(const CHTL::String& filePath, std::function<void(const CHTL::String&)> changeCallback);
     void stopWatching();
     
     bool isProcessing() const;
@@ -132,7 +132,7 @@ private:
     bool isProcessing_;
     bool shouldCancel_;
     
-    void processInBackground(const String& inputPath, const String& outputPath,
+    void processInBackground(const CHTL::String& inputPath, const CHTL::String& outputPath,
                            std::function<void(bool)> callback);
 };
 

@@ -7,6 +7,14 @@
 
 namespace CHTL::Module {
 
+// Helper function for ends_with (C++17 compatible)
+bool ends_with(const String& str, const String& suffix) {
+    if (str.length() >= suffix.length()) {
+        return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
+    }
+    return false;
+}
+
 // ModuleDependency实现
 ModuleDependency::ModuleDependency(const String& name, const String& ver, 
                                   bool optional, bool dev)
@@ -226,7 +234,7 @@ void StandardModule::onStatusChanged(ModuleStatus oldStatus, ModuleStatus newSta
 
 // CHTLModuleLoader实现
 bool CHTLModuleLoader::canLoad(const String& modulePath) const {
-    return modulePath.ends_with(".chtl") || modulePath.ends_with(".chtlm");
+    return ends_with(modulePath, ".chtl") || ends_with(modulePath, ".chtlm");
 }
 
 std::unique_ptr<IModule> CHTLModuleLoader::loadModule(const String& modulePath) {
@@ -347,7 +355,7 @@ bool CHTLModuleLoader::parseCHTLModule(const String& content, ModuleMetadata& me
 
 // CMODModuleLoader实现
 bool CMODModuleLoader::canLoad(const String& modulePath) const {
-    return modulePath.ends_with(".cmod");
+    return ends_with(modulePath, ".cmod");
 }
 
 std::unique_ptr<IModule> CMODModuleLoader::loadModule(const String& modulePath) {
@@ -577,15 +585,15 @@ String ModuleManager::findModule(const String& moduleName) const {
 }
 
 ModuleType ModuleManager::detectModuleType(const String& modulePath) const {
-    if (modulePath.ends_with(".chtl") || modulePath.ends_with(".chtlm")) {
+    if (ends_with(modulePath, ".chtl") || ends_with(modulePath, ".chtlm")) {
         return ModuleType::CHTL_MODULE;
-    } else if (modulePath.ends_with(".cmod")) {
+    } else if (ends_with(modulePath, ".cmod")) {
         return ModuleType::CMOD_MODULE;
-    } else if (modulePath.ends_with(".cjmod")) {
+    } else if (ends_with(modulePath, ".cjmod")) {
         return ModuleType::CJMOD_MODULE;
-    } else if (modulePath.ends_with(".js")) {
+    } else if (ends_with(modulePath, ".js")) {
         return ModuleType::JS_MODULE;
-    } else if (modulePath.ends_with(".css")) {
+    } else if (ends_with(modulePath, ".css")) {
         return ModuleType::CSS_MODULE;
     }
     

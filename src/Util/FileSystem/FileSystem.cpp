@@ -18,7 +18,7 @@
 namespace Util {
 
 // FileSystem基类实现
-bool FileSystem::exists(const String& path) const {
+bool FileSystem::exists(const CHTL::String& path) const {
     try {
         return std::filesystem::exists(path);
     } catch (...) {
@@ -26,7 +26,7 @@ bool FileSystem::exists(const String& path) const {
     }
 }
 
-bool FileSystem::isFile(const String& path) const {
+bool FileSystem::isFile(const CHTL::String& path) const {
     try {
         return std::filesystem::is_regular_file(path);
     } catch (...) {
@@ -34,7 +34,7 @@ bool FileSystem::isFile(const String& path) const {
     }
 }
 
-bool FileSystem::isDirectory(const String& path) const {
+bool FileSystem::isDirectory(const CHTL::String& path) const {
     try {
         return std::filesystem::is_directory(path);
     } catch (...) {
@@ -42,12 +42,12 @@ bool FileSystem::isDirectory(const String& path) const {
     }
 }
 
-bool FileSystem::isReadable(const String& path) const {
+bool FileSystem::isReadable(const CHTL::String& path) const {
     std::ifstream file(path);
     return file.good();
 }
 
-bool FileSystem::isWritable(const String& path) const {
+bool FileSystem::isWritable(const CHTL::String& path) const {
     if (exists(path)) {
         std::ofstream file(path, std::ios::app);
         return file.good();
@@ -62,7 +62,7 @@ bool FileSystem::isWritable(const String& path) const {
     }
 }
 
-size_t FileSystem::getFileSize(const String& path) const {
+size_t FileSystem::getFileSize(const CHTL::String& path) const {
     try {
         return std::filesystem::file_size(path);
     } catch (...) {
@@ -70,7 +70,7 @@ size_t FileSystem::getFileSize(const String& path) const {
     }
 }
 
-std::time_t FileSystem::getLastModified(const String& path) const {
+std::time_t FileSystem::getLastModified(const CHTL::String& path) const {
     try {
         auto ftime = std::filesystem::last_write_time(path);
         return std::chrono::duration_cast<std::chrono::seconds>(
@@ -80,7 +80,7 @@ std::time_t FileSystem::getLastModified(const String& path) const {
     }
 }
 
-String FileSystem::getAbsolutePath(const String& path) const {
+CHTL::String FileSystem::getAbsolutePath(const CHTL::String& path) const {
     try {
         return std::filesystem::absolute(path).string();
     } catch (...) {
@@ -88,34 +88,34 @@ String FileSystem::getAbsolutePath(const String& path) const {
     }
 }
 
-String FileSystem::getFileName(const String& path) const {
+CHTL::String FileSystem::getFileName(const CHTL::String& path) const {
     try {
         return std::filesystem::path(path).filename().string();
     } catch (...) {
         size_t pos = path.find_last_of("/\\");
-        return pos != String::npos ? path.substr(pos + 1) : path;
+        return pos != CHTL::String::npos ? path.substr(pos + 1) : path;
     }
 }
 
-String FileSystem::getDirectoryName(const String& path) const {
+CHTL::String FileSystem::getDirectoryName(const CHTL::String& path) const {
     try {
         return std::filesystem::path(path).parent_path().string();
     } catch (...) {
         size_t pos = path.find_last_of("/\\");
-        return pos != String::npos ? path.substr(0, pos) : "";
+        return pos != CHTL::String::npos ? path.substr(0, pos) : "";
     }
 }
 
-String FileSystem::getFileExtension(const String& path) const {
+CHTL::String FileSystem::getFileExtension(const CHTL::String& path) const {
     try {
         return std::filesystem::path(path).extension().string();
     } catch (...) {
         size_t pos = path.find_last_of('.');
-        return pos != String::npos ? path.substr(pos) : "";
+        return pos != CHTL::String::npos ? path.substr(pos) : "";
     }
 }
 
-bool FileSystem::createDirectory(const String& path) const {
+bool FileSystem::createDirectory(const CHTL::String& path) const {
     try {
         return std::filesystem::create_directory(path);
     } catch (...) {
@@ -123,7 +123,7 @@ bool FileSystem::createDirectory(const String& path) const {
     }
 }
 
-bool FileSystem::createDirectories(const String& path) const {
+bool FileSystem::createDirectories(const CHTL::String& path) const {
     try {
         return std::filesystem::create_directories(path);
     } catch (...) {
@@ -131,7 +131,7 @@ bool FileSystem::createDirectories(const String& path) const {
     }
 }
 
-bool FileSystem::removeDirectory(const String& path) const {
+bool FileSystem::removeDirectory(const CHTL::String& path) const {
     try {
         return std::filesystem::remove_all(path) > 0;
     } catch (...) {
@@ -139,8 +139,8 @@ bool FileSystem::removeDirectory(const String& path) const {
     }
 }
 
-StringVector FileSystem::listDirectory(const String& path) const {
-    StringVector items;
+CHTL::StringVector FileSystem::listDirectory(const CHTL::String& path) const {
+    CHTL::StringVector items;
     try {
         for (const auto& entry : std::filesystem::directory_iterator(path)) {
             items.push_back(entry.path().filename().string());
@@ -151,14 +151,14 @@ StringVector FileSystem::listDirectory(const String& path) const {
     return items;
 }
 
-StringVector FileSystem::listFiles(const String& path, const String& pattern) const {
-    StringVector files;
+CHTL::StringVector FileSystem::listFiles(const CHTL::String& path, const CHTL::String& pattern) const {
+    CHTL::StringVector files;
     try {
         for (const auto& entry : std::filesystem::directory_iterator(path)) {
             if (entry.is_regular_file()) {
-                String filename = entry.path().filename().string();
+                CHTL::String filename = entry.path().filename().string();
                 // 简单的通配符匹配
-                if (pattern == "*" || filename.find(pattern) != String::npos) {
+                if (pattern == "*" || filename.find(pattern) != CHTL::String::npos) {
                     files.push_back(filename);
                 }
             }
@@ -169,7 +169,7 @@ StringVector FileSystem::listFiles(const String& path, const String& pattern) co
     return files;
 }
 
-bool FileSystem::copyFile(const String& source, const String& destination) const {
+bool FileSystem::copyFile(const CHTL::String& source, const CHTL::String& destination) const {
     try {
         return std::filesystem::copy_file(source, destination, 
                                         std::filesystem::copy_options::overwrite_existing);
@@ -178,7 +178,7 @@ bool FileSystem::copyFile(const String& source, const String& destination) const
     }
 }
 
-bool FileSystem::moveFile(const String& source, const String& destination) const {
+bool FileSystem::moveFile(const CHTL::String& source, const CHTL::String& destination) const {
     try {
         std::filesystem::rename(source, destination);
         return true;
@@ -187,7 +187,7 @@ bool FileSystem::moveFile(const String& source, const String& destination) const
     }
 }
 
-bool FileSystem::removeFile(const String& path) const {
+bool FileSystem::removeFile(const CHTL::String& path) const {
     try {
         return std::filesystem::remove(path);
     } catch (...) {
@@ -195,17 +195,17 @@ bool FileSystem::removeFile(const String& path) const {
     }
 }
 
-bool FileSystem::createFile(const String& path) const {
+bool FileSystem::createFile(const CHTL::String& path) const {
     std::ofstream file(path);
     return file.good();
 }
 
-String FileSystem::createTempFile(const String& prefix) const {
+CHTL::String FileSystem::createTempFile(const CHTL::String& prefix) const {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1000, 9999);
     
-    String tempPath;
+    CHTL::String tempPath;
     
 #ifdef _WIN32
     char* tempDir = nullptr;
@@ -223,12 +223,12 @@ String FileSystem::createTempFile(const String& prefix) const {
     return tempPath;
 }
 
-String FileSystem::createTempDirectory(const String& prefix) const {
+CHTL::String FileSystem::createTempDirectory(const CHTL::String& prefix) const {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1000, 9999);
     
-    String tempPath;
+    CHTL::String tempPath;
     
 #ifdef _WIN32
     char* tempDir = nullptr;
@@ -251,7 +251,7 @@ String FileSystem::createTempDirectory(const String& prefix) const {
 }
 
 // 静态工具方法
-String FileSystem::joinPath(const String& path1, const String& path2) {
+CHTL::String FileSystem::joinPath(const CHTL::String& path1, const CHTL::String& path2) {
     if (path1.empty()) return path2;
     if (path2.empty()) return path1;
     
@@ -266,17 +266,17 @@ String FileSystem::joinPath(const String& path1, const String& path2) {
     return path1 + path2;
 }
 
-String FileSystem::joinPath(const StringVector& paths) {
+CHTL::String FileSystem::joinPath(const CHTL::StringVector& paths) {
     if (paths.empty()) return "";
     
-    String result = paths[0];
+    CHTL::String result = paths[0];
     for (size_t i = 1; i < paths.size(); ++i) {
         result = joinPath(result, paths[i]);
     }
     return result;
 }
 
-String FileSystem::normalizePath(const String& path) {
+CHTL::String FileSystem::normalizePath(const CHTL::String& path) {
     try {
         return std::filesystem::path(path).lexically_normal().string();
     } catch (...) {
@@ -312,83 +312,83 @@ bool CrossPlatformFileSystem::isUnix() const {
     return !isWindows();
 }
 
-bool CrossPlatformFileSystem::exists(const String& path) const {
+bool CrossPlatformFileSystem::exists(const CHTL::String& path) const {
     return FileSystem::exists(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::isFile(const String& path) const {
+bool CrossPlatformFileSystem::isFile(const CHTL::String& path) const {
     return FileSystem::isFile(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::isDirectory(const String& path) const {
+bool CrossPlatformFileSystem::isDirectory(const CHTL::String& path) const {
     return FileSystem::isDirectory(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::isReadable(const String& path) const {
+bool CrossPlatformFileSystem::isReadable(const CHTL::String& path) const {
     return FileSystem::isReadable(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::isWritable(const String& path) const {
+bool CrossPlatformFileSystem::isWritable(const CHTL::String& path) const {
     return FileSystem::isWritable(getPlatformPath(path));
 }
 
-size_t CrossPlatformFileSystem::getFileSize(const String& path) const {
+size_t CrossPlatformFileSystem::getFileSize(const CHTL::String& path) const {
     return FileSystem::getFileSize(getPlatformPath(path));
 }
 
-std::time_t CrossPlatformFileSystem::getLastModified(const String& path) const {
+std::time_t CrossPlatformFileSystem::getLastModified(const CHTL::String& path) const {
     return FileSystem::getLastModified(getPlatformPath(path));
 }
 
-String CrossPlatformFileSystem::getAbsolutePath(const String& path) const {
+CHTL::String CrossPlatformFileSystem::getAbsolutePath(const CHTL::String& path) const {
     return FileSystem::getAbsolutePath(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::createDirectory(const String& path) const {
+bool CrossPlatformFileSystem::createDirectory(const CHTL::String& path) const {
     return FileSystem::createDirectory(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::createDirectories(const String& path) const {
+bool CrossPlatformFileSystem::createDirectories(const CHTL::String& path) const {
     return FileSystem::createDirectories(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::removeDirectory(const String& path) const {
+bool CrossPlatformFileSystem::removeDirectory(const CHTL::String& path) const {
     return FileSystem::removeDirectory(getPlatformPath(path));
 }
 
-StringVector CrossPlatformFileSystem::listDirectory(const String& path) const {
+CHTL::StringVector CrossPlatformFileSystem::listDirectory(const CHTL::String& path) const {
     return FileSystem::listDirectory(getPlatformPath(path));
 }
 
-StringVector CrossPlatformFileSystem::listFiles(const String& path, const String& pattern) const {
+CHTL::StringVector CrossPlatformFileSystem::listFiles(const CHTL::String& path, const CHTL::String& pattern) const {
     return FileSystem::listFiles(getPlatformPath(path), pattern);
 }
 
-bool CrossPlatformFileSystem::copyFile(const String& source, const String& destination) const {
+bool CrossPlatformFileSystem::copyFile(const CHTL::String& source, const CHTL::String& destination) const {
     return FileSystem::copyFile(getPlatformPath(source), getPlatformPath(destination));
 }
 
-bool CrossPlatformFileSystem::moveFile(const String& source, const String& destination) const {
+bool CrossPlatformFileSystem::moveFile(const CHTL::String& source, const CHTL::String& destination) const {
     return FileSystem::moveFile(getPlatformPath(source), getPlatformPath(destination));
 }
 
-bool CrossPlatformFileSystem::removeFile(const String& path) const {
+bool CrossPlatformFileSystem::removeFile(const CHTL::String& path) const {
     return FileSystem::removeFile(getPlatformPath(path));
 }
 
-bool CrossPlatformFileSystem::createFile(const String& path) const {
+bool CrossPlatformFileSystem::createFile(const CHTL::String& path) const {
     return FileSystem::createFile(getPlatformPath(path));
 }
 
-String CrossPlatformFileSystem::createTempFile(const String& prefix) const {
+CHTL::String CrossPlatformFileSystem::createTempFile(const CHTL::String& prefix) const {
     return FileSystem::createTempFile(prefix);
 }
 
-String CrossPlatformFileSystem::createTempDirectory(const String& prefix) const {
+CHTL::String CrossPlatformFileSystem::createTempDirectory(const CHTL::String& prefix) const {
     return FileSystem::createTempDirectory(prefix);
 }
 
-String CrossPlatformFileSystem::getPlatformPath(const String& path) const {
+CHTL::String CrossPlatformFileSystem::getPlatformPath(const CHTL::String& path) const {
 #ifdef _WIN32
     return winPath(path);
 #else
@@ -397,8 +397,8 @@ String CrossPlatformFileSystem::getPlatformPath(const String& path) const {
 }
 
 #ifdef _WIN32
-String CrossPlatformFileSystem::winPath(const String& path) const {
-    String result = path;
+CHTL::String CrossPlatformFileSystem::winPath(const CHTL::String& path) const {
+    CHTL::String result = path;
     std::replace(result.begin(), result.end(), '/', '\\');
     return result;
 }

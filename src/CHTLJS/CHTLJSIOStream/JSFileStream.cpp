@@ -13,7 +13,7 @@ JSFileStream::JSFileStream()
     cache_.lastModified = 0;
 }
 
-JSFileStream::JSFileStream(const String& filePath) : JSFileStream() {
+JSFileStream::JSFileStream(const CHTL::String& filePath) : JSFileStream() {
     currentFilePath_ = filePath;
 }
 
@@ -23,7 +23,7 @@ JSFileStream::~JSFileStream() {
     }
 }
 
-bool JSFileStream::openCHTLJSFile(const String& filePath) {
+bool JSFileStream::openCHTLJSFile(const CHTL::String& filePath) {
     currentFilePath_ = filePath;
     fileStream_ = std::make_unique<std::fstream>(filePath, std::ios::in | std::ios::binary);
     
@@ -34,15 +34,15 @@ bool JSFileStream::openCHTLJSFile(const String& filePath) {
     return false;
 }
 
-bool JSFileStream::openJSFile(const String& filePath) {
+bool JSFileStream::openJSFile(const CHTL::String& filePath) {
     return openCHTLJSFile(filePath); // 使用相同的打开逻辑
 }
 
-bool JSFileStream::openCJJSFile(const String& filePath) {
+bool JSFileStream::openCJJSFile(const CHTL::String& filePath) {
     return openCHTLJSFile(filePath); // 使用相同的打开逻辑
 }
 
-String JSFileStream::readCHTLJSContent() {
+CHTL::String JSFileStream::readCHTLJSContent() {
     if (!fileStream_ || !fileStream_->is_open()) {
         return "";
     }
@@ -51,7 +51,7 @@ String JSFileStream::readCHTLJSContent() {
     size_t fileSize = fileStream_->tellg();
     fileStream_->seekg(0, std::ios::beg);
     
-    String content;
+    CHTL::String content;
     content.resize(fileSize);
     
     fileStream_->read(&content[0], fileSize);
@@ -61,16 +61,16 @@ String JSFileStream::readCHTLJSContent() {
     return content;
 }
 
-StringVector JSFileStream::extractCHTLJSBlocks() {
-    String content = readCHTLJSContent();
-    StringVector blocks;
+CHTL::StringVector JSFileStream::extractCHTLJSBlocks() {
+    CHTL::String content = readCHTLJSContent();
+    CHTL::StringVector blocks;
     
     // 查找 {{...}} 块
     size_t pos = 0;
-    while ((pos = content.find("{{", pos)) != String::npos) {
+    while ((pos = content.find("{{", pos)) != CHTL::String::npos) {
         size_t endPos = content.find("}}", pos + 2);
-        if (endPos != String::npos) {
-            String block = content.substr(pos, endPos - pos + 2);
+        if (endPos != CHTL::String::npos) {
+            CHTL::String block = content.substr(pos, endPos - pos + 2);
             blocks.push_back(block);
             pos = endPos + 2;
         } else {
@@ -81,33 +81,33 @@ StringVector JSFileStream::extractCHTLJSBlocks() {
     return blocks;
 }
 
-StringVector JSFileStream::extractJSBlocks() {
-    String content = readCHTLJSContent();
+CHTL::StringVector JSFileStream::extractJSBlocks() {
+    CHTL::String content = readCHTLJSContent();
     return CHTLJSFileProcessor::splitIntoBlocks(content);
 }
 
-StringVector JSFileStream::extractModuleImports() {
-    String content = readCHTLJSContent();
-    StringVector imports;
+CHTL::StringVector JSFileStream::extractModuleImports() {
+    CHTL::String content = readCHTLJSContent();
+    CHTL::StringVector imports;
     
     // 查找 module { } 块中的导入
     size_t pos = 0;
-    while ((pos = content.find("module", pos)) != String::npos) {
+    while ((pos = content.find("module", pos)) != CHTL::String::npos) {
         size_t openBrace = content.find("{", pos);
-        if (openBrace != String::npos) {
+        if (openBrace != CHTL::String::npos) {
             size_t closeBrace = content.find("}", openBrace);
-            if (closeBrace != String::npos) {
-                String moduleBlock = content.substr(openBrace + 1, closeBrace - openBrace - 1);
+            if (closeBrace != CHTL::String::npos) {
+                CHTL::String moduleBlock = content.substr(openBrace + 1, closeBrace - openBrace - 1);
                 
                 // 提取 load: 语句
                 size_t loadPos = 0;
-                while ((loadPos = moduleBlock.find("load:", loadPos)) != String::npos) {
+                while ((loadPos = moduleBlock.find("load:", loadPos)) != CHTL::String::npos) {
                     size_t lineEnd = moduleBlock.find_first_of(";\n", loadPos);
-                    if (lineEnd != String::npos) {
-                        String loadStatement = moduleBlock.substr(loadPos, lineEnd - loadPos);
+                    if (lineEnd != CHTL::String::npos) {
+                        CHTL::String loadStatement = moduleBlock.substr(loadPos, lineEnd - loadPos);
                         imports.push_back(loadStatement);
                     }
-                    loadPos = lineEnd != String::npos ? lineEnd + 1 : moduleBlock.length();
+                    loadPos = lineEnd != CHTL::String::npos ? lineEnd + 1 : moduleBlock.length();
                 }
                 
                 pos = closeBrace + 1;
@@ -122,15 +122,15 @@ StringVector JSFileStream::extractModuleImports() {
     return imports;
 }
 
-String JSFileStream::extractModuleDefinition() {
-    String content = readCHTLJSContent();
+CHTL::String JSFileStream::extractModuleDefinition() {
+    CHTL::String content = readCHTLJSContent();
     
     size_t modulePos = content.find("module");
-    if (modulePos != String::npos) {
+    if (modulePos != CHTL::String::npos) {
         size_t openBrace = content.find("{", modulePos);
-        if (openBrace != String::npos) {
+        if (openBrace != CHTL::String::npos) {
             size_t closeBrace = content.find("}", openBrace);
-            if (closeBrace != String::npos) {
+            if (closeBrace != CHTL::String::npos) {
                 return content.substr(modulePos, closeBrace - modulePos + 1);
             }
         }
@@ -139,7 +139,7 @@ String JSFileStream::extractModuleDefinition() {
     return "";
 }
 
-bool JSFileStream::writeModuleOutput(const String& content) {
+bool JSFileStream::writeModuleOutput(const CHTL::String& content) {
     if (!fileStream_) {
         return false;
     }
@@ -157,19 +157,19 @@ bool JSFileStream::writeModuleOutput(const String& content) {
     return false;
 }
 
-StringVector JSFileStream::extractCJMODSyntax() {
-    String content = readCHTLJSContent();
+CHTL::StringVector JSFileStream::extractCJMODSyntax() {
+    CHTL::String content = readCHTLJSContent();
     return CHTLJSFileProcessor::findCJMODKeywords(content);
 }
 
-bool JSFileStream::processCJMODFile(const String& inputPath, const String& outputPath) {
+bool JSFileStream::processCJMODFile(const CHTL::String& inputPath, const CHTL::String& outputPath) {
     JSFileStream inputStream(inputPath);
     if (!inputStream.openCJJSFile(inputPath)) {
         return false;
     }
     
-    String content = inputStream.readCHTLJSContent();
-    String processedContent = CHTLJSFileProcessor::processCJMODSyntax(content);
+    CHTL::String content = inputStream.readCHTLJSContent();
+    CHTL::String processedContent = CHTLJSFileProcessor::processCJMODSyntax(content);
     
     JSFileStream outputStream(outputPath);
     fileStream_ = std::make_unique<std::fstream>(outputPath, std::ios::out | std::ios::trunc);
@@ -188,16 +188,16 @@ bool JSFileStream::hasFileChanged() const {
         return false;
     }
     
-    String currentHash = getFileHash();
+    CHTL::String currentHash = getFileHash();
     return currentHash != cache_.lastHash;
 }
 
-String JSFileStream::getFileHash() const {
+CHTL::String JSFileStream::getFileHash() const {
     if (!fileStream_ || !fileStream_->is_open()) {
         return "";
     }
     
-    String content = const_cast<JSFileStream*>(this)->readCHTLJSContent();
+    CHTL::String content = const_cast<JSFileStream*>(this)->readCHTLJSContent();
     return calculateMD5Hash(content);
 }
 
@@ -207,16 +207,16 @@ void JSFileStream::updateFileCache() {
     cache_.lastModified = std::time(nullptr);
 }
 
-bool JSFileStream::validateCHTLJSSyntax(const String& content) {
+bool JSFileStream::validateCHTLJSSyntax(const CHTL::String& content) {
     // 检查基本的语法结构
     if (!validateBraceMatching(content)) {
         return false;
     }
     
     // 检查CHTL JS特定语法
-    StringVector blocks = extractCHTLJSBlocks();
+    CHTL::StringVector blocks = extractCHTLJSBlocks();
     for (const auto& block : blocks) {
-        if (block.find("{{") == String::npos || block.find("}}") == String::npos) {
+        if (block.find("{{") == CHTL::String::npos || block.find("}}") == CHTL::String::npos) {
             return false;
         }
     }
@@ -224,8 +224,8 @@ bool JSFileStream::validateCHTLJSSyntax(const String& content) {
     return true;
 }
 
-StringVector JSFileStream::findSyntaxErrors(const String& content) {
-    StringVector errors;
+CHTL::StringVector JSFileStream::findSyntaxErrors(const CHTL::String& content) {
+    CHTL::StringVector errors;
     
     if (!validateBraceMatching(content)) {
         errors.push_back("括号不匹配");
@@ -235,13 +235,13 @@ StringVector JSFileStream::findSyntaxErrors(const String& content) {
     size_t openCount = 0, closeCount = 0;
     size_t pos = 0;
     
-    while ((pos = content.find("{{", pos)) != String::npos) {
+    while ((pos = content.find("{{", pos)) != CHTL::String::npos) {
         openCount++;
         pos += 2;
     }
     
     pos = 0;
-    while ((pos = content.find("}}", pos)) != String::npos) {
+    while ((pos = content.find("}}", pos)) != CHTL::String::npos) {
         closeCount++;
         pos += 2;
     }
@@ -261,9 +261,9 @@ bool JSFileStream::isCHTLJSOptimizationEnabled() const {
     return optimizationEnabled_;
 }
 
-String JSFileStream::calculateMD5Hash(const String& content) {
+CHTL::String JSFileStream::calculateMD5Hash(const CHTL::String& content) const {
     // 简化的哈希计算（在实际实现中应该使用真正的MD5）
-    std::hash<String> hasher;
+    std::hash<CHTL::String> hasher;
     size_t hashValue = hasher(content);
     
     std::ostringstream oss;
@@ -271,7 +271,7 @@ String JSFileStream::calculateMD5Hash(const String& content) {
     return oss.str();
 }
 
-bool JSFileStream::validateBraceMatching(const String& content) {
+bool JSFileStream::validateBraceMatching(const CHTL::String& content) {
     int braceCount = 0;
     int parenCount = 0;
     int bracketCount = 0;
@@ -295,18 +295,26 @@ bool JSFileStream::validateBraceMatching(const String& content) {
 }
 
 // CHTLJSFileProcessor实现
-CHTLJSFileProcessor::FileType CHTLJSFileProcessor::detectFileType(const String& filePath) {
-    if (filePath.ends_with(".chtljs") || filePath.ends_with(".chtl")) {
+CHTLJSFileProcessor::FileType CHTLJSFileProcessor::detectFileType(const CHTL::String& filePath) {
+    // Helper lambda for ends_with functionality (C++17 compatible)
+    auto ends_with = [](const CHTL::String& str, const CHTL::String& suffix) {
+        if (str.length() >= suffix.length()) {
+            return str.compare(str.length() - suffix.length(), suffix.length(), suffix) == 0;
+        }
+        return false;
+    };
+    
+    if (ends_with(filePath, ".chtljs") || ends_with(filePath, ".chtl")) {
         return FileType::CHTL_JS;
-    } else if (filePath.ends_with(".cjjs")) {
+    } else if (ends_with(filePath, ".cjjs")) {
         return FileType::CJJS;
-    } else if (filePath.ends_with(".js")) {
+    } else if (ends_with(filePath, ".js")) {
         return FileType::PURE_JS;
     }
     return FileType::UNKNOWN;
 }
 
-CHTLJSFileProcessor::FileType CHTLJSFileProcessor::detectContentType(const String& content) {
+CHTLJSFileProcessor::FileType CHTLJSFileProcessor::detectContentType(const CHTL::String& content) {
     if (containsCHTLJSMarkers(content)) {
         return FileType::CHTL_JS;
     } else if (containsModuleSyntax(content)) {
@@ -316,8 +324,8 @@ CHTLJSFileProcessor::FileType CHTLJSFileProcessor::detectContentType(const Strin
     }
 }
 
-String CHTLJSFileProcessor::preprocessCHTLJS(const String& content) {
-    String processed = content;
+            CHTL::String  CHTLJSFileProcessor::preprocessCHTLJS(const CHTL::String& content) {
+    CHTL::String processed = content;
     
     // 规范化行结束符
     processed = normalizeLineEndings(processed);
@@ -327,14 +335,14 @@ String CHTLJSFileProcessor::preprocessCHTLJS(const String& content) {
     return processed;
 }
 
-String CHTLJSFileProcessor::extractCHTLJSScript(const String& content) {
-    String result;
+            CHTL::String  CHTLJSFileProcessor::extractCHTLJSScript(const CHTL::String& content) {
+    CHTL::String result;
     size_t pos = 0;
     
-    while ((pos = content.find("{{", pos)) != String::npos) {
+    while ((pos = content.find("{{", pos)) != CHTL::String::npos) {
         size_t endPos = content.find("}}", pos + 2);
-        if (endPos != String::npos) {
-            String block = content.substr(pos + 2, endPos - pos - 2);
+        if (endPos != CHTL::String::npos) {
+            CHTL::String block = content.substr(pos + 2, endPos - pos - 2);
             result += block + "\n";
             pos = endPos + 2;
         } else {
@@ -345,15 +353,15 @@ String CHTLJSFileProcessor::extractCHTLJSScript(const String& content) {
     return result;
 }
 
-StringVector CHTLJSFileProcessor::findCJMODKeywords(const String& content) {
-    StringVector keywords;
+CHTL::StringVector CHTLJSFileProcessor::findCJMODKeywords(const CHTL::String& content) {
+    CHTL::StringVector keywords;
     
     // 查找常见的CJMOD关键字
-    StringVector searchKeywords = {"**", "await>>", "parallel>>", "timeout>>", "retry>>"};
+    CHTL::StringVector searchKeywords = {"**", "await>>", "parallel>>", "timeout>>", "retry>>"};
     
     for (const auto& keyword : searchKeywords) {
         size_t pos = 0;
-        while ((pos = content.find(keyword, pos)) != String::npos) {
+        while ((pos = content.find(keyword, pos)) != CHTL::String::npos) {
             keywords.push_back(keyword);
             pos += keyword.length();
         }
@@ -362,16 +370,16 @@ StringVector CHTLJSFileProcessor::findCJMODKeywords(const String& content) {
     return keywords;
 }
 
-bool CHTLJSFileProcessor::containsCHTLJSMarkers(const String& content) {
-    return content.find("{{") != String::npos && content.find("}}") != String::npos;
+bool CHTLJSFileProcessor::containsCHTLJSMarkers(const CHTL::String& content) {
+    return content.find("{{") != CHTL::String::npos && content.find("}}") != CHTL::String::npos;
 }
 
-bool CHTLJSFileProcessor::containsModuleSyntax(const String& content) {
-    return content.find("module") != String::npos && content.find("load:") != String::npos;
+bool CHTLJSFileProcessor::containsModuleSyntax(const CHTL::String& content) {
+    return content.find("module") != CHTL::String::npos && content.find("load:") != CHTL::String::npos;
 }
 
-String CHTLJSFileProcessor::normalizeLineEndings(const String& content) {
-    String result;
+            CHTL::String  CHTLJSFileProcessor::normalizeLineEndings(const CHTL::String& content) {
+    CHTL::String result;
     result.reserve(content.length());
     
     for (size_t i = 0; i < content.length(); ++i) {
@@ -390,12 +398,12 @@ String CHTLJSFileProcessor::normalizeLineEndings(const String& content) {
     return result;
 }
 
-StringVector CHTLJSFileProcessor::splitIntoBlocks(const String& content) {
-    StringVector blocks;
+CHTL::StringVector CHTLJSFileProcessor::splitIntoBlocks(const CHTL::String& content) {
+    CHTL::StringVector blocks;
     
     std::istringstream iss(content);
-    String line;
-    String currentBlock;
+    CHTL::String line;
+    CHTL::String currentBlock;
     
     while (std::getline(iss, line)) {
         if (line.empty()) {

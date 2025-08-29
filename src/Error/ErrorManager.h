@@ -11,7 +11,7 @@ namespace CHTL::Error {
 
 // 错误级别枚举
 enum class ErrorLevel {
-    DEBUG,
+    DEBUG_LEVEL,  // 避免与系统DEBUG宏冲突
     INFO,
     WARNING,
     ERROR,

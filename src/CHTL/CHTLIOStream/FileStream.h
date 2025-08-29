@@ -12,23 +12,23 @@ namespace CHTL::IO {
 class FileStream : public Util::FileSystem {
 public:
     FileStream();
-    explicit FileStream(const String& filePath);
+    explicit FileStream(const CHTL::String& filePath);
     virtual ~FileStream();
 
     // 高性能文件读取
-    bool openForRead(const String& filePath);
-    bool openForWrite(const String& filePath);
-    bool openForAppend(const String& filePath);
+    bool openForRead(const CHTL::String& filePath);
+    bool openForWrite(const CHTL::String& filePath);
+    bool openForAppend(const CHTL::String& filePath);
     
     // 缓冲区读写
-    String readAll();
-    StringVector readLines();
-    bool writeContent(const String& content);
-    bool appendContent(const String& content);
+    CHTL::String readAll();
+    CHTL::StringVector readLines();
+    bool writeContent(const CHTL::String& content);
+    bool appendContent(const CHTL::String& content);
     
     // 流式读写（用于大文件）
     bool readChunk(String& chunk, size_t chunkSize = 8192);
-    bool writeChunk(const String& chunk);
+    bool writeChunk(const CHTL::String& chunk);
     
     // 内存映射文件支持
     bool mapFile();
@@ -51,7 +51,7 @@ public:
     
 private:
     std::unique_ptr<std::fstream> fileStream_;
-    String currentFilePath_;
+    CHTL::String currentFilePath_;
     bool isAsyncMode_;
     size_t bytesRead_;
     size_t bytesWritten_;
@@ -74,15 +74,15 @@ private:
 // CHTL专用的文件处理工具
 class CHTLFileProcessor {
 public:
-    static bool processCHTLFile(const String& inputPath, const String& outputPath);
-    static StringVector extractImports(const String& chtlContent);
-    static String preprocessCHTLContent(const String& content);
-    static bool validateCHTLSyntax(const String& content);
+    static bool processCHTLFile(const CHTL::String& inputPath, const CHTL::String& outputPath);
+    static StringVector extractImports(const CHTL::String& chtlContent);
+    static String preprocessCHTLContent(const CHTL::String& content);
+    static bool validateCHTLSyntax(const CHTL::String& content);
     
 private:
-    static String removeComments(const String& content);
-    static String normalizeWhitespace(const String& content);
-    static StringVector tokenizeForImports(const String& content);
+    static String removeComments(const CHTL::String& content);
+    static String normalizeWhitespace(const CHTL::String& content);
+    static StringVector tokenizeForImports(const CHTL::String& content);
 };
 
 } // namespace CHTL::IO

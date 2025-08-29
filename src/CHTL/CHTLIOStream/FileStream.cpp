@@ -17,7 +17,7 @@ FileStream::FileStream()
     writeBuffer_.reserve(8192);
 }
 
-FileStream::FileStream(const String& filePath) : FileStream() {
+FileStream::FileStream(const CHTL::String& filePath) : FileStream() {
     currentFilePath_ = filePath;
 }
 
@@ -25,7 +25,7 @@ FileStream::~FileStream() {
     close();
 }
 
-bool FileStream::openForRead(const String& filePath) {
+bool FileStream::openForRead(const CHTL::String& filePath) {
     close();
     currentFilePath_ = filePath;
     
@@ -39,7 +39,7 @@ bool FileStream::openForRead(const String& filePath) {
     return fileStream_ && fileStream_->is_open();
 }
 
-bool FileStream::openForWrite(const String& filePath) {
+bool FileStream::openForWrite(const CHTL::String& filePath) {
     close();
     currentFilePath_ = filePath;
     
@@ -53,7 +53,7 @@ bool FileStream::openForWrite(const String& filePath) {
     return fileStream_ && fileStream_->is_open();
 }
 
-bool FileStream::openForAppend(const String& filePath) {
+bool FileStream::openForAppend(const CHTL::String& filePath) {
     close();
     currentFilePath_ = filePath;
     
@@ -67,7 +67,7 @@ bool FileStream::openForAppend(const String& filePath) {
     return fileStream_ && fileStream_->is_open();
 }
 
-String FileStream::readAll() {
+CHTL::String FileStream::readAll() {
     if (!fileStream_ || !fileStream_->is_open()) {
         return "";
     }
@@ -93,7 +93,7 @@ String FileStream::readAll() {
     return content;
 }
 
-StringVector FileStream::readLines() {
+CHTL::StringVector FileStream::readLines() {
     StringVector lines;
     if (!fileStream_ || !fileStream_->is_open()) {
         return lines;
@@ -117,7 +117,7 @@ StringVector FileStream::readLines() {
     return lines;
 }
 
-bool FileStream::writeContent(const String& content) {
+bool FileStream::writeContent(const CHTL::String& content) {
     if (!fileStream_ || !fileStream_->is_open()) {
         return false;
     }
@@ -135,7 +135,7 @@ bool FileStream::writeContent(const String& content) {
     return fileStream_->good();
 }
 
-bool FileStream::appendContent(const String& content) {
+bool FileStream::appendContent(const CHTL::String& content) {
     if (!fileStream_ || !fileStream_->is_open()) {
         return false;
     }
@@ -170,7 +170,7 @@ bool FileStream::readChunk(String& chunk, size_t chunkSize) {
     return actualRead > 0;
 }
 
-bool FileStream::writeChunk(const String& chunk) {
+bool FileStream::writeChunk(const CHTL::String& chunk) {
     if (!fileStream_ || !fileStream_->is_open()) {
         return false;
     }
@@ -254,7 +254,7 @@ void FileStream::flushWriteBuffer() {
 }
 
 // CHTLFileProcessor实现
-bool CHTLFileProcessor::processCHTLFile(const String& inputPath, const String& outputPath) {
+bool CHTLFileProcessor::processCHTLFile(const CHTL::String& inputPath, const CHTL::String& outputPath) {
     FileStream inputStream(inputPath);
     if (!inputStream.openForRead(inputPath)) {
         return false;
@@ -277,7 +277,7 @@ bool CHTLFileProcessor::processCHTLFile(const String& inputPath, const String& o
     return success;
 }
 
-StringVector CHTLFileProcessor::extractImports(const String& chtlContent) {
+StringVector CHTLFileProcessor::extractImports(const CHTL::String& chtlContent) {
     StringVector imports;
     
     // 简单的import提取逻辑
@@ -294,7 +294,7 @@ StringVector CHTLFileProcessor::extractImports(const String& chtlContent) {
     return imports;
 }
 
-String CHTLFileProcessor::preprocessCHTLContent(const String& content) {
+String CHTLFileProcessor::preprocessCHTLContent(const CHTL::String& content) {
     String processed = content;
     
     // 移除注释
@@ -306,7 +306,7 @@ String CHTLFileProcessor::preprocessCHTLContent(const String& content) {
     return processed;
 }
 
-bool CHTLFileProcessor::validateCHTLSyntax(const String& content) {
+bool CHTLFileProcessor::validateCHTLSyntax(const CHTL::String& content) {
     // 基本的语法验证
     // 检查括号匹配
     int braceCount = 0;
@@ -328,7 +328,7 @@ bool CHTLFileProcessor::validateCHTLSyntax(const String& content) {
     return braceCount == 0 && parenCount == 0;
 }
 
-String CHTLFileProcessor::removeComments(const String& content) {
+String CHTLFileProcessor::removeComments(const CHTL::String& content) {
     String result;
     bool inLineComment = false;
     bool inBlockComment = false;
@@ -363,7 +363,7 @@ String CHTLFileProcessor::removeComments(const String& content) {
     return result;
 }
 
-String CHTLFileProcessor::normalizeWhitespace(const String& content) {
+String CHTLFileProcessor::normalizeWhitespace(const CHTL::String& content) {
     String result;
     bool previousWasSpace = false;
     

@@ -24,7 +24,7 @@ String ErrorInfo::toString() const {
     
     // 错误级别
     switch (level) {
-        case ErrorLevel::DEBUG: oss << "[DEBUG] "; break;
+        case ErrorLevel::DEBUG_LEVEL: oss << "[DEBUG] "; break;
         case ErrorLevel::INFO: oss << "[INFO] "; break;
         case ErrorLevel::WARNING: oss << "[WARNING] "; break;
         case ErrorLevel::ERROR: oss << "[ERROR] "; break;
@@ -69,7 +69,7 @@ String ErrorInfo::toJSON() const {
     oss << "  \"level\": \"";
     
     switch (level) {
-        case ErrorLevel::DEBUG: oss << "DEBUG"; break;
+        case ErrorLevel::DEBUG_LEVEL: oss << "DEBUG"; break;
         case ErrorLevel::INFO: oss << "INFO"; break;
         case ErrorLevel::WARNING: oss << "WARNING"; break;
         case ErrorLevel::ERROR: oss << "ERROR"; break;
@@ -222,7 +222,7 @@ void ErrorManager::reportError(ErrorCode code, ErrorLevel level, const String& m
 }
 
 void ErrorManager::reportDebug(const String& message, const String& context) {
-    reportError(ErrorCode::UNKNOWN_ERROR, ErrorLevel::DEBUG, message, "", 0, context);
+    reportError(ErrorCode::UNKNOWN_ERROR, ErrorLevel::DEBUG_LEVEL, message, "", 0, context);
 }
 
 void ErrorManager::reportInfo(const String& message, const String& context) {
