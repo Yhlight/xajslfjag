@@ -235,7 +235,7 @@ bool Lexer::match(const std::string& expected) {
     }
     
     // 匹配成功，更新位置
-    for (char c : expected) {
+    for (size_t i = 0; i < expected.length(); i++) {
         advance();
     }
     return true;
@@ -248,6 +248,10 @@ char Lexer::peek(size_t offset) const {
 
 bool Lexer::isAtEnd(size_t offset) const {
     return current_ + offset >= source_.length();
+}
+
+bool Lexer::isAtEnd() const {
+    return current_ >= source_.length() && tokenBuffer_.empty();
 }
 
 void Lexer::skipWhitespace() {

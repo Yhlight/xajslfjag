@@ -6,6 +6,7 @@
 #include <optional>
 #include <functional>
 #include <fstream>
+#include <ctime>
 #include <memory>
 
 namespace CHTL {
@@ -24,7 +25,7 @@ struct FileInfo {
     std::string name;
     FileType type;
     size_t size;
-    std::time_t modificationTime;
+    time_t modificationTime;
     bool isReadable;
     bool isWritable;
     bool isExecutable;
@@ -93,7 +94,7 @@ public:
     static size_t getFileSize(const std::string& path);
     
     // 获取修改时间
-    static std::time_t getModificationTime(const std::string& path);
+    static time_t getModificationTime(const std::string& path);
     
     // 创建目录
     static bool createDirectory(const std::string& path);

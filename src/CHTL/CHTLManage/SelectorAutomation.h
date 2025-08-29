@@ -174,7 +174,7 @@ private:
         std::optional<int> index;
     };
     
-    ParsedSelector parseSelector(const std::string& selector);
+    ParsedSelector parseSelector(const std::string& selector) const;
     
     // 生成querySelector代码
     std::string generateQuerySelector(const ParsedSelector& parsed);

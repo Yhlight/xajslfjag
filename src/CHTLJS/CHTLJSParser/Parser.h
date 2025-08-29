@@ -110,7 +110,8 @@ private:
     // 辅助方法
     std::string parseIdentifier();
     std::string parseString();
-    EnhancedSelectorNode::SelectorType determineSelectorType(const std::string& selector);
+    // TODO: 实现EnhancedSelectorNode后添加
+    // EnhancedSelectorNode::SelectorType determineSelectorType(const std::string& selector);
     
     // 状态管理
     void enterState(StateType state);

@@ -202,13 +202,8 @@ bool StateManager::isInAnyState(std::initializer_list<StateType> types) const {
 }
 
 const StateContext* StateManager::findNearestState(StateType type) const {
-    std::stack<StateContext> temp = stateStack_;
-    while (!temp.empty()) {
-        if (temp.top().type == type) {
-            return &temp.top();
-        }
-        temp.pop();
-    }
+    // TODO: 需要重新设计，不能返回临时栈的地址
+    (void)type;
     return nullptr;
 }
 

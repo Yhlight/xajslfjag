@@ -125,7 +125,7 @@ std::optional<FileInfo> FileSystem::getFileInfo(const std::string& path) {
     info.isWritable = (perms & fs::perms::owner_write) != fs::perms::none;
     info.isExecutable = (perms & fs::perms::owner_exec) != fs::perms::none;
     
-    return info;
+    return std::optional<FileInfo>{info};
 }
 
 size_t FileSystem::getFileSize(const std::string& path) {
@@ -437,7 +437,7 @@ bool FileStream::eof() const {
 }
 
 std::streampos FileStream::tell() {
-    return stream_ ? stream_->tellg() : -1;
+    return stream_ ? stream_->tellg() : static_cast<std::streampos>(-1);
 }
 
 void FileStream::seek(std::streampos pos) {
@@ -569,6 +569,7 @@ FileWatcher::~FileWatcher() {
 }
 
 bool FileWatcher::addPath(const std::string& path, bool recursive) {
+    (void)recursive; // TODO: 实现递归监视
     if (!FileSystem::exists(path)) {
         return false;
     }

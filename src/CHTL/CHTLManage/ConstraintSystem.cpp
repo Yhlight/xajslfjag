@@ -5,25 +5,54 @@
 
 namespace CHTL {
 
+// 辅助函数：将NodeType转换为字符串
+std::string nodeTypeToString(NodeType type) {
+    switch(type) {
+        case NodeType::PROGRAM: return "PROGRAM";
+        case NodeType::ELEMENT: return "ELEMENT";
+        case NodeType::TEXT: return "TEXT";
+        case NodeType::COMMENT: return "COMMENT";
+        case NodeType::TEMPLATE: return "TEMPLATE";
+        case NodeType::CUSTOM: return "CUSTOM";
+        case NodeType::STYLE_BLOCK: return "STYLE_BLOCK";
+        case NodeType::SCRIPT_BLOCK: return "SCRIPT_BLOCK";
+        case NodeType::ORIGIN: return "ORIGIN";
+        case NodeType::IMPORT: return "IMPORT";
+        case NodeType::CONFIGURATION: return "CONFIGURATION";
+        case NodeType::NAMESPACE: return "NAMESPACE";
+        case NodeType::DELETE_OP: return "DELETE_OP";
+        case NodeType::INSERT_OP: return "INSERT_OP";
+        case NodeType::INHERIT_OP: return "INHERIT_OP";
+        case NodeType::EXCEPT_OP: return "EXCEPT_OP";
+        case NodeType::USE_OP: return "USE_OP";
+        case NodeType::ATTRIBUTE: return "ATTRIBUTE";
+        case NodeType::PROPERTY: return "PROPERTY";
+        case NodeType::SELECTOR: return "SELECTOR";
+        default: return "UNKNOWN";
+    }
+}
+
 // SyntaxBoundaryConstraint Implementation
 
 ConstraintResult SyntaxBoundaryConstraint::check(const void* context) const {
     if (!enabled_) {
-        return {true, level_, ""};
+        return {true, level_, "", 0, 0, ""};
     }
     
     // Cast context to BaseNode
-    const BaseNode* node = static_cast<const BaseNode*>(context);
+    const ASTNode* node = static_cast<const ASTNode*>(context);
     if (!node) {
-        return {false, level_, "Invalid context for syntax boundary check"};
+        return {false, level_, "Invalid context for syntax boundary check", 0, 0, ""};
     }
     
     ConstraintResult result;
     result.level = level_;
     
     // Check parent constraints
+    // TODO: 实现getParent()方法后启用
+    /*
     if (!allowedParents_.empty()) {
-        const BaseNode* parent = node->getParent();
+        const ASTNode* parent = node->getParent();
         if (parent) {
             std::string parentType = nodeTypeToString(parent->getType());
             if (allowedParents_.find(parentType) == allowedParents_.end()) {
@@ -34,6 +63,7 @@ ConstraintResult SyntaxBoundaryConstraint::check(const void* context) const {
             }
         }
     }
+    */
     
     // Check children constraints
     if (!allowedChildren_.empty()) {
@@ -57,12 +87,12 @@ ConstraintResult SyntaxBoundaryConstraint::check(const void* context) const {
 
 ConstraintResult ExceptConstraint::check(const void* context) const {
     if (!enabled_) {
-        return {true, level_, ""};
+        return {true, level_, "", 0, 0, ""};
     }
     
-    const BaseNode* node = static_cast<const BaseNode*>(context);
+    const ASTNode* node = static_cast<const ASTNode*>(context);
     if (!node) {
-        return {false, level_, "Invalid context for except constraint check"};
+        return {false, level_, "Invalid context for except constraint check", 0, 0, ""};
     }
     
     ConstraintResult result;
@@ -77,6 +107,8 @@ ConstraintResult ExceptConstraint::check(const void* context) const {
     }
     
     // Check excluded attributes
+    // TODO: 实现hasAttribute()方法后启用
+    /*
     for (const auto& attr : excludedAttributes_) {
         if (node->hasAttribute(attr)) {
             result.satisfied = false;
@@ -84,14 +116,18 @@ ConstraintResult ExceptConstraint::check(const void* context) const {
             return result;
         }
     }
+    */
     
     // Check excluded values
+    // TODO: 实现getValue()方法后启用
+    /*
     std::string nodeValue = node->getValue();
     if (excludedValues_.find(nodeValue) != excludedValues_.end()) {
         result.satisfied = false;
         result.message = "Value '" + nodeValue + "' is excluded by except constraint";
         return result;
     }
+    */
     
     result.satisfied = true;
     return result;
@@ -400,7 +436,7 @@ std::vector<ConstraintResult> ConstraintChecker::checkAST(const void* ast) {
     std::vector<ConstraintResult> allResults;
     
     // Cast to BaseNode
-    const BaseNode* rootNode = static_cast<const BaseNode*>(ast);
+    const ASTNode* rootNode = static_cast<const ASTNode*>(ast);
     if (!rootNode) {
         return allResults;
     }
@@ -410,8 +446,8 @@ std::vector<ConstraintResult> ConstraintChecker::checkAST(const void* ast) {
     allResults.insert(allResults.end(), rootResults.begin(), rootResults.end());
     
     // Recursively check all children
-    std::function<void(const BaseNode*)> checkChildren = [&](const BaseNode* node) {
-        for (const auto& child : node->getChildren()) {
+    std::function<void(const ASTNode*)> checkChildren = [&](const ASTNode* currentNode) {
+        for (const auto& child : currentNode->getChildren()) {
             auto childResults = checkNode(child.get());
             allResults.insert(allResults.end(), childResults.begin(), childResults.end());
             checkChildren(child.get());

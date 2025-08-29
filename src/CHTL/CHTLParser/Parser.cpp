@@ -594,6 +594,7 @@ std::shared_ptr<ASTNode> Parser::parseExport() {
 
 std::shared_ptr<ASTNode> Parser::parseTemplateContent(TemplateType type) {
     // 根据模板类型解析内容
+    (void)type; // TODO: 使用type参数
     return nullptr;
 }
 

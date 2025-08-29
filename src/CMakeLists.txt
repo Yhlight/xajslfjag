@@ -109,7 +109,7 @@ if(USE_ANTLR)
         
         # JavaScript ANTLR生成的文件
         JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp
-        JS/generated/Grammars/JavaScript/JavaScriptParserParser.cpp
+        JS/generated/Grammars/JavaScript/JavaScriptParser.cpp
         JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp
         JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp
     )

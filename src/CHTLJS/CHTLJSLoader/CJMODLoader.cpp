@@ -1,49 +1,29 @@
 #include "CJMODLoader.h"
-#include "../CJMODSystem/CJMODPackager.h"
 #include "../../Error/ErrorReport.h"
-#include <memory>
 
 namespace CHTLJS {
 
 CJMODLoader::CJMODLoader() {
-    packager_ = std::make_unique<CJMODPackager>();
+    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+        .withMessage("CJMODLoader initialized")
+        .report();
 }
 
 CJMODLoader::~CJMODLoader() = default;
 
 bool CJMODLoader::loadExtension(const std::string& path) {
-    try {
-        auto cjmod = packager_->loadFromDirectory(path);
-        if (cjmod) {
-            extensions_[cjmod->getName()] = std::move(cjmod);
-            
-            ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
-                .withMessage("CJMOD extension loaded successfully")
-                .withDetail("Extension: " + path)
-                .report();
-                
-            return true;
-        }
-    } catch (const std::exception& e) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::FILE_NOT_FOUND)
-            .withMessage("Failed to load CJMOD extension")
-            .withDetail(e.what())
-            .report();
-    }
-    
+    // TODO: 实现扩展加载
+    (void)path;
     return false;
 }
 
-bool CJMODLoader::hasExtension(const std::string& name) const {
-    return extensions_.find(name) != extensions_.end();
-}
-
-std::shared_ptr<CJMOD> CJMODLoader::getExtension(const std::string& name) {
+bool CJMODLoader::unloadExtension(const std::string& name) {
     auto it = extensions_.find(name);
     if (it != extensions_.end()) {
-        return it->second;
+        extensions_.erase(it);
+        return true;
     }
-    return nullptr;
+    return false;
 }
 
 std::vector<std::string> CJMODLoader::getLoadedExtensions() const {
@@ -54,17 +34,29 @@ std::vector<std::string> CJMODLoader::getLoadedExtensions() const {
     return names;
 }
 
-void CJMODLoader::unloadExtension(const std::string& name) {
-    extensions_.erase(name);
-    
-    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
-        .withMessage("CJMOD extension unloaded")
-        .withDetail("Extension: " + name)
-        .report();
+bool CJMODLoader::isExtensionLoaded(const std::string& name) const {
+    return extensions_.find(name) != extensions_.end();
 }
 
-void CJMODLoader::unloadAll() {
-    extensions_.clear();
+std::shared_ptr<CJMODExtension> CJMODLoader::getExtensionInfo(const std::string& name) const {
+    auto it = extensions_.find(name);
+    if (it != extensions_.end()) {
+        return it->second;
+    }
+    return nullptr;
+}
+
+bool CJMODLoader::validateExtension(const CJMODExtension& ext) {
+    if (ext.name.empty() || ext.version.empty() || ext.entryPoint.empty()) {
+        return false;
+    }
+    return true;
+}
+
+std::shared_ptr<CJMODExtension> CJMODLoader::parseManifest(const std::string& manifestPath) {
+    // TODO: 实现清单解析
+    (void)manifestPath;
+    return nullptr;
 }
 
 } // namespace CHTLJS

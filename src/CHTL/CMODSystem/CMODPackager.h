@@ -87,15 +87,17 @@ public:
     // 获取导出信息（不解包）
     std::optional<CMODExport> getExports(const std::string& cmodFile);
     
-    // 获取错误信息
+        // 获取错误信息
     const std::string& getLastError() const { return lastError_; }
-
+    
+    // 分析目录（供CMODLoader使用）
+    bool analyzeDirectory(const std::string& dir, CMODStructure& structure);
+    
 private:
     int compressionLevel_ = 6;
     std::string lastError_;
     
     // 内部方法
-    bool analyzeDirectory(const std::string& dir, CMODStructure& structure);
     bool validateModuleStructure(const CMODStructure& structure);
     bool parseInfoFile(const std::string& infoPath, CMODInfo& info);
     bool parseExportInfo(const std::string& content, CMODExport& exports);

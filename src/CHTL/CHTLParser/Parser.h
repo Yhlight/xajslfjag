@@ -12,6 +12,11 @@
 
 namespace CHTL {
 
+// 前向声明，避免循环依赖
+enum class TemplateType;
+enum class CustomType;
+class ConfigNode;
+
 // 解析器配置
 struct ParserConfig {
     bool strictMode = false;                // 严格模式
@@ -99,7 +104,7 @@ private:
     std::shared_ptr<ASTNode> parseExceptConstraint();
     
     // 导入解析
-    ImportType determineImportType();
+    void determineImportType();
     std::string parseImportPath();
     std::optional<std::string> parseAlias();
     

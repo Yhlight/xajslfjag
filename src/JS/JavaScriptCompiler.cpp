@@ -26,14 +26,14 @@ public:
     
     std::string getOutput() { return output_.str(); }
     
-    antlrcpp::Any visitProgram(JavaScriptParserParser::ProgramContext *ctx) override {
+    antlrcpp::Any visitProgram(JavaScriptParser::ProgramContext *ctx) override {
         if (ctx->sourceElements()) {
             visit(ctx->sourceElements());
         }
         return nullptr;
     }
     
-    antlrcpp::Any visitSourceElements(JavaScriptParserParser::SourceElementsContext *ctx) override {
+    antlrcpp::Any visitSourceElements(JavaScriptParser::SourceElementsContext *ctx) override {
         for (auto element : ctx->sourceElement()) {
             visit(element);
             output_ << "\n";
@@ -41,13 +41,13 @@ public:
         return nullptr;
     }
     
-    antlrcpp::Any visitStatement(JavaScriptParserParser::StatementContext *ctx) override {
+    antlrcpp::Any visitStatement(JavaScriptParser::StatementContext *ctx) override {
         output_ << indent();
         visitChildren(ctx);
         return nullptr;
     }
     
-    antlrcpp::Any visitBlock(JavaScriptParserParser::BlockContext *ctx) override {
+    antlrcpp::Any visitBlock(JavaScriptParser::BlockContext *ctx) override {
         output_ << "{\n";
         indentLevel_++;
         
@@ -60,14 +60,14 @@ public:
         return nullptr;
     }
     
-    antlrcpp::Any visitVariableStatement(JavaScriptParserParser::VariableStatementContext *ctx) override {
+    antlrcpp::Any visitVariableStatement(JavaScriptParser::VariableStatementContext *ctx) override {
         output_ << indent();
         visit(ctx->variableDeclarationList());
         output_ << ";";
         return nullptr;
     }
     
-    antlrcpp::Any visitVariableDeclarationList(JavaScriptParserParser::VariableDeclarationListContext *ctx) override {
+    antlrcpp::Any visitVariableDeclarationList(JavaScriptParser::VariableDeclarationListContext *ctx) override {
         output_ << ctx->varModifier()->getText() << " ";
         
         bool first = true;
@@ -80,7 +80,7 @@ public:
         return nullptr;
     }
     
-    antlrcpp::Any visitFunctionDeclaration(JavaScriptParserParser::FunctionDeclarationContext *ctx) override {
+    antlrcpp::Any visitFunctionDeclaration(JavaScriptParser::FunctionDeclarationContext *ctx) override {
         output_ << indent();
         if (ctx->Async()) output_ << "async ";
         output_ << "function ";
@@ -153,7 +153,7 @@ CompileResult JavaScriptCompilerImpl::compile(const std::string& code, const Com
         CommonTokenStream tokens(&lexer);
         
         // 创建语法分析器
-        JavaScriptParserParser parser(&tokens);
+        JavaScriptParser parser(&tokens);
         
         // 添加错误监听器
         parser.removeErrorListeners();
@@ -207,7 +207,7 @@ bool JavaScriptCompilerImpl::validate(const std::string& code) {
         ANTLRInputStream input(code);
         JavaScriptLexer lexer(&input);
         CommonTokenStream tokens(&lexer);
-        JavaScriptParserParser parser(&tokens);
+        JavaScriptParser parser(&tokens);
         
         // 静默模式
         parser.removeErrorListeners();

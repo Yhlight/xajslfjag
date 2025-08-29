@@ -18,6 +18,7 @@ public:
         std::string type;      // "function", "object", "array", etc.
         std::string jsCode;    // 对应的JS代码
         
+        KeyInfo() = default;  // 默认构造函数
         KeyInfo(const std::string& n, const std::string& t, const std::string& code = "")
             : name(n), type(t), jsCode(code) {}
     };

@@ -56,19 +56,12 @@ private:
     std::shared_ptr<ASTNode> expression_;
 };
 
-// 完整的访问者接口
-class CompleteVisitor : public Visitor,
-                        public ModuleVisitor,
-                        public SelectorVisitor,
-                        public ListenVisitor,
-                        public DelegateVisitor,
-                        public AnimateVisitor,
-                        public VirtualObjectVisitor,
-                        public OperatorVisitor,
-                        public JavaScriptVisitor {
+// 完整的访问者接口 - 简化版本
+class CompleteVisitor : public Visitor {
 public:
     virtual void visitProgramNode(ProgramNode* node) = 0;
     virtual void visitStatementNode(StatementNode* node) = 0;
+    // 其他visit方法由具体类定义
 };
 
 } // namespace CHTLJS

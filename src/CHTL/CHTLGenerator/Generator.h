@@ -31,7 +31,11 @@ struct GeneratorConfig {
 };
 
 // HTML生成器
-class Generator : public CompleteVisitor {
+class Generator {
+private:
+    // 模板变量存储
+    std::unordered_map<std::string, std::string> templateVars_;
+    
 public:
     Generator(std::shared_ptr<CompileContext> context,
               const GeneratorConfig& config = GeneratorConfig());
@@ -41,32 +45,32 @@ public:
     std::string generate(std::shared_ptr<ProgramNode> program);
     
     // 访问者方法实现
-    void visitProgramNode(ProgramNode* node) override;
-    void visitElementNode(ElementNode* node) override;
-    void visitTextNode(TextNode* node) override;
-    void visitAttributeNode(AttributeNode* node) override;
-    void visitCommentNode(CommentNode* node) override;
-    void visitTemplateNode(TemplateNode* node) override;
-    void visitTemplateUseNode(TemplateUseNode* node) override;
-    void visitCustomNode(CustomNode* node) override;
-    void visitCustomUseNode(CustomUseNode* node) override;
-    void visitStyleNode(StyleNode* node) override;
-    void visitSelectorNode(SelectorNode* node) override;
-    void visitPropertyNode(PropertyNode* node) override;
-    void visitScriptNode(ScriptNode* node) override;
-    void visitOriginNode(OriginNode* node) override;
-    void visitOriginUseNode(OriginUseNode* node) override;
-    void visitImportNode(ImportNode* node) override;
-    void visitConfigNode(ConfigNode* node) override;
-    void visitInfoNode(InfoNode* node) override;
-    void visitExportNode(ExportNode* node) override;
-    void visitNamespaceNode(NamespaceNode* node) override;
-    void visitFromNode(FromNode* node) override;
-    void visitDeleteNode(DeleteNode* node) override;
-    void visitInsertNode(InsertNode* node) override;
-    void visitInheritNode(InheritNode* node) override;
-    void visitExceptNode(ExceptNode* node) override;
-    void visitUseNode(UseNode* node) override;
+    void visitProgramNode(ProgramNode* node);
+    void visitElementNode(ElementNode* node);
+    void visitTextNode(TextNode* node);
+    void visitAttributeNode(AttributeNode* node);
+    void visitCommentNode(CommentNode* node);
+    void visitTemplateNode(TemplateNode* node);
+    void visitTemplateUseNode(TemplateUseNode* node);
+    void visitCustomNode(CustomNode* node);
+    void visitCustomUseNode(CustomUseNode* node);
+    void visitStyleNode(StyleNode* node);
+    void visitSelectorNode(SelectorNode* node);
+    void visitPropertyNode(PropertyNode* node);
+    void visitScriptNode(ScriptNode* node);
+    void visitOriginNode(OriginNode* node);
+    void visitOriginUseNode(OriginUseNode* node);
+    void visitImportNode(ImportNode* node);
+    void visitConfigNode(ConfigNode* node);
+    void visitInfoNode(InfoNode* node);
+    void visitExportNode(ExportNode* node);
+    void visitNamespaceNode(NamespaceNode* node);
+    void visitFromNode(FromNode* node);
+    void visitDeleteNode(DeleteNode* node);
+    void visitInsertNode(InsertNode* node);
+    void visitInheritNode(InheritNode* node);
+    void visitExceptNode(ExceptNode* node);
+    void visitUseNode(UseNode* node);
 
 private:
     std::shared_ptr<CompileContext> context_;

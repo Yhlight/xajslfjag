@@ -79,6 +79,7 @@ std::optional<std::string> GlobalMap::getCachedSelector(const std::string& selec
 }
 
 void GlobalMap::registerCHTLJSFunction(const std::string& name, const std::string& type) {
+    (void)type; // TODO: 使用type参数
     chtljsFunctions_.insert(name);
 }
 

@@ -1,7 +1,8 @@
 #include "ModuleNode.h"
 #include <sstream>
+#include <algorithm>
 
-namespace CHTL {
+namespace CHTLJS {
 
 // ModuleNode实现
 void ModuleNode::accept(Visitor* visitor) {
@@ -85,9 +86,9 @@ std::string ModuleNode::toVariableName(const std::string& path) {
 
 // 检查是否为相对路径
 bool ModuleNode::isRelativePath(const std::string& path) {
-    return path.starts_with("./") || 
-           path.starts_with("../") || 
-           path.starts_with("/");
+    return path.find("./") == 0 || 
+           path.find("../") == 0 || 
+           path.find("/") == 0;
 }
 
 // 规范化路径
@@ -106,4 +107,4 @@ std::string ModuleNode::normalizePath(const std::string& path) {
     return normalized;
 }
 
-} // namespace CHTL
+} // namespace CHTLJS

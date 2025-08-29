@@ -148,7 +148,7 @@ bool CMODPackager::analyzeDirectory(const std::string& dir, CMODStructure& struc
             std::string pathStr = relativePath.string();
             
             // 处理不同类型的文件
-            if (pathStr.starts_with("src/")) {
+            if (pathStr.find("src/") == 0) {
                 structure.sourceFiles.push_back(pathStr);
                 
                 // 检查主模块文件
@@ -156,13 +156,13 @@ bool CMODPackager::analyzeDirectory(const std::string& dir, CMODStructure& struc
                     structure.mainModuleFile = pathStr;
                 }
             }
-            else if (pathStr.starts_with("info/")) {
+            else if (pathStr.find("info/") == 0) {
                 // 读取info内容
                 if (pathStr == "info/module.info") {
                     structure.infoContent = readFile(path.string());
                 }
             }
-            else if (pathStr.starts_with("submodules/")) {
+            else if (pathStr.find("submodules/") == 0) {
                 // 处理子模块
                 std::regex submoduleRegex("submodules/([^/]+)/(src|info)/(.+)");
                 std::smatch match;
@@ -324,7 +324,7 @@ bool CMODPackager::parseExportInfo(const std::string& content, CMODExport& expor
             exports.originJavascript.push_back(line);
         } else if (currentSection == "Configurations") {
             exports.configurations.push_back(line);
-        } else if (currentSection.starts_with("Origin:")) {
+        } else if (currentSection.find("Origin:") == 0) {
             // 自定义Origin类型
             std::string originType = currentSection.substr(7);
             exports.customOriginTypes[originType].push_back(line);
@@ -480,6 +480,8 @@ std::string CMODPackager::generateManifest(const CMODStructure& structure) {
 bool CMODPackager::parseManifest(const std::string& manifest, CMODStructure& structure) {
     // 简单的JSON解析（实际项目中应使用JSON库）
     // 这里只实现基本解析逻辑
+    (void)manifest;
+    (void)structure;
     return true;
 }
 

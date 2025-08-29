@@ -35,7 +35,7 @@ public:
     std::vector<std::shared_ptr<Token>> peekTokens(size_t count);
     
     // 检查是否到达文件末尾
-    bool isAtEnd() const { return current_ >= source_.length() && tokenBuffer_.empty(); }
+    bool isAtEnd() const;
     
     // 获取当前位置
     size_t getCurrentLine() const { return line_; }
@@ -71,7 +71,7 @@ private:
     bool match(char expected);
     bool match(const std::string& expected);
     char peek(size_t offset = 0) const;
-    bool isAtEnd(size_t offset = 0) const;
+    bool isAtEnd(size_t offset) const;
     
     // 跳过空白和注释
     void skipWhitespace();

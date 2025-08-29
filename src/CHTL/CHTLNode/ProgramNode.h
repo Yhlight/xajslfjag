@@ -44,20 +44,23 @@ private:
     std::vector<std::shared_ptr<ASTNode>> topLevelNodes_;
 };
 
+// 前向声明各种Visitor类
+class CommentVisitor;
+class TemplateVisitor;
+class CustomVisitor;
+class StyleVisitor;
+class ScriptVisitor;
+class OriginVisitor;
+class ImportVisitor;
+class ConfigVisitor;
+class NamespaceVisitor;
+class OperatorVisitor;
+
 // 完整的访问者接口
-class CompleteVisitor : public Visitor,
-                        public CommentVisitor,
-                        public TemplateVisitor,
-                        public CustomVisitor,
-                        public StyleVisitor,
-                        public ScriptVisitor,
-                        public OriginVisitor,
-                        public ImportVisitor,
-                        public ConfigVisitor,
-                        public NamespaceVisitor,
-                        public OperatorVisitor {
+class CompleteVisitor : public Visitor {
 public:
     virtual void visitProgramNode(ProgramNode* node) = 0;
+    // 其他visit方法将在具体的Visitor类中定义
 };
 
 } // namespace CHTL

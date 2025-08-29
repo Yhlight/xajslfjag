@@ -6,6 +6,7 @@
 #include <stack>
 #include <unordered_map>
 #include <optional>
+#include <vector>
 
 namespace CHTL {
 

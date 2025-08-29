@@ -60,7 +60,7 @@ std::vector<SelectorInfo> SelectorAutomation::parseSelectors(const std::string& 
         selectors.push_back(info);
         
         // 更新位置
-        for (size_t i = pos; i < match.position(); ++i) {
+        for (size_t i = pos; i < static_cast<size_t>(match.position()); ++i) {
             if (css[i] == '\n') {
                 line++;
                 column = 1;
@@ -105,7 +105,7 @@ std::vector<SelectorInfo> SelectorAutomation::extractFromScriptBlock(const std::
         selectors.push_back(info);
         
         // 更新位置
-        for (size_t i = pos; i < match.position(); ++i) {
+        for (size_t i = pos; i < static_cast<size_t>(match.position()); ++i) {
             if (scriptContent[i] == '\n') {
                 line++;
                 column = 1;
@@ -388,7 +388,7 @@ std::optional<int> CHTLJSSelectorProcessor::getIndex(const std::string& selector
     return parsed.index;
 }
 
-CHTLJSSelectorProcessor::ParsedSelector CHTLJSSelectorProcessor::parseSelector(const std::string& selector) {
+CHTLJSSelectorProcessor::ParsedSelector CHTLJSSelectorProcessor::parseSelector(const std::string& selector) const {
     ParsedSelector result;
     
     // 检查是否有索引
