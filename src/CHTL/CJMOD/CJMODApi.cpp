@@ -392,7 +392,8 @@ bool validateSyntax(const std::string& code, std::vector<std::string>& errors) {
 
 // ========== CJMODScanner 实现 ==========
 
-CJMODScanner::CJMODScanner() {
+CJMODScanner::CJMODScanner() : m_frontPointer(0), m_backPointer(0) {
+    initializePointers();
 }
 
 bool CJMODScanner::scan(const std::string& code) {
@@ -798,6 +799,161 @@ bool VirtualObjectBinder::validateMethodCall(const std::string& objectName, cons
     if (objIt == m_virtualObjects.end()) return false;
     
     return objIt->second.find(methodName) != objIt->second.end();
+}
+
+// ========== CJMODScanner 双指针扫描和前置截取实现 ==========
+
+bool CJMODScanner::dualPointerScan(const std::string& code) {
+    initializePointers();
+    m_fragmentBuffer.clear();
+    
+    // 双指针扫描算法
+    while (m_backPointer < code.length()) {
+        // 预先扫描一个片段检查是否存在关键字
+        std::string currentWindow = getCurrentWindow(code);
+        bool hasKeyword = false;
+        
+        for (const auto& keyword : getCJMODKeywords()) {
+            if (hasKeywordInWindow(currentWindow, keyword)) {
+                hasKeyword = true;
+                // 通知后指针准备收集
+                m_keywordBuffer.push_back(keyword);
+                break;
+            }
+        }
+        
+        if (hasKeyword) {
+            // 类似滑动窗口算法同步向前
+            if (advancePointers(code)) {
+                std::string fragment = code.substr(m_frontPointer, m_backPointer - m_frontPointer);
+                if (isValidCJMODFragment(fragment)) {
+                    m_fragmentBuffer.push_back(fragment);
+                }
+            }
+        } else {
+            // 移动前指针到合适的位置
+            m_frontPointer = m_backPointer;
+            m_backPointer++;
+        }
+    }
+    
+    return !m_fragmentBuffer.empty();
+}
+
+std::vector<std::string> CJMODScanner::prefixCutScan(const std::string& code, const std::string& keyword) {
+    std::vector<std::string> cutFragments;
+    
+    // 前置截取机制 - 处理 arg ** arg2 这样的语法
+    size_t keywordPos = findKeywordPosition(code, keyword);
+    
+    while (keywordPos != std::string::npos) {
+        // 截取关键字前的片段
+        std::string prefixFragment = extractPrefixFragment(code, keywordPos);
+        
+        if (!prefixFragment.empty() && isValidCJMODFragment(prefixFragment)) {
+            cutFragments.push_back(prefixFragment);
+        }
+        
+        // 继续查找下一个关键字
+        keywordPos = findKeywordPosition(code.substr(keywordPos + keyword.length()), keyword);
+        if (keywordPos != std::string::npos) {
+            keywordPos += (keywordPos + keyword.length());
+        }
+    }
+    
+    return cutFragments;
+}
+
+bool CJMODScanner::hasKeywordInWindow(const std::string& fragment, const std::string& keyword) {
+    return fragment.find(keyword) != std::string::npos;
+}
+
+std::vector<std::string> CJMODScanner::slidingWindowScan(const std::string& code, size_t windowSize) {
+    std::vector<std::string> windows;
+    
+    // 滑动窗口算法扫描
+    for (size_t i = 0; i <= code.length(); i += windowSize / 2) {
+        if (i + windowSize <= code.length()) {
+            std::string window = code.substr(i, windowSize);
+            
+            // 检查窗口是否包含CJMOD关键字
+            for (const auto& keyword : getCJMODKeywords()) {
+                if (hasKeywordInWindow(window, keyword)) {
+                    windows.push_back(window);
+                    break;
+                }
+            }
+        }
+    }
+    
+    return windows;
+}
+
+void CJMODScanner::initializePointers() {
+    m_frontPointer = 0;
+    m_backPointer = 0;
+    m_keywordBuffer.clear();
+    m_fragmentBuffer.clear();
+}
+
+bool CJMODScanner::advancePointers(const std::string& code) {
+    if (m_backPointer >= code.length()) return false;
+    
+    // 同步向前移动双指针
+    m_backPointer += 50; // 滑动窗口大小
+    if (m_backPointer > code.length()) {
+        m_backPointer = code.length();
+    }
+    
+    return m_frontPointer < m_backPointer;
+}
+
+std::string CJMODScanner::getCurrentWindow(const std::string& code) {
+    if (m_frontPointer >= code.length()) return "";
+    
+    size_t windowEnd = std::min(m_frontPointer + 100, code.length());
+    return code.substr(m_frontPointer, windowEnd - m_frontPointer);
+}
+
+std::vector<std::string> CJMODScanner::getCJMODKeywords() {
+    return {
+        "**", "function", "var", "let", "const", "import", "export", 
+        "module", "interface", "type", "class", "extends", "implements",
+        "arg", "bind", "fillValue", "transform", "$", "$?", "$!", "$_", "..."
+    };
+}
+
+size_t CJMODScanner::findKeywordPosition(const std::string& code, const std::string& keyword) {
+    return code.find(keyword);
+}
+
+std::string CJMODScanner::extractPrefixFragment(const std::string& code, size_t keywordPos) {
+    if (keywordPos == 0 || keywordPos == std::string::npos) return "";
+    
+    // 从关键字位置向前查找合适的分割点
+    size_t startPos = 0;
+    for (size_t i = keywordPos; i > 0; --i) {
+        char c = code[i - 1];
+        if (c == ';' || c == '\n' || c == '{' || c == '}') {
+            startPos = i;
+            break;
+        }
+    }
+    
+    return code.substr(startPos, keywordPos - startPos);
+}
+
+bool CJMODScanner::isValidCJMODFragment(const std::string& fragment) {
+    if (fragment.empty()) return false;
+    
+    // 简单验证：检查是否包含有效的CJMOD语法元素
+    for (const auto& keyword : getCJMODKeywords()) {
+        if (fragment.find(keyword) != std::string::npos) {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
 } // namespace CHTL

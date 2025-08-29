@@ -513,6 +513,19 @@ test_final_simple/fast:
 .PHONY : test_final_simple/fast
 
 #=============================================================================
+# Target rules for targets named test_short_term_goals_simple
+
+# Build rule for target.
+test_short_term_goals_simple: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_short_term_goals_simple
+.PHONY : test_short_term_goals_simple
+
+# fast build rule for target.
+test_short_term_goals_simple/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_short_term_goals_simple.dir/build.make CMakeFiles/test_short_term_goals_simple.dir/build
+.PHONY : test_short_term_goals_simple/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -1189,6 +1202,30 @@ test_selector_automation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_selector_automation.dir/build.make CMakeFiles/test_selector_automation.dir/test_selector_automation.cpp.s
 .PHONY : test_selector_automation.cpp.s
 
+test_short_term_goals_simple.o: test_short_term_goals_simple.cpp.o
+.PHONY : test_short_term_goals_simple.o
+
+# target to build an object file
+test_short_term_goals_simple.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_short_term_goals_simple.dir/build.make CMakeFiles/test_short_term_goals_simple.dir/test_short_term_goals_simple.cpp.o
+.PHONY : test_short_term_goals_simple.cpp.o
+
+test_short_term_goals_simple.i: test_short_term_goals_simple.cpp.i
+.PHONY : test_short_term_goals_simple.i
+
+# target to preprocess a source file
+test_short_term_goals_simple.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_short_term_goals_simple.dir/build.make CMakeFiles/test_short_term_goals_simple.dir/test_short_term_goals_simple.cpp.i
+.PHONY : test_short_term_goals_simple.cpp.i
+
+test_short_term_goals_simple.s: test_short_term_goals_simple.cpp.s
+.PHONY : test_short_term_goals_simple.s
+
+# target to generate assembly for a file
+test_short_term_goals_simple.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_short_term_goals_simple.dir/build.make CMakeFiles/test_short_term_goals_simple.dir/test_short_term_goals_simple.cpp.s
+.PHONY : test_short_term_goals_simple.cpp.s
+
 test_simple_custom.o: test_simple_custom.cpp.o
 .PHONY : test_simple_custom.o
 
@@ -1429,6 +1466,7 @@ help:
 	@echo "... test_namespace_system"
 	@echo "... test_origin_system"
 	@echo "... test_selector_automation"
+	@echo "... test_short_term_goals_simple"
 	@echo "... test_simple_custom"
 	@echo "... test_simple_namespace"
 	@echo "... test_state_context"
@@ -1494,6 +1532,9 @@ help:
 	@echo "... test_selector_automation.o"
 	@echo "... test_selector_automation.i"
 	@echo "... test_selector_automation.s"
+	@echo "... test_short_term_goals_simple.o"
+	@echo "... test_short_term_goals_simple.i"
+	@echo "... test_short_term_goals_simple.s"
 	@echo "... test_simple_custom.o"
 	@echo "... test_simple_custom.i"
 	@echo "... test_simple_custom.s"

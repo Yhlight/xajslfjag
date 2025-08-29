@@ -193,6 +193,24 @@ public:
     bool scan(const std::string& code);
     
     /**
+     * 双指针扫描机制
+     * 用于处理CJMOD代码片段的关键字检测和滑动窗口分析
+     */
+    bool dualPointerScan(const std::string& code);
+    
+    /**
+     * 前置截取机制
+     * 处理 arg ** arg2 这样的语法，截取关键字前的片段避免错误传递
+     */
+    std::vector<std::string> prefixCutScan(const std::string& code, const std::string& keyword);
+    
+    /**
+     * 关键字检测和滑动窗口算法
+     */
+    bool hasKeywordInWindow(const std::string& fragment, const std::string& keyword);
+    std::vector<std::string> slidingWindowScan(const std::string& code, size_t windowSize = 100);
+    
+    /**
      * 获取扫描到的函数
      */
     std::vector<std::string> getFunctions() const;
@@ -229,6 +247,12 @@ private:
     std::vector<std::string> m_imports;
     std::unordered_map<std::string, int> m_stats;
     
+    // 双指针扫描状态
+    size_t m_frontPointer;
+    size_t m_backPointer;
+    std::vector<std::string> m_keywordBuffer;
+    std::vector<std::string> m_fragmentBuffer;
+    
     /**
      * 扫描函数定义
      */
@@ -253,6 +277,21 @@ private:
      * 更新统计信息
      */
     void updateStats(const std::string& category);
+    
+    /**
+     * 双指针扫描辅助方法
+     */
+    void initializePointers();
+    bool advancePointers(const std::string& code);
+    std::string getCurrentWindow(const std::string& code);
+    std::vector<std::string> getCJMODKeywords();
+    
+    /**
+     * 前置截取辅助方法
+     */
+    size_t findKeywordPosition(const std::string& code, const std::string& keyword);
+    std::string extractPrefixFragment(const std::string& code, size_t keywordPos);
+    bool isValidCJMODFragment(const std::string& fragment);
 };
 
 /**

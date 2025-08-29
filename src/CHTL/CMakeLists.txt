@@ -555,4 +555,20 @@ if(BUILD_TESTS)
         CHTLCJMOD
     )
     
+    # 短期目标完整验证测试
+    add_executable(test_short_term_goals_simple test_short_term_goals_simple.cpp)
+    target_link_libraries(test_short_term_goals_simple 
+        CHTLError
+        CHTLScanner
+        CHTLCompiler
+        CHTLManage
+        CHTLParser
+        CHTLGenerator
+        CHTLNode
+        CHTLContext
+        CHTLState
+        CHTLLexer
+        CHTLCJMOD
+    )
+    
 endif()
