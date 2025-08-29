@@ -964,36 +964,147 @@ std::shared_ptr<ASTNode> Parser::parseTemplateContent(TemplateType type) {
 }
 
 std::shared_ptr<ASTNode> Parser::parseStyleContent() {
-    // For now, collect raw CSS content for the style block
-    // This should be enhanced to parse CSS selectors, properties, etc.
-    
     // Skip any whitespace
     while (match({TokenType::NEWLINE, TokenType::WHITESPACE})) {
         // Skip
     }
     
-    // Check for selector or property
-    if (check(TokenType::IDENTIFIER) || check(TokenType::DOT) || 
-        check(TokenType::HASH) || check(TokenType::AMPERSAND)) {
-        // For now, skip to the next }
-        int braceDepth = 0;
-        while (!isAtEnd()) {
-            if (check(TokenType::LEFT_BRACE)) {
-                braceDepth++;
-                advance();
-            } else if (check(TokenType::RIGHT_BRACE)) {
-                if (braceDepth == 0) {
-                    break;
-                }
-                braceDepth--;
-                advance();
-            } else {
-                advance();
-            }
+    // 检查是选择器还是属性
+    if (check(TokenType::DOT) || check(TokenType::HASH) || check(TokenType::AMPERSAND)) {
+        // 这是一个选择器（.class, #id, &:hover）
+        return parseCSSSelector();
+    } else if (check(TokenType::IDENTIFIER) || check(TokenType::HTML_TAG)) {
+        // 可能是属性或元素选择器
+        auto lookahead = lexer_->peekToken();
+        if (lookahead && (lookahead->getType() == TokenType::COLON || 
+                         lookahead->getType() == TokenType::EQUAL)) {
+            // 这是一个属性（property: value）
+            return parseCSSProperty();
+        } else if (lookahead && lookahead->getType() == TokenType::LEFT_BRACE) {
+            // 这是一个元素选择器（div { ... }）
+            return parseCSSSelector();
+        } else {
+            // 默认当作属性处理
+            return parseCSSProperty();
         }
     }
     
+    // 跳过不认识的内容
+    advance();
     return nullptr;
+}
+
+std::shared_ptr<PropertyNode> Parser::parseCSSProperty() {
+    auto location = current_->getLocation();
+    
+    // 解析属性名
+    std::string propertyName = parseIdentifier();
+    
+    // 消费冒号或等号
+    if (!match({TokenType::COLON, TokenType::EQUAL})) {
+        error("Expected ':' or '=' after property name");
+        return nullptr;
+    }
+    
+    // 解析属性值
+    std::string propertyValue = parseCSSValue();
+    
+    // 可选的分号
+    match(TokenType::SEMICOLON);
+    
+    return std::make_shared<PropertyNode>(propertyName, propertyValue, location);
+}
+
+std::shared_ptr<SelectorNode> Parser::parseCSSSelector() {
+    auto location = current_->getLocation();
+    std::string selector;
+    SelectorNode::SelectorType type = SelectorNode::SelectorType::TAG;
+    
+    // 解析选择器
+    if (match(TokenType::DOT)) {
+        // 类选择器
+        selector = parseIdentifier();
+        type = SelectorNode::SelectorType::CLASS;
+    } else if (match(TokenType::HASH)) {
+        // ID选择器
+        selector = parseIdentifier();
+        type = SelectorNode::SelectorType::ID;
+    } else if (match(TokenType::AMPERSAND)) {
+        // 上下文引用选择器
+        selector = "&";
+        if (match(TokenType::COLON)) {
+            // 伪类选择器 &:hover
+            selector += ":";
+            selector += parseIdentifier();
+            type = SelectorNode::SelectorType::PSEUDO_CLASS;
+        } else if (check(TokenType::COLON) && lexer_->peekToken() && 
+                   lexer_->peekToken()->getType() == TokenType::COLON) {
+            // 伪元素选择器 &::before
+            advance(); // first :
+            advance(); // second :
+            // 伪元素选择器 &::before
+            selector += "::";
+            selector += parseIdentifier();
+            type = SelectorNode::SelectorType::PSEUDO_ELEMENT;
+        }
+    } else if (check(TokenType::IDENTIFIER) || check(TokenType::HTML_TAG)) {
+        // 元素选择器
+        selector = current_->getLexeme();
+        advance();
+        type = SelectorNode::SelectorType::TAG;
+    }
+    
+    auto selectorNode = std::make_shared<SelectorNode>(selector, type, location);
+    
+    // 解析选择器内容
+    consume(TokenType::LEFT_BRACE, "Expected '{' after selector");
+    
+    // 创建一个样式块来存储属性
+    auto styleContent = std::make_shared<StyleNode>(StyleBlockType::LOCAL, location);
+    
+    while (!check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        auto prop = parseCSSProperty();
+        if (prop) {
+            styleContent->addRule(prop);
+        }
+    }
+    
+    consume(TokenType::RIGHT_BRACE, "Expected '}' after selector content");
+    
+    selectorNode->setContent(styleContent);
+    return selectorNode;
+}
+
+std::string Parser::parseCSSValue() {
+    std::string value;
+    bool needSpace = false;
+    
+    // 收集值直到分号、右大括号或文件结束
+    while (!check(TokenType::SEMICOLON) && !check(TokenType::RIGHT_BRACE) && !isAtEnd()) {
+        if (current_->getType() == TokenType::STRING_LITERAL) {
+            if (needSpace && !value.empty()) value += " ";
+            value += parseString();
+            needSpace = true;
+        } else {
+            std::string lexeme = current_->getLexeme();
+            
+            // 检查是否需要添加空格
+            // 不在某些符号之间添加空格
+            if (needSpace && !value.empty() && 
+                lexeme != "," && lexeme != ")" && lexeme != ";" && lexeme != "px" &&
+                lexeme != "em" && lexeme != "rem" && lexeme != "%" && lexeme != "vh" &&
+                lexeme != "vw" && !std::isdigit(lexeme[0]) &&
+                value.back() != '(' && value.back() != ',' && value.back() != '#') {
+                value += " ";
+            }
+            
+            value += lexeme;
+            needSpace = (lexeme != "(" && lexeme != ",");
+        }
+        advance();
+    }
+    
+    return value;
 }
 
 std::shared_ptr<ASTNode> Parser::parseTemplateUse() {

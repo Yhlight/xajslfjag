@@ -83,13 +83,14 @@ std::string Generator::generate(std::shared_ptr<ProgramNode> program) {
     
     // 插入全局样式（如果有）
     if (!globalStyles_.str().empty()) {
+        std::string styleBlock = "<style>\n" + globalStyles_.str() + "</style>\n";
         std::string content = finalOutput.str();
         size_t headPos = content.find("</head>");
         if (headPos != std::string::npos) {
-            content.insert(headPos, globalStyles_.str());
+            content.insert(headPos, styleBlock);
         } else {
             // 如果没有head标签，在开头插入
-            content = globalStyles_.str() + content;
+            content = styleBlock + content;
         }
         finalOutput.str(content);
     }
@@ -131,6 +132,33 @@ void Generator::visitElementNode(ElementNode* node) {
 
 void Generator::generateHtmlElement(ElementNode* node) {
     const std::string& tagName = node->getTagName();
+    
+    // 保存当前元素节点引用
+    pushState();
+    currentState_.currentElementNode = node;
+    currentState_.currentElement = tagName;
+    
+    // 先扫描子节点，收集局部样式块的信息
+    for (const auto& child : node->getChildNodes()) {
+        if (child && child->getType() == NodeType::STYLE_BLOCK) {
+            auto styleNode = static_cast<StyleNode*>(child.get());
+            if (styleNode->getBlockType() == StyleBlockType::LOCAL) {
+                // 处理自动选择器和收集内联样式
+                processAutoSelectors(styleNode);
+                
+                // 收集内联样式
+                for (const auto& rule : styleNode->getRules()) {
+                    if (rule->getType() == NodeType::PROPERTY) {
+                        auto prop = static_cast<PropertyNode*>(rule.get());
+                        if (!currentState_.pendingInlineStyles.empty()) {
+                            currentState_.pendingInlineStyles += " ";
+                        }
+                        currentState_.pendingInlineStyles += prop->getName() + ": " + prop->getValue() + ";";
+                    }
+                }
+            }
+        }
+    }
     
     // 开始标签
     write("<" + tagName);
@@ -181,11 +209,58 @@ void Generator::generateHtmlElement(ElementNode* node) {
         // 结束标签
         writeLine("</" + tagName + ">");
     }
+    
+    popState();
 }
 
 void Generator::generateAttributes(ElementNode* node) {
+    // 先输出普通属性
+    bool hasStyleAttr = false;
+    std::string existingStyle;
+    
     for (const auto& [name, value] : node->getAttributes()) {
-        write(" " + name + "=\"" + escapeHtml(value) + "\"");
+        if (name == "style") {
+            hasStyleAttr = true;
+            existingStyle = value;
+        } else {
+            write(" " + name + "=\"" + escapeHtml(value) + "\"");
+        }
+    }
+    
+    // 处理内联样式（来自局部样式块）
+    if (!currentState_.pendingInlineStyles.empty() || hasStyleAttr) {
+        std::string combinedStyles = existingStyle;
+        if (!existingStyle.empty() && !currentState_.pendingInlineStyles.empty()) {
+            combinedStyles += " ";
+        }
+        combinedStyles += currentState_.pendingInlineStyles;
+        
+        if (!combinedStyles.empty()) {
+            write(" style=\"" + escapeHtml(combinedStyles) + "\"");
+        }
+    }
+    
+    // 处理自动添加的类
+    if (!currentState_.autoAddedClasses.empty()) {
+        std::string classes;
+        auto it = node->getAttributes().find("class");
+        if (it != node->getAttributes().end()) {
+            classes = it->second;
+        }
+        
+        for (const auto& cls : currentState_.autoAddedClasses) {
+            if (!classes.empty()) classes += " ";
+            classes += cls;
+        }
+        
+        if (!classes.empty()) {
+            write(" class=\"" + escapeHtml(classes) + "\"");
+        }
+    }
+    
+    // 处理自动添加的ID
+    if (!currentState_.autoAddedIds.empty() && node->getAttributes().find("id") == node->getAttributes().end()) {
+        write(" id=\"" + escapeHtml(currentState_.autoAddedIds.front()) + "\"");
     }
 }
 
@@ -224,16 +299,34 @@ void Generator::visitStyleNode(StyleNode* node) {
     currentState_.inLocalStyle = (node->getBlockType() == StyleBlockType::LOCAL);
     
     if (node->getBlockType() == StyleBlockType::LOCAL) {
-        // 局部样式块处理
-        processAutoSelectors(node);
-        generateLocalStyles(node);
+        // 局部样式块在父元素处理时已经被处理了，这里不需要生成输出
+        // 只处理选择器样式（添加到全局样式）
+        for (const auto& rule : node->getRules()) {
+            if (rule->getType() == NodeType::SELECTOR) {
+                auto selector = static_cast<SelectorNode*>(rule.get());
+                // 将选择器样式添加到全局样式
+                std::stringstream temp;
+                std::swap(output_, temp);
+                
+                generateCSSRule(selector);
+                globalStyles_ << output_.str();
+                
+                std::swap(output_, temp);
+            }
+        }
     } else {
         // 全局样式块
         writeLine("<style>");
         indent();
         
-        // TODO: 处理规则
-        (void)node->getRules();
+        for (const auto& rule : node->getRules()) {
+            if (rule->getType() == NodeType::PROPERTY) {
+                auto prop = static_cast<PropertyNode*>(rule.get());
+                writeLine(prop->getName() + ": " + prop->getValue() + ";");
+            } else if (rule->getType() == NodeType::SELECTOR) {
+                generateCSSRule(static_cast<SelectorNode*>(rule.get()));
+            }
+        }
         
         dedent();
         writeLine("</style>");
@@ -364,11 +457,9 @@ void Generator::processAutoSelectors(StyleNode* node) {
             const std::string& sel = selector->getSelector();
             
             if (selector->getSelectorType() == SelectorNode::SelectorType::CLASS) {
-                std::string className = sel.substr(1); // 去掉 .
-                currentState_.autoAddedClasses.push_back(className);
+                currentState_.autoAddedClasses.push_back(sel);
             } else if (selector->getSelectorType() == SelectorNode::SelectorType::ID) {
-                std::string idName = sel.substr(1); // 去掉 #
-                currentState_.autoAddedIds.push_back(idName);
+                currentState_.autoAddedIds.push_back(sel);
             }
         }
     }
@@ -520,6 +611,30 @@ void Generator::visitInheritNode(InheritNode* node) { (void)node; }
 void Generator::visitExceptNode(ExceptNode* node) { (void)node; }
 void Generator::visitUseNode(UseNode* node) { (void)node; }
 
+void Generator::generateCSSRule(SelectorNode* node) {
+    if (!node) return;
+    
+    // 生成选择器
+    generateSelector(node);
+    write(" {");
+    writeLine();
+    indent();
+    
+    // 生成属性
+    if (node->getContent() && node->getContent()->getType() == NodeType::STYLE_BLOCK) {
+        auto styleContent = static_cast<StyleNode*>(node->getContent().get());
+        for (const auto& rule : styleContent->getRules()) {
+            if (rule && rule->getType() == NodeType::PROPERTY) {
+                auto prop = static_cast<PropertyNode*>(rule.get());
+                writeLine(prop->getName() + ": " + prop->getValue() + ";");
+            }
+        }
+    }
+    
+    dedent();
+    writeLine("}");
+}
+
 void Generator::generateSelector(SelectorNode* node) {
     if (!node) return;
     
@@ -533,9 +648,17 @@ void Generator::generateSelector(SelectorNode* node) {
         case SelectorNode::SelectorType::TAG:
             output_ << node->getSelector();
             break;
-        case SelectorNode::SelectorType::PSEUDO_CLASS:
-            output_ << ":" << node->getSelector();
+        case SelectorNode::SelectorType::PSEUDO_CLASS: {
+            std::string sel = node->getSelector();
+            // 处理&:hover格式
+            if (sel.find("&:") == 0) {
+                // TODO: 替换&为父选择器
+                output_ << sel.substr(1); // 暂时去掉&
+            } else {
+                output_ << ":" << sel;
+            }
             break;
+        }
         case SelectorNode::SelectorType::PSEUDO_ELEMENT:
             output_ << "::" << node->getSelector();
             break;

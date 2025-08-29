@@ -1,0 +1,9 @@
+// 简单的类选择器测试
+div {
+    style {
+        .myclass {
+            color: red;
+        }
+    }
+    "Test"
+}

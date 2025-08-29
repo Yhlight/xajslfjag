@@ -16,6 +16,8 @@ namespace CHTL {
 enum class TemplateType;
 enum class CustomType;
 class ConfigNode;
+class PropertyNode;
+class SelectorNode;
 
 // 解析器配置
 struct ParserConfig {
@@ -89,6 +91,9 @@ private:
     std::shared_ptr<ASTNode> parseStyleContent();
     std::shared_ptr<ASTNode> parseStyleRule();
     std::shared_ptr<ASTNode> parseSelector();
+    std::shared_ptr<PropertyNode> parseCSSProperty();
+    std::shared_ptr<SelectorNode> parseCSSSelector();
+    std::string parseCSSValue();
     std::shared_ptr<ASTNode> parseStyleProperty();
     
     // 模板和自定义解析

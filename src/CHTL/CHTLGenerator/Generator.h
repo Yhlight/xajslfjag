@@ -89,6 +89,8 @@ private:
         std::string currentElement;
         std::vector<std::string> autoAddedClasses;
         std::vector<std::string> autoAddedIds;
+        std::string pendingInlineStyles;  // 待添加的内联样式
+        ElementNode* currentElementNode = nullptr;  // 当前正在处理的元素节点
     };
     
     std::stack<GeneratorState> stateStack_;
@@ -110,6 +112,7 @@ private:
     void generateGlobalStyles();
     void generateLocalStyles(StyleNode* node);
     void generateSelector(SelectorNode* node);
+    void generateCSSRule(SelectorNode* node);
     void generateCssProperty(PropertyNode* node);
     std::string processSelectorReference(const std::string& selector);
     

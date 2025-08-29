@@ -1,0 +1,6 @@
+// 测试body选择器
+style {
+    body {
+        margin: 0;
+    }
+}
