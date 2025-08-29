@@ -295,6 +295,26 @@ private:
     NodePtr mergeVarTemplates(const std::vector<TemplateRegistration*>& chain, const TemplateContext& context);
     
     /**
+     * 应用特例化操作到样式模板
+     */
+    void applySpecializationToStyleTemplate(AdvancedStyleTemplateNode* styleTemplate, const SpecializationInfo& spec);
+    
+    /**
+     * 应用特例化操作到元素模板
+     */
+    void applySpecializationToElementTemplate(AdvancedElementTemplateNode* elementTemplate, const SpecializationInfo& spec);
+    
+    /**
+     * 应用特例化操作到变量模板
+     */
+    void applySpecializationToVarTemplate(AdvancedVarTemplateNode* varTemplate, const SpecializationInfo& spec);
+    
+    /**
+     * 在指定位置插入元素
+     */
+    void insertElementAtPosition(AdvancedElementTemplateNode* elementTemplate, const SpecializationInfo& spec);
+    
+    /**
      * 报告错误
      */
     void reportError(const std::string& message);

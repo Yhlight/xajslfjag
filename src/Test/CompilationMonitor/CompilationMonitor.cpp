@@ -112,7 +112,7 @@ void CompilationMonitor::terminateCompilation() {
     
     if (m_config.enableAutoTermination) {
         // 发送终止信号
-        std::raise(SIGTERM);
+        raise(SIGTERM);
     }
 }
 

@@ -556,6 +556,7 @@ CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o: /workspace/src/CHTL/
   /workspace/src/CHTL/CHTLLexer/Type.h \
   /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h \
   /workspace/src/CHTL/CHTLNode/BaseNode.h \
+  /workspace/src/CHTL/CHTLNode/OperatorNode.h \
   /workspace/src/CHTL/CHTLNode/TemplateNode.h \
   /workspace/src/CHTL/CHTLManage/TemplateManager.h
 
@@ -997,6 +998,8 @@ CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o: /workspace/src/CHTL/
 /usr/include/c++/14/bits/memoryfwd.h:
 
 /usr/include/c++/14/bits/nested_exception.h:
+
+/workspace/src/CHTL/CHTLNode/OperatorNode.h:
 
 /usr/include/c++/14/bits/shared_ptr_atomic.h:
 

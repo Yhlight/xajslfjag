@@ -263,6 +263,7 @@ CHTLNode/CMakeFiles/CHTLNode.dir/AdvancedTemplateNode.cpp.o
  /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h
  /workspace/src/CHTL/CHTLNode/BaseNode.h
  /workspace/src/CHTL/CHTLNode/ElementNode.h
+ /workspace/src/CHTL/CHTLNode/OperatorNode.h
  /workspace/src/CHTL/CHTLNode/TemplateNode.h
 
 CHTLNode/CMakeFiles/CHTLNode.dir/BaseNode.cpp.o

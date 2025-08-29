@@ -83,6 +83,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/test_complete_system.dir/DependInfo.cmake"
   "CMakeFiles/test_chtl_syntax.dir/DependInfo.cmake"
   "CMakeFiles/test_template_system.dir/DependInfo.cmake"
+  "CMakeFiles/test_complete_template_system.dir/DependInfo.cmake"
   "CHTLError/CMakeFiles/CHTLError.dir/DependInfo.cmake"
   "CHTLFileSystem/CMakeFiles/CHTLFileSystem.dir/DependInfo.cmake"
   "CHTLLexer/CMakeFiles/CHTLLexer.dir/DependInfo.cmake"

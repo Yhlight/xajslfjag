@@ -267,6 +267,21 @@ private:
     std::unordered_map<std::string, std::string> parseTemplateParameters();
     
     /**
+     * 解析复杂值（支持变量引用）
+     */
+    std::string parseComplexValue();
+    
+    /**
+     * 解析删除元素操作
+     */
+    void parseDeleteElementOperation(AdvancedElementTemplateNode* elementTemplate);
+    
+    /**
+     * 解析插入元素操作
+     */
+    void parseInsertElementOperation(AdvancedElementTemplateNode* elementTemplate);
+    
+    /**
      * 解析自定义样式组
      */
     NodePtr parseCustomStyle(const std::string& name);

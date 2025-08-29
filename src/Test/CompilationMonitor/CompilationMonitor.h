@@ -73,14 +73,19 @@ public:
      * 监控配置
      */
     struct MonitorConfig {
-        std::chrono::milliseconds maxCompilationTime{300000};   // 最大编译时间（5分钟）
-        size_t maxMemoryUsageMB{2048};                         // 最大内存使用（2GB）
-        double maxCpuUsagePercent{95.0};                       // 最大CPU使用率
-        std::chrono::milliseconds deadlockCheckInterval{1000}; // 死锁检查间隔
-        std::chrono::milliseconds resourceCheckInterval{500};  // 资源检查间隔
-        bool enableDetailedLogging{true};                      // 启用详细日志
-        bool enableAutoTermination{true};                      // 启用自动终止
-        std::string logFilePath{"compilation_monitor.log"};    // 日志文件路径
+        std::chrono::milliseconds maxCompilationTime;   // 最大编译时间（5分钟）
+        size_t maxMemoryUsageMB;                         // 最大内存使用（2GB）
+        double maxCpuUsagePercent;                       // 最大CPU使用率
+        std::chrono::milliseconds deadlockCheckInterval; // 死锁检查间隔
+        std::chrono::milliseconds resourceCheckInterval;  // 资源检查间隔
+        bool enableDetailedLogging;                      // 启用详细日志
+        bool enableAutoTermination;                      // 启用自动终止
+        std::string logFilePath;                         // 日志文件路径
+        
+        MonitorConfig() : maxCompilationTime(300000), maxMemoryUsageMB(2048), 
+                         maxCpuUsagePercent(95.0), deadlockCheckInterval(1000),
+                         resourceCheckInterval(500), enableDetailedLogging(true),
+                         enableAutoTermination(true), logFilePath("compilation_monitor.log") {}
     };
     
     /**

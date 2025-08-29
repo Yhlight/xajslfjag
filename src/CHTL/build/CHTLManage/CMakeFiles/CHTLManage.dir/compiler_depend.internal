@@ -558,6 +558,7 @@ CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o
  /workspace/src/CHTL/CHTLLexer/Type.h
  /workspace/src/CHTL/CHTLNode/AdvancedTemplateNode.h
  /workspace/src/CHTL/CHTLNode/BaseNode.h
+ /workspace/src/CHTL/CHTLNode/OperatorNode.h
  /workspace/src/CHTL/CHTLNode/TemplateNode.h
  /workspace/src/CHTL/CHTLManage/TemplateManager.h
 

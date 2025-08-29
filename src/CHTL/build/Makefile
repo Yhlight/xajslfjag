@@ -182,6 +182,19 @@ test_template_system/fast:
 .PHONY : test_template_system/fast
 
 #=============================================================================
+# Target rules for targets named test_complete_template_system
+
+# Build rule for target.
+test_complete_template_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_complete_template_system
+.PHONY : test_complete_template_system
+
+# fast build rule for target.
+test_complete_template_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/build
+.PHONY : test_complete_template_system/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -411,6 +424,30 @@ test_complete_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_system.dir/build.make CMakeFiles/test_complete_system.dir/test_complete_system.cpp.s
 .PHONY : test_complete_system.cpp.s
 
+test_complete_template_system.o: test_complete_template_system.cpp.o
+.PHONY : test_complete_template_system.o
+
+# target to build an object file
+test_complete_template_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/test_complete_template_system.cpp.o
+.PHONY : test_complete_template_system.cpp.o
+
+test_complete_template_system.i: test_complete_template_system.cpp.i
+.PHONY : test_complete_template_system.i
+
+# target to preprocess a source file
+test_complete_template_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/test_complete_template_system.cpp.i
+.PHONY : test_complete_template_system.cpp.i
+
+test_complete_template_system.s: test_complete_template_system.cpp.s
+.PHONY : test_complete_template_system.s
+
+# target to generate assembly for a file
+test_complete_template_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/test_complete_template_system.cpp.s
+.PHONY : test_complete_template_system.cpp.s
+
 test_state_context.o: test_state_context.cpp.o
 .PHONY : test_state_context.o
 
@@ -506,6 +543,7 @@ help:
 	@echo "... test_chtl_syntax"
 	@echo "... test_compilation_monitor"
 	@echo "... test_complete_system"
+	@echo "... test_complete_template_system"
 	@echo "... test_lexer"
 	@echo "... test_state_context"
 	@echo "... test_template_system"
@@ -516,6 +554,9 @@ help:
 	@echo "... test_complete_system.o"
 	@echo "... test_complete_system.i"
 	@echo "... test_complete_system.s"
+	@echo "... test_complete_template_system.o"
+	@echo "... test_complete_template_system.i"
+	@echo "... test_complete_template_system.s"
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"

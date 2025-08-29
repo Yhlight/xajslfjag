@@ -142,4 +142,26 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
     )
+    
+    # 创建完整模板系统测试程序
+    add_executable(test_complete_template_system test_complete_template_system.cpp)
+    target_link_libraries(test_complete_template_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_complete_template_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
 endif()
