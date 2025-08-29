@@ -41,6 +41,23 @@ set(CHTL_CORE_SOURCES
     src/CMODSystem/CJMODScanner.cpp
     src/CMODSystem/Syntax.cpp
     src/CMODSystem/CJMODGenerator.cpp
+    
+    # CHTL JS Lexer
+    src/CHTLJS/CHTLJSLexer/Token.cpp
+    src/CHTLJS/CHTLJSLexer/GlobalMap.cpp
+    src/CHTLJS/CHTLJSLexer/Lexer.cpp
+    
+    # CHTL JS Generator
+    src/CHTLJS/CHTLJSGenerator/Generator.cpp
+    
+    # CSS Compiler
+    src/CSS/CSSCompiler.cpp
+    
+    # JS Compiler
+    src/JS/JSCompiler.cpp
+    
+    # ZIP Utility
+    src/Util/ZIPUtil/ZIPManager.cpp
 )
 
 # 包含目录

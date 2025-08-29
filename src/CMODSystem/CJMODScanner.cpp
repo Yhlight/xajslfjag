@@ -94,6 +94,197 @@ DualPointerScanResult CJMODScanner::scan() {
     return result;
 }
 
+// 关键的静态scan方法实现 - CJMOD动态获取值的核心
+Arg CJMODScanner::scan(const Arg& args, const CHTL::String& keyword) {
+    try {
+        // 验证关键字有效性
+        if (!isValidCJMODKeyword(keyword)) {
+            throw std::invalid_argument("无效的CJMOD关键字: " + keyword);
+        }
+        
+        // 从参数中获取源代码
+        CHTL::String sourceCode = args.getSourceCode();
+        if (sourceCode.empty()) {
+            throw std::invalid_argument("参数中缺少源代码内容");
+        }
+        
+        // 创建临时扫描器配置
+        CJMODScannerConfig tempConfig;
+        tempConfig.enableDualPointer = true;
+        tempConfig.enablePreemptiveCapture = true;
+        tempConfig.strictMode = true;
+        
+        // 创建临时扫描器实例
+        CJMODScanner scanner(sourceCode, tempConfig);
+        
+        // 执行双指针扫描寻找关键字
+        CHTL::StringVector arguments = extractArgumentsFromSource(sourceCode, keyword);
+        
+        // 创建结果Arg对象
+        Arg result;
+        result.clear();
+        
+        // 根据找到的参数数量填充结果
+        for (size_t i = 0; i < arguments.size(); ++i) {
+            AtomArg atomArg;
+            atomArg.placeholder = "$" + std::to_string(i);
+            atomArg.value = cleanupFragment(arguments[i]);
+            atomArg.type = AtomArg::PlaceholderType::NORMAL;
+            result.addAtomArg(atomArg);
+        }
+        
+        // 添加关键字信息
+        AtomArg keywordArg;
+        keywordArg.placeholder = "$keyword";
+        keywordArg.value = keyword;
+        keywordArg.type = AtomArg::PlaceholderType::REQUIRED;
+        result.addAtomArg(keywordArg);
+        
+        return result;
+        
+    } catch (const std::exception& e) {
+        // 创建错误结果
+        Arg errorResult;
+        errorResult.addError("CJMOD扫描失败: " + CHTL::String(e.what()));
+        return errorResult;
+    }
+}
+
+// 前置截取机制实现
+CHTL::String CJMODScanner::preemptiveCapture(const CHTL::String& source, const CHTL::String& pattern) {
+    try {
+        // 查找模式在源码中的位置
+        size_t patternPos = source.find(pattern);
+        if (patternPos == CHTL::String::npos) {
+            return "";
+        }
+        
+        // 向前截取被错误切分的片段
+        size_t startPos = 0;
+        if (patternPos > 0) {
+            // 寻找上一个完整token的边界
+            size_t boundaryPos = patternPos;
+            while (boundaryPos > 0 && !isspace(source[boundaryPos - 1]) && source[boundaryPos - 1] != ';') {
+                boundaryPos--;
+            }
+            startPos = boundaryPos;
+        }
+        
+        // 向后找到完整语法片段的结尾
+        size_t endPos = patternPos + pattern.length();
+        while (endPos < source.length() && !isspace(source[endPos]) && source[endPos] != ';') {
+            endPos++;
+        }
+        
+        // 提取完整的语法片段
+        return source.substr(startPos, endPos - startPos);
+        
+    } catch (const std::exception& e) {
+        return "";
+    }
+}
+
+// 语法片段验证
+bool CJMODScanner::validateSyntaxFragment(const CHTL::String& fragment) {
+    if (fragment.empty()) return false;
+    
+    // 基本语法检查
+    int bracketCount = 0;
+    int parenCount = 0;
+    bool inString = false;
+    char stringChar = '\0';
+    
+    for (char c : fragment) {
+        if (!inString) {
+            if (c == '"' || c == '\'') {
+                inString = true;
+                stringChar = c;
+            } else if (c == '{') {
+                bracketCount++;
+            } else if (c == '}') {
+                bracketCount--;
+            } else if (c == '(') {
+                parenCount++;
+            } else if (c == ')') {
+                parenCount--;
+            }
+        } else {
+            if (c == stringChar && (fragment.size() == 1 || fragment[fragment.find(c) - 1] != '\\')) {
+                inString = false;
+            }
+        }
+    }
+    
+    // 检查括号匹配
+    return bracketCount == 0 && parenCount == 0 && !inString;
+}
+
+// 静态辅助方法实现
+CHTL::StringVector CJMODScanner::extractArgumentsFromSource(const CHTL::String& source, const CHTL::String& keyword) {
+    CHTL::StringVector arguments;
+    
+    size_t keywordPos = source.find(keyword);
+    if (keywordPos == CHTL::String::npos) {
+        return arguments;
+    }
+    
+    // 向前提取参数
+    size_t beforeStart = 0;
+    if (keywordPos > 0) {
+        // 找到关键字前的参数
+        size_t pos = keywordPos;
+        while (pos > 0 && isspace(source[pos - 1])) pos--;
+        
+        if (pos > 0) {
+            size_t argEnd = pos;
+            while (pos > 0 && !isspace(source[pos - 1])) pos--;
+            if (pos < argEnd) {
+                arguments.insert(arguments.begin(), source.substr(pos, argEnd - pos));
+            }
+        }
+    }
+    
+    // 向后提取参数
+    size_t afterStart = keywordPos + keyword.length();
+    while (afterStart < source.length() && isspace(source[afterStart])) afterStart++;
+    
+    if (afterStart < source.length()) {
+        size_t pos = afterStart;
+        while (pos < source.length() && !isspace(source[pos])) pos++;
+        if (pos > afterStart) {
+            arguments.push_back(source.substr(afterStart, pos - afterStart));
+        }
+    }
+    
+    return arguments;
+}
+
+bool CJMODScanner::isValidCJMODKeyword(const CHTL::String& keyword) {
+    if (keyword.empty()) return false;
+    
+    // 检查常见的CJMOD关键字
+    static const std::set<CHTL::String> validKeywords = {
+        "**", "++", "--", "+=", "-=", "*=", "/=", "%=",
+        "&&", "||", "==", "!=", "<=", ">=", "<<", ">>",
+        "->", "=>", "::", "!!", "??", "..", "..."
+    };
+    
+    return validKeywords.find(keyword) != validKeywords.end();
+}
+
+CHTL::String CJMODScanner::cleanupFragment(const CHTL::String& fragment) {
+    CHTL::String cleaned = fragment;
+    
+    // 移除前后空白
+    size_t start = cleaned.find_first_not_of(" \t\n\r");
+    if (start == CHTL::String::npos) return "";
+    
+    size_t end = cleaned.find_last_not_of(" \t\n\r");
+    cleaned = cleaned.substr(start, end - start + 1);
+    
+    return cleaned;
+}
+
 void CJMODScanner::performDualPointerScan(DualPointerScanResult& result) {
     while (!primaryState.isAtEnd(sourceCode) || !auxiliaryState.isAtEnd(sourceCode)) {
         // 主指针扫描

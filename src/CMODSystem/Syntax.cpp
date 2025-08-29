@@ -390,4 +390,33 @@ void Arg::validatePlaceholders() const {
     }
 }
 
+// CJMOD特殊功能实现
+CHTL::String Arg::getSourceCode() const {
+    // 从原子参数中重构源代码字符串
+    CHTL::String sourceCode;
+    
+    for (const auto& atom : atoms) {
+        if (atom.placeholder == "$source" || atom.placeholder == "$code") {
+            return atom.value;
+        }
+    }
+    
+    // 如果没有找到专门的源代码参数，则从所有参数重构
+    for (size_t i = 0; i < atoms.size(); ++i) {
+        if (i > 0) sourceCode += " ";
+        sourceCode += atoms[i].value;
+    }
+    
+    return sourceCode;
+}
+
+void Arg::addError(const CHTL::String& error) {
+    // 将错误信息作为特殊的原子参数存储
+    AtomArg errorAtom;
+    errorAtom.placeholder = "$error_" + std::to_string(atoms.size());
+    errorAtom.value = error;
+    errorAtom.type = AtomArg::PlaceholderType::REQUIRED;
+    atoms.push_back(errorAtom);
+}
+
 } // namespace CJMOD

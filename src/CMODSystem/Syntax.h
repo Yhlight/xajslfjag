@@ -131,6 +131,12 @@ public:
     std::vector<AtomArg>::const_iterator begin() const { return atoms.begin(); }
     std::vector<AtomArg>::const_iterator end() const { return atoms.end(); }
     
+    // CJMOD特殊功能
+    void clear() { atoms.clear(); isTransformed = false; transformPattern.clear(); }
+    void addAtomArg(const AtomArg& atom) { atoms.push_back(atom); }
+    CHTL::String getSourceCode() const;  // 获取源代码用于扫描
+    void addError(const CHTL::String& error);  // 添加错误信息
+    
 private:
     // 辅助方法
     void expandVariadicArgs(const CHTL::StringVector& values);
