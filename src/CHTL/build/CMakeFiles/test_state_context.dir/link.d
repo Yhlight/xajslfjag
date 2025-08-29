@@ -3,10 +3,13 @@ test_state_context: \
   /lib/x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/test_state_context.dir/test_state_context.cpp.o \
+  CHTLError/libCHTLError.a \
   CHTLLexer/libCHTLLexer.a \
   CHTLState/libCHTLState.a \
   CHTLContext/libCHTLContext.a \
   CHTLLexer/libCHTLLexer.a \
+  CHTLContext/libCHTLContext.a \
+  CHTLError/libCHTLError.a \
   CHTLState/libCHTLState.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -44,6 +47,8 @@ test_state_context: \
 
 CMakeFiles/test_state_context.dir/test_state_context.cpp.o:
 
+CHTLError/libCHTLError.a:
+
 CHTLLexer/libCHTLLexer.a:
 
 CHTLState/libCHTLState.a:
@@ -51,6 +56,10 @@ CHTLState/libCHTLState.a:
 CHTLContext/libCHTLContext.a:
 
 CHTLLexer/libCHTLLexer.a:
+
+CHTLContext/libCHTLContext.a:
+
+CHTLError/libCHTLError.a:
 
 CHTLState/libCHTLState.a:
 

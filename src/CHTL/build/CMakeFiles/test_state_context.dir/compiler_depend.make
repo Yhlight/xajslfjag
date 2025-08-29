@@ -158,6 +158,7 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o: /workspace/src/CHTL/
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
   /usr/include/c++/14/bits/shared_ptr_base.h \
+  /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
   /usr/include/c++/14/bits/std_function.h \
   /usr/include/c++/14/bits/stl_algobase.h \
@@ -220,6 +221,7 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o: /workspace/src/CHTL/
   /usr/include/c++/14/pstl/execution_defs.h \
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
+  /usr/include/c++/14/sstream \
   /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
@@ -259,6 +261,9 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o: /workspace/src/CHTL/
   /workspace/src/CHTL/CHTLLexer/Type.h \
   /workspace/src/CHTL/CHTLState/State.h \
   /workspace/src/CHTL/CHTLContext/Context.h \
+  /workspace/src/Error/ErrorReport.h \
+  /workspace/src/CHTL/CHTLContext/Context.h \
+  /workspace/src/CHTL/CHTLState/State.h \
   /workspace/src/CHTL/CHTLLexer/GlobalMap.h \
   /workspace/src/CHTL/CHTLLexer/Lexer.h \
   /workspace/src/CHTL/CHTLLexer/Token.h \
@@ -282,6 +287,7 @@ test_state_context: /lib/x86_64-linux-gnu/Scrt1.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
   CHTLContext/libCHTLContext.a \
+  CHTLError/libCHTLError.a \
   CHTLLexer/libCHTLLexer.a \
   CHTLState/libCHTLState.a \
   CMakeFiles/test_state_context.dir/test_state_context.cpp.o
@@ -317,7 +323,11 @@ CHTLLexer/libCHTLLexer.a:
 
 /workspace/src/CHTL/CHTLLexer/GlobalMap.h:
 
+/workspace/src/Error/ErrorReport.h:
+
 /workspace/src/CHTL/CHTLContext/Context.h:
+
+/workspace/src/CHTL/CHTLState/State.h:
 
 /usr/include/x86_64-linux-gnu/bits/locale.h:
 
@@ -483,6 +493,8 @@ CHTLLexer/libCHTLLexer.a:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
+CHTLError/libCHTLError.a:
+
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
@@ -546,6 +558,10 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o:
 /usr/include/wchar.h:
 
 /usr/include/x86_64-linux-gnu/bits/typesizes.h:
+
+/workspace/src/CHTL/CHTLLexer/Type.h:
+
+/usr/include/asm-generic/posix_types.h:
 
 /usr/include/stdc-predef.h:
 
@@ -713,6 +729,8 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o:
 
 /usr/include/c++/14/bits/refwrap.h:
 
+/usr/include/c++/14/bits/sstream.tcc:
+
 /usr/include/c++/14/bits/new_allocator.h:
 
 /usr/include/c++/14/bits/stl_bvector.h:
@@ -801,6 +819,8 @@ CHTLContext/libCHTLContext.a:
 
 /usr/include/c++/14/pstl/execution_defs.h:
 
+/usr/include/c++/14/sstream:
+
 /usr/include/c++/14/string:
 
 /usr/include/c++/14/tuple:
@@ -842,9 +862,3 @@ CHTLContext/libCHTLContext.a:
 /usr/include/c++/14/cwchar:
 
 /usr/lib/llvm-20/lib/clang/20/include/stddef.h:
-
-/usr/include/asm-generic/posix_types.h:
-
-/workspace/src/CHTL/CHTLLexer/Type.h:
-
-/workspace/src/CHTL/CHTLState/State.h:

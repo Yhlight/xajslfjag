@@ -1,6 +1,10 @@
 /workspace/src/CHTL/build/CMakeFiles/test_state_context.dir
+/workspace/src/CHTL/build/CMakeFiles/test_updated_lexer.dir
 /workspace/src/CHTL/build/CMakeFiles/edit_cache.dir
 /workspace/src/CHTL/build/CMakeFiles/rebuild_cache.dir
+/workspace/src/CHTL/build/CHTLError/CMakeFiles/CHTLError.dir
+/workspace/src/CHTL/build/CHTLError/CMakeFiles/edit_cache.dir
+/workspace/src/CHTL/build/CHTLError/CMakeFiles/rebuild_cache.dir
 /workspace/src/CHTL/build/CHTLLexer/CMakeFiles/CHTLLexer.dir
 /workspace/src/CHTL/build/CHTLLexer/CMakeFiles/test_lexer.dir
 /workspace/src/CHTL/build/CHTLLexer/CMakeFiles/edit_cache.dir

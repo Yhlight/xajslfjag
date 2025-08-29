@@ -64,6 +64,8 @@ CMAKE_BINARY_DIR = /workspace/src/CHTL/build
 
 # The main recursive "all" target.
 all: CMakeFiles/test_state_context.dir/all
+all: CMakeFiles/test_updated_lexer.dir/all
+all: CHTLError/all
 all: CHTLLexer/all
 all: CHTLState/all
 all: CHTLContext/all
@@ -71,12 +73,15 @@ all: CHTLContext/all
 
 # The main recursive "codegen" target.
 codegen: CMakeFiles/test_state_context.dir/codegen
+codegen: CMakeFiles/test_updated_lexer.dir/codegen
+codegen: CHTLError/codegen
 codegen: CHTLLexer/codegen
 codegen: CHTLState/codegen
 codegen: CHTLContext/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
+preinstall: CHTLError/preinstall
 preinstall: CHTLLexer/preinstall
 preinstall: CHTLState/preinstall
 preinstall: CHTLContext/preinstall
@@ -84,6 +89,8 @@ preinstall: CHTLContext/preinstall
 
 # The main recursive "clean" target.
 clean: CMakeFiles/test_state_context.dir/clean
+clean: CMakeFiles/test_updated_lexer.dir/clean
+clean: CHTLError/clean
 clean: CHTLLexer/clean
 clean: CHTLState/clean
 clean: CHTLContext/clean
@@ -107,6 +114,25 @@ CHTLContext/preinstall:
 # Recursive "clean" directory target.
 CHTLContext/clean: CHTLContext/CMakeFiles/CHTLContext.dir/clean
 .PHONY : CHTLContext/clean
+
+#=============================================================================
+# Directory level rules for directory CHTLError
+
+# Recursive "all" directory target.
+CHTLError/all: CHTLError/CMakeFiles/CHTLError.dir/all
+.PHONY : CHTLError/all
+
+# Recursive "codegen" directory target.
+CHTLError/codegen: CHTLError/CMakeFiles/CHTLError.dir/codegen
+.PHONY : CHTLError/codegen
+
+# Recursive "preinstall" directory target.
+CHTLError/preinstall:
+.PHONY : CHTLError/preinstall
+
+# Recursive "clean" directory target.
+CHTLError/clean: CHTLError/CMakeFiles/CHTLError.dir/clean
+.PHONY : CHTLError/clean
 
 #=============================================================================
 # Directory level rules for directory CHTLLexer
@@ -153,17 +179,17 @@ CHTLState/clean: CHTLState/CMakeFiles/CHTLState.dir/clean
 # Target rules for target CMakeFiles/test_state_context.dir
 
 # All Build rule for target.
+CMakeFiles/test_state_context.dir/all: CHTLError/CMakeFiles/CHTLError.dir/all
 CMakeFiles/test_state_context.dir/all: CHTLLexer/CMakeFiles/CHTLLexer.dir/all
 CMakeFiles/test_state_context.dir/all: CHTLState/CMakeFiles/CHTLState.dir/all
-CMakeFiles/test_state_context.dir/all: CHTLContext/CMakeFiles/CHTLContext.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=12,13 "Built target test_state_context"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=14,15 "Built target test_state_context"
 .PHONY : CMakeFiles/test_state_context.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/test_state_context.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 11
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 13
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_state_context.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
 .PHONY : CMakeFiles/test_state_context.dir/rule
@@ -175,7 +201,7 @@ test_state_context: CMakeFiles/test_state_context.dir/rule
 # codegen rule for target.
 CMakeFiles/test_state_context.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=12,13 "Finished codegen for target test_state_context"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=14,15 "Finished codegen for target test_state_context"
 .PHONY : CMakeFiles/test_state_context.dir/codegen
 
 # clean rule for target.
@@ -184,18 +210,84 @@ CMakeFiles/test_state_context.dir/clean:
 .PHONY : CMakeFiles/test_state_context.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/test_updated_lexer.dir
+
+# All Build rule for target.
+CMakeFiles/test_updated_lexer.dir/all: CHTLError/CMakeFiles/CHTLError.dir/all
+CMakeFiles/test_updated_lexer.dir/all: CHTLLexer/CMakeFiles/CHTLLexer.dir/all
+CMakeFiles/test_updated_lexer.dir/all: CHTLState/CMakeFiles/CHTLState.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=16,17 "Built target test_updated_lexer"
+.PHONY : CMakeFiles/test_updated_lexer.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/test_updated_lexer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 13
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_updated_lexer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
+.PHONY : CMakeFiles/test_updated_lexer.dir/rule
+
+# Convenience name for target.
+test_updated_lexer: CMakeFiles/test_updated_lexer.dir/rule
+.PHONY : test_updated_lexer
+
+# codegen rule for target.
+CMakeFiles/test_updated_lexer.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=16,17 "Finished codegen for target test_updated_lexer"
+.PHONY : CMakeFiles/test_updated_lexer.dir/codegen
+
+# clean rule for target.
+CMakeFiles/test_updated_lexer.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/clean
+.PHONY : CMakeFiles/test_updated_lexer.dir/clean
+
+#=============================================================================
+# Target rules for target CHTLError/CMakeFiles/CHTLError.dir
+
+# All Build rule for target.
+CHTLError/CMakeFiles/CHTLError.dir/all:
+	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/depend
+	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=3,4 "Built target CHTLError"
+.PHONY : CHTLError/CMakeFiles/CHTLError.dir/all
+
+# Build rule for subdir invocation for target.
+CHTLError/CMakeFiles/CHTLError.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLError/CMakeFiles/CHTLError.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
+.PHONY : CHTLError/CMakeFiles/CHTLError.dir/rule
+
+# Convenience name for target.
+CHTLError: CHTLError/CMakeFiles/CHTLError.dir/rule
+.PHONY : CHTLError
+
+# codegen rule for target.
+CHTLError/CMakeFiles/CHTLError.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=3,4 "Finished codegen for target CHTLError"
+.PHONY : CHTLError/CMakeFiles/CHTLError.dir/codegen
+
+# clean rule for target.
+CHTLError/CMakeFiles/CHTLError.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/clean
+.PHONY : CHTLError/CMakeFiles/CHTLError.dir/clean
+
+#=============================================================================
 # Target rules for target CHTLLexer/CMakeFiles/CHTLLexer.dir
 
 # All Build rule for target.
-CHTLLexer/CMakeFiles/CHTLLexer.dir/all:
+CHTLLexer/CMakeFiles/CHTLLexer.dir/all: CHTLContext/CMakeFiles/CHTLContext.dir/all
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/CHTLLexer.dir/build.make CHTLLexer/CMakeFiles/CHTLLexer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/CHTLLexer.dir/build.make CHTLLexer/CMakeFiles/CHTLLexer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=3,4,5,6,7 "Built target CHTLLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=5,6,7,8,9 "Built target CHTLLexer"
 .PHONY : CHTLLexer/CMakeFiles/CHTLLexer.dir/all
 
 # Build rule for subdir invocation for target.
 CHTLLexer/CMakeFiles/CHTLLexer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 11
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLLexer/CMakeFiles/CHTLLexer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
 .PHONY : CHTLLexer/CMakeFiles/CHTLLexer.dir/rule
@@ -207,7 +299,7 @@ CHTLLexer: CHTLLexer/CMakeFiles/CHTLLexer.dir/rule
 # codegen rule for target.
 CHTLLexer/CMakeFiles/CHTLLexer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/CHTLLexer.dir/build.make CHTLLexer/CMakeFiles/CHTLLexer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=3,4,5,6,7 "Finished codegen for target CHTLLexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=5,6,7,8,9 "Finished codegen for target CHTLLexer"
 .PHONY : CHTLLexer/CMakeFiles/CHTLLexer.dir/codegen
 
 # clean rule for target.
@@ -219,15 +311,17 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/clean:
 # Target rules for target CHTLLexer/CMakeFiles/test_lexer.dir
 
 # All Build rule for target.
+CHTLLexer/CMakeFiles/test_lexer.dir/all: CHTLError/CMakeFiles/CHTLError.dir/all
 CHTLLexer/CMakeFiles/test_lexer.dir/all: CHTLLexer/CMakeFiles/CHTLLexer.dir/all
+CHTLLexer/CMakeFiles/test_lexer.dir/all: CHTLState/CMakeFiles/CHTLState.dir/all
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/test_lexer.dir/build.make CHTLLexer/CMakeFiles/test_lexer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/test_lexer.dir/build.make CHTLLexer/CMakeFiles/test_lexer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=10,11 "Built target test_lexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=12,13 "Built target test_lexer"
 .PHONY : CHTLLexer/CMakeFiles/test_lexer.dir/all
 
 # Build rule for subdir invocation for target.
 CHTLLexer/CMakeFiles/test_lexer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 13
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLLexer/CMakeFiles/test_lexer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
 .PHONY : CHTLLexer/CMakeFiles/test_lexer.dir/rule
@@ -239,7 +333,7 @@ test_lexer: CHTLLexer/CMakeFiles/test_lexer.dir/rule
 # codegen rule for target.
 CHTLLexer/CMakeFiles/test_lexer.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CHTLLexer/CMakeFiles/test_lexer.dir/build.make CHTLLexer/CMakeFiles/test_lexer.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=10,11 "Finished codegen for target test_lexer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=12,13 "Finished codegen for target test_lexer"
 .PHONY : CHTLLexer/CMakeFiles/test_lexer.dir/codegen
 
 # clean rule for target.
@@ -254,7 +348,7 @@ CHTLLexer/CMakeFiles/test_lexer.dir/clean:
 CHTLState/CMakeFiles/CHTLState.dir/all:
 	$(MAKE) $(MAKESILENT) -f CHTLState/CMakeFiles/CHTLState.dir/build.make CHTLState/CMakeFiles/CHTLState.dir/depend
 	$(MAKE) $(MAKESILENT) -f CHTLState/CMakeFiles/CHTLState.dir/build.make CHTLState/CMakeFiles/CHTLState.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=8,9 "Built target CHTLState"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=10,11 "Built target CHTLState"
 .PHONY : CHTLState/CMakeFiles/CHTLState.dir/all
 
 # Build rule for subdir invocation for target.
@@ -271,7 +365,7 @@ CHTLState: CHTLState/CMakeFiles/CHTLState.dir/rule
 # codegen rule for target.
 CHTLState/CMakeFiles/CHTLState.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CHTLState/CMakeFiles/CHTLState.dir/build.make CHTLState/CMakeFiles/CHTLState.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=8,9 "Finished codegen for target CHTLState"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=10,11 "Finished codegen for target CHTLState"
 .PHONY : CHTLState/CMakeFiles/CHTLState.dir/codegen
 
 # clean rule for target.
@@ -283,7 +377,7 @@ CHTLState/CMakeFiles/CHTLState.dir/clean:
 # Target rules for target CHTLContext/CMakeFiles/CHTLContext.dir
 
 # All Build rule for target.
-CHTLContext/CMakeFiles/CHTLContext.dir/all: CHTLLexer/CMakeFiles/CHTLLexer.dir/all
+CHTLContext/CMakeFiles/CHTLContext.dir/all: CHTLError/CMakeFiles/CHTLError.dir/all
 CHTLContext/CMakeFiles/CHTLContext.dir/all: CHTLState/CMakeFiles/CHTLState.dir/all
 	$(MAKE) $(MAKESILENT) -f CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTLContext/CMakeFiles/CHTLContext.dir/depend
 	$(MAKE) $(MAKESILENT) -f CHTLContext/CMakeFiles/CHTLContext.dir/build.make CHTLContext/CMakeFiles/CHTLContext.dir/build
@@ -292,7 +386,7 @@ CHTLContext/CMakeFiles/CHTLContext.dir/all: CHTLState/CMakeFiles/CHTLState.dir/a
 
 # Build rule for subdir invocation for target.
 CHTLContext/CMakeFiles/CHTLContext.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLContext/CMakeFiles/CHTLContext.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles 0
 .PHONY : CHTLContext/CMakeFiles/CHTLContext.dir/rule

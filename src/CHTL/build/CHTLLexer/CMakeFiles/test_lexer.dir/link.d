@@ -4,6 +4,11 @@ test_lexer: \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/test_lexer.dir/test_lexer.cpp.o \
   libCHTLLexer.a \
+  ../CHTLContext/libCHTLContext.a \
+  libCHTLLexer.a \
+  ../CHTLContext/libCHTLContext.a \
+  ../CHTLError/libCHTLError.a \
+  ../CHTLState/libCHTLState.a \
   /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
   /lib/x86_64-linux-gnu/libm.so \
   /lib/x86_64-linux-gnu/libm.so \
@@ -41,6 +46,16 @@ test_lexer: \
 CMakeFiles/test_lexer.dir/test_lexer.cpp.o:
 
 libCHTLLexer.a:
+
+../CHTLContext/libCHTLContext.a:
+
+libCHTLLexer.a:
+
+../CHTLContext/libCHTLContext.a:
+
+../CHTLError/libCHTLError.a:
+
+../CHTLState/libCHTLState.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
 

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/workspace/src/CHTL/CHTLContext -I/workspace/src/CHTL/CHTLLexer -I/workspace/src/CHTL/CHTLState
+CXX_INCLUDES = -I/workspace/src/CHTL/CHTLContext -I/workspace/src/CHTL/CHTLLexer -I/workspace/src/CHTL/CHTLState -I/workspace/src/Error
 
 CXX_FLAGS = -std=gnu++17 -Wall -Wextra -Wpedantic
 

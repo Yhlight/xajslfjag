@@ -4,9 +4,7 @@
 namespace CHTL {
 
 GlobalMap::GlobalMap() 
-    : m_debugMode(false)
-    , m_indexInitialCount(0)
-    , m_initialized(false) {
+    : m_initialized(false) {
     initializeStaticData();
 }
 
@@ -109,18 +107,7 @@ void GlobalMap::initializeStaticData() {
         "opacity", "cursor", "outline", "resize", "user-select", "pointer-events"
     };
     
-    // 设置默认配置
-    m_boolConfigs["DISABLE_NAME_GROUP"] = true;
-    m_boolConfigs["DISABLE_CUSTOM_ORIGIN_TYPE"] = false;
-    m_boolConfigs["DEBUG_MODE"] = false;
-    m_boolConfigs["DISABLE_STYLE_AUTO_ADD_CLASS"] = false;
-    m_boolConfigs["DISABLE_STYLE_AUTO_ADD_ID"] = false;
-    m_boolConfigs["DISABLE_SCRIPT_AUTO_ADD_CLASS"] = true;
-    m_boolConfigs["DISABLE_SCRIPT_AUTO_ADD_ID"] = true;
-    m_boolConfigs["DISABLE_DEFAULT_NAMESPACE"] = false;
-    
-    m_intConfigs["INDEX_INITIAL_COUNT"] = 0;
-    m_intConfigs["OPTION_COUNT"] = 3;
+
     
     m_initialized = true;
 }
@@ -139,117 +126,6 @@ bool GlobalMap::isCssProperty(const std::string& property) const {
     return m_cssProperties.find(property) != m_cssProperties.end();
 }
 
-// ========== 配置信息实现 ==========
 
-bool GlobalMap::getConfigBool(const std::string& key, bool defaultValue) const {
-    auto it = m_boolConfigs.find(key);
-    return (it != m_boolConfigs.end()) ? it->second : defaultValue;
-}
-
-void GlobalMap::setConfigBool(const std::string& key, bool value) {
-    m_boolConfigs[key] = value;
-}
-
-std::string GlobalMap::getConfigString(const std::string& key, const std::string& defaultValue) const {
-    auto it = m_stringConfigs.find(key);
-    return (it != m_stringConfigs.end()) ? it->second : defaultValue;
-}
-
-void GlobalMap::setConfigString(const std::string& key, const std::string& value) {
-    m_stringConfigs[key] = value;
-}
-
-int GlobalMap::getConfigInt(const std::string& key, int defaultValue) const {
-    auto it = m_intConfigs.find(key);
-    return (it != m_intConfigs.end()) ? it->second : defaultValue;
-}
-
-void GlobalMap::setConfigInt(const std::string& key, int value) {
-    m_intConfigs[key] = value;
-}
-
-// ========== 路径信息实现 ==========
-
-void GlobalMap::setCurrentFilePath(const std::string& path) {
-    m_currentFilePath = path;
-}
-
-std::string GlobalMap::getCurrentFilePath() const {
-    return m_currentFilePath;
-}
-
-void GlobalMap::setOfficialModulePath(const std::string& path) {
-    m_officialModulePath = path;
-}
-
-std::string GlobalMap::getOfficialModulePath() const {
-    return m_officialModulePath;
-}
-
-void GlobalMap::setWorkingDirectory(const std::string& path) {
-    m_workingDirectory = path;
-}
-
-std::string GlobalMap::getWorkingDirectory() const {
-    return m_workingDirectory;
-}
-
-// ========== 状态信息实现 ==========
-
-bool GlobalMap::isDebugMode() const {
-    return m_debugMode;
-}
-
-void GlobalMap::setDebugMode(bool enabled) {
-    m_debugMode = enabled;
-    m_boolConfigs["DEBUG_MODE"] = enabled;
-}
-
-int GlobalMap::getIndexInitialCount() const {
-    return m_indexInitialCount;
-}
-
-void GlobalMap::setIndexInitialCount(int count) {
-    m_indexInitialCount = count;
-    m_intConfigs["INDEX_INITIAL_COUNT"] = count;
-}
-
-// ========== 静态表信息实现 ==========
-
-void GlobalMap::registerCustomOriginType(const std::string& typeName) {
-    m_customOriginTypes.insert(typeName);
-}
-
-bool GlobalMap::isCustomOriginType(const std::string& typeName) const {
-    return m_customOriginTypes.find(typeName) != m_customOriginTypes.end();
-}
-
-const std::unordered_set<std::string>& GlobalMap::getCustomOriginTypes() const {
-    return m_customOriginTypes;
-}
-
-// ========== 清理和重置实现 ==========
-
-void GlobalMap::clearTempData() {
-    // 清理临时数据，保留配置和静态数据
-    m_currentFilePath.clear();
-}
-
-void GlobalMap::reset() {
-    // 重置所有数据
-    m_boolConfigs.clear();
-    m_stringConfigs.clear();
-    m_intConfigs.clear();
-    m_currentFilePath.clear();
-    m_officialModulePath.clear();
-    m_workingDirectory.clear();
-    m_customOriginTypes.clear();
-    m_debugMode = false;
-    m_indexInitialCount = 0;
-    m_initialized = false;
-    
-    // 重新初始化
-    initializeStaticData();
-}
 
 } // namespace CHTL

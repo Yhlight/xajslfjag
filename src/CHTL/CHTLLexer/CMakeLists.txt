@@ -37,6 +37,13 @@ target_include_directories(CHTLLexer PUBLIC
     $<INSTALL_INTERFACE:include>
 )
 
+# 链接依赖
+target_link_libraries(CHTLLexer PUBLIC
+    CHTLState
+    CHTLContext
+    CHTLError
+)
+
 # 设置目标属性
 set_target_properties(CHTLLexer PROPERTIES
     VERSION ${PROJECT_VERSION}

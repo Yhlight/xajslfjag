@@ -221,8 +221,11 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o: \
   /workspace/src/CHTL/CHTLLexer/Token.h \
   /workspace/src/CHTL/CHTLLexer/Type.h \
   /workspace/src/CHTL/CHTLLexer/GlobalMap.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iostream \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ostream \
+  /workspace/src/CHTL/CHTLLexer/../CHTLState/State.h \
+  /workspace/src/CHTL/CHTLLexer/../CHTLContext/Context.h \
+  /workspace/src/CHTL/CHTLLexer/../../Error/ErrorReport.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ios \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ios_base.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_classes.h \
@@ -242,8 +245,10 @@ CMakeFiles/test_state_context.dir/test_state_context.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/basic_ios.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iostream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/cassert \
   /usr/include/assert.h

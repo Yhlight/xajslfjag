@@ -5,12 +5,17 @@
 
 namespace CHTL {
 
-Lexer::Lexer(const std::string& source) 
+Lexer::Lexer(const std::string& source,
+               CHTLStateMachine* stateMachine,
+               CHTLContext* context,
+               ErrorReporter* errorReporter) 
     : m_source(source)
     , m_current(0)
     , m_position(1, 1, 0)
-    , m_state(LexerState::NORMAL)
-    , m_errorCallback(nullptr) {
+    , m_internalState(LexerInternalState::NORMAL)
+    , m_stateMachine(stateMachine)
+    , m_context(context)
+    , m_errorReporter(errorReporter ? errorReporter : &getGlobalErrorReporter()) {
 }
 
 TokenSequence Lexer::tokenize() {
@@ -122,20 +127,20 @@ Token Lexer::nextToken() {
     // 未知字符
     std::string unknownChar(1, c);
     advance();
-    reportError(LexerError::INVALID_CHARACTER, "Unexpected character: " + unknownChar, startPos);
+    reportError(ErrorType::INVALID_CHARACTER, "Unexpected character: " + unknownChar, startPos);
     return makeToken(TokenType::INVALID, unknownChar, startPos);
 }
 
 Token Lexer::peekToken() {
     size_t savedCurrent = m_current;
     Position savedPosition = m_position;
-    LexerState savedState = m_state;
+    LexerInternalState savedState = m_internalState;
     
     Token token = nextToken();
     
     m_current = savedCurrent;
     m_position = savedPosition;
-    m_state = savedState;
+    m_internalState = savedState;
     
     return token;
 }
@@ -148,24 +153,25 @@ Position Lexer::getCurrentPosition() const {
     return m_position;
 }
 
-const std::vector<LexerErrorInfo>& Lexer::getErrors() const {
-    return m_errors;
-}
 
-bool Lexer::hasErrors() const {
-    return !m_errors.empty();
-}
 
 void Lexer::reset(const std::string& source) {
     m_source = source;
     m_current = 0;
     m_position = Position(1, 1, 0);
-    m_state = LexerState::NORMAL;
-    m_errors.clear();
+    m_internalState = LexerInternalState::NORMAL;
 }
 
-void Lexer::setErrorCallback(std::function<void(const LexerErrorInfo&)> callback) {
-    m_errorCallback = callback;
+void Lexer::setStateMachine(CHTLStateMachine* stateMachine) {
+    m_stateMachine = stateMachine;
+}
+
+void Lexer::setContext(CHTLContext* context) {
+    m_context = context;
+}
+
+void Lexer::setErrorReporter(ErrorReporter* errorReporter) {
+    m_errorReporter = errorReporter ? errorReporter : &getGlobalErrorReporter();
 }
 
 // ========== 私有辅助方法实现 ==========
@@ -255,16 +261,14 @@ Token Lexer::makeToken(TokenType type, const std::string& value, const Position&
     return Token(type, value, startPos);
 }
 
-void Lexer::reportError(LexerError type, const std::string& message) {
+void Lexer::reportError(ErrorType type, const std::string& message) {
     reportError(type, message, m_position);
 }
 
-void Lexer::reportError(LexerError type, const std::string& message, const Position& pos) {
-    LexerErrorInfo error(type, message, pos);
-    m_errors.push_back(error);
-    
-    if (m_errorCallback) {
-        m_errorCallback(error);
+void Lexer::reportError(ErrorType type, const std::string& message, const Position& pos) {
+    if (m_errorReporter) {
+        ErrorPosition errorPos("", pos.line, pos.column, pos.offset, 1);
+        m_errorReporter->error(type, message, errorPos);
     }
 }
 
@@ -282,7 +286,7 @@ Token Lexer::scanString(char quote) {
         if (c == '\\') {
             advance();
             if (isAtEnd()) {
-                reportError(LexerError::UNTERMINATED_STRING, "Unterminated string", startPos);
+                reportError(ErrorType::UNTERMINATED_STRING, "Unterminated string", startPos);
                 return makeToken(TokenType::INVALID, value, startPos);
             }
             
@@ -295,7 +299,7 @@ Token Lexer::scanString(char quote) {
                 case '"': value += '"'; break;
                 case '\'': value += '\''; break;
                 default:
-                    reportError(LexerError::INVALID_ESCAPE_SEQUENCE, 
+                    reportError(ErrorType::INVALID_ESCAPE_SEQUENCE, 
                                "Invalid escape sequence: \\" + std::string(1, escaped), m_position);
                     value += escaped;
                     break;
@@ -308,7 +312,7 @@ Token Lexer::scanString(char quote) {
     }
     
     if (isAtEnd()) {
-        reportError(LexerError::UNTERMINATED_STRING, "Unterminated string", startPos);
+        reportError(ErrorType::UNTERMINATED_STRING, "Unterminated string", startPos);
         return makeToken(TokenType::INVALID, value, startPos);
     }
     
@@ -335,7 +339,7 @@ Token Lexer::scanUnquotedLiteral() {
     }
     
     if (value.empty()) {
-        reportError(LexerError::MALFORMED_TOKEN, "Empty unquoted literal", startPos);
+        reportError(ErrorType::MALFORMED_TOKEN, "Empty unquoted literal", startPos);
         return makeToken(TokenType::INVALID, "", startPos);
     }
     
@@ -400,7 +404,7 @@ Token Lexer::scanBlockComment() {
     }
     
     if (isAtEnd() && (m_source.length() < 2 || m_source.substr(m_source.length()-2) != "*/")) {
-        reportError(LexerError::UNTERMINATED_COMMENT, "Unterminated block comment", startPos);
+        reportError(ErrorType::UNTERMINATED_COMMENT, "Unterminated block comment", startPos);
         return makeToken(TokenType::INVALID, value, startPos);
     }
     
@@ -434,7 +438,7 @@ Token Lexer::scanBracketExpression() {
     }
     
     if (isAtEnd()) {
-        reportError(LexerError::MALFORMED_TOKEN, "Unterminated bracket expression", startPos);
+        reportError(ErrorType::MALFORMED_TOKEN, "Unterminated bracket expression", startPos);
         return makeToken(TokenType::INVALID, value, startPos);
     }
     
@@ -474,7 +478,7 @@ Token Lexer::scanAtExpression() {
     }
     
     if (value.length() == 1) {
-        reportError(LexerError::MALFORMED_TOKEN, "Invalid @ expression", startPos);
+        reportError(ErrorType::MALFORMED_TOKEN, "Invalid @ expression", startPos);
         return makeToken(TokenType::INVALID, value, startPos);
     }
     

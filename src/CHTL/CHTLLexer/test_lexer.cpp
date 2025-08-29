@@ -42,13 +42,7 @@ div
         std::cout << token.toString() << std::endl;
     }
     
-    if (lexer.hasErrors()) {
-        std::cout << "\nErrors found:" << std::endl;
-        for (const auto& error : lexer.getErrors()) {
-            std::cout << "Error at " << error.position.line << ":" << error.position.column 
-                      << " - " << error.message << std::endl;
-        }
-    }
+    // 错误通过ErrorReporter处理，这里不再检查
 }
 
 void testTemplateAndCustom() {
@@ -89,13 +83,7 @@ void testTemplateAndCustom() {
         }
     }
     
-    if (lexer.hasErrors()) {
-        std::cout << "\nErrors found:" << std::endl;
-        for (const auto& error : lexer.getErrors()) {
-            std::cout << "Error at " << error.position.line << ":" << error.position.column 
-                      << " - " << error.message << std::endl;
-        }
-    }
+    // 错误通过ErrorReporter处理，这里不再检查
 }
 
 void testComments() {
@@ -152,10 +140,8 @@ void testGlobalMap() {
     std::cout << "  'width' is CSS property: " << globalMap.isCssProperty("width") << std::endl;
     std::cout << "  'invalid-prop' is CSS property: " << globalMap.isCssProperty("invalid-prop") << std::endl;
     
-    // 测试配置
-    std::cout << "\nTesting configuration:" << std::endl;
-    std::cout << "  DEBUG_MODE: " << globalMap.getConfigBool("DEBUG_MODE") << std::endl;
-    std::cout << "  INDEX_INITIAL_COUNT: " << globalMap.getConfigInt("INDEX_INITIAL_COUNT") << std::endl;
+    // 配置功能已移除，GlobalMap现在只提供静态映射查询
+    std::cout << "\nGlobalMap now only provides static mapping queries" << std::endl;
 }
 
 int main() {

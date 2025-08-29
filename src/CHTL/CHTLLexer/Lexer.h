@@ -2,17 +2,19 @@
 #include "Token.h"
 #include "Type.h"
 #include "GlobalMap.h"
+#include "../CHTLState/State.h"
+#include "../CHTLContext/Context.h"
+#include "../../Error/ErrorReport.h"
 #include <string>
 #include <vector>
 #include <memory>
-#include <functional>
 
 namespace CHTL {
 
 /**
- * 词法分析器状态
+ * 词法分析器内部状态（简化版）
  */
-enum class LexerState {
+enum class LexerInternalState {
     NORMAL,                     // 正常状态
     IN_STRING_DOUBLE,           // 在双引号字符串中
     IN_STRING_SINGLE,           // 在单引号字符串中
@@ -22,50 +24,26 @@ enum class LexerState {
     IN_BRACKET_EXPRESSION,      // 在方括号表达式中
     IN_AT_EXPRESSION,           // 在@表达式中
     IN_CSS_SELECTOR,            // 在CSS选择器中
-    IN_INDEX_ACCESS,            // 在索引访问中
-    ERROR_STATE                 // 错误状态
-};
-
-/**
- * 词法分析错误类型
- */
-enum class LexerError {
-    NONE,                       // 无错误
-    UNTERMINATED_STRING,        // 未终止的字符串
-    UNTERMINATED_COMMENT,       // 未终止的注释
-    INVALID_CHARACTER,          // 无效字符
-    INVALID_ESCAPE_SEQUENCE,    // 无效转义序列
-    MALFORMED_TOKEN,            // 格式错误的token
-    UNEXPECTED_EOF,             // 意外的文件结束
-    INVALID_SELECTOR,           // 无效的选择器
-    INVALID_AT_EXPRESSION       // 无效的@表达式
-};
-
-/**
- * 词法分析错误信息
- */
-struct LexerErrorInfo {
-    LexerError type;
-    std::string message;
-    Position position;
-    
-    LexerErrorInfo(LexerError t = LexerError::NONE, 
-                   const std::string& msg = "", 
-                   const Position& pos = Position())
-        : type(t), message(msg), position(pos) {}
+    IN_INDEX_ACCESS             // 在索引访问中
 };
 
 /**
  * CHTL词法分析器
- * 严格按照CHTL语法文档实现
+ * 严格按照CHTL语法文档实现，使用外部状态机和上下文
  */
 class Lexer {
 public:
     /**
      * 构造函数
      * @param source 源代码字符串
+     * @param stateMachine 外部状态机（可选）
+     * @param context 外部上下文（可选）
+     * @param errorReporter 错误报告器（可选）
      */
-    explicit Lexer(const std::string& source);
+    explicit Lexer(const std::string& source,
+                   CHTLStateMachine* stateMachine = nullptr,
+                   CHTLContext* context = nullptr,
+                   ErrorReporter* errorReporter = nullptr);
     
     /**
      * 析构函数
@@ -109,28 +87,25 @@ public:
     Position getCurrentPosition() const;
     
     /**
-     * 获取错误信息
-     * @return 错误信息列表
-     */
-    const std::vector<LexerErrorInfo>& getErrors() const;
-    
-    /**
-     * 检查是否有错误
-     * @return true如果有错误
-     */
-    bool hasErrors() const;
-    
-    /**
      * 重置词法分析器
      * @param source 新的源代码
      */
     void reset(const std::string& source);
     
     /**
-     * 设置错误处理回调
-     * @param callback 错误处理函数
+     * 设置状态机
      */
-    void setErrorCallback(std::function<void(const LexerErrorInfo&)> callback);
+    void setStateMachine(CHTLStateMachine* stateMachine);
+    
+    /**
+     * 设置上下文
+     */
+    void setContext(CHTLContext* context);
+    
+    /**
+     * 设置错误报告器
+     */
+    void setErrorReporter(ErrorReporter* errorReporter);
 
 private:
     // ========== 私有成员变量 ==========
@@ -138,9 +113,12 @@ private:
     std::string m_source;               // 源代码
     size_t m_current;                   // 当前字符位置
     Position m_position;                // 当前位置信息
-    LexerState m_state;                 // 当前状态
-    std::vector<LexerErrorInfo> m_errors; // 错误列表
-    std::function<void(const LexerErrorInfo&)> m_errorCallback; // 错误回调
+    LexerInternalState m_internalState; // 内部状态
+    
+    // 外部组件
+    CHTLStateMachine* m_stateMachine;   // 外部状态机
+    CHTLContext* m_context;             // 外部上下文
+    ErrorReporter* m_errorReporter;     // 错误报告器
     
     // ========== 私有辅助方法 ==========
     
@@ -194,8 +172,8 @@ private:
     /**
      * 报告错误
      */
-    void reportError(LexerError type, const std::string& message);
-    void reportError(LexerError type, const std::string& message, const Position& pos);
+    void reportError(ErrorType type, const std::string& message);
+    void reportError(ErrorType type, const std::string& message, const Position& pos);
     
     // ========== Token扫描方法 ==========
     

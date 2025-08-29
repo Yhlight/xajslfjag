@@ -37,6 +37,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/workspace/src/CHTL/CMakeLists.txt"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
+  "/workspace/src/Error/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -48,6 +49,7 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "CHTLError/CMakeFiles/CMakeDirectoryInformation.cmake"
   "CHTLLexer/CMakeFiles/CMakeDirectoryInformation.cmake"
   "CHTLState/CMakeFiles/CMakeDirectoryInformation.cmake"
   "CHTLContext/CMakeFiles/CMakeDirectoryInformation.cmake"
@@ -56,6 +58,8 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/test_state_context.dir/DependInfo.cmake"
+  "CMakeFiles/test_updated_lexer.dir/DependInfo.cmake"
+  "CHTLError/CMakeFiles/CHTLError.dir/DependInfo.cmake"
   "CHTLLexer/CMakeFiles/CHTLLexer.dir/DependInfo.cmake"
   "CHTLLexer/CMakeFiles/test_lexer.dir/DependInfo.cmake"
   "CHTLState/CMakeFiles/CHTLState.dir/DependInfo.cmake"

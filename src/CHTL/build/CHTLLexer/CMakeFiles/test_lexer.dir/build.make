@@ -97,6 +97,11 @@ CHTLLexer/test_lexer: CHTLLexer/CMakeFiles/test_lexer.dir/test_lexer.cpp.o
 CHTLLexer/test_lexer: CHTLLexer/CMakeFiles/test_lexer.dir/build.make
 CHTLLexer/test_lexer: CHTLLexer/CMakeFiles/test_lexer.dir/compiler_depend.ts
 CHTLLexer/test_lexer: CHTLLexer/libCHTLLexer.a
+CHTLLexer/test_lexer: CHTLContext/libCHTLContext.a
+CHTLLexer/test_lexer: CHTLLexer/libCHTLLexer.a
+CHTLLexer/test_lexer: CHTLContext/libCHTLContext.a
+CHTLLexer/test_lexer: CHTLError/libCHTLError.a
+CHTLLexer/test_lexer: CHTLState/libCHTLState.a
 CHTLLexer/test_lexer: CHTLLexer/CMakeFiles/test_lexer.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_lexer"
 	cd /workspace/src/CHTL/build/CHTLLexer && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/test_lexer.dir/link.txt --verbose=$(VERBOSE)

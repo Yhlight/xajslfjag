@@ -14,6 +14,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang
 endif()
 
 # 添加子目录
+add_subdirectory(../Error CHTLError)
 add_subdirectory(CHTLLexer)
 add_subdirectory(CHTLState)
 add_subdirectory(CHTLContext)
@@ -25,6 +26,16 @@ if(BUILD_TESTS)
     # 创建综合测试程序
     add_executable(test_state_context test_state_context.cpp)
     target_link_libraries(test_state_context 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+    )
+    
+    # 创建更新后的lexer测试程序
+    add_executable(test_updated_lexer test_updated_lexer.cpp)
+    target_link_libraries(test_updated_lexer 
+        CHTLError
         CHTLLexer 
         CHTLState 
         CHTLContext
@@ -32,6 +43,14 @@ if(BUILD_TESTS)
     
     # 设置包含目录
     target_include_directories(test_state_context PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+    )
+    
+    target_include_directories(test_updated_lexer PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext

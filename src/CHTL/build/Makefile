@@ -130,6 +130,32 @@ test_state_context/fast:
 .PHONY : test_state_context/fast
 
 #=============================================================================
+# Target rules for targets named test_updated_lexer
+
+# Build rule for target.
+test_updated_lexer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_updated_lexer
+.PHONY : test_updated_lexer
+
+# fast build rule for target.
+test_updated_lexer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/build
+.PHONY : test_updated_lexer/fast
+
+#=============================================================================
+# Target rules for targets named CHTLError
+
+# Build rule for target.
+CHTLError: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLError
+.PHONY : CHTLError
+
+# fast build rule for target.
+CHTLError/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLError/CMakeFiles/CHTLError.dir/build.make CHTLError/CMakeFiles/CHTLError.dir/build
+.PHONY : CHTLError/fast
+
+#=============================================================================
 # Target rules for targets named CHTLLexer
 
 # Build rule for target.
@@ -205,6 +231,30 @@ test_state_context.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_state_context.dir/build.make CMakeFiles/test_state_context.dir/test_state_context.cpp.s
 .PHONY : test_state_context.cpp.s
 
+test_updated_lexer.o: test_updated_lexer.cpp.o
+.PHONY : test_updated_lexer.o
+
+# target to build an object file
+test_updated_lexer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/test_updated_lexer.cpp.o
+.PHONY : test_updated_lexer.cpp.o
+
+test_updated_lexer.i: test_updated_lexer.cpp.i
+.PHONY : test_updated_lexer.i
+
+# target to preprocess a source file
+test_updated_lexer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/test_updated_lexer.cpp.i
+.PHONY : test_updated_lexer.cpp.i
+
+test_updated_lexer.s: test_updated_lexer.cpp.s
+.PHONY : test_updated_lexer.s
+
+# target to generate assembly for a file
+test_updated_lexer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_updated_lexer.dir/build.make CMakeFiles/test_updated_lexer.dir/test_updated_lexer.cpp.s
+.PHONY : test_updated_lexer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -214,13 +264,18 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLContext"
+	@echo "... CHTLError"
 	@echo "... CHTLLexer"
 	@echo "... CHTLState"
 	@echo "... test_lexer"
 	@echo "... test_state_context"
+	@echo "... test_updated_lexer"
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"
+	@echo "... test_updated_lexer.o"
+	@echo "... test_updated_lexer.i"
+	@echo "... test_updated_lexer.s"
 .PHONY : help
 
 

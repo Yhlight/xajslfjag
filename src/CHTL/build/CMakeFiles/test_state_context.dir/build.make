@@ -96,10 +96,13 @@ test_state_context_EXTERNAL_OBJECTS =
 test_state_context: CMakeFiles/test_state_context.dir/test_state_context.cpp.o
 test_state_context: CMakeFiles/test_state_context.dir/build.make
 test_state_context: CMakeFiles/test_state_context.dir/compiler_depend.ts
+test_state_context: CHTLError/libCHTLError.a
 test_state_context: CHTLLexer/libCHTLLexer.a
 test_state_context: CHTLState/libCHTLState.a
 test_state_context: CHTLContext/libCHTLContext.a
 test_state_context: CHTLLexer/libCHTLLexer.a
+test_state_context: CHTLContext/libCHTLContext.a
+test_state_context: CHTLError/libCHTLError.a
 test_state_context: CHTLState/libCHTLState.a
 test_state_context: CMakeFiles/test_state_context.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable test_state_context"

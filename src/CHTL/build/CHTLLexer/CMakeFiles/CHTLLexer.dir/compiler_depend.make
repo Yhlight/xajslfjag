@@ -347,6 +347,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/cpp_type_traits.h \
   /usr/include/c++/14/bits/cxxabi_forced.h \
   /usr/include/c++/14/bits/cxxabi_init_exception.h \
+  /usr/include/c++/14/bits/deque.tcc \
   /usr/include/c++/14/bits/enable_special_members.h \
   /usr/include/c++/14/bits/erase_if.h \
   /usr/include/c++/14/bits/exception.h \
@@ -389,6 +390,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
+  /usr/include/c++/14/bits/stl_deque.h \
   /usr/include/c++/14/bits/stl_function.h \
   /usr/include/c++/14/bits/stl_heap.h \
   /usr/include/c++/14/bits/stl_iterator.h \
@@ -396,6 +398,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
+  /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
@@ -424,6 +427,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/cwctype \
   /usr/include/c++/14/debug/assertions.h \
   /usr/include/c++/14/debug/debug.h \
+  /usr/include/c++/14/deque \
   /usr/include/c++/14/exception \
   /usr/include/c++/14/ext/aligned_buffer.h \
   /usr/include/c++/14/ext/alloc_traits.h \
@@ -445,6 +449,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/sstream \
+  /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
   /usr/include/c++/14/streambuf \
   /usr/include/c++/14/string \
@@ -480,6 +485,11 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Lexer.cpp.o: /workspace/src/CHTL/CHTLLexer/Le
   /usr/lib/llvm-20/lib/clang/20/include/stdarg.h \
   /usr/lib/llvm-20/lib/clang/20/include/stddef.h \
   /usr/lib/llvm-20/lib/clang/20/include/stdint.h \
+  /workspace/src/Error/ErrorReport.h \
+  /workspace/src/CHTL/CHTLLexer/Type.h \
+  /workspace/src/CHTL/CHTLState/State.h \
+  /workspace/src/CHTL/CHTLContext/Context.h \
+  /workspace/src/CHTL/CHTLState/State.h \
   /workspace/src/CHTL/CHTLLexer/GlobalMap.h \
   /workspace/src/CHTL/CHTLLexer/Lexer.h \
   /workspace/src/CHTL/CHTLLexer/Token.h \
@@ -964,6 +974,20 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /workspace/src/CHTL/CHTLLexer/Lexer.h:
 
+/workspace/src/CHTL/CHTLContext/Context.h:
+
+/workspace/src/CHTL/CHTLState/State.h:
+
+/workspace/src/Error/ErrorReport.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
+
+/usr/include/c++/14/vector:
+
+/usr/include/c++/14/system_error:
+
 /usr/include/c++/14/bits/char_traits.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types.h:
@@ -1058,13 +1082,7 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
-/usr/include/c++/14/bits/exception_defines.h:
-
-/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
-
 /usr/include/c++/14/cstdlib:
-
-/usr/include/c++/14/system_error:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
@@ -1087,6 +1105,8 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/c++/14/bits/ptr_traits.h:
 
 /usr/include/c++/14/bits/allocated_ptr.h:
+
+/usr/include/c++/14/stack:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
@@ -1160,8 +1180,6 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
 
-/usr/include/x86_64-linux-gnu/c++/14/bits/error_constants.h:
-
 /usr/include/asm-generic/errno-base.h:
 
 /usr/include/c++/14/bits/stl_algobase.h:
@@ -1224,13 +1242,15 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/new:
 
+/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
+
+/usr/include/c++/14/clocale:
+
 /usr/include/c++/14/compare:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /usr/include/c++/14/ostream:
-
-/usr/include/c++/14/bits/stl_heap.h:
 
 /usr/include/c++/14/functional:
 
@@ -1247,8 +1267,6 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
 /usr/include/c++/14/bits/uniform_int_dist.h:
-
-/usr/include/c++/14/vector:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -1340,7 +1358,11 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/bits/stringfwd.h:
 
-/usr/include/c++/14/bits/unique_ptr.h:
+/usr/include/c++/14/bits/exception_defines.h:
+
+/usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
+
+/usr/include/c++/14/bits/deque.tcc:
 
 /usr/include/c++/14/bits/unordered_map.h:
 
@@ -1466,6 +1488,16 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 
 /usr/include/c++/14/bits/stl_vector.h:
 
+/usr/include/c++/14/bits/unique_ptr.h:
+
+/usr/include/c++/14/bits/stl_deque.h:
+
+/usr/include/c++/14/bits/stl_heap.h:
+
+/usr/include/c++/14/bits/stl_stack.h:
+
+/usr/include/c++/14/deque:
+
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
 /usr/include/c++/14/bits/vector.tcc:
@@ -1475,9 +1507,3 @@ CHTLLexer/CMakeFiles/CHTLLexer.dir/Type.cpp.o: /workspace/src/CHTL/CHTLLexer/Typ
 /usr/include/c++/14/bits/stl_algo.h:
 
 /usr/include/c++/14/sstream:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
-
-/usr/include/c++/14/clocale:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/ctype_inline.h:
