@@ -1,5 +1,6 @@
 #include "Dispatcher.h"
 #include "../Util/StringUtils.h"
+#include "../CHTL/CHTLGenerator/Generator.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
@@ -144,20 +145,21 @@ CompilationResult CompilerDispatcher::compileCHTLFragments(const std::vector<Cod
             // CHTL::Generator generator(genConfig);
             // auto output = generator.generate(ast.get());
             
-            // TODO: 暂时使用简单的输出
-            result.htmlOutput = "<!-- CHTL Generated -->"; 
-            result.cssOutput = "/* CSS Output */";
-            result.jsOutput = "// JS Output";
-            result.success = true;
+            // 使用完善的Generator
+            // 配置生成器
+            CHTL::Generator generator;
+            auto output = generator.generate(ast.get());
             
-            // if (output.success) {
-            //     result.htmlOutput = output.html;
-            //     result.cssOutput = output.css;
-            //     result.jsOutput = output.javascript;
-            // } else {
-            //     for (const auto& error : output.errors) {
-            //         result.addError("CHTL generation error: " + error);
-            //     }
+            if (output.success) {
+                result.htmlOutput = output.html;
+                result.cssOutput = output.css;
+                result.jsOutput = output.javascript;
+                result.success = true;
+            } else {
+                for (const auto& error : output.errors) {
+                    result.addError("CHTL generation error: " + error);
+                }
+            }
         } else {
             auto errors = parser.getErrors();
             for (const auto& error : errors) {
@@ -290,5 +292,75 @@ std::vector<CodeFragment> filterFragmentsByType(const std::vector<CodeFragment>&
 }
 
 } // namespace Dispatcher
+
+CompilationResult CompilerDispatcher::compileFragments(const std::vector<CodeFragment>& fragments) {
+    CompilationResult result;
+    
+    try {
+        std::ostringstream htmlOutput, cssOutput, jsOutput;
+        
+        for (const auto& fragment : fragments) {
+            switch (fragment.type) {
+                case FragmentType::CHTL: {
+                    // 简化处理：直接输出片段内容
+                    htmlOutput << fragment.content;
+                    break;
+                }
+                
+                case FragmentType::CSS: {
+                    // CSS片段直接添加到CSS输出
+                    cssOutput << fragment.content;
+                    if (!fragment.content.empty() && !CHTL::Util::StringUtils::ends_with(fragment.content, "\n")) {
+                        cssOutput << "\n";
+                    }
+                    break;
+                }
+                
+                case FragmentType::JAVASCRIPT: {
+                    // JavaScript片段直接添加到JS输出
+                    jsOutput << fragment.content;
+                    if (!fragment.content.empty() && !CHTL::Util::StringUtils::ends_with(fragment.content, "\n")) {
+                        jsOutput << "\n";
+                    }
+                    break;
+                }
+                
+                case FragmentType::CHTL_JS: {
+                    // CHTL JS需要通过增强解析器处理
+                    std::vector<CodeFragment> chtljsFragments = {fragment};
+                    auto chtljsResult = compileCHTLJSFragments(chtljsFragments);
+                    if (chtljsResult.success) {
+                        jsOutput << chtljsResult.jsOutput;
+                    } else {
+                        for (const auto& error : chtljsResult.errors) {
+                            result.addError("CHTL JS片段编译错误: " + error);
+                        }
+                    }
+                    break;
+                }
+                
+                case FragmentType::HTML: {
+                    // 纯文本作为HTML内容
+                    htmlOutput << fragment.content;
+                    break;
+                }
+                
+                default:
+                    result.addWarning("未知片段类型: " + std::to_string(static_cast<int>(fragment.type)));
+                    break;
+            }
+        }
+        
+        result.htmlOutput = htmlOutput.str();
+        result.cssOutput = cssOutput.str();
+        result.jsOutput = jsOutput.str();
+        result.success = result.errors.empty();
+        
+    } catch (const std::exception& e) {
+        result.addError("片段编译过程中发生异常: " + String(e.what()));
+    }
+    
+    return result;
+}
 
 } // namespace CHTL

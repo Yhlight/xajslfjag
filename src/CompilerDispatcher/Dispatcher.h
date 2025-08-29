@@ -110,6 +110,7 @@ public:
     // 分步编译
     std::vector<CodeFragment> scanSource(const String& sourceCode);
     CompilationResult dispatchFragments(const std::vector<CodeFragment>& fragments);
+
     
     // 配置管理
     void setConfig(const DispatcherConfig& cfg);

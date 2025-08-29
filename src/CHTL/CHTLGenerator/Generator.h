@@ -114,6 +114,25 @@ public:
     bool isDebugMode() const { return debugMode; }
     void setDebugOutput(std::ostream* output) { debugOutput = output; }
     
+    // 新增辅助方法
+    void generateHTMLRecursive(const BaseNode* node, std::ostringstream& output, int depth);
+    void generateJavaScriptRecursive(const BaseNode* node, std::ostringstream& output, int depth);
+    void resetState();
+    void postProcessOutput(GenerationOutput& output);
+    String getIndent(int depth) const;
+    String escapeHTML(const String& text) const;
+    bool isVoidHTMLElement(const String& tagName) const;
+    bool hasBlockLevelChildren(const BaseNode* node) const;
+    String convertCHTLJSToJS(const BaseNode* node);
+    String minifyHTML(const String& html) const;
+    String minifyCSS(const String& css) const;
+    String minifyJS(const String& js) const;
+    void optimizeHTML(String& html) const;
+    void optimizeCSS(String& css) const;
+    void optimizeJS(const String& js) const;
+    
+
+    
 private:
     GeneratorConfig config;
     std::shared_ptr<Context> context;
@@ -260,8 +279,6 @@ private:
     void debugLog(const String& message) const;
     
     // 工具方法
-    String minifyHTML(const String& html) const;
-    String minifyCSS(const String& css) const;
     String minifyJavaScript(const String& js) const;
     String formatOutput(const String& content, const String& type) const;
     String generateSourceMap(const String& content, const String& type) const;

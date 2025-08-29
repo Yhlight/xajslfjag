@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Common.h"
+#include <algorithm>
+#include <cctype>
 
 namespace CHTL::Util {
 
@@ -88,6 +90,14 @@ public:
             if (i > 0) result += separator;
             result += strings[i];
         }
+        return result;
+    }
+    
+    // 转换为小写
+    static String toLowerCase(const String& str) {
+        String result = str;
+        std::transform(result.begin(), result.end(), result.begin(), 
+                      [](unsigned char c) { return std::tolower(c); });
         return result;
     }
 };

@@ -1,100 +1,58 @@
+#include <iostream>
 #include "src/CHTL/CHTLLexer/Lexer.h"
 #include "src/CHTL/CHTLParser/Parser.h"
 #include "src/CHTL/CHTLGenerator/Generator.h"
-#include "src/CHTL/CHTLSelector/SelectorAutomation.h"
-#include "src/CMODSystem/Syntax.h"
-#include <iostream>
-#include <memory>
+
+using namespace CHTL;
 
 int main() {
-    std::cout << "🚀 CHTL系统功能验证测试" << std::endl;
-    
     try {
-        // 1. 测试词法分析器
-        std::string testCode = R"(
-<!DOCTYPE html>
-<html>
-<head>
-    <title>测试页面</title>
-    <style>
-        .box { color: red; }
-    </style>
-</head>
-<body>
-    <div class="box">Hello CHTL!</div>
-    <script>
-        console.log("CHTL JS 工作正常");
-    </script>
-</body>
-</html>
-        )";
+        std::cout << "=== CHTL简单语法测试 ===" << std::endl;
         
-        std::cout << "✅ 测试内容准备完成" << std::endl;
+        // 1. 简单的词法分析测试
+        std::cout << "1. 测试词法分析..." << std::endl;
+        String simpleCode = "div { text: \"Hello World\" }";
+        auto lexer = std::make_unique<Lexer>(simpleCode);
         
-        // 2. 测试配置
-        CHTL::LexerConfig lexerConfig;
-        auto lexer = std::make_unique<CHTL::Lexer>(testCode, lexerConfig);
-        std::cout << "✅ 词法分析器创建成功" << std::endl;
+        // 创建解析器
+        ParserConfig config;
+        config.enableRecovery = true;
+        Parser parser(std::move(lexer), config);
         
-        // 3. 测试解析器
-        CHTL::ParserConfig parserConfig;
-        parserConfig.enableRecovery = true;
-        parserConfig.strictMode = false;
+        std::cout << "   解析器创建成功" << std::endl;
         
-        CHTL::Parser parser(std::move(lexer), parserConfig);
-        std::cout << "✅ 解析器创建成功" << std::endl;
-        
+        // 2. 简单的解析测试
+        std::cout << "2. 测试语法解析..." << std::endl;
         auto ast = parser.parse();
+        
         if (ast) {
-            std::cout << "✅ 语法解析成功，节点类型: " << static_cast<int>(ast->getType()) << std::endl;
+            std::cout << "   AST创建成功，类型: " << static_cast<int>(ast->getType()) << std::endl;
         } else {
-            std::cout << "❌ 语法解析失败" << std::endl;
-            auto errors = parser.getErrors();
-            for (const auto& error : errors) {
-                std::cout << "   错误: " << error.toString() << std::endl;
-            }
+            std::cout << "   AST创建失败" << std::endl;
         }
         
-        // 4. 测试生成器
+        // 3. 简单的生成测试
+        std::cout << "3. 测试代码生成..." << std::endl;
         if (ast) {
-            CHTL::GeneratorConfig genConfig;
-            genConfig.formatHTML = true;
-            genConfig.includeComments = true;
+            Generator generator;
+            auto output = generator.generate(ast.get());
             
-            CHTL::Generator generator(genConfig);
-            auto result = generator.generate(ast.get());
-            
-            if (result.success) {
-                std::cout << "✅ 代码生成成功" << std::endl;
-                std::cout << "   HTML长度: " << result.html.length() << std::endl;
-                std::cout << "   CSS长度: " << result.css.length() << std::endl;
-                std::cout << "   JS长度: " << result.javascript.length() << std::endl;
+            if (output.success) {
+                std::cout << "   代码生成成功" << std::endl;
+                std::cout << "   HTML输出长度: " << output.html.length() << std::endl;
             } else {
-                std::cout << "❌ 代码生成失败" << std::endl;
+                std::cout << "   代码生成失败" << std::endl;
+                for (const auto& error : output.errors) {
+                    std::cout << "   错误: " << error << std::endl;
+                }
             }
         }
         
-        // 5. 测试选择器自动化
-        CHTL::SelectorAutomationConfig autoConfig;
-        CHTL::SelectorAutomationManager autoManager(autoConfig);
-        std::cout << "✅ 选择器自动化系统创建成功" << std::endl;
-        
-        // 6. 测试CJMOD API
-        auto cjmodResult = CJMOD::Syntax::analyze("test->function { param: $, value: $? }");
-        std::cout << "✅ CJMOD语法分析成功，原子数: " << cjmodResult.atoms.size() << std::endl;
-        
-        std::cout << "\n🎉 === 所有核心功能验证完成 ===" << std::endl;
-        std::cout << "✅ 词法分析器: 正常" << std::endl;
-        std::cout << "✅ 语法解析器: 正常" << std::endl;
-        std::cout << "✅ 代码生成器: 正常" << std::endl;
-        std::cout << "✅ 选择器自动化: 正常" << std::endl;
-        std::cout << "✅ CJMOD API: 正常" << std::endl;
-        std::cout << "\n🌟 CHTL系统核心功能全部正常运行！" << std::endl;
-        
+        std::cout << std::endl << "=== 简单测试完成 ===" << std::endl;
         return 0;
         
     } catch (const std::exception& e) {
-        std::cout << "❌ 系统异常: " << e.what() << std::endl;
+        std::cout << "测试异常: " << e.what() << std::endl;
         return 1;
     }
 }

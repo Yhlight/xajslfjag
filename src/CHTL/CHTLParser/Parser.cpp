@@ -43,7 +43,18 @@ std::unique_ptr<BaseNode> Parser::parse() {
 std::unique_ptr<BaseNode> Parser::parseDocument() {
     auto document = NodeFactory::createDocumentNode();
     
-    while (!isAtEnd()) {
+    int loopCount = 0;
+    const int maxLoopCount = 1000;  // 添加循环计数器防止无限循环
+    
+    while (!isAtEnd() && loopCount < maxLoopCount) {
+        loopCount++;
+        
+        // 检查节点数量限制
+        if (!checkParseNodeCount()) {
+            reportError("解析节点数量超出限制", "PARSE_NODE_LIMIT");
+            break;
+        }
+        
         if (auto node = parseStatement()) {
             document->addChild(std::move(node));
         } else {
@@ -52,6 +63,10 @@ std::unique_ptr<BaseNode> Parser::parseDocument() {
                 break;
             }
         }
+    }
+    
+    if (loopCount >= maxLoopCount) {
+        reportError("解析循环次数超出限制", "PARSE_LOOP_LIMIT");
     }
     
     // 在解析完成后处理引用规则和选择器自动化
@@ -132,6 +147,16 @@ std::unique_ptr<BaseNode> Parser::parseStatement() {
 
 // 元素解析
 std::unique_ptr<BaseNode> Parser::parseElement() {
+    // 检查解析深度
+    if (!checkParseDepth()) {
+        reportError("解析深度超出限制", "PARSE_DEPTH_LIMIT");
+        return nullptr;
+    }
+    incrementDepth();
+    
+    // 增加节点计数
+    incrementNodeCount();
+    
     String tagName = currentToken.value;
     Position pos = currentToken.position;
     advance(); // 消费元素名
@@ -144,7 +169,18 @@ std::unique_ptr<BaseNode> Parser::parseElement() {
         advance(); // 消费 '{'
         
         // 解析块内容
-        while (!check(TokenType::RBRACE) && !isAtEnd()) {
+        int elementLoopCount = 0;
+        const int maxElementLoopCount = 100;  // 元素解析循环限制
+        
+        while (!check(TokenType::RBRACE) && !isAtEnd() && elementLoopCount < maxElementLoopCount) {
+            elementLoopCount++;
+            
+            // 检查安全限制
+            if (!checkParseDepth() || !checkParseNodeCount()) {
+                reportError("解析安全限制触发", "PARSE_SAFETY_LIMIT");
+                break;
+            }
+            
             if (isAttribute()) {
                 parseElementAttributes(element.get());
             } else {
@@ -155,9 +191,14 @@ std::unique_ptr<BaseNode> Parser::parseElement() {
             }
         }
         
+        if (elementLoopCount >= maxElementLoopCount) {
+            reportError("元素解析循环次数超出限制", "ELEMENT_LOOP_LIMIT");
+        }
+        
         consume(TokenType::RBRACE, "期望 '}'");
     }
     
+    decrementDepth();
     return std::unique_ptr<BaseNode>(element.release());
 }
 
@@ -271,6 +312,14 @@ std::unique_ptr<BaseNode> Parser::parseScript() {
 
 // 模板解析
 std::unique_ptr<BaseNode> Parser::parseTemplate() {
+    // 检查解析深度和节点数量
+    if (!checkParseDepth()) {
+        reportError("解析深度超出限制", "PARSE_DEPTH_LIMIT");
+        return nullptr;
+    }
+    incrementDepth();
+    incrementNodeCount();
+    
     Position pos = currentToken.position;
     advance(); // 消费 '[Template]'
     
@@ -312,11 +361,20 @@ std::unique_ptr<BaseNode> Parser::parseTemplate() {
         context->registerTemplate(templateName, templateNode.get());
     }
     
+    decrementDepth();
     return templateNode;
 }
 
 // 自定义节点解析
 std::unique_ptr<BaseNode> Parser::parseCustom() {
+    // 检查解析深度和节点数量
+    if (!checkParseDepth()) {
+        reportError("解析深度超出限制", "PARSE_DEPTH_LIMIT");
+        return nullptr;
+    }
+    incrementDepth();
+    incrementNodeCount();
+    
     Position pos = currentToken.position;
     advance(); // 消费 '[Custom]'
     
@@ -358,6 +416,7 @@ std::unique_ptr<BaseNode> Parser::parseCustom() {
         context->registerCustom(customName, customNode.get());
     }
     
+    decrementDepth();
     return customNode;
 }
 
@@ -407,6 +466,14 @@ std::unique_ptr<BaseNode> Parser::parseOrigin() {
 
 // 导入解析 (增强版)
 std::unique_ptr<BaseNode> Parser::parseImport() {
+    // 检查解析深度和节点数量
+    if (!checkParseDepth()) {
+        reportError("解析深度超出限制", "PARSE_DEPTH_LIMIT");
+        return nullptr;
+    }
+    incrementDepth();
+    incrementNodeCount();
+    
     Position pos = currentToken.position;
     advance(); // 消费 '[Import]'
     
@@ -482,9 +549,11 @@ std::unique_ptr<BaseNode> Parser::parseImport() {
                 importNode->importMetadata["wildcard_path_" + std::to_string(i)] = wildcardPaths[i];
             }
             
+            decrementDepth();
             return std::unique_ptr<BaseNode>(importNode.release());
         } else {
             reportError("未找到匹配通配符模式的文件: " + sourcePath, "WILDCARD_NO_MATCH");
+            decrementDepth();
             return nullptr;
         }
     } else {
@@ -538,6 +607,7 @@ std::unique_ptr<BaseNode> Parser::parseImport() {
             }
         }
         
+        decrementDepth();
         return std::unique_ptr<BaseNode>(importNode.release());
     }
 }
@@ -908,10 +978,21 @@ bool Parser::isAttribute() const {
 // ========== 约束解析实现 ==========
 
 std::unique_ptr<ConstraintNode> Parser::parseConstraint() {
+    // 检查解析深度和节点数量
+    if (!checkParseDepth()) {
+        reportError("解析深度超出限制", "PARSE_DEPTH_LIMIT");
+        return nullptr;
+    }
+    incrementDepth();
+    incrementNodeCount();
+    
     if (currentToken.type == TokenType::EXCEPT) {
-        return parseExcept();
+        auto result = parseExcept();
+        decrementDepth();
+        return result;
     }
     
+    decrementDepth();
     reportError("期望约束关键字", "EXPECT_CONSTRAINT");
     return nullptr;
 }

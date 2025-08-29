@@ -25,6 +25,7 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLLexer/GlobalMap.cpp
     src/CHTL/CHTLLexer/Lexer.cpp
     src/CHTL/CHTLParser/Parser.cpp
+    src/CHTL/CHTLParser/SafetyMethods.cpp
     src/CHTL/CHTLNode/BaseNode.cpp
     src/CHTL/CHTLNode/TemplateNode.cpp
     src/CHTL/CHTLNode/CustomNode.cpp
@@ -37,6 +38,7 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CMODSystem/CMODManager.cpp
     src/CHTL/CHTLNode/InheritanceManager.cpp
     src/CHTL/CHTLGenerator/Generator.cpp
+    src/CHTL/CHTLGenerator/GeneratorMethods.cpp
     src/CHTL/CHTLState/State.cpp
     src/CHTL/CHTLContext/Context.cpp
     src/CHTL/CHTLIOStream/FileStream.cpp

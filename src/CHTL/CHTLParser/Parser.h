@@ -130,7 +130,10 @@ private:
     std::shared_ptr<ReferenceRuleManager> referenceRuleManager;
     std::vector<ParseError> errors;
     bool debugMode;
-    size_t currentDepth;
+    size_t maxParseDepth = 100;    // 最大解析深度限制 (降低到100)
+    size_t currentDepth = 0;      // 当前解析深度
+    size_t parseNodeCount = 0;    // 解析节点计数
+    size_t maxParseNodes = 1000;  // 最大节点数限制 (降低到1000)
     
     // Token操作
     Token currentToken;
@@ -158,6 +161,13 @@ private:
     bool isHTMLElement() const;
     bool isSelector() const;
     bool isCHTLJSSyntax() const;
+    
+    // 安全解析保护
+    bool checkParseDepth();
+    bool checkParseNodeCount();
+    void incrementDepth();
+    void decrementDepth();
+    void incrementNodeCount();
     bool isAttribute() const;
     
     // 特定语法解析
@@ -227,8 +237,6 @@ private:
     String generateAutoIdName();
     
     // 深度检查
-    void incrementDepth();
-    void decrementDepth();
     bool checkMaxDepth() const;
     
     // 调试输出
