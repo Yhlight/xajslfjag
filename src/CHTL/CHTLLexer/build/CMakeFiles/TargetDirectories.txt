@@ -1,0 +1,4 @@
+/workspace/src/CHTL/CHTLLexer/build/CMakeFiles/CHTLLexer.dir
+/workspace/src/CHTL/CHTLLexer/build/CMakeFiles/test_lexer.dir
+/workspace/src/CHTL/CHTLLexer/build/CMakeFiles/edit_cache.dir
+/workspace/src/CHTL/CHTLLexer/build/CMakeFiles/rebuild_cache.dir
