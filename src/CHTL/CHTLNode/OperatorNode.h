@@ -124,6 +124,16 @@ public:
     void setConfigName(const std::string& configName);
     
     /**
+     * 设置使用内容
+     */
+    void setUseContent(const std::string& content);
+    
+    /**
+     * 获取使用内容
+     */
+    const std::string& getUseContent() const;
+    
+    /**
      * 克隆节点
      */
     std::shared_ptr<BaseNode> clone() const override;
@@ -131,6 +141,7 @@ public:
 private:
     bool m_isHtml5;         // 是否为HTML5模式
     std::string m_configName; // 配置组名称
+    std::string m_useContent; // 使用内容
 };
 
 /**

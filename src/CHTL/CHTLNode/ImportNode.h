@@ -3,6 +3,9 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
+#include <fstream>
+#include <filesystem>
 
 namespace CHTL {
 
@@ -334,7 +337,7 @@ public:
     /**
      * 获取已导入的模块列表
      */
-    const std::vector<std::string>& getImportedModules() const;
+    const std::unordered_set<std::string>& getLoadedModules() const;
     
     /**
      * 检查循环导入
@@ -344,8 +347,10 @@ public:
 private:
     std::string m_officialModuleDirectory;          // 官方模块目录
     std::vector<std::string> m_searchPaths;         // 搜索路径
-    std::vector<std::string> m_importedModules;     // 已导入的模块
+    std::unordered_set<std::string> m_loadedModules; // 已加载的模块
     std::unordered_map<std::string, std::string> m_moduleCache; // 模块缓存
+    std::unordered_map<std::string, std::vector<std::string>> m_dependencies; // 依赖关系图
+    std::unordered_set<std::string> m_currentlyLoading; // 当前正在加载的文件（用于循环依赖检测）
     
     /**
      * 获取搜索路径
@@ -366,57 +371,43 @@ private:
      * 检查模块目录结构
      */
     bool checkModuleStructure(const std::string& directory) const;
+    
+    /**
+     * 加载文件内容
+     */
+    std::string loadFileContent(const std::string& filePath) const;
+    
+    /**
+     * 检查循环依赖
+     */
+    bool hasCircularDependency(const std::string& filePath) const;
+    
+    /**
+     * 添加依赖关系
+     */
+    void addDependency(const std::string& from, const std::string& to);
+    
+    /**
+     * 解析CMOD模块
+     */
+    bool loadCMODModule(const std::string& modulePath);
+    
+    /**
+     * 解析CJMOD模块
+     */
+    bool loadCJMODModule(const std::string& modulePath);
+    
+    /**
+     * 获取模块信息
+     */
+    std::unordered_map<std::string, std::string> getModuleInfo(const std::string& modulePath) const;
+    
+    /**
+     * 解析带名原始嵌入
+     */
+    std::string createNamedOriginEmbed(const std::string& content, const std::string& type, const std::string& name) const;
 };
 
-/**
- * Use节点
- * 表示use语句
- */
-class UseNode : public BaseNode {
-public:
-    /**
-     * 构造函数
-     */
-    UseNode();
-    
-    /**
-     * 析构函数
-     */
-    virtual ~UseNode() = default;
-    
-    /**
-     * 设置使用的内容
-     */
-    void setUseContent(const std::string& content);
-    
-    /**
-     * 获取使用的内容
-     */
-    const std::string& getUseContent() const;
-    
-    /**
-     * 检查是否为HTML5声明
-     */
-    bool isHtml5Declaration() const;
-    
-    /**
-     * 检查是否为配置使用
-     */
-    bool isConfigUsage() const;
-    
-    /**
-     * 获取配置名称（如果是配置使用）
-     */
-    std::string getConfigName() const;
-    
-    // BaseNode 接口实现
-    CHTLNodeType getNodeType() const { return CHTLNodeType::USE_NODE; }
-    std::string toString() const override;
-    NodePtr clone() const override;
-    bool validate(ErrorReporter* errorReporter = nullptr) const override;
 
-private:
-    std::string m_useContent;  // 使用的内容
-};
 
 } // namespace CHTL

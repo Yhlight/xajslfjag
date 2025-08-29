@@ -208,6 +208,58 @@ test_origin_system/fast:
 .PHONY : test_origin_system/fast
 
 #=============================================================================
+# Target rules for targets named test_configuration_system
+
+# Build rule for target.
+test_configuration_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_configuration_system
+.PHONY : test_configuration_system
+
+# fast build rule for target.
+test_configuration_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_configuration_system.dir/build.make CMakeFiles/test_configuration_system.dir/build
+.PHONY : test_configuration_system/fast
+
+#=============================================================================
+# Target rules for targets named debug_config_tokens
+
+# Build rule for target.
+debug_config_tokens: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_config_tokens
+.PHONY : debug_config_tokens
+
+# fast build rule for target.
+debug_config_tokens/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_tokens.dir/build.make CMakeFiles/debug_config_tokens.dir/build
+.PHONY : debug_config_tokens/fast
+
+#=============================================================================
+# Target rules for targets named test_config_debug
+
+# Build rule for target.
+test_config_debug: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_config_debug
+.PHONY : test_config_debug
+
+# fast build rule for target.
+test_config_debug/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_config_debug.dir/build.make CMakeFiles/test_config_debug.dir/build
+.PHONY : test_config_debug/fast
+
+#=============================================================================
+# Target rules for targets named debug_parse_simple
+
+# Build rule for target.
+debug_parse_simple: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 debug_parse_simple
+.PHONY : debug_parse_simple
+
+# fast build rule for target.
+debug_parse_simple/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parse_simple.dir/build.make CMakeFiles/debug_parse_simple.dir/build
+.PHONY : debug_parse_simple/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -389,6 +441,54 @@ test_compilation_monitor/fast:
 	$(MAKE) $(MAKESILENT) -f CHTLTest/CMakeFiles/test_compilation_monitor.dir/build.make CHTLTest/CMakeFiles/test_compilation_monitor.dir/build
 .PHONY : test_compilation_monitor/fast
 
+debug_config_tokens.o: debug_config_tokens.cpp.o
+.PHONY : debug_config_tokens.o
+
+# target to build an object file
+debug_config_tokens.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_tokens.dir/build.make CMakeFiles/debug_config_tokens.dir/debug_config_tokens.cpp.o
+.PHONY : debug_config_tokens.cpp.o
+
+debug_config_tokens.i: debug_config_tokens.cpp.i
+.PHONY : debug_config_tokens.i
+
+# target to preprocess a source file
+debug_config_tokens.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_tokens.dir/build.make CMakeFiles/debug_config_tokens.dir/debug_config_tokens.cpp.i
+.PHONY : debug_config_tokens.cpp.i
+
+debug_config_tokens.s: debug_config_tokens.cpp.s
+.PHONY : debug_config_tokens.s
+
+# target to generate assembly for a file
+debug_config_tokens.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_config_tokens.dir/build.make CMakeFiles/debug_config_tokens.dir/debug_config_tokens.cpp.s
+.PHONY : debug_config_tokens.cpp.s
+
+debug_parse_simple.o: debug_parse_simple.cpp.o
+.PHONY : debug_parse_simple.o
+
+# target to build an object file
+debug_parse_simple.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parse_simple.dir/build.make CMakeFiles/debug_parse_simple.dir/debug_parse_simple.cpp.o
+.PHONY : debug_parse_simple.cpp.o
+
+debug_parse_simple.i: debug_parse_simple.cpp.i
+.PHONY : debug_parse_simple.i
+
+# target to preprocess a source file
+debug_parse_simple.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parse_simple.dir/build.make CMakeFiles/debug_parse_simple.dir/debug_parse_simple.cpp.i
+.PHONY : debug_parse_simple.cpp.i
+
+debug_parse_simple.s: debug_parse_simple.cpp.s
+.PHONY : debug_parse_simple.s
+
+# target to generate assembly for a file
+debug_parse_simple.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/debug_parse_simple.dir/build.make CMakeFiles/debug_parse_simple.dir/debug_parse_simple.cpp.s
+.PHONY : debug_parse_simple.cpp.s
+
 test_chtl_syntax.o: test_chtl_syntax.cpp.o
 .PHONY : test_chtl_syntax.o
 
@@ -460,6 +560,54 @@ test_complete_template_system.s: test_complete_template_system.cpp.s
 test_complete_template_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/test_complete_template_system.cpp.s
 .PHONY : test_complete_template_system.cpp.s
+
+test_config_debug.o: test_config_debug.cpp.o
+.PHONY : test_config_debug.o
+
+# target to build an object file
+test_config_debug.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_config_debug.dir/build.make CMakeFiles/test_config_debug.dir/test_config_debug.cpp.o
+.PHONY : test_config_debug.cpp.o
+
+test_config_debug.i: test_config_debug.cpp.i
+.PHONY : test_config_debug.i
+
+# target to preprocess a source file
+test_config_debug.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_config_debug.dir/build.make CMakeFiles/test_config_debug.dir/test_config_debug.cpp.i
+.PHONY : test_config_debug.cpp.i
+
+test_config_debug.s: test_config_debug.cpp.s
+.PHONY : test_config_debug.s
+
+# target to generate assembly for a file
+test_config_debug.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_config_debug.dir/build.make CMakeFiles/test_config_debug.dir/test_config_debug.cpp.s
+.PHONY : test_config_debug.cpp.s
+
+test_configuration_system.o: test_configuration_system.cpp.o
+.PHONY : test_configuration_system.o
+
+# target to build an object file
+test_configuration_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_configuration_system.dir/build.make CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.o
+.PHONY : test_configuration_system.cpp.o
+
+test_configuration_system.i: test_configuration_system.cpp.i
+.PHONY : test_configuration_system.i
+
+# target to preprocess a source file
+test_configuration_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_configuration_system.dir/build.make CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.i
+.PHONY : test_configuration_system.cpp.i
+
+test_configuration_system.s: test_configuration_system.cpp.s
+.PHONY : test_configuration_system.s
+
+# target to generate assembly for a file
+test_configuration_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_configuration_system.dir/build.make CMakeFiles/test_configuration_system.dir/test_configuration_system.cpp.s
+.PHONY : test_configuration_system.cpp.s
 
 test_origin_system.o: test_origin_system.cpp.o
 .PHONY : test_origin_system.o
@@ -576,16 +724,26 @@ help:
 	@echo "... CHTLParser"
 	@echo "... CHTLState"
 	@echo "... CHTLTest"
+	@echo "... debug_config_tokens"
+	@echo "... debug_parse_simple"
 	@echo "... run_all_tests"
 	@echo "... test_chtl_syntax"
 	@echo "... test_compilation_monitor"
 	@echo "... test_complete_system"
 	@echo "... test_complete_template_system"
+	@echo "... test_config_debug"
+	@echo "... test_configuration_system"
 	@echo "... test_lexer"
 	@echo "... test_origin_system"
 	@echo "... test_state_context"
 	@echo "... test_template_system"
 	@echo "... test_updated_lexer"
+	@echo "... debug_config_tokens.o"
+	@echo "... debug_config_tokens.i"
+	@echo "... debug_config_tokens.s"
+	@echo "... debug_parse_simple.o"
+	@echo "... debug_parse_simple.i"
+	@echo "... debug_parse_simple.s"
 	@echo "... test_chtl_syntax.o"
 	@echo "... test_chtl_syntax.i"
 	@echo "... test_chtl_syntax.s"
@@ -595,6 +753,12 @@ help:
 	@echo "... test_complete_template_system.o"
 	@echo "... test_complete_template_system.i"
 	@echo "... test_complete_template_system.s"
+	@echo "... test_config_debug.o"
+	@echo "... test_config_debug.i"
+	@echo "... test_config_debug.s"
+	@echo "... test_configuration_system.o"
+	@echo "... test_configuration_system.i"
+	@echo "... test_configuration_system.s"
 	@echo "... test_origin_system.o"
 	@echo "... test_origin_system.i"
 	@echo "... test_origin_system.s"

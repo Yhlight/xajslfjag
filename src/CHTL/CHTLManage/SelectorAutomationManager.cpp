@@ -40,11 +40,11 @@ void AutomationRule::loadFromConfig(const ConfigurationNode* configNode) {
 
 std::string SelectorInfo::toCSSSelector() const {
     switch (type) {
-        case SelectorType::CLASS_SELECTOR:
+        case AutomationSelectorType::CLASS_SELECTOR:
             return "." + name;
-        case SelectorType::ID_SELECTOR:
+        case AutomationSelectorType::ID_SELECTOR:
             return "#" + name;
-        case SelectorType::REFERENCE_SELECTOR:
+        case AutomationSelectorType::REFERENCE_SELECTOR:
             return "&"; // 这里需要在上下文中解析
         default:
             return name;
@@ -53,11 +53,11 @@ std::string SelectorInfo::toCSSSelector() const {
 
 std::string SelectorInfo::toCHTLJSSelector() const {
     switch (type) {
-        case SelectorType::CLASS_SELECTOR:
+        case AutomationSelectorType::CLASS_SELECTOR:
             return "{{." + name + "}}";
-        case SelectorType::ID_SELECTOR:
+        case AutomationSelectorType::ID_SELECTOR:
             return "{{#" + name + "}}";
-        case SelectorType::REFERENCE_SELECTOR:
+        case AutomationSelectorType::REFERENCE_SELECTOR:
             return "{{&}}";
         default:
             return "{{" + name + "}}";
@@ -90,7 +90,7 @@ const std::vector<SelectorInfo>& AutomationContext::getSelectors() const {
 std::vector<SelectorInfo> AutomationContext::getClassSelectors() const {
     std::vector<SelectorInfo> classSelectors;
     for (const auto& selector : m_selectors) {
-        if (selector.type == SelectorType::CLASS_SELECTOR) {
+        if (selector.type == AutomationSelectorType::CLASS_SELECTOR) {
             classSelectors.push_back(selector);
         }
     }
@@ -100,7 +100,7 @@ std::vector<SelectorInfo> AutomationContext::getClassSelectors() const {
 std::vector<SelectorInfo> AutomationContext::getIdSelectors() const {
     std::vector<SelectorInfo> idSelectors;
     for (const auto& selector : m_selectors) {
-        if (selector.type == SelectorType::ID_SELECTOR) {
+        if (selector.type == AutomationSelectorType::ID_SELECTOR) {
             idSelectors.push_back(selector);
         }
     }
@@ -109,7 +109,7 @@ std::vector<SelectorInfo> AutomationContext::getIdSelectors() const {
 
 SelectorInfo AutomationContext::getFirstClassSelector() const {
     for (const auto& selector : m_selectors) {
-        if (selector.type == SelectorType::CLASS_SELECTOR) {
+        if (selector.type == AutomationSelectorType::CLASS_SELECTOR) {
             return selector;
         }
     }
@@ -118,7 +118,7 @@ SelectorInfo AutomationContext::getFirstClassSelector() const {
 
 SelectorInfo AutomationContext::getFirstIdSelector() const {
     for (const auto& selector : m_selectors) {
-        if (selector.type == SelectorType::ID_SELECTOR) {
+        if (selector.type == AutomationSelectorType::ID_SELECTOR) {
             return selector;
         }
     }
@@ -262,7 +262,7 @@ void SelectorAutomationManager::applyClassAutomation(std::shared_ptr<ElementNode
     
     // 查找第一个类选择器
     for (const auto& selector : selectors) {
-        if (selector.type == SelectorType::CLASS_SELECTOR) {
+        if (selector.type == AutomationSelectorType::CLASS_SELECTOR) {
             // 检查元素是否已经有class属性
             if (!element->hasAttribute("class")) {
                 element->setAttribute("class", selector.name);
@@ -280,7 +280,7 @@ void SelectorAutomationManager::applyIdAutomation(std::shared_ptr<ElementNode> e
     
     // 查找第一个ID选择器
     for (const auto& selector : selectors) {
-        if (selector.type == SelectorType::ID_SELECTOR) {
+        if (selector.type == AutomationSelectorType::ID_SELECTOR) {
             // 检查元素是否已经有id属性
             if (!element->hasAttribute("id")) {
                 element->setAttribute("id", selector.name);
@@ -417,19 +417,19 @@ std::vector<SelectorInfo> SelectorAutomationManager::parseCSSSelectors(const std
     // 提取类选择器
     auto classNames = extractClassSelectors(cssContent);
     for (const auto& className : classNames) {
-        selectors.emplace_back(SelectorType::CLASS_SELECTOR, className, true);
+        selectors.emplace_back(AutomationSelectorType::CLASS_SELECTOR, className, true);
     }
     
     // 提取ID选择器
     auto idNames = extractIdSelectors(cssContent);
     for (const auto& idName : idNames) {
-        selectors.emplace_back(SelectorType::ID_SELECTOR, idName, true);
+        selectors.emplace_back(AutomationSelectorType::ID_SELECTOR, idName, true);
     }
     
     // 提取引用选择器
     auto references = extractReferenceSelectors(cssContent);
     for (const auto& reference : references) {
-        selectors.emplace_back(SelectorType::REFERENCE_SELECTOR, reference, true);
+        selectors.emplace_back(AutomationSelectorType::REFERENCE_SELECTOR, reference, true);
     }
     
     return selectors;
@@ -450,20 +450,20 @@ std::vector<SelectorInfo> SelectorAutomationManager::parseCHTLJSSelectors(const 
     iter = std::sregex_iterator(jsContent.begin(), jsContent.end(), classRegex);
     for (; iter != end; ++iter) {
         std::string className = (*iter)[1].str();
-        selectors.emplace_back(SelectorType::CLASS_SELECTOR, className, true);
+        selectors.emplace_back(AutomationSelectorType::CLASS_SELECTOR, className, true);
     }
     
     // 查找ID选择器
     iter = std::sregex_iterator(jsContent.begin(), jsContent.end(), idRegex);
     for (; iter != end; ++iter) {
         std::string idName = (*iter)[1].str();
-        selectors.emplace_back(SelectorType::ID_SELECTOR, idName, true);
+        selectors.emplace_back(AutomationSelectorType::ID_SELECTOR, idName, true);
     }
     
     // 查找引用选择器
     iter = std::sregex_iterator(jsContent.begin(), jsContent.end(), refRegex);
     for (; iter != end; ++iter) {
-        selectors.emplace_back(SelectorType::REFERENCE_SELECTOR, "&", true);
+        selectors.emplace_back(AutomationSelectorType::REFERENCE_SELECTOR, "&", true);
     }
     
     return selectors;
@@ -569,19 +569,19 @@ void SelectorAutomationManager::applySelectorToElement(std::shared_ptr<ElementNo
     }
     
     switch (selector.type) {
-        case SelectorType::CLASS_SELECTOR:
+        case AutomationSelectorType::CLASS_SELECTOR:
             if (!element->hasAttribute("class")) {
                 element->setAttribute("class", selector.name);
                 m_usedClassNames.insert(selector.name);
             }
             break;
-        case SelectorType::ID_SELECTOR:
+        case AutomationSelectorType::ID_SELECTOR:
             if (!element->hasAttribute("id")) {
                 element->setAttribute("id", selector.name);
                 m_usedIdNames.insert(selector.name);
             }
             break;
-        case SelectorType::REFERENCE_SELECTOR:
+        case AutomationSelectorType::REFERENCE_SELECTOR:
             // 引用选择器不直接应用到元素
             break;
     }
@@ -592,8 +592,8 @@ void SelectorAutomationManager::applySelectorToElement(std::shared_ptr<ElementNo
 ReferenceRuleProcessor::ReferenceRuleProcessor(SelectorAutomationManager* manager) 
     : m_automationManager(manager) {
     // 设置默认优先级
-    m_priorities["style"] = SelectorType::CLASS_SELECTOR;  // 样式优先类名
-    m_priorities["script"] = SelectorType::ID_SELECTOR;    // 脚本优先ID
+    m_priorities["style"] = AutomationSelectorType::CLASS_SELECTOR;  // 样式优先类名
+    m_priorities["script"] = AutomationSelectorType::ID_SELECTOR;    // 脚本优先ID
 }
 
 std::string ReferenceRuleProcessor::processStyleReferences(std::shared_ptr<ElementNode> element, const std::string& styleContent) {
@@ -641,16 +641,16 @@ std::string ReferenceRuleProcessor::replaceReferences(const std::string& content
     return result;
 }
 
-void ReferenceRuleProcessor::setReferencePriority(const std::string& context, SelectorType priority) {
+void ReferenceRuleProcessor::setReferencePriority(const std::string& context, AutomationSelectorType priority) {
     m_priorities[context] = priority;
 }
 
-SelectorType ReferenceRuleProcessor::getReferencePriority(const std::string& context) const {
+AutomationSelectorType ReferenceRuleProcessor::getReferencePriority(const std::string& context) const {
     auto it = m_priorities.find(context);
     if (it != m_priorities.end()) {
         return it->second;
     }
-    return SelectorType::CLASS_SELECTOR; // 默认优先类选择器
+    return AutomationSelectorType::CLASS_SELECTOR; // 默认优先类选择器
 }
 
 std::vector<size_t> ReferenceRuleProcessor::findReferencePositions(const std::string& content) {

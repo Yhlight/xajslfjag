@@ -18,12 +18,14 @@ set(CHTL_MANAGE_SOURCES
     LocalStyleManager.cpp
     TemplateManager.cpp
     SelectorAutomationManager.cpp
+    ConfigurationManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
     LocalStyleManager.h
     TemplateManager.h
     SelectorAutomationManager.h
+    ConfigurationManager.h
 )
 
 # 创建静态库

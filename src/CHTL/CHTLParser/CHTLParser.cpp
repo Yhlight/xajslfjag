@@ -1,6 +1,7 @@
 #include "CHTLParser.h"
 #include "../CHTLLexer/GlobalMap.h"
 #include <sstream>
+#include <algorithm>
 
 namespace CHTL {
 
@@ -120,8 +121,45 @@ void CHTLParser::parseMain() {
         
         NodePtr node = parseTopLevel();
         if (node) {
-            if (topNode()) {
-                addChild(topNode(), node);
+            // 根据节点类型分类存储
+            switch (node->getNodeType()) {
+                case CHTLNodeType::CONFIG_NODE:
+                    m_result.configs.push_back(node);
+                    break;
+                case CHTLNodeType::TEMPLATE_STYLE_NODE:
+                case CHTLNodeType::TEMPLATE_ELEMENT_NODE:
+                case CHTLNodeType::TEMPLATE_VAR_NODE:
+                case CHTLNodeType::ADVANCED_TEMPLATE_STYLE_NODE:
+                case CHTLNodeType::ADVANCED_TEMPLATE_ELEMENT_NODE:
+                case CHTLNodeType::ADVANCED_TEMPLATE_VAR_NODE:
+                    m_result.templates.push_back(node);
+                    break;
+                case CHTLNodeType::CUSTOM_STYLE_NODE:
+                case CHTLNodeType::CUSTOM_ELEMENT_NODE:
+                case CHTLNodeType::CUSTOM_VAR_NODE:
+                    m_result.customNodes.push_back(node);
+                    break;
+                case CHTLNodeType::IMPORT_NODE:
+                case CHTLNodeType::IMPORT_HTML_NODE:
+                case CHTLNodeType::IMPORT_STYLE_NODE:
+                case CHTLNodeType::IMPORT_JAVASCRIPT_NODE:
+                case CHTLNodeType::IMPORT_CHTL_NODE:
+                case CHTLNodeType::IMPORT_CJMOD_NODE:
+                case CHTLNodeType::IMPORT_CONFIG_NODE:
+                case CHTLNodeType::IMPORT_TEMPLATE_NODE:
+                case CHTLNodeType::IMPORT_CUSTOM_NODE:
+                case CHTLNodeType::IMPORT_ORIGIN_NODE:
+                    m_result.imports.push_back(node);
+                    break;
+                case CHTLNodeType::NAMESPACE_NODE:
+                    m_result.namespaces.push_back(node);
+                    break;
+                default:
+                    // 其他节点添加到根节点
+                    if (topNode()) {
+                        addChild(topNode(), node);
+                    }
+                    break;
             }
             updateStatistics("top_level_nodes");
         } else {

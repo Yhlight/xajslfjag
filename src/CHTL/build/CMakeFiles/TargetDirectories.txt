@@ -5,6 +5,10 @@
 /workspace/src/CHTL/build/CMakeFiles/test_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_complete_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_origin_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_configuration_system.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_config_tokens.dir
+/workspace/src/CHTL/build/CMakeFiles/test_config_debug.dir
+/workspace/src/CHTL/build/CMakeFiles/debug_parse_simple.dir
 /workspace/src/CHTL/build/CMakeFiles/edit_cache.dir
 /workspace/src/CHTL/build/CMakeFiles/rebuild_cache.dir
 /workspace/src/CHTL/build/CHTLError/CMakeFiles/CHTLError.dir

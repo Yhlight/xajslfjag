@@ -130,6 +130,30 @@ CHTLManage/fast:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/build
 .PHONY : CHTLManage/fast
 
+ConfigurationManager.o: ConfigurationManager.cpp.o
+.PHONY : ConfigurationManager.o
+
+# target to build an object file
+ConfigurationManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o
+.PHONY : ConfigurationManager.cpp.o
+
+ConfigurationManager.i: ConfigurationManager.cpp.i
+.PHONY : ConfigurationManager.i
+
+# target to preprocess a source file
+ConfigurationManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.i
+.PHONY : ConfigurationManager.cpp.i
+
+ConfigurationManager.s: ConfigurationManager.cpp.s
+.PHONY : ConfigurationManager.s
+
+# target to generate assembly for a file
+ConfigurationManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.s
+.PHONY : ConfigurationManager.cpp.s
+
 LocalStyleManager.o: LocalStyleManager.cpp.o
 .PHONY : LocalStyleManager.o
 
@@ -211,6 +235,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... CHTLManage"
+	@echo "... ConfigurationManager.o"
+	@echo "... ConfigurationManager.i"
+	@echo "... ConfigurationManager.s"
 	@echo "... LocalStyleManager.o"
 	@echo "... LocalStyleManager.i"
 	@echo "... LocalStyleManager.s"

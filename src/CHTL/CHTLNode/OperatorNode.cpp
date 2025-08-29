@@ -128,6 +128,14 @@ void UseNode::setConfigName(const std::string& configName) {
     m_isHtml5 = false;
 }
 
+void UseNode::setUseContent(const std::string& content) {
+    m_useContent = content;
+}
+
+const std::string& UseNode::getUseContent() const {
+    return m_useContent;
+}
+
 std::shared_ptr<BaseNode> UseNode::clone() const {
     auto cloned = std::make_shared<UseNode>(getTarget());
     cloned->m_position = m_position;
@@ -135,6 +143,7 @@ std::shared_ptr<BaseNode> UseNode::clone() const {
     cloned->m_attributes = m_attributes;
     cloned->m_isHtml5 = m_isHtml5;
     cloned->m_configName = m_configName;
+    cloned->m_useContent = m_useContent;
     return cloned;
 }
 

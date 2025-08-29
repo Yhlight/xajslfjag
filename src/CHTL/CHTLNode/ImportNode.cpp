@@ -379,7 +379,7 @@ std::vector<std::string> ImportManager::getSearchPaths(const std::string& curren
 
 bool ImportManager::loadModule(const std::string& modulePath) {
     // 检查是否已经加载
-    if (std::find(m_importedModules.begin(), m_importedModules.end(), modulePath) != m_importedModules.end()) {
+    if (m_loadedModules.find(modulePath) != m_loadedModules.end()) {
         return true;
     }
     
@@ -389,7 +389,7 @@ bool ImportManager::loadModule(const std::string& modulePath) {
     }
     
     // 标记为已加载
-    m_importedModules.push_back(modulePath);
+    m_loadedModules.insert(modulePath);
     
     // 实际的模块加载逻辑在这里实现
     // 这里简化为返回true
@@ -459,13 +459,13 @@ bool ImportManager::processImport(std::shared_ptr<ImportNode> importNode, const 
     return loadModule(resolvedPath);
 }
 
-const std::vector<std::string>& ImportManager::getImportedModules() const {
-    return m_importedModules;
+const std::unordered_set<std::string>& ImportManager::getLoadedModules() const {
+    return m_loadedModules;
 }
 
 bool ImportManager::hasCircularImport(const std::string& filePath) const {
     // 简化的循环导入检测
-    return std::find(m_importedModules.begin(), m_importedModules.end(), filePath) != m_importedModules.end();
+    return m_loadedModules.find(filePath) != m_loadedModules.end();
 }
 
 std::string ImportManager::searchFile(const std::string& filename, const std::vector<std::string>& searchDirs) const {
@@ -490,68 +490,142 @@ bool ImportManager::checkModuleStructure(const std::string& directory) const {
     return std::filesystem::exists(directory) && std::filesystem::is_directory(directory);
 }
 
-// ========== UseNode 实现 ==========
-
-UseNode::UseNode() : BaseNode(CHTLNodeType::USE_NODE, "use") {
-}
-
-void UseNode::setUseContent(const std::string& content) {
-    m_useContent = content;
-}
-
-const std::string& UseNode::getUseContent() const {
-    return m_useContent;
-}
-
-bool UseNode::isHtml5Declaration() const {
-    return m_useContent == "html5";
-}
-
-bool UseNode::isConfigUsage() const {
-    return m_useContent.find("@Config") != std::string::npos || 
-           m_useContent.find("[Configuration]") != std::string::npos;
-}
-
-std::string UseNode::getConfigName() const {
-    if (!isConfigUsage()) {
+std::string ImportManager::loadFileContent(const std::string& filePath) const {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
         return "";
     }
     
-    // 解析配置名称
-    size_t configPos = m_useContent.find("@Config");
-    if (configPos != std::string::npos) {
-        size_t nameStart = configPos + 7; // "@Config".length()
-        while (nameStart < m_useContent.length() && std::isspace(m_useContent[nameStart])) {
-            nameStart++;
-        }
-        
-        size_t nameEnd = nameStart;
-        while (nameEnd < m_useContent.length() && 
-               (std::isalnum(m_useContent[nameEnd]) || m_useContent[nameEnd] == '_')) {
-            nameEnd++;
-        }
-        
-        if (nameEnd > nameStart) {
-            return m_useContent.substr(nameStart, nameEnd - nameStart);
-        }
+    std::string content;
+    std::string line;
+    while (std::getline(file, line)) {
+        content += line + "\n";
     }
     
-    return "";
+    return content;
 }
 
-std::string UseNode::toString() const {
-    return "use " + m_useContent + ";";
+bool ImportManager::hasCircularDependency(const std::string& filePath) const {
+    // 检查当前正在加载的文件中是否包含这个文件
+    std::string normalizedPath = std::filesystem::absolute(filePath).string();
+    return m_currentlyLoading.find(normalizedPath) != m_currentlyLoading.end();
 }
 
-NodePtr UseNode::clone() const {
-    auto cloned = std::make_shared<UseNode>();
-    cloned->m_useContent = m_useContent;
-    return cloned;
+void ImportManager::addDependency(const std::string& from, const std::string& to) {
+    std::string normalizedFrom = std::filesystem::absolute(from).string();
+    std::string normalizedTo = std::filesystem::absolute(to).string();
+    
+    m_dependencies[normalizedFrom].push_back(normalizedTo);
 }
 
-bool UseNode::validate(ErrorReporter* errorReporter) const {
-    (void)errorReporter; // 暂时不使用
-    return !m_useContent.empty();
+bool ImportManager::loadCMODModule(const std::string& modulePath) {
+    // 检查是否已经加载
+    if (m_loadedModules.find(modulePath) != m_loadedModules.end()) {
+        return true;
+    }
+    
+    // 检查循环依赖
+    if (hasCircularDependency(modulePath)) {
+        return false;
+    }
+    
+    // 标记为正在加载
+    std::string normalizedPath = std::filesystem::absolute(modulePath).string();
+    m_currentlyLoading.insert(normalizedPath);
+    
+    try {
+        // 检查CMOD模块结构
+        if (!checkModuleStructure(modulePath)) {
+            m_currentlyLoading.erase(normalizedPath);
+            return false;
+        }
+        
+        // 加载模块内容（这里可以扩展为实际的CMOD解析逻辑）
+        std::string srcPath = modulePath + "/src";
+        std::string infoPath = modulePath + "/info";
+        
+        if (std::filesystem::exists(srcPath) && std::filesystem::exists(infoPath)) {
+            // 标记为已加载
+            m_loadedModules.insert(normalizedPath);
+            
+            // 移除正在加载标记
+            m_currentlyLoading.erase(normalizedPath);
+            return true;
+        }
+        
+        m_currentlyLoading.erase(normalizedPath);
+        return false;
+        
+    } catch (const std::exception&) {
+        m_currentlyLoading.erase(normalizedPath);
+        return false;
+    }
 }
+
+bool ImportManager::loadCJMODModule(const std::string& modulePath) {
+    // 类似CMOD的加载逻辑，但针对CJMOD文件
+    if (m_loadedModules.find(modulePath) != m_loadedModules.end()) {
+        return true;
+    }
+    
+    if (hasCircularDependency(modulePath)) {
+        return false;
+    }
+    
+    std::string normalizedPath = std::filesystem::absolute(modulePath).string();
+    m_currentlyLoading.insert(normalizedPath);
+    
+    try {
+        // 检查CJMOD结构和加载逻辑
+        bool isCjmodFile = (modulePath.length() >= 6 && 
+                           modulePath.substr(modulePath.length() - 6) == ".cjmod");
+        if (std::filesystem::exists(modulePath) && 
+            (isCjmodFile || std::filesystem::is_directory(modulePath))) {
+            m_loadedModules.insert(normalizedPath);
+            m_currentlyLoading.erase(normalizedPath);
+            return true;
+        }
+        
+        m_currentlyLoading.erase(normalizedPath);
+        return false;
+        
+    } catch (const std::exception&) {
+        m_currentlyLoading.erase(normalizedPath);
+        return false;
+    }
+}
+
+std::unordered_map<std::string, std::string> ImportManager::getModuleInfo(const std::string& modulePath) const {
+    std::unordered_map<std::string, std::string> info;
+    
+    // 尝试读取模块信息文件
+    std::string infoFile = modulePath + "/info.chtl";
+    if (!std::filesystem::exists(infoFile)) {
+        // 尝试其他可能的信息文件路径
+        infoFile = modulePath + "/info/" + std::filesystem::path(modulePath).filename().string() + ".chtl";
+    }
+    
+    if (std::filesystem::exists(infoFile)) {
+        std::string content = loadFileContent(infoFile);
+        // 这里可以添加解析[Info]块的逻辑
+        info["path"] = modulePath;
+        info["infoFile"] = infoFile;
+        info["content"] = content;
+    }
+    
+    return info;
+}
+
+std::string ImportManager::createNamedOriginEmbed(const std::string& content, const std::string& type, const std::string& name) const {
+    // 根据类型创建命名原始嵌入节点
+    std::string result = "[Origin] " + type;
+    if (!name.empty()) {
+        result += " " + name;
+    }
+    result += "\n{\n" + content + "\n}";
+    return result;
+}
+
+
 
 } // namespace CHTL

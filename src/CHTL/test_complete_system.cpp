@@ -13,7 +13,7 @@
 #include "CHTLNode/ScriptNode.h"
 #include "CHTLNode/ConstraintNode.h"
 #include "CHTLNode/ImportNode.h"
-#include "Error/ErrorReport.h"
+#include "../Error/ErrorReport.h"
 
 using namespace CHTL;
 
@@ -51,42 +51,45 @@ void testConfigurationSystem() {
 
     try {
         ErrorReporter errorReporter;
-        CHTLLexer lexer(configCode);
+        Lexer lexer(configCode);
         lexer.setErrorReporter(&errorReporter);
         lexer.tokenize();
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 配置系统词法分析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        CHTLParser parser(lexer.getTokens());
+        CHTLParser parser;
         parser.setErrorReporter(&errorReporter);
         
         ParseOptions options;
         options.enableConfig = true;
         parser.setParseOptions(options);
         
-        auto ast = parser.parse();
+        auto tokens = lexer.tokenize();
+        auto ast = parser.parse(tokens);
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 配置系统解析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        if (ast) {
+        if (ast.success) {
             std::cout << "✓ 配置系统解析成功" << std::endl;
-            std::cout << "AST 节点数: " << ast->getChildren().size() << std::endl;
+            std::cout << "AST 节点数: " << ast.nodesCreated << std::endl;
             
             // 验证配置节点
-            for (auto child : ast->getChildren()) {
+            if (ast.rootNode) {
+                for (auto child : ast.rootNode->getChildren()) {
                 if (auto configNode = std::dynamic_pointer_cast<ConfigurationNode>(child)) {
                     std::cout << "✓ 找到配置节点: " << configNode->getConfigName() << std::endl;
                     std::cout << "  - 索引起始计数: " << configNode->getIndexInitialCount() << std::endl;
                     std::cout << "  - 调试模式: " << (configNode->isDebugMode() ? "启用" : "禁用") << std::endl;
                 }
+            }
             }
         } else {
             std::cout << "❌ 未生成AST" << std::endl;
@@ -133,34 +136,35 @@ body
 
     try {
         ErrorReporter errorReporter;
-        CHTLLexer lexer(namespaceCode);
+        Lexer lexer(namespaceCode);
         lexer.setErrorReporter(&errorReporter);
         lexer.tokenize();
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 命名空间系统词法分析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        CHTLParser parser(lexer.getTokens());
+        CHTLParser parser;
         parser.setErrorReporter(&errorReporter);
         
         ParseOptions options;
-        options.enableNamespaces = true;
+        // 命名空间支持已内置
         parser.setParseOptions(options);
         
-        auto ast = parser.parse();
+        auto tokens = lexer.tokenize();
+        auto ast = parser.parse(tokens);
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 命名空间系统解析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        if (ast) {
+        if (ast.success) {
             std::cout << "✓ 命名空间系统解析成功" << std::endl;
-            std::cout << "AST 节点数: " << ast->getChildren().size() << std::endl;
+            std::cout << "AST 节点数: " << ast.nodesCreated << std::endl;
             
             // 测试命名空间管理器
             NamespaceManager namespaceManager;
@@ -220,32 +224,33 @@ div
 
     try {
         ErrorReporter errorReporter;
-        CHTLLexer lexer(scriptCode);
+        Lexer lexer(scriptCode);
         lexer.setErrorReporter(&errorReporter);
         lexer.tokenize();
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 脚本系统词法分析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        CHTLParser parser(lexer.getTokens());
+        CHTLParser parser;
         parser.setErrorReporter(&errorReporter);
         
         ParseOptions options;
-        options.enableScripts = true;
+        // 脚本支持已内置
         parser.setParseOptions(options);
         
-        auto ast = parser.parse();
+        auto tokens = lexer.tokenize();
+        auto ast = parser.parse(tokens);
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 脚本系统解析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        if (ast) {
+        if (ast.success) {
             std::cout << "✓ 脚本系统解析成功" << std::endl;
             
             // 测试CHTL JS转换
@@ -418,36 +423,38 @@ void testImportSystem() {
 
     try {
         ErrorReporter errorReporter;
-        CHTLLexer lexer(importCode);
+        Lexer lexer(importCode);
         lexer.setErrorReporter(&errorReporter);
         lexer.tokenize();
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 导入系统词法分析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        CHTLParser parser(lexer.getTokens());
+        CHTLParser parser;
         parser.setErrorReporter(&errorReporter);
         
         ParseOptions options;
         options.enableImports = true;
         parser.setParseOptions(options);
         
-        auto ast = parser.parse();
+        auto tokens = lexer.tokenize();
+        auto ast = parser.parse(tokens);
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 导入系统解析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        if (ast) {
+        if (ast.success) {
             std::cout << "✓ 导入系统解析成功" << std::endl;
             
             int importNodes = 0;
-            for (auto child : ast->getChildren()) {
+            if (ast.rootNode) {
+                for (auto child : ast.rootNode->getChildren()) {
                 if (child->getNodeType() >= CHTLNodeType::IMPORT_HTML_NODE && 
                     child->getNodeType() <= CHTLNodeType::IMPORT_ORIGIN_NODE) {
                     importNodes++;
@@ -455,6 +462,7 @@ void testImportSystem() {
                         std::cout << "  - " << importNode->toString() << std::endl;
                     }
                 }
+            }
             }
             
             std::cout << "✓ 导入节点数量: " << importNodes << std::endl;
@@ -512,6 +520,7 @@ use html5;
                     background-color: #0056b3;
                 }
             }
+            }
             
             script
             {
@@ -563,42 +572,44 @@ html
 
     try {
         ErrorReporter errorReporter;
-        CHTLLexer lexer(integratedCode);
+        Lexer lexer(integratedCode);
         lexer.setErrorReporter(&errorReporter);
         lexer.tokenize();
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 集成系统词法分析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        CHTLParser parser(lexer.getTokens());
+        CHTLParser parser;
         parser.setErrorReporter(&errorReporter);
         
         ParseOptions options;
         options.enableTemplates = true;
         options.enableOrigins = true;
         options.enableConfig = true;
-        options.enableNamespaces = true;
-        options.enableScripts = true;
+        // 命名空间支持已内置
+        // 脚本支持已内置
         parser.setParseOptions(options);
         
-        auto ast = parser.parse();
+        auto tokens = lexer.tokenize();
+        auto ast = parser.parse(tokens);
         
         if (errorReporter.hasErrors()) {
             std::cout << "❌ 集成系统解析失败" << std::endl;
-            errorReporter.printAllErrors();
+            errorReporter.printAll();
             return;
         }
         
-        if (ast) {
+        if (ast.success) {
             std::cout << "✓ 集成系统解析成功" << std::endl;
-            std::cout << "AST 节点数: " << ast->getChildren().size() << std::endl;
+            std::cout << "AST 节点数: " << ast.nodesCreated << std::endl;
             
             int configNodes = 0, namespaceNodes = 0, originNodes = 0, templateNodes = 0;
             
-            for (auto child : ast->getChildren()) {
+            if (ast.rootNode) {
+                for (auto child : ast.rootNode->getChildren()) {
                 switch (child->getNodeType()) {
                     case CHTLNodeType::CONFIG_NODE:
                         configNodes++;
@@ -620,6 +631,7 @@ html
                     default:
                         break;
                 }
+            }
             }
             
             std::cout << "✓ 节点类型统计:" << std::endl;

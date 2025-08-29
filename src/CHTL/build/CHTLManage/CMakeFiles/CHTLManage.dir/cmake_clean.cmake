@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o"
+  "CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o"

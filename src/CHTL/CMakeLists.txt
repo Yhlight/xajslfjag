@@ -186,4 +186,82 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
     )
+    
+    # 创建配置系统测试程序
+    add_executable(test_configuration_system test_configuration_system.cpp)
+    target_link_libraries(test_configuration_system 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+        CHTLManage
+    )
+    
+    target_include_directories(test_configuration_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+    
+    # 创建配置Token调试程序
+    add_executable(debug_config_tokens debug_config_tokens.cpp)
+    target_link_libraries(debug_config_tokens 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+    )
+    
+    target_include_directories(debug_config_tokens PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+    )
+    
+    # 创建配置调试程序
+    add_executable(test_config_debug test_config_debug.cpp)
+    target_link_libraries(test_config_debug 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+    )
+    
+    target_include_directories(test_config_debug PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+    )
+    
+    # 创建简单解析调试程序
+    add_executable(debug_parse_simple debug_parse_simple.cpp)
+    target_link_libraries(debug_parse_simple 
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLParser
+    )
+    
+    target_include_directories(debug_parse_simple PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+    )
 endif()
