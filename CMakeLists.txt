@@ -12,6 +12,23 @@ find_package(Threads REQUIRED)
 set(CHTL_CORE_SOURCES
     # Util
     src/Util/Common.cpp
+    src/Util/FileSystem/FileSystem.cpp
+    
+    # IO Streams
+    src/CHTL/CHTLIOStream/FileStream.cpp
+    src/CHTLJS/CHTLJSIOStream/JSFileStream.cpp
+    
+    # Error Management
+    src/Error/ErrorManager.cpp
+    
+    # Module System
+    src/Module/ModuleManager.cpp
+    
+    # Test Framework (基础组件)
+    src/Test/UtilTest/UtilTestSuite.cpp
+    src/Test/TokenTest/TokenPrint.cpp
+    src/Test/ASTTest/ASTPrint.cpp
+    src/Test/CompileTimer/CompileTimer.cpp
     
     # CHTL Core - 只包含存在的文件
     src/CHTL/CHTLLexer/Token.cpp
