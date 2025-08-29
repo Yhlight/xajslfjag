@@ -1,0 +1,10 @@
+[Template] VirExample {
+    div {
+        script {
+            vir controller = listen {
+                click: handler,
+                state: { active: false }
+            };
+        }
+    }
+}

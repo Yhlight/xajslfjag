@@ -705,4 +705,53 @@ bool ModuleLoader::validateModuleContent(const String& content, const String& ty
     return false;
 }
 
+// 兼容性方法实现
+StringVector ModuleNode::getDependencies() const {
+    return dependencies;
+}
+
+StringVector ModuleNode::getExports() const {
+    return exports;
+}
+
+String ModuleNode::getContent() const {
+    return moduleContent;
+}
+
+String ModuleNode::getPath() const {
+    return modulePath;
+}
+
+String ModuleNode::getLoadStrategy() const {
+    return loadStrategyStr;
+}
+
+void ModuleNode::setContent(const String& content) {
+    moduleContent = content;
+}
+
+void ModuleNode::setPath(const String& path) {
+    modulePath = path;
+}
+
+void ModuleNode::setLoadStrategy(const String& strategy) {
+    loadStrategyStr = strategy;
+}
+
+void ModuleNode::addDependency(const String& dependency) {
+    if (std::find(dependencies.begin(), dependencies.end(), dependency) == dependencies.end()) {
+        dependencies.push_back(dependency);
+    }
+}
+
+void ModuleNode::addExport(const String& exportName) {
+    if (std::find(exports.begin(), exports.end(), exportName) == exports.end()) {
+        exports.push_back(exportName);
+    }
+}
+
+String ModuleNode::getModuleName() const {
+    return getName();  // 使用基类的getName方法
+}
+
 } // namespace CHTL

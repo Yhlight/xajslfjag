@@ -1,0 +1,14 @@
+[CMOD] MyUtilities {
+    version: "1.0.0",
+    author: "CHTL Developer",
+    
+    [Template] Button {
+        button {
+            script {
+                {{&}}->listen {
+                    click: () => console.log('CMOD Button clicked')
+                };
+            }
+        }
+    }
+}

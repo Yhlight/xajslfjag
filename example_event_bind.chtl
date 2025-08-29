@@ -1,0 +1,9 @@
+[Template] EventBindExample {
+    button {
+        script {
+            {{.button}} &-> click {
+                console.log('event binding');
+            }
+        }
+    }
+}

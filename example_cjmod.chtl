@@ -1,0 +1,10 @@
+[Template] CJMODExample {
+    div {
+        script {
+            const art = printMylove {
+                url: "image.jpg",
+                mode: "ASCII"
+            };
+        }
+    }
+}

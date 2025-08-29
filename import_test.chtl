@@ -1,0 +1,22 @@
+// 标准导入
+@import "base.chtl"
+@import "components/button.chtl"
+
+// CMOD导入
+@cmod "utilities.cmod"
+@cmod "animations.cmod" as anim
+
+// JavaScript导入
+@JavaScript "utils.js"
+@JavaScript "https://cdn.example.com/lib.js"
+
+[Template] ImportTest {
+    div {
+        script {
+            // 使用导入的CMOD
+            const result = printMylove {
+                image: "test.jpg"
+            };
+        }
+    }
+}

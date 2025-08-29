@@ -1,0 +1,70 @@
+[Template] ComplexExample {
+    main {
+        style {
+            .container {
+                display: flex;
+            }
+        }
+        
+        div.container {
+            button#btn {
+                "Click Me"
+            }
+            
+            script {
+                // 1. 模块导入
+                module {
+                    load: "utils.js",
+                    load: "animations.cjjs"
+                }
+                
+                // 2. 增强监听器
+                {{#btn}}->listen {
+                    click: handleClick,
+                    hover: handleHover
+                };
+                
+                // 3. 事件委托
+                {{.container}}->delegate {
+                    target: {{.item}},
+                    click: itemClick
+                };
+                
+                // 4. 动画系统
+                animate {
+                    target: {{#btn}},
+                    duration: 1000,
+                    begin: { opacity: 0 },
+                    end: { opacity: 1 }
+                };
+                
+                // 5. 虚对象
+                vir controller = listen {
+                    state: { active: false },
+                    click: toggleState
+                };
+                
+                // 6. 事件绑定操作符
+                {{#btn}} &-> click {
+                    this.classList.toggle('active');
+                }
+                
+                // 7. CJMOD扩展
+                const art = printMylove {
+                    url: "love.jpg",
+                    mode: "ASCII"
+                };
+                
+                const result = iNeverAway {
+                    data: userData,
+                    callback: processResult
+                };
+                
+                // 8. 纯JavaScript混合
+                function handleClick(event) {
+                    console.log('Button clicked');
+                }
+            }
+        }
+    }
+}

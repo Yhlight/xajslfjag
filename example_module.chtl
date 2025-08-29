@@ -1,0 +1,10 @@
+[Template] ModuleExample {
+    div {
+        script {
+            module {
+                load: "utils.js",
+                load: "helpers.cjjs"
+            }
+        }
+    }
+}

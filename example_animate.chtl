@@ -1,0 +1,12 @@
+[Template] AnimateExample {
+    div {
+        script {
+            animate {
+                target: {{#box}},
+                duration: 1000,
+                begin: { opacity: 1 },
+                end: { opacity: 0 }
+            };
+        }
+    }
+}

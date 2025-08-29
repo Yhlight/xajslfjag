@@ -1,0 +1,10 @@
+[Template] DelegateExample {
+    div {
+        script {
+            {{.container}}->delegate {
+                target: {{.item}},
+                click: handleClick
+            };
+        }
+    }
+}

@@ -37,6 +37,13 @@ public:
     int loadTimeout;  // 加载超时时间(ms)
     String basePath;  // 基础路径
     
+    // 兼容性支持字段
+    String moduleContent;  // 模块内容
+    String modulePath;     // 模块路径
+    String loadStrategyStr; // 加载策略字符串
+    StringVector dependencies; // 依赖列表
+    StringVector exports;      // 导出列表
+    
     explicit ModuleNode(const String& name = "", const Position& pos = Position())
         : CHTLJSNode(NodeType::CHTLJS_MODULE, name, pos),
           loadStrategy(ModuleLoadStrategy::DEPENDENCY),
@@ -82,6 +89,19 @@ public:
     int getLoadTimeout() const { return loadTimeout; }
     void setBasePath(const String& path) { basePath = path; }
     String getBasePath() const { return basePath; }
+    
+    // 兼容性方法（为了向后兼容生成器接口）
+    StringVector getDependencies() const;
+    StringVector getExports() const;
+    String getContent() const;
+    String getPath() const;
+    String getLoadStrategy() const;
+    void setContent(const String& content);
+    void setPath(const String& path);
+    void setLoadStrategy(const String& strategy);
+    void addDependency(const String& dependency);
+    void addExport(const String& exportName);
+    String getModuleName() const;
     
     // JavaScript生成
     String generateJavaScript() const override;
