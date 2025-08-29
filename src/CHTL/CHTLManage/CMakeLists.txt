@@ -21,6 +21,7 @@ set(CHTL_MANAGE_SOURCES
     ConfigurationManager.cpp
     NamespaceManager.cpp
     VariableManager.cpp
+    ModuleManager.cpp
 )
 
 set(CHTL_MANAGE_HEADERS
@@ -30,6 +31,7 @@ set(CHTL_MANAGE_HEADERS
     ConfigurationManager.h
     NamespaceManager.h
     VariableManager.h
+    ModuleManager.h
 )
 
 # 创建静态库

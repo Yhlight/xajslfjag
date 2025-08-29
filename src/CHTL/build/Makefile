@@ -221,6 +221,32 @@ test_variable_system/fast:
 .PHONY : test_variable_system/fast
 
 #=============================================================================
+# Target rules for targets named test_unified_system
+
+# Build rule for target.
+test_unified_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_unified_system
+.PHONY : test_unified_system
+
+# fast build rule for target.
+test_unified_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_unified_system.dir/build.make CMakeFiles/test_unified_system.dir/build
+.PHONY : test_unified_system/fast
+
+#=============================================================================
+# Target rules for targets named test_complete_chtl_features
+
+# Build rule for target.
+test_complete_chtl_features: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_complete_chtl_features
+.PHONY : test_complete_chtl_features
+
+# fast build rule for target.
+test_complete_chtl_features/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_chtl_features.dir/build.make CMakeFiles/test_complete_chtl_features.dir/build
+.PHONY : test_complete_chtl_features/fast
+
+#=============================================================================
 # Target rules for targets named test_template_system
 
 # Build rule for target.
@@ -572,6 +598,32 @@ CHTLManage/fast:
 .PHONY : CHTLManage/fast
 
 #=============================================================================
+# Target rules for targets named CHTLScanner
+
+# Build rule for target.
+CHTLScanner: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLScanner
+.PHONY : CHTLScanner
+
+# fast build rule for target.
+CHTLScanner/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLScanner/CMakeFiles/CHTLScanner.dir/build.make CHTLScanner/CMakeFiles/CHTLScanner.dir/build
+.PHONY : CHTLScanner/fast
+
+#=============================================================================
+# Target rules for targets named CHTLCompiler
+
+# Build rule for target.
+CHTLCompiler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLCompiler
+.PHONY : CHTLCompiler
+
+# fast build rule for target.
+CHTLCompiler/fast:
+	$(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build
+.PHONY : CHTLCompiler/fast
+
+#=============================================================================
 # Target rules for targets named CHTLTest
 
 # Build rule for target.
@@ -801,6 +853,30 @@ test_chtl_syntax.s: test_chtl_syntax.cpp.s
 test_chtl_syntax.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_chtl_syntax.dir/build.make CMakeFiles/test_chtl_syntax.dir/test_chtl_syntax.cpp.s
 .PHONY : test_chtl_syntax.cpp.s
+
+test_complete_chtl_features.o: test_complete_chtl_features.cpp.o
+.PHONY : test_complete_chtl_features.o
+
+# target to build an object file
+test_complete_chtl_features.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_chtl_features.dir/build.make CMakeFiles/test_complete_chtl_features.dir/test_complete_chtl_features.cpp.o
+.PHONY : test_complete_chtl_features.cpp.o
+
+test_complete_chtl_features.i: test_complete_chtl_features.cpp.i
+.PHONY : test_complete_chtl_features.i
+
+# target to preprocess a source file
+test_complete_chtl_features.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_chtl_features.dir/build.make CMakeFiles/test_complete_chtl_features.dir/test_complete_chtl_features.cpp.i
+.PHONY : test_complete_chtl_features.cpp.i
+
+test_complete_chtl_features.s: test_complete_chtl_features.cpp.s
+.PHONY : test_complete_chtl_features.s
+
+# target to generate assembly for a file
+test_complete_chtl_features.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_chtl_features.dir/build.make CMakeFiles/test_complete_chtl_features.dir/test_complete_chtl_features.cpp.s
+.PHONY : test_complete_chtl_features.cpp.s
 
 test_complete_system.o: test_complete_system.cpp.o
 .PHONY : test_complete_system.o
@@ -1138,6 +1214,30 @@ test_template_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_template_system.dir/build.make CMakeFiles/test_template_system.dir/test_template_system.cpp.s
 .PHONY : test_template_system.cpp.s
 
+test_unified_system.o: test_unified_system.cpp.o
+.PHONY : test_unified_system.o
+
+# target to build an object file
+test_unified_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_unified_system.dir/build.make CMakeFiles/test_unified_system.dir/test_unified_system.cpp.o
+.PHONY : test_unified_system.cpp.o
+
+test_unified_system.i: test_unified_system.cpp.i
+.PHONY : test_unified_system.i
+
+# target to preprocess a source file
+test_unified_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_unified_system.dir/build.make CMakeFiles/test_unified_system.dir/test_unified_system.cpp.i
+.PHONY : test_unified_system.cpp.i
+
+test_unified_system.s: test_unified_system.cpp.s
+.PHONY : test_unified_system.s
+
+# target to generate assembly for a file
+test_unified_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_unified_system.dir/build.make CMakeFiles/test_unified_system.dir/test_unified_system.cpp.s
+.PHONY : test_unified_system.cpp.s
+
 test_updated_lexer.o: test_updated_lexer.cpp.o
 .PHONY : test_updated_lexer.o
 
@@ -1194,6 +1294,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... CHTLCompiler"
 	@echo "... CHTLContext"
 	@echo "... CHTLError"
 	@echo "... CHTLFileSystem"
@@ -1203,6 +1304,7 @@ help:
 	@echo "... CHTLManage"
 	@echo "... CHTLNode"
 	@echo "... CHTLParser"
+	@echo "... CHTLScanner"
 	@echo "... CHTLState"
 	@echo "... CHTLTest"
 	@echo "... debug_config_tokens"
@@ -1215,6 +1317,7 @@ help:
 	@echo "... test_chtl_js_system"
 	@echo "... test_chtl_syntax"
 	@echo "... test_compilation_monitor"
+	@echo "... test_complete_chtl_features"
 	@echo "... test_complete_system"
 	@echo "... test_complete_template_system"
 	@echo "... test_config_debug"
@@ -1230,6 +1333,7 @@ help:
 	@echo "... test_state_context"
 	@echo "... test_template_specialization"
 	@echo "... test_template_system"
+	@echo "... test_unified_system"
 	@echo "... test_updated_lexer"
 	@echo "... test_variable_system"
 	@echo "... debug_config_tokens.o"
@@ -1256,6 +1360,9 @@ help:
 	@echo "... test_chtl_syntax.o"
 	@echo "... test_chtl_syntax.i"
 	@echo "... test_chtl_syntax.s"
+	@echo "... test_complete_chtl_features.o"
+	@echo "... test_complete_chtl_features.i"
+	@echo "... test_complete_chtl_features.s"
 	@echo "... test_complete_system.o"
 	@echo "... test_complete_system.i"
 	@echo "... test_complete_system.s"
@@ -1298,6 +1405,9 @@ help:
 	@echo "... test_template_system.o"
 	@echo "... test_template_system.i"
 	@echo "... test_template_system.s"
+	@echo "... test_unified_system.o"
+	@echo "... test_unified_system.i"
+	@echo "... test_unified_system.s"
 	@echo "... test_updated_lexer.o"
 	@echo "... test_updated_lexer.i"
 	@echo "... test_updated_lexer.s"

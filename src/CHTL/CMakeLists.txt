@@ -24,6 +24,8 @@ add_subdirectory(CHTLIOStream)
 add_subdirectory(CHTLParser)
 add_subdirectory(CHTLGenerator)
 add_subdirectory(CHTLManage)
+add_subdirectory(CHTLScanner)
+add_subdirectory(CHTLCompiler)
 add_subdirectory(../Test CHTLTest)
 
 # 如果需要构建测试程序
@@ -124,6 +126,34 @@ if(BUILD_TESTS)
         CHTLNode
         CHTLParser
         CHTLManage
+    )
+    
+    # 创建统一系统测试程序
+    add_executable(test_unified_system test_unified_system.cpp)
+    target_link_libraries(test_unified_system 
+        CHTLError
+        CHTLScanner
+        CHTLCompiler
+        CHTLManage
+        CHTLParser
+        CHTLGenerator
+        CHTLNode
+        CHTLContext
+        CHTLState
+    )
+    
+    # 创建完整CHTL特性测试程序
+    add_executable(test_complete_chtl_features test_complete_chtl_features.cpp)
+    target_link_libraries(test_complete_chtl_features 
+        CHTLError
+        CHTLScanner
+        CHTLCompiler
+        CHTLManage
+        CHTLParser
+        CHTLGenerator
+        CHTLNode
+        CHTLContext
+        CHTLState
     )
     
     # 设置包含目录

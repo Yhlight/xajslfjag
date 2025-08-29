@@ -106,6 +106,7 @@ CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed
   /usr/include/c++/14/backward/auto_ptr.h \
   /usr/include/c++/14/backward/binders.h \
   /usr/include/c++/14/bit \
+  /usr/include/c++/14/bits/algorithmfwd.h \
   /usr/include/c++/14/bits/align.h \
   /usr/include/c++/14/bits/alloc_traits.h \
   /usr/include/c++/14/bits/allocated_ptr.h \
@@ -166,6 +167,18 @@ CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed
   /usr/include/c++/14/bits/quoted_string.h \
   /usr/include/c++/14/bits/range_access.h \
   /usr/include/c++/14/bits/refwrap.h \
+  /usr/include/c++/14/bits/regex.h \
+  /usr/include/c++/14/bits/regex.tcc \
+  /usr/include/c++/14/bits/regex_automaton.h \
+  /usr/include/c++/14/bits/regex_automaton.tcc \
+  /usr/include/c++/14/bits/regex_compiler.h \
+  /usr/include/c++/14/bits/regex_compiler.tcc \
+  /usr/include/c++/14/bits/regex_constants.h \
+  /usr/include/c++/14/bits/regex_error.h \
+  /usr/include/c++/14/bits/regex_executor.h \
+  /usr/include/c++/14/bits/regex_executor.tcc \
+  /usr/include/c++/14/bits/regex_scanner.h \
+  /usr/include/c++/14/bits/regex_scanner.tcc \
   /usr/include/c++/14/bits/requires_hosted.h \
   /usr/include/c++/14/bits/shared_ptr.h \
   /usr/include/c++/14/bits/shared_ptr_atomic.h \
@@ -173,24 +186,29 @@ CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed
   /usr/include/c++/14/bits/sstream.tcc \
   /usr/include/c++/14/bits/std_abs.h \
   /usr/include/c++/14/bits/std_function.h \
+  /usr/include/c++/14/bits/stl_algo.h \
   /usr/include/c++/14/bits/stl_algobase.h \
   /usr/include/c++/14/bits/stl_bvector.h \
   /usr/include/c++/14/bits/stl_construct.h \
   /usr/include/c++/14/bits/stl_deque.h \
   /usr/include/c++/14/bits/stl_function.h \
+  /usr/include/c++/14/bits/stl_heap.h \
   /usr/include/c++/14/bits/stl_iterator.h \
   /usr/include/c++/14/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/14/bits/stl_iterator_base_types.h \
+  /usr/include/c++/14/bits/stl_map.h \
   /usr/include/c++/14/bits/stl_pair.h \
   /usr/include/c++/14/bits/stl_raw_storage_iter.h \
   /usr/include/c++/14/bits/stl_stack.h \
   /usr/include/c++/14/bits/stl_tempbuf.h \
+  /usr/include/c++/14/bits/stl_tree.h \
   /usr/include/c++/14/bits/stl_uninitialized.h \
   /usr/include/c++/14/bits/stl_vector.h \
   /usr/include/c++/14/bits/streambuf.tcc \
   /usr/include/c++/14/bits/streambuf_iterator.h \
   /usr/include/c++/14/bits/string_view.tcc \
   /usr/include/c++/14/bits/stringfwd.h \
+  /usr/include/c++/14/bits/uniform_int_dist.h \
   /usr/include/c++/14/bits/unique_ptr.h \
   /usr/include/c++/14/bits/unordered_map.h \
   /usr/include/c++/14/bits/unordered_set.h \
@@ -199,6 +217,7 @@ CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed
   /usr/include/c++/14/bits/utility.h \
   /usr/include/c++/14/bits/vector.tcc \
   /usr/include/c++/14/bits/version.h \
+  /usr/include/c++/14/bitset \
   /usr/include/c++/14/cctype \
   /usr/include/c++/14/cerrno \
   /usr/include/c++/14/chrono \
@@ -242,6 +261,7 @@ CMakeFiles/debug_namespace_parsing_detailed.dir/debug_namespace_parsing_detailed
   /usr/include/c++/14/pstl/glue_memory_defs.h \
   /usr/include/c++/14/pstl/pstl_config.h \
   /usr/include/c++/14/ratio \
+  /usr/include/c++/14/regex \
   /usr/include/c++/14/sstream \
   /usr/include/c++/14/stack \
   /usr/include/c++/14/stdexcept \
@@ -391,8 +411,6 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /lib/x86_64-linux-gnu/crti.o:
 
-/workspace/src/CHTL/CHTLNode/TemplateNode.h:
-
 /workspace/src/CHTL/CHTLNode/ScriptNode.h:
 
 /workspace/src/CHTL/CHTLNode/ImportNode.h:
@@ -455,7 +473,41 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++io.h:
 
-/usr/include/c++/14/cctype:
+/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
+
+/usr/include/c++/14/vector:
+
+/usr/include/c++/14/unordered_set:
+
+/usr/include/c++/14/unordered_map:
+
+/usr/include/c++/14/typeinfo:
+
+/usr/include/c++/14/type_traits:
+
+/usr/include/c++/14/tuple:
+
+/usr/include/c++/14/system_error:
+
+/usr/include/c++/14/string_view:
+
+/usr/include/c++/14/string:
+
+/usr/include/c++/14/streambuf:
+
+/usr/include/c++/14/stdexcept:
+
+/usr/include/c++/14/stack:
+
+/usr/include/c++/14/regex:
+
+/usr/include/c++/14/pstl/pstl_config.h:
+
+/lib/x86_64-linux-gnu/libc.so.6:
+
+/usr/include/c++/14/pstl/glue_memory_defs.h:
 
 /usr/include/c++/14/bits/erase_if.h:
 
@@ -469,15 +521,9 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/c++/14/cwchar:
 
-/usr/include/c++/14/stdexcept:
-
 /usr/include/c++/14/bits/charconv.h:
 
 /usr/include/c++/14/bits/basic_ios.tcc:
-
-/lib/x86_64-linux-gnu/libc.so.6:
-
-/usr/include/c++/14/pstl/glue_memory_defs.h:
 
 /usr/include/c++/14/bits/alloc_traits.h:
 
@@ -495,17 +541,9 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/x86_64-linux-gnu/sys/select.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
-/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
-
 /usr/include/c++/14/bits/shared_ptr.h:
 
 /usr/include/c++/14/bits/basic_ios.h:
-
-/usr/include/c++/14/bits/exception.h:
-
-/usr/include/c++/14/bits/fs_dir.h:
 
 /usr/include/x86_64-linux-gnu/bits/wchar.h:
 
@@ -513,9 +551,11 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/c++/14/bits/stl_iterator_base_types.h:
 
-/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
+/usr/include/c++/14/ratio:
 
-/usr/include/c++/14/type_traits:
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+
+/usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /workspace/src/CHTL/CHTLNode/ConfigNode.h:
 
@@ -527,11 +567,11 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
+/usr/include/c++/14/sstream:
+
+/usr/include/c++/14/bits/stl_algo.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/workspace/src/CHTL/CHTLNode/OperatorNode.h:
-
-/usr/include/c++/14/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/14/backward/auto_ptr.h:
 
@@ -549,13 +589,9 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/c++/14/bits/string_view.tcc:
 
-/usr/include/c++/14/streambuf:
-
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
 /usr/include/c++/14/cstdlib:
-
-/usr/include/c++/14/system_error:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
@@ -573,13 +609,9 @@ CHTLFileSystem/libCHTLFileSystem.a:
 
 /usr/include/c++/14/bits/allocated_ptr.h:
 
-/usr/include/c++/14/stack:
-
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
 /usr/include/c++/14/bits/cxxabi_forced.h:
-
-/usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/errno.h:
 
@@ -604,8 +636,6 @@ CHTLFileSystem/libCHTLFileSystem.a:
 CHTLError/libCHTLError.a:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-intn.h:
-
-/usr/include/x86_64-linux-gnu/bits/types.h:
 
 /lib/x86_64-linux-gnu/libmvec.so.1:
 
@@ -637,8 +667,6 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/cxxabi_init_exception.h:
 
-/usr/include/c++/14/string_view:
-
 /workspace/src/CHTL/CHTLParser/CHTLParser.h:
 
 /usr/include/errno.h:
@@ -654,6 +682,14 @@ CHTLError/libCHTLError.a:
 /usr/include/c++/14/bits/stl_raw_storage_iter.h:
 
 /usr/include/alloca.h:
+
+/workspace/src/CHTL/CHTLNode/OriginNode.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h:
+
+/usr/include/x86_64-linux-gnu/c++/14/bits/basic_file.h:
+
+/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
@@ -707,7 +743,15 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/functexcept.h:
 
+/usr/include/x86_64-linux-gnu/bits/time64.h:
+
+/usr/include/c++/14/bits/regex_constants.h:
+
+/usr/include/c++/14/bits/regex_executor.h:
+
 /usr/include/x86_64-linux-gnu/asm/types.h:
+
+/usr/include/c++/14/bits/regex_error.h:
 
 /usr/include/asm-generic/errno.h:
 
@@ -720,8 +764,6 @@ CHTLError/libCHTLError.a:
 /usr/include/linux/sched/types.h:
 
 /usr/include/c++/14/bits/std_abs.h:
-
-/usr/include/c++/14/pstl/pstl_config.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
@@ -765,7 +807,11 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/shared_ptr_base.h:
 
-/usr/include/c++/14/vector:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
+/usr/include/c++/14/bits/uniform_int_dist.h:
 
 /usr/include/c++/14/bits/atomic_base.h:
 
@@ -827,6 +873,12 @@ CHTLError/libCHTLError.a:
 
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
+/usr/include/c++/14/bits/fs_dir.h:
+
+/usr/include/c++/14/bits/exception.h:
+
+/usr/include/c++/14/cctype:
+
 /usr/include/c++/14/bits/exception_ptr.h:
 
 /usr/include/c++/14/bits/fs_ops.h:
@@ -837,25 +889,21 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/fstream.tcc:
 
+/usr/include/c++/14/bits/stl_map.h:
+
 /usr/include/c++/14/bits/hashtable.h:
 
 /usr/include/c++/14/bits/invoke.h:
 
 /usr/include/c++/14/bits/ios_base.h:
 
-/usr/include/c++/14/bits/istream.tcc:
+/usr/include/c++/14/bits/algorithmfwd.h:
 
-/usr/include/c++/14/unordered_set:
+/usr/include/c++/14/bits/istream.tcc:
 
 /usr/include/c++/14/bits/locale_conv.h:
 
-/lib/x86_64-linux-gnu/libm.so.6:
-
-/usr/include/c++/14/iosfwd:
-
 /usr/include/c++/14/bits/locale_facets_nonio.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/c++allocator.h:
 
 /usr/include/c++/14/bits/ptr_traits.h:
 
@@ -868,6 +916,12 @@ CHTLError/libCHTLError.a:
 /usr/include/c++/14/bits/memoryfwd.h:
 
 /usr/include/c++/14/bits/nested_exception.h:
+
+/workspace/src/CHTL/CHTLNode/OperatorNode.h:
+
+/usr/include/c++/14/bits/shared_ptr_atomic.h:
+
+/usr/include/c++/14/bits/regex_automaton.tcc:
 
 /usr/include/features.h:
 
@@ -887,11 +941,39 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/parse_numbers.h:
 
+/usr/include/c++/14/bits/regex_compiler.h:
+
 /usr/include/c++/14/bits/quoted_string.h:
 
 /usr/include/c++/14/bits/range_access.h:
 
 /usr/include/c++/14/bits/refwrap.h:
+
+/usr/include/c++/14/bits/regex.h:
+
+/usr/include/c++/14/bits/regex_scanner.h:
+
+/usr/include/c++/14/bits/regex.tcc:
+
+/workspace/src/CHTL/CHTLNode/CommentNode.h:
+
+/usr/include/c++/14/fstream:
+
+/usr/include/c++/14/bits/regex_automaton.h:
+
+/usr/include/c++/14/bits/regex_compiler.tcc:
+
+/usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/include/c++/14/bits/regex_executor.tcc:
+
+/usr/include/c++/14/cstdint:
+
+/lib/x86_64-linux-gnu/libm.so.6:
+
+/usr/include/c++/14/iosfwd:
+
+/usr/include/c++/14/bits/regex_scanner.tcc:
 
 /usr/include/c++/14/bits/sstream.tcc:
 
@@ -905,9 +987,13 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/stl_construct.h:
 
+/usr/include/c++/14/bits/stl_heap.h:
+
 /usr/include/c++/14/bits/stl_stack.h:
 
 /usr/include/c++/14/deque:
+
+/usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
@@ -929,6 +1015,10 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/bits/version.h:
 
+/workspace/src/CHTL/CHTLNode/TemplateNode.h:
+
+/usr/include/c++/14/bitset:
+
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
 
 /usr/include/c++/14/cerrno:
@@ -940,8 +1030,6 @@ CHTLError/libCHTLError.a:
 /usr/include/c++/14/concepts:
 
 /usr/include/c++/14/cstddef:
-
-/usr/include/c++/14/cstdint:
 
 /usr/include/c++/14/bits/utility.h:
 
@@ -971,10 +1059,6 @@ CHTLError/libCHTLError.a:
 
 /usr/include/c++/14/ext/type_traits.h:
 
-/workspace/src/CHTL/CHTLNode/CommentNode.h:
-
-/usr/include/c++/14/fstream:
-
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h:
 
 /usr/include/c++/14/bits/postypes.h:
@@ -1000,27 +1084,3 @@ CHTLContext/libCHTLContext.a:
 /usr/include/asm-generic/bitsperlong.h:
 
 /usr/include/c++/14/pstl/execution_defs.h:
-
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-
-/usr/include/c++/14/ratio:
-
-/usr/include/c++/14/sstream:
-
-/usr/include/c++/14/string:
-
-/usr/include/c++/14/tuple:
-
-/usr/include/c++/14/typeinfo:
-
-/usr/include/c++/14/unordered_map:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/atomic_word.h:
-
-/workspace/src/CHTL/CHTLNode/OriginNode.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/gthr.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
-
-/usr/include/x86_64-linux-gnu/c++/14/bits/basic_file.h:

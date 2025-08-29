@@ -6,6 +6,8 @@
 /workspace/src/CHTL/build/CMakeFiles/test_selector_automation.dir
 /workspace/src/CHTL/build/CMakeFiles/test_template_specialization.dir
 /workspace/src/CHTL/build/CMakeFiles/test_variable_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_unified_system.dir
+/workspace/src/CHTL/build/CMakeFiles/test_complete_chtl_features.dir
 /workspace/src/CHTL/build/CMakeFiles/test_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_complete_template_system.dir
 /workspace/src/CHTL/build/CMakeFiles/test_origin_system.dir
@@ -55,6 +57,12 @@
 /workspace/src/CHTL/build/CHTLManage/CMakeFiles/CHTLManage.dir
 /workspace/src/CHTL/build/CHTLManage/CMakeFiles/edit_cache.dir
 /workspace/src/CHTL/build/CHTLManage/CMakeFiles/rebuild_cache.dir
+/workspace/src/CHTL/build/CHTLScanner/CMakeFiles/CHTLScanner.dir
+/workspace/src/CHTL/build/CHTLScanner/CMakeFiles/edit_cache.dir
+/workspace/src/CHTL/build/CHTLScanner/CMakeFiles/rebuild_cache.dir
+/workspace/src/CHTL/build/CHTLCompiler/CMakeFiles/CHTLCompiler.dir
+/workspace/src/CHTL/build/CHTLCompiler/CMakeFiles/edit_cache.dir
+/workspace/src/CHTL/build/CHTLCompiler/CMakeFiles/rebuild_cache.dir
 /workspace/src/CHTL/build/CHTLTest/CMakeFiles/CHTLTest.dir
 /workspace/src/CHTL/build/CHTLTest/CMakeFiles/run_all_tests.dir
 /workspace/src/CHTL/build/CHTLTest/CMakeFiles/test_compilation_monitor.dir

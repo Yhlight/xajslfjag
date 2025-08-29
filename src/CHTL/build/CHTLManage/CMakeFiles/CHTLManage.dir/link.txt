@@ -1,2 +1,2 @@
-/usr/bin/ar qc libCHTLManage.a CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o CMakeFiles/CHTLManage.dir/VariableManager.cpp.o
+/usr/bin/ar qc libCHTLManage.a CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o CMakeFiles/CHTLManage.dir/VariableManager.cpp.o CMakeFiles/CHTLManage.dir/ModuleManager.cpp.o
 /usr/bin/ranlib libCHTLManage.a

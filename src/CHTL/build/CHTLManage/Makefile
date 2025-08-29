@@ -178,6 +178,30 @@ LocalStyleManager.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.s
 .PHONY : LocalStyleManager.cpp.s
 
+ModuleManager.o: ModuleManager.cpp.o
+.PHONY : ModuleManager.o
+
+# target to build an object file
+ModuleManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ModuleManager.cpp.o
+.PHONY : ModuleManager.cpp.o
+
+ModuleManager.i: ModuleManager.cpp.i
+.PHONY : ModuleManager.i
+
+# target to preprocess a source file
+ModuleManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ModuleManager.cpp.i
+.PHONY : ModuleManager.cpp.i
+
+ModuleManager.s: ModuleManager.cpp.s
+.PHONY : ModuleManager.s
+
+# target to generate assembly for a file
+ModuleManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ModuleManager.cpp.s
+.PHONY : ModuleManager.cpp.s
+
 NamespaceManager.o: NamespaceManager.cpp.o
 .PHONY : NamespaceManager.o
 
@@ -289,6 +313,9 @@ help:
 	@echo "... LocalStyleManager.o"
 	@echo "... LocalStyleManager.i"
 	@echo "... LocalStyleManager.s"
+	@echo "... ModuleManager.o"
+	@echo "... ModuleManager.i"
+	@echo "... ModuleManager.s"
 	@echo "... NamespaceManager.o"
 	@echo "... NamespaceManager.i"
 	@echo "... NamespaceManager.s"
