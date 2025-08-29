@@ -15,10 +15,15 @@ endif()
 
 # 添加子目录
 add_subdirectory(../Error CHTLError)
+add_subdirectory(../Util/FileSystem CHTLFileSystem)
 add_subdirectory(CHTLLexer)
 add_subdirectory(CHTLState)
 add_subdirectory(CHTLContext)
 add_subdirectory(CHTLNode)
+add_subdirectory(CHTLIOStream)
+add_subdirectory(CHTLParser)
+add_subdirectory(CHTLGenerator)
+add_subdirectory(CHTLManage)
 add_subdirectory(../Test CHTLTest)
 
 # 如果需要构建测试程序
@@ -45,6 +50,22 @@ if(BUILD_TESTS)
         CHTLContext
     )
     
+    # 创建完整系统测试程序
+    add_executable(test_complete_system test_complete_system.cpp)
+    target_link_libraries(test_complete_system 
+        CHTLFileSystem
+        CHTLError
+        CHTLLexer 
+        CHTLState 
+        CHTLContext
+        CHTLNode
+        CHTLIOStream
+        CHTLParser
+        CHTLGenerator
+        CHTLManage
+        CHTLTest
+    )
+    
     # 设置包含目录
     target_include_directories(test_state_context PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/../Error
@@ -61,6 +82,20 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Test
+    )
+    
+    target_include_directories(test_complete_system PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Util/FileSystem
+        ${CMAKE_CURRENT_SOURCE_DIR}/../Error
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLLexer
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLState
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLContext
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLIOStream
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLGenerator
+        ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
         ${CMAKE_CURRENT_SOURCE_DIR}/../Test
     )
 endif()
