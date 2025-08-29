@@ -4,10 +4,14 @@ project(CHTLCompiler)
 # Add source files
 set(COMPILER_SOURCES
     CompilerDispatcher.cpp
+    CHTLJSCompiler.cpp
+    ANTLRCompiler.cpp
 )
 
 set(COMPILER_HEADERS
     CompilerDispatcher.h
+    CHTLJSCompiler.h
+    ANTLRCompiler.h
 )
 
 # Create the static library

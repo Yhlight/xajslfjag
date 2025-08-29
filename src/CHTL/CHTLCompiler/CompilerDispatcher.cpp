@@ -1,4 +1,5 @@
 #include "CompilerDispatcher.h"
+#include "CHTLJSCompiler.h"
 #include "../CHTLParser/CHTLParser.h"
 #include "../CHTLGenerator/CHTLGenerator.h"
 #include <algorithm>
@@ -34,115 +35,19 @@ CompilationResult CHTLCompiler::compile(const CodeFragment& fragment) {
 // ========== CHTLJSCompiler 实现 ==========
 
 CHTLJSCompiler::CHTLJSCompiler() {
+    m_enhancedCompiler = std::make_unique<CHTLJSEnhancedCompiler>();
 }
 
 CompilationResult CHTLJSCompiler::compile(const CodeFragment& fragment) {
     try {
-        std::string output;
-        std::string content = fragment.content;
-        
-        // 编译不同的CHTL JS语法
-        if (compileEnhancedSelector(content, output)) {
-            return CompilationResult(true, output, "", fragment.type);
-        } else if (compileCHTLJSFunction(content, output)) {
-            return CompilationResult(true, output, "", fragment.type);
-        } else if (compileEventBinding(content, output)) {
-            return CompilationResult(true, output, "", fragment.type);
-        }
-        
-        // 默认返回原内容
-        return CompilationResult(true, content, "", fragment.type);
+        std::string output = m_enhancedCompiler->compile(fragment.content);
+        return CompilationResult(true, output, "", fragment.type);
     } catch (const std::exception& e) {
         return CompilationResult(false, "", e.what(), fragment.type);
     }
 }
 
-bool CHTLJSCompiler::compileCHTLJSFunction(const std::string& content, std::string& output) {
-    // 编译CHTL JS函数：listen{...}, delegate{...}, animate{...}
-    
-    std::regex listenPattern(R"(listen\s*\{([^}]*)\})");
-    std::smatch match;
-    
-    if (std::regex_search(content, match, listenPattern)) {
-        std::string listenerContent = match[1].str();
-        
-        // 转换为标准JavaScript事件监听器
-        output = "addEventListener('click', function() {\n" + listenerContent + "\n});";
-        return true;
-    }
-    
-    std::regex delegatePattern(R"(delegate\s*\{([^}]*)\})");
-    if (std::regex_search(content, match, delegatePattern)) {
-        std::string delegateContent = match[1].str();
-        
-        // 转换为事件委托
-        output = "document.addEventListener('click', function(e) {\n" + delegateContent + "\n});";
-        return true;
-    }
-    
-    std::regex animatePattern(R"(animate\s*\{([^}]*)\})");
-    if (std::regex_search(content, match, animatePattern)) {
-        std::string animateContent = match[1].str();
-        
-        // 转换为动画
-        output = "requestAnimationFrame(function() {\n" + animateContent + "\n});";
-        return true;
-    }
-    
-    return false;
-}
 
-bool CHTLJSCompiler::compileEnhancedSelector(const std::string& content, std::string& output) {
-    // 编译增强选择器 {{...}}
-    std::regex selectorPattern(R"(\{\{([^}]+)\}\})");
-    std::string result = content;
-    
-    std::sregex_iterator iter(content.begin(), content.end(), selectorPattern);
-    std::sregex_iterator end;
-    
-    for (; iter != end; ++iter) {
-        std::smatch match = *iter;
-        std::string selector = match[1].str();
-        std::string jsSelector;
-        
-        if (selector[0] == '.') {
-            // 类选择器
-            jsSelector = "document.querySelector('" + selector + "')";
-        } else if (selector[0] == '#') {
-            // ID选择器
-            jsSelector = "document.getElementById('" + selector.substr(1) + "')";
-        } else {
-            // 标签选择器
-            jsSelector = "document.querySelector('" + selector + "')";
-        }
-        
-        result = std::regex_replace(result, std::regex("\\{\\{" + selector + "\\}\\}"), jsSelector);
-    }
-    
-    if (result != content) {
-        output = result;
-        return true;
-    }
-    
-    return false;
-}
-
-bool CHTLJSCompiler::compileEventBinding(const std::string& content, std::string& output) {
-    // 编译事件绑定操作符 &->
-    std::regex eventPattern(R"((.+?)\s*&->\s*(\w+)\s*\{([^}]*)\})");
-    std::smatch match;
-    
-    if (std::regex_search(content, match, eventPattern)) {
-        std::string element = match[1].str();
-        std::string event = match[2].str();
-        std::string handler = match[3].str();
-        
-        output = element + ".addEventListener('" + event + "', function() {\n" + handler + "\n});";
-        return true;
-    }
-    
-    return false;
-}
 
 // ========== CSSCompiler 实现 ==========
 

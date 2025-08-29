@@ -85,6 +85,51 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # The main all target
 all: cmake_check_build_system
 	cd /workspace/src/CHTL/build && $(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles /workspace/src/CHTL/build/CHTLManage//CMakeFiles/progress.marks
@@ -298,6 +343,30 @@ VariableManager.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.s
 .PHONY : VariableManager.cpp.s
 
+ZipModuleManager.o: ZipModuleManager.cpp.o
+.PHONY : ZipModuleManager.o
+
+# target to build an object file
+ZipModuleManager.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o
+.PHONY : ZipModuleManager.cpp.o
+
+ZipModuleManager.i: ZipModuleManager.cpp.i
+.PHONY : ZipModuleManager.i
+
+# target to preprocess a source file
+ZipModuleManager.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.i
+.PHONY : ZipModuleManager.cpp.i
+
+ZipModuleManager.s: ZipModuleManager.cpp.s
+.PHONY : ZipModuleManager.s
+
+# target to generate assembly for a file
+ZipModuleManager.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLManage/CMakeFiles/CHTLManage.dir/build.make CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.s
+.PHONY : ZipModuleManager.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -305,6 +374,10 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... CHTLManage"
 	@echo "... ConfigurationManager.o"
@@ -328,6 +401,9 @@ help:
 	@echo "... VariableManager.o"
 	@echo "... VariableManager.i"
 	@echo "... VariableManager.s"
+	@echo "... ZipModuleManager.o"
+	@echo "... ZipModuleManager.i"
+	@echo "... ZipModuleManager.s"
 .PHONY : help
 
 

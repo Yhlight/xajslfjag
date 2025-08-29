@@ -170,6 +170,20 @@ CHTLManage/CMakeFiles/CHTLManage.dir/ModuleManager.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLManage.dir/ModuleManager.cpp.s"
 	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLManage/ModuleManager.cpp -o CMakeFiles/CHTLManage.dir/ModuleManager.cpp.s
 
+CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o: CHTLManage/CMakeFiles/CHTLManage.dir/flags.make
+CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o: /workspace/src/CHTL/CHTLManage/ZipModuleManager.cpp
+CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o: CHTLManage/CMakeFiles/CHTLManage.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o -MF CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o.d -o CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o -c /workspace/src/CHTL/CHTLManage/ZipModuleManager.cpp
+
+CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.i"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CHTL/CHTLManage/ZipModuleManager.cpp > CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.i
+
+CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.s"
+	cd /workspace/src/CHTL/build/CHTLManage && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLManage/ZipModuleManager.cpp -o CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.s
+
 # Object files for target CHTLManage
 CHTLManage_OBJECTS = \
 "CMakeFiles/CHTLManage.dir/LocalStyleManager.cpp.o" \
@@ -178,7 +192,8 @@ CHTLManage_OBJECTS = \
 "CMakeFiles/CHTLManage.dir/ConfigurationManager.cpp.o" \
 "CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o" \
 "CMakeFiles/CHTLManage.dir/VariableManager.cpp.o" \
-"CMakeFiles/CHTLManage.dir/ModuleManager.cpp.o"
+"CMakeFiles/CHTLManage.dir/ModuleManager.cpp.o" \
+"CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o"
 
 # External object files for target CHTLManage
 CHTLManage_EXTERNAL_OBJECTS =
@@ -190,9 +205,10 @@ CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/ConfigurationMa
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/NamespaceManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/ModuleManager.cpp.o
+CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/build.make
 CHTLManage/libCHTLManage.a: CHTLManage/CMakeFiles/CHTLManage.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX static library libCHTLManage.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX static library libCHTLManage.a"
 	cd /workspace/src/CHTL/build/CHTLManage && $(CMAKE_COMMAND) -P CMakeFiles/CHTLManage.dir/cmake_clean_target.cmake
 	cd /workspace/src/CHTL/build/CHTLManage && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLManage.dir/link.txt --verbose=$(VERBOSE)
 

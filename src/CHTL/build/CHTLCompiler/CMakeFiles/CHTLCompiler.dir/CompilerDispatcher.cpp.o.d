@@ -234,22 +234,7 @@ CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/CHTLParser.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Lexer.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Token.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Type.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/GlobalMap.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLState/State.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/stack \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/deque \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_deque.h \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/deque.tcc \
-  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_stack.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/Context.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
-  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/../CHTLState/State.h \
+  /workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/regex \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bitset \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/locale \
@@ -261,6 +246,11 @@ CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/codecvt.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_facets_nonio.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/locale_conv.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/stack \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/deque \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_deque.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/deque.tcc \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_stack.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_algo.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/algorithmfwd.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_heap.h \
@@ -279,6 +269,17 @@ CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/regex_executor.tcc \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/CHTLParser.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Lexer.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Token.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/Type.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/GlobalMap.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLState/State.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/Context.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
+  /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../CHTLContext/../CHTLState/State.h \
   /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLLexer/../../Error/ErrorReport.h \
   /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLState/State.h \
   /workspace/src/CHTL/CHTLCompiler/../CHTLParser/../CHTLContext/Context.h \

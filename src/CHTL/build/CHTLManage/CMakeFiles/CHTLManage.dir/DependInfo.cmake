@@ -15,6 +15,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/CHTL/CHTLManage/SelectorAutomationManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/SelectorAutomationManager.cpp.o.d"
   "/workspace/src/CHTL/CHTLManage/TemplateManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o.d"
   "/workspace/src/CHTL/CHTLManage/VariableManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/VariableManager.cpp.o.d"
+  "/workspace/src/CHTL/CHTLManage/ZipModuleManager.cpp" "CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o" "gcc" "CHTLManage/CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

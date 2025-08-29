@@ -76,13 +76,10 @@ public:
     
     CompilationResult compile(const CodeFragment& fragment) override;
     FragmentType getSupportedType() const override { return FragmentType::CHTL_JS; }
-    std::string getName() const override { return "CHTL JS Compiler"; }
+    std::string getName() const override { return "CHTL JS Enhanced Compiler"; }
     
 private:
-    // CHTL JS编译器实现
-    bool compileCHTLJSFunction(const std::string& content, std::string& output);
-    bool compileEnhancedSelector(const std::string& content, std::string& output);
-    bool compileEventBinding(const std::string& content, std::string& output);
+    std::unique_ptr<class CHTLJSEnhancedCompiler> m_enhancedCompiler;
 };
 
 /**

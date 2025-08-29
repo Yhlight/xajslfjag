@@ -1,4 +1,8 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o"
+  "CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o.d"
+  "CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o"
+  "CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o.d"
   "CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o"
   "CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o.d"
   "libCHTLCompiler.a"

@@ -85,6 +85,51 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # The main all target
 all: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles /workspace/src/CHTL/build//CMakeFiles/progress.marks
@@ -455,6 +500,19 @@ test_constraint_system/fast:
 .PHONY : test_constraint_system/fast
 
 #=============================================================================
+# Target rules for targets named test_final_simple
+
+# Build rule for target.
+test_final_simple: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_final_simple
+.PHONY : test_final_simple
+
+# fast build rule for target.
+test_final_simple/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_final_simple.dir/build.make CMakeFiles/test_final_simple.dir/build
+.PHONY : test_final_simple/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -622,6 +680,19 @@ CHTLCompiler: cmake_check_build_system
 CHTLCompiler/fast:
 	$(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build
 .PHONY : CHTLCompiler/fast
+
+#=============================================================================
+# Target rules for targets named CHTLCJMOD
+
+# Build rule for target.
+CHTLCJMOD: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLCJMOD
+.PHONY : CHTLCJMOD
+
+# fast build rule for target.
+CHTLCJMOD/fast:
+	$(MAKE) $(MAKESILENT) -f CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make CJMOD/CMakeFiles/CHTLCJMOD.dir/build
+.PHONY : CHTLCJMOD/fast
 
 #=============================================================================
 # Target rules for targets named CHTLTest
@@ -998,6 +1069,30 @@ test_constraint_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/test_constraint_system.cpp.s
 .PHONY : test_constraint_system.cpp.s
 
+test_final_simple.o: test_final_simple.cpp.o
+.PHONY : test_final_simple.o
+
+# target to build an object file
+test_final_simple.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_final_simple.dir/build.make CMakeFiles/test_final_simple.dir/test_final_simple.cpp.o
+.PHONY : test_final_simple.cpp.o
+
+test_final_simple.i: test_final_simple.cpp.i
+.PHONY : test_final_simple.i
+
+# target to preprocess a source file
+test_final_simple.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_final_simple.dir/build.make CMakeFiles/test_final_simple.dir/test_final_simple.cpp.i
+.PHONY : test_final_simple.cpp.i
+
+test_final_simple.s: test_final_simple.cpp.s
+.PHONY : test_final_simple.s
+
+# target to generate assembly for a file
+test_final_simple.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_final_simple.dir/build.make CMakeFiles/test_final_simple.dir/test_final_simple.cpp.s
+.PHONY : test_final_simple.cpp.s
+
 test_import_system.o: test_import_system.cpp.o
 .PHONY : test_import_system.o
 
@@ -1293,7 +1388,12 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... CHTLCJMOD"
 	@echo "... CHTLCompiler"
 	@echo "... CHTLContext"
 	@echo "... CHTLError"
@@ -1323,6 +1423,7 @@ help:
 	@echo "... test_config_debug"
 	@echo "... test_configuration_system"
 	@echo "... test_constraint_system"
+	@echo "... test_final_simple"
 	@echo "... test_import_system"
 	@echo "... test_lexer"
 	@echo "... test_namespace_system"
@@ -1378,6 +1479,9 @@ help:
 	@echo "... test_constraint_system.o"
 	@echo "... test_constraint_system.i"
 	@echo "... test_constraint_system.s"
+	@echo "... test_final_simple.o"
+	@echo "... test_final_simple.i"
+	@echo "... test_final_simple.s"
 	@echo "... test_import_system.o"
 	@echo "... test_import_system.i"
 	@echo "... test_import_system.s"

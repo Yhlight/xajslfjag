@@ -13,6 +13,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLManage.dir/TemplateManager.cpp.o.d"
   "CMakeFiles/CHTLManage.dir/VariableManager.cpp.o"
   "CMakeFiles/CHTLManage.dir/VariableManager.cpp.o.d"
+  "CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o"
+  "CMakeFiles/CHTLManage.dir/ZipModuleManager.cpp.o.d"
   "libCHTLManage.a"
   "libCHTLManage.pdb"
 )

@@ -86,17 +86,49 @@ CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.s"
 	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLCompiler/CompilerDispatcher.cpp -o CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.s
 
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/flags.make
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o: /workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.cpp
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o -MF CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o.d -o CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o -c /workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.cpp
+
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.i"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.cpp > CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.i
+
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.s"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.cpp -o CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.s
+
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/flags.make
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o: /workspace/src/CHTL/CHTLCompiler/ANTLRCompiler.cpp
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o -MF CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o.d -o CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o -c /workspace/src/CHTL/CHTLCompiler/ANTLRCompiler.cpp
+
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.i"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CHTL/CHTLCompiler/ANTLRCompiler.cpp > CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.i
+
+CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.s"
+	cd /workspace/src/CHTL/build/CHTLCompiler && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CHTLCompiler/ANTLRCompiler.cpp -o CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.s
+
 # Object files for target CHTLCompiler
 CHTLCompiler_OBJECTS = \
-"CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o"
+"CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o" \
+"CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o" \
+"CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o"
 
 # External object files for target CHTLCompiler
 CHTLCompiler_EXTERNAL_OBJECTS =
 
 CHTLCompiler/libCHTLCompiler.a: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o
+CHTLCompiler/libCHTLCompiler.a: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o
+CHTLCompiler/libCHTLCompiler.a: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o
 CHTLCompiler/libCHTLCompiler.a: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make
 CHTLCompiler/libCHTLCompiler.a: CHTLCompiler/CMakeFiles/CHTLCompiler.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libCHTLCompiler.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libCHTLCompiler.a"
 	cd /workspace/src/CHTL/build/CHTLCompiler && $(CMAKE_COMMAND) -P CMakeFiles/CHTLCompiler.dir/cmake_clean_target.cmake
 	cd /workspace/src/CHTL/build/CHTLCompiler && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLCompiler.dir/link.txt --verbose=$(VERBOSE)
 

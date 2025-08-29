@@ -104,6 +104,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
+  include("/workspace/src/CHTL/build/CJMOD/cmake_install.cmake")
+endif()
+
+if(NOT CMAKE_INSTALL_LOCAL_ONLY)
+  # Include the install script for the subdirectory.
   include("/workspace/src/CHTL/build/CHTLTest/cmake_install.cmake")
 endif()
 

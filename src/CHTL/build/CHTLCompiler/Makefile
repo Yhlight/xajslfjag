@@ -85,6 +85,51 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
 
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
+
 # The main all target
 all: cmake_check_build_system
 	cd /workspace/src/CHTL/build && $(CMAKE_COMMAND) -E cmake_progress_start /workspace/src/CHTL/build/CMakeFiles /workspace/src/CHTL/build/CHTLCompiler//CMakeFiles/progress.marks
@@ -130,6 +175,54 @@ CHTLCompiler/fast:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build
 .PHONY : CHTLCompiler/fast
 
+ANTLRCompiler.o: ANTLRCompiler.cpp.o
+.PHONY : ANTLRCompiler.o
+
+# target to build an object file
+ANTLRCompiler.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o
+.PHONY : ANTLRCompiler.cpp.o
+
+ANTLRCompiler.i: ANTLRCompiler.cpp.i
+.PHONY : ANTLRCompiler.i
+
+# target to preprocess a source file
+ANTLRCompiler.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.i
+.PHONY : ANTLRCompiler.cpp.i
+
+ANTLRCompiler.s: ANTLRCompiler.cpp.s
+.PHONY : ANTLRCompiler.s
+
+# target to generate assembly for a file
+ANTLRCompiler.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.s
+.PHONY : ANTLRCompiler.cpp.s
+
+CHTLJSCompiler.o: CHTLJSCompiler.cpp.o
+.PHONY : CHTLJSCompiler.o
+
+# target to build an object file
+CHTLJSCompiler.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o
+.PHONY : CHTLJSCompiler.cpp.o
+
+CHTLJSCompiler.i: CHTLJSCompiler.cpp.i
+.PHONY : CHTLJSCompiler.i
+
+# target to preprocess a source file
+CHTLJSCompiler.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.i
+.PHONY : CHTLJSCompiler.cpp.i
+
+CHTLJSCompiler.s: CHTLJSCompiler.cpp.s
+.PHONY : CHTLJSCompiler.s
+
+# target to generate assembly for a file
+CHTLJSCompiler.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLCompiler/CMakeFiles/CHTLCompiler.dir/build.make CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.s
+.PHONY : CHTLJSCompiler.cpp.s
+
 CompilerDispatcher.o: CompilerDispatcher.cpp.o
 .PHONY : CompilerDispatcher.o
 
@@ -161,8 +254,18 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
 	@echo "... rebuild_cache"
 	@echo "... CHTLCompiler"
+	@echo "... ANTLRCompiler.o"
+	@echo "... ANTLRCompiler.i"
+	@echo "... ANTLRCompiler.s"
+	@echo "... CHTLJSCompiler.o"
+	@echo "... CHTLJSCompiler.i"
+	@echo "... CHTLJSCompiler.s"
 	@echo "... CompilerDispatcher.o"
 	@echo "... CompilerDispatcher.i"
 	@echo "... CompilerDispatcher.s"

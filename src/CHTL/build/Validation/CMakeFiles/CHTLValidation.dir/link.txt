@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLValidation.a CMakeFiles/CHTLValidation.dir/ComprehensiveValidator.cpp.o
+/usr/bin/ranlib libCHTLValidation.a

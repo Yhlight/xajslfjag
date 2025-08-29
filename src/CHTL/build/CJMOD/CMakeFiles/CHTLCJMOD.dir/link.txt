@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLCJMOD.a CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.o
+/usr/bin/ranlib libCHTLCJMOD.a

@@ -26,6 +26,7 @@ add_subdirectory(CHTLGenerator)
 add_subdirectory(CHTLManage)
 add_subdirectory(CHTLScanner)
 add_subdirectory(CHTLCompiler)
+add_subdirectory(CJMOD)
 add_subdirectory(../Test CHTLTest)
 
 # 如果需要构建测试程序
@@ -537,6 +538,21 @@ if(BUILD_TESTS)
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLNode
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLParser
         ${CMAKE_CURRENT_SOURCE_DIR}/CHTLManage
+    )
+    
+    # 最终简化测试程序
+    add_executable(test_final_simple test_final_simple.cpp)
+    target_link_libraries(test_final_simple 
+        CHTLError
+        CHTLScanner
+        CHTLCompiler
+        CHTLManage
+        CHTLParser
+        CHTLGenerator
+        CHTLNode
+        CHTLContext
+        CHTLState
+        CHTLCJMOD
     )
     
 endif()

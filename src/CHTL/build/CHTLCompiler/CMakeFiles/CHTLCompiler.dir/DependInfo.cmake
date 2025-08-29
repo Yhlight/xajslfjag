@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/workspace/src/CHTL/CHTLCompiler/ANTLRCompiler.cpp" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o" "gcc" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o.d"
+  "/workspace/src/CHTL/CHTLCompiler/CHTLJSCompiler.cpp" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o" "gcc" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o.d"
   "/workspace/src/CHTL/CHTLCompiler/CompilerDispatcher.cpp" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o" "gcc" "CHTLCompiler/CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o.d"
   )
 
