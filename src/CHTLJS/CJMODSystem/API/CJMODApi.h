@@ -49,6 +49,10 @@ class CJMOD_API AtomArg {
 public:
     AtomArg();
     AtomArg(const std::string& value, AtomArgType type = AtomArgType::Literal);
+    AtomArg(const AtomArg& other);
+    AtomArg(AtomArg&& other) noexcept;
+    AtomArg& operator=(const AtomArg& other);
+    AtomArg& operator=(AtomArg&& other) noexcept;
     ~AtomArg();
     
     // 获取值
@@ -76,6 +80,8 @@ public:
     Arg();
     Arg(const std::vector<std::string>& values);
     Arg(const std::vector<AtomArg>& atoms);
+    Arg(Arg&& other) noexcept;
+    Arg& operator=(Arg&& other) noexcept;
     ~Arg();
     
     // 打印参数列表

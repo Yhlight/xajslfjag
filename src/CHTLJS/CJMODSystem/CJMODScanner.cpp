@@ -70,7 +70,7 @@ bool CJMODScanner::isValidSyntax(const std::string& code) {
         auto tokens = scan(code);
         return validateTokens(tokens);
     } catch (const std::exception& e) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::SYNTAX_ERROR)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::SYNTAX_ERROR)
             .withMessage("CJMOD syntax validation failed")
             .withDetail(e.what())
             .report();

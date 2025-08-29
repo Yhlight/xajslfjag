@@ -6,6 +6,7 @@
 #include <memory>
 #include <unordered_map>
 #include <optional>
+#include <map>
 
 namespace CHTL {
 
@@ -46,6 +47,11 @@ struct CJMODInfo {
     std::string apiVersion;
     std::string minCHTLJSVersion;
     std::string maxCHTLJSVersion;
+    
+    // Additional fields for runtime
+    bool hasExtension = false;
+    std::string extensionPath;
+    std::map<std::string, std::string> syntaxDefinitions;
 };
 
 // CJMOD导出信息
@@ -60,6 +66,7 @@ struct CJMODExport {
 
 // CJMOD打包器
 class CJMODPackager {
+    friend class CJMODLoader;
 public:
     CJMODPackager();
     ~CJMODPackager() = default;
@@ -106,12 +113,15 @@ private:
     bool compileCppFiles(const std::vector<std::string>& cppFiles, const std::string& outputPath);
     std::string generateBindingCode(const CJMODStructure& structure);
     
+    // 解析manifest
+    bool parseManifest(const std::string& manifest, CJMODStructure& structure);
+    
+private:
     // 辅助方法
     std::string readFile(const std::string& path);
     bool writeFile(const std::string& path, const std::string& content);
     bool isValidModuleName(const std::string& name);
     std::string generateManifest(const CJMODStructure& structure);
-    bool parseManifest(const std::string& manifest, CJMODStructure& structure);
 };
 
 // CJMOD加载器

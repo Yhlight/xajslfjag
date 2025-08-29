@@ -13,9 +13,9 @@ namespace CHTL {
 namespace fs = std::filesystem;
 
 // ZIP文件头魔数
-constexpr uint32_t ZIP_LOCAL_FILE_HEADER_SIGNATURE = 0x04034b50;
-constexpr uint32_t ZIP_CENTRAL_DIR_SIGNATURE = 0x02014b50;
-constexpr uint32_t ZIP_END_OF_CENTRAL_DIR_SIGNATURE = 0x06054b50;
+// constexpr uint32_t ZIP_LOCAL_FILE_HEADER_SIGNATURE = 0x04034b50;
+// constexpr uint32_t ZIP_CENTRAL_DIR_SIGNATURE = 0x02014b50;
+// constexpr uint32_t ZIP_END_OF_CENTRAL_DIR_SIGNATURE = 0x06054b50;
 
 // 简单的ZIP结构（用于演示）
 struct LocalFileHeader {
@@ -500,7 +500,7 @@ std::vector<uint8_t> ZIPReader::readCurrentFile() {
     return std::vector<uint8_t>();
 }
 
-size_t ZIPReader::read(void* buffer, size_t size) {
+size_t ZIPReader::read(void* /*buffer*/, size_t /*size*/) {
     // 简化实现
     return 0;
 }

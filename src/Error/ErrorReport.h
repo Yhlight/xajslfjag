@@ -32,6 +32,7 @@ enum class ErrorType {
     CONSTRAINT_ERROR,    // 约束错误
     RUNTIME_ERROR,       // 运行时错误
     IO_ERROR,            // IO错误
+    FILE_NOT_FOUND,      // 文件未找到
     MEMORY_ERROR,        // 内存错误
     TIMEOUT_ERROR,       // 超时错误
     INTERNAL_ERROR       // 内部错误
@@ -149,6 +150,7 @@ private:
 
 // 错误报告管理器（单例）
 class ErrorReport {
+    friend class ErrorBuilder;
 public:
     static ErrorReport& getInstance() {
         static ErrorReport instance;

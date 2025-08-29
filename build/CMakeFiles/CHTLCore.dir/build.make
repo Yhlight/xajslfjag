@@ -520,52 +520,10 @@ CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/API/CJMODApi.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/API/CJMODApi.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTLJS/CJMODSystem/API/CJMODApi.cpp -o CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/API/CJMODApi.cpp.s
 
-CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o: /workspace/src/CSS/CSSCompiler.cpp
-CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o -MF CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o.d -o CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o -c /workspace/src/CSS/CSSCompiler.cpp
-
-CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CSS/CSSCompiler.cpp > CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.i
-
-CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CSS/CSSCompiler.cpp -o CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.s
-
-CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o: /workspace/src/JS/JavaScriptCompiler.cpp
-CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o -MF CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o.d -o CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o -c /workspace/src/JS/JavaScriptCompiler.cpp
-
-CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/JS/JavaScriptCompiler.cpp > CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.i
-
-CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/JS/JavaScriptCompiler.cpp -o CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.s
-
-CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o: /workspace/src/CompilerDispatcher/CompilerDispatcher.cpp
-CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o -MF CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o.d -o CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o -c /workspace/src/CompilerDispatcher/CompilerDispatcher.cpp
-
-CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CompilerDispatcher/CompilerDispatcher.cpp > CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.i
-
-CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CompilerDispatcher/CompilerDispatcher.cpp -o CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.s
-
 CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
 CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o: /workspace/src/Util/ZIPUtil/ZIPUtil.cpp
 CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o -MF CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o.d -o CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o -c /workspace/src/Util/ZIPUtil/ZIPUtil.cpp
 
 CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.i: cmake_force
@@ -579,7 +537,7 @@ CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.s: cmake_force
 CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
 CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o: /workspace/src/Error/ErrorReport.cpp
 CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o -MF CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o.d -o CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o -c /workspace/src/Error/ErrorReport.cpp
 
 CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.i: cmake_force
@@ -589,118 +547,6 @@ CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.i: cmake_force
 CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/Error/ErrorReport.cpp -o CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.s
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o: /workspace/src/CSS/generated/src/CSS/CSSSimpleLexer.cpp
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o -MF CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o.d -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o -c /workspace/src/CSS/generated/src/CSS/CSSSimpleLexer.cpp
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CSS/generated/src/CSS/CSSSimpleLexer.cpp > CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.i
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CSS/generated/src/CSS/CSSSimpleLexer.cpp -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.s
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o: /workspace/src/CSS/generated/src/CSS/CSSSimpleParser.cpp
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o -MF CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o.d -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o -c /workspace/src/CSS/generated/src/CSS/CSSSimpleParser.cpp
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CSS/generated/src/CSS/CSSSimpleParser.cpp > CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.i
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CSS/generated/src/CSS/CSSSimpleParser.cpp -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.s
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o: /workspace/src/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o -MF CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o.d -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o -c /workspace/src/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp > CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.i
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.s
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o: /workspace/src/CSS/generated/src/CSS/CSSSimpleVisitor.cpp
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o -MF CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o.d -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o -c /workspace/src/CSS/generated/src/CSS/CSSSimpleVisitor.cpp
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CSS/generated/src/CSS/CSSSimpleVisitor.cpp > CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.i
-
-CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CSS/generated/src/CSS/CSSSimpleVisitor.cpp -o CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.s
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o: /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o -MF CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o.d -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o -c /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp > CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.i
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.s
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o: /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o -MF CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o.d -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o -c /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp > CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.i
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.s
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o: /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o -MF CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o.d -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o -c /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp > CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.i
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.s
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o: CMakeFiles/CHTLCore.dir/flags.make
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o: /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o: CMakeFiles/CHTLCore.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o -MF CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o.d -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o -c /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp > CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.i
-
-CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp -o CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.s
 
 # Object files for target CHTLCore
 CHTLCore_OBJECTS = \
@@ -736,19 +582,8 @@ CHTLCore_OBJECTS = \
 "CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/CJMODScanner.cpp.o" \
 "CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/Runtime/CJMODRuntime.cpp.o" \
 "CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/API/CJMODApi.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o" \
-"CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o" \
 "CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o" \
-"CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o" \
-"CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o" \
-"CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o" \
-"CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o" \
-"CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o" \
-"CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o"
+"CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o"
 
 # External object files for target CHTLCore
 CHTLCore_EXTERNAL_OBJECTS =
@@ -785,22 +620,11 @@ libCHTLCore.a: CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/CJMODPackager.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/CJMODScanner.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/Runtime/CJMODRuntime.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/CHTLJS/CJMODSystem/API/CJMODApi.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CSS/CSSCompiler.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/JS/JavaScriptCompiler.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CompilerDispatcher/CompilerDispatcher.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/Util/ZIPUtil/ZIPUtil.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/Error/ErrorReport.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleLexer.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleParser.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleBaseVisitor.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/CSS/generated/src/CSS/CSSSimpleVisitor.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptLexer.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParser.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserBaseVisitor.cpp.o
-libCHTLCore.a: CMakeFiles/CHTLCore.dir/JS/generated/Grammars/JavaScript/JavaScriptParserVisitor.cpp.o
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/build.make
 libCHTLCore.a: CMakeFiles/CHTLCore.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Linking CXX static library libCHTLCore.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Linking CXX static library libCHTLCore.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/CHTLCore.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLCore.dir/link.txt --verbose=$(VERBOSE)
 

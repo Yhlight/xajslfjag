@@ -21,7 +21,7 @@ public:
             if (!content_.empty() && needsNewline(fragment)) {
                 content_ += "\n";
             }
-            content_ += fragment.getContent();
+            content_ += fragment.content;
         }
         
         // 获取完整内容
@@ -45,11 +45,11 @@ public:
         std::string content_;
         
         // 判断是否需要添加换行
-        bool needsNewline(const CodeFragment& fragment) {
+        bool needsNewline(const CodeFragment& /*fragment*/) {
             if (fragments_.empty()) return false;
             
             // CSS和JS片段之间需要换行以保持结构
-            if (type_ == FragmentType::CSS || type_ == FragmentType::JavaScript) {
+            if (type_ == FragmentType::CSS || type_ == FragmentType::JS) {
                 return true;
             }
             
@@ -62,12 +62,12 @@ public:
         streams_[FragmentType::CHTL] = std::make_unique<FragmentStream>(FragmentType::CHTL);
         streams_[FragmentType::CHTLJS] = std::make_unique<FragmentStream>(FragmentType::CHTLJS);
         streams_[FragmentType::CSS] = std::make_unique<FragmentStream>(FragmentType::CSS);
-        streams_[FragmentType::JavaScript] = std::make_unique<FragmentStream>(FragmentType::JavaScript);
+        streams_[FragmentType::JS] = std::make_unique<FragmentStream>(FragmentType::JS);
     }
     
     // 处理片段
     void processFragment(const CodeFragment& fragment) {
-        auto it = streams_.find(fragment.getType());
+        auto it = streams_.find(fragment.type);
         if (it != streams_.end()) {
             it->second->addFragment(fragment);
         }
@@ -93,7 +93,7 @@ public:
     
     // 获取JavaScript完整代码
     std::string getCompleteJavaScript() const {
-        return getCompleteCode(FragmentType::JavaScript);
+        return getCompleteCode(FragmentType::JS);
     }
     
     // 检查是否有特定类型的内容

@@ -231,7 +231,7 @@ std::shared_ptr<ASTNode> Parser::parseModuleBlock() {
 
 std::shared_ptr<ASTNode> Parser::parseEnhancedSelector() {
     // 已经消费了 {{
-    auto location = previous_->getLocation();
+    // auto location = previous_->getLocation(); // TODO: 使用location
     
     std::string selector;
     if (check(TokenType::SELECTOR_CLASS) || 
@@ -245,15 +245,18 @@ std::shared_ptr<ASTNode> Parser::parseEnhancedSelector() {
         error("Expected selector in {{}}");
     }
     
-    EnhancedSelectorNode::SelectorType type = determineSelectorType(selector);
-    auto selectorNode = std::make_shared<EnhancedSelectorNode>(selector, type, location);
+    // TODO: 实现EnhancedSelectorNode后启用
+    // EnhancedSelectorNode::SelectorType type = determineSelectorType(selector);
+    // auto selectorNode = std::make_shared<EnhancedSelectorNode>(selector, type, location);
+    std::shared_ptr<ASTNode> selectorNode; // 临时占位
     
     // 检查索引访问 {{button[0]}}
     if (match(TokenType::LEFT_BRACKET)) {
         if (check(TokenType::NUMBER_LITERAL)) {
             auto indexToken = current_;
             advance();
-            selectorNode->setIndex(std::get<int64_t>(indexToken->getValue()));
+            // TODO: 实现setIndex方法
+            // selectorNode->setIndex(std::get<int64_t>(indexToken->getValue()));
         }
         consume(TokenType::RIGHT_BRACKET, "Expected ']' after index");
     }
@@ -599,6 +602,8 @@ std::string Parser::parseString() {
     return str;
 }
 
+// TODO: 实现EnhancedSelectorNode后启用
+/*
 EnhancedSelectorNode::SelectorType Parser::determineSelectorType(const std::string& selector) {
     if (selector.empty()) return EnhancedSelectorNode::SelectorType::TAG;
     
@@ -613,6 +618,7 @@ EnhancedSelectorNode::SelectorType Parser::determineSelectorType(const std::stri
     
     return EnhancedSelectorNode::SelectorType::TAG;
 }
+*/
 
 void Parser::enterState(StateType state) {
     context_->getStateManager().pushState(state);

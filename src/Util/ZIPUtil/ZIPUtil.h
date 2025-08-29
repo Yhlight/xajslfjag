@@ -23,7 +23,7 @@ struct ZIPFileInfo {
     std::string filename;
     size_t uncompressedSize;
     size_t compressedSize;
-    std::time_t modificationTime;
+    time_t modificationTime;
     bool isDirectory;
     int compressionMethod;
 };

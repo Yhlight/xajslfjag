@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <filesystem>
 #include "../CHTLJS/CJMODSystem/CJMODPackager.h"
 #include "../Error/ErrorReport.h"
 

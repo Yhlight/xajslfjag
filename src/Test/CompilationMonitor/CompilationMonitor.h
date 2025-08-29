@@ -8,6 +8,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include <map>
 #include <mutex>
 #include <condition_variable>
 

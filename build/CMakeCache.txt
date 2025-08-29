@@ -14,9 +14,6 @@
 # EXTERNAL cache entries
 ########################
 
-//No help, variable specified on the command line.
-BUILD_TESTS:UNINITIALIZED=OFF
-
 //Value Computed by CMake
 CHTL_BINARY_DIR:STATIC=/workspace/build
 
@@ -264,9 +261,6 @@ CPACK_SOURCE_TZ:BOOL=ON
 
 //Enable to build ZIP source packages
 CPACK_SOURCE_ZIP:BOOL=OFF
-
-//No help, variable specified on the command line.
-USE_ANTLR:UNINITIALIZED=OFF
 
 
 ########################

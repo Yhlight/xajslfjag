@@ -502,14 +502,14 @@ void Generator::popState() {
 }
 
 // 其他访问者方法的空实现
-void Generator::visitDelegateNode(DelegateNode* node) {}
-void Generator::visitAnimateNode(AnimateNode* node) {}
-void Generator::visitAnimateStateNode(AnimateStateNode* node) {}
-void Generator::visitVirtualObjectNode(VirtualObjectNode* node) {}
-void Generator::visitINeverAwayNode(INeverAwayNode* node) {}
-void Generator::visitUnaryExpressionNode(UnaryExpressionNode* node) {}
-void Generator::visitFunctionDeclarationNode(FunctionDeclarationNode* node) {}
-void Generator::visitArrayLiteralNode(ArrayLiteralNode* node) {}
-void Generator::visitCallExpressionNode(CallExpressionNode* node) {}
+void Generator::visitDelegateNode(DelegateNode* node) { (void)node; }
+void Generator::visitAnimateNode(AnimateNode* node) { (void)node; }
+void Generator::visitAnimateStateNode(AnimateStateNode* node) { (void)node; }
+void Generator::visitVirtualObjectNode(VirtualObjectNode* node) { (void)node; }
+void Generator::visitINeverAwayNode(INeverAwayNode* node) { (void)node; }
+void Generator::visitUnaryExpressionNode(UnaryExpressionNode* node) { (void)node; }
+void Generator::visitFunctionDeclarationNode(FunctionDeclarationNode* node) { (void)node; }
+void Generator::visitArrayLiteralNode(ArrayLiteralNode* node) { (void)node; }
+void Generator::visitCallExpressionNode(CallExpressionNode* node) { (void)node; }
 
 } // namespace CHTLJS

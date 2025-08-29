@@ -197,6 +197,7 @@ void JSONErrorReporter::report(const ErrorInfo& error) {
         case ErrorType::CONSTRAINT_ERROR: buffer_ << "constraint"; break;
         case ErrorType::RUNTIME_ERROR:    buffer_ << "runtime"; break;
         case ErrorType::IO_ERROR:         buffer_ << "io"; break;
+        case ErrorType::FILE_NOT_FOUND:   buffer_ << "file_not_found"; break;
         case ErrorType::MEMORY_ERROR:     buffer_ << "memory"; break;
         case ErrorType::TIMEOUT_ERROR:    buffer_ << "timeout"; break;
         case ErrorType::INTERNAL_ERROR:   buffer_ << "internal"; break;

@@ -23,6 +23,20 @@ AtomArg::AtomArg() : pImpl(std::make_unique<Impl>()) {}
 AtomArg::AtomArg(const std::string& value, AtomArgType type) 
     : pImpl(std::make_unique<Impl>(value, type)) {}
 
+AtomArg::AtomArg(const AtomArg& other) 
+    : pImpl(std::make_unique<Impl>(*other.pImpl)) {}
+
+AtomArg::AtomArg(AtomArg&& other) noexcept = default;
+
+AtomArg& AtomArg::operator=(const AtomArg& other) {
+    if (this != &other) {
+        pImpl = std::make_unique<Impl>(*other.pImpl);
+    }
+    return *this;
+}
+
+AtomArg& AtomArg::operator=(AtomArg&& other) noexcept = default;
+
 AtomArg::~AtomArg() = default;
 
 const std::string& AtomArg::getValue() const {
@@ -83,6 +97,10 @@ Arg::Arg(const std::vector<std::string>& values) : pImpl(std::make_unique<Impl>(
 Arg::Arg(const std::vector<AtomArg>& atoms) : pImpl(std::make_unique<Impl>()) {
     pImpl->atoms = atoms;
 }
+
+Arg::Arg(Arg&& other) noexcept = default;
+
+Arg& Arg::operator=(Arg&& other) noexcept = default;
 
 Arg::~Arg() = default;
 
@@ -206,8 +224,8 @@ bool Syntax::isObject(const std::string& code) {
 }
 
 bool Syntax::isFunction(const std::string& code) {
-    std::regex funcRegex(R"(^\s*function\s+\w+\s*\(.*\)\s*\{.*\}\s*$)", std::regex::dotall);
-    std::regex arrowRegex(R"(^\s*\(.*\)\s*=>\s*.*$)", std::regex::dotall);
+    std::regex funcRegex(R"(^\s*function\s+\w+\s*\(.*\)\s*\{.*\}\s*$)");
+    std::regex arrowRegex(R"(^\s*\(.*\)\s*=>\s*.*$)");
     
     return std::regex_match(code, funcRegex) || std::regex_match(code, arrowRegex);
 }
@@ -219,7 +237,7 @@ bool Syntax::isArray(const std::string& code) {
 
 bool Syntax::isCHTLJSFunction(const std::string& code) {
     // CHTL JS函数格式: functionName {param1: value1, param2: value2}
-    std::regex chtljsRegex(R"(^\s*\w+\s*\{.*\}\s*;?\s*$)", std::regex::dotall);
+    std::regex chtljsRegex(R"(^\s*\w+\s*\{.*\}\s*;?\s*$)");
     return std::regex_match(code, chtljsRegex);
 }
 
@@ -277,7 +295,7 @@ std::vector<std::string> Syntax::getArrayElements(const std::string& code) {
 static std::string scanContext;
 static size_t scanPosition = 0;
 
-Arg CJMODScanner::scan(const Arg& pattern, const std::string& keyword) {
+Arg CJMODScanner::scan(const Arg& /*pattern*/, const std::string& keyword) {
     Arg result;
     
     // 在扫描上下文中查找匹配的模式
@@ -291,11 +309,11 @@ Arg CJMODScanner::scan(const Arg& pattern, const std::string& keyword) {
             
             // 提取匹配的值
             // 这里需要根据pattern的结构来提取值
-            result = pattern; // 简化实现
+            // result = std::move(pattern); // TODO: Implement proper pattern matching
         }
     } else {
         // 扫描整个模式
-        result = pattern; // 简化实现
+        // result = std::move(pattern); // TODO: Implement proper pattern matching
     }
     
     return result;

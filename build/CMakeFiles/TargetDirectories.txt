@@ -1,7 +1,5 @@
 /workspace/build/CMakeFiles/CHTLCore.dir
 /workspace/build/CMakeFiles/chtlc.dir
-/workspace/build/CMakeFiles/cmod_pack.dir
-/workspace/build/CMakeFiles/cjmod_pack.dir
 /workspace/build/CMakeFiles/package.dir
 /workspace/build/CMakeFiles/package_source.dir
 /workspace/build/CMakeFiles/edit_cache.dir

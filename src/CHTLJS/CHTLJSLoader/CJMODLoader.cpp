@@ -4,7 +4,7 @@
 namespace CHTLJS {
 
 CJMODLoader::CJMODLoader() {
-    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+    CHTL::ErrorBuilder(CHTL::ErrorLevel::INFO, CHTL::ErrorType::INTERNAL_ERROR)
         .withMessage("CJMODLoader initialized")
         .report();
 }

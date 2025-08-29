@@ -4,7 +4,7 @@
 namespace CHTLJS {
 
 VirtualObjectManager::VirtualObjectManager() {
-    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+    CHTL::ErrorBuilder(CHTL::ErrorLevel::INFO, CHTL::ErrorType::INTERNAL_ERROR)
         .withMessage("VirtualObjectManager initialized")
         .report();
 }
@@ -15,7 +15,7 @@ void VirtualObjectManager::registerVirtualObject(const std::string& name,
                                                std::shared_ptr<VirtualObject> obj) {
     virtualObjects_[name] = obj;
     
-    ErrorBuilder(ErrorLevel::INFO, ErrorType::INTERNAL_ERROR)
+    CHTL::ErrorBuilder(CHTL::ErrorLevel::INFO, CHTL::ErrorType::INTERNAL_ERROR)
         .withMessage("Virtual object registered")
         .withDetail("Name: " + name)
         .report();

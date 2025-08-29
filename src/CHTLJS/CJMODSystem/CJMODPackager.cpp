@@ -186,14 +186,14 @@ bool CJMODPackager::analyzeDirectory(const std::string& dir, CJMODStructure& str
             std::string pathStr = relativePath.string();
             
             // 处理不同类型的文件
-            if (pathStr.starts_with("src/")) {
+            if (pathStr.find("src/") == 0) {
                 // C++源文件
                 if (path.extension() == ".cpp" || path.extension() == ".h" ||
                     path.extension() == ".hpp" || path.extension() == ".cxx") {
                     structure.sourceFiles.push_back(pathStr);
                 }
             }
-            else if (pathStr.starts_with("info/")) {
+            else if (pathStr.find("info/") == 0) {
                 // 读取info内容
                 if (pathStr == "info/" + structure.moduleName + ".chtl") {
                     auto content = File::readToString(path.string());
@@ -290,7 +290,7 @@ bool CJMODPackager::parseInfoFile(const std::string& infoPath, CJMODInfo& info) 
         line.erase(line.find_last_not_of(" \t") + 1);
         
         // 跳过空行和注释
-        if (line.empty() || line[0] == '#' || line.starts_with("//")) {
+        if (line.empty() || line[0] == '#' || line.find("//") == 0) {
             continue;
         }
         
@@ -347,7 +347,7 @@ bool CJMODPackager::parseExportInfo(const std::string& content, CJMODExport& exp
         line.erase(line.find_last_not_of(" \t") + 1);
         
         // 跳过空行和注释
-        if (line.empty() || line[0] == '#' || line.starts_with("//")) {
+        if (line.empty() || line[0] == '#' || line.find("//") == 0) {
             continue;
         }
         
@@ -568,6 +568,8 @@ std::string CJMODPackager::generateManifest(const CJMODStructure& structure) {
 bool CJMODPackager::parseManifest(const std::string& manifest, CJMODStructure& structure) {
     // 简单的JSON解析（实际项目中应使用JSON库）
     // 这里只实现基本解析逻辑
+    (void)manifest;   // Suppress unused parameter warning
+    (void)structure;  // Suppress unused parameter warning
     return true;
 }
 
@@ -654,12 +656,12 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
     }
     
     // 实现从目录加载（开发模式）
-    std::filesystem::path dirPath(path);
+    std::filesystem::path dirPath(dir);
     
     if (!std::filesystem::exists(dirPath) || !std::filesystem::is_directory(dirPath)) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
-            .withMessage("CJMOD directory not found: " + path)
-            .atLocation(path, 0, 0)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::IO_ERROR)
+            .withMessage("CJMOD directory not found: " + dir)
+            .atLocation(dir, 0, 0)
             .report();
         return false;
     }
@@ -668,7 +670,7 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
         // 加载manifest.json
         std::filesystem::path manifestPath = dirPath / "manifest.json";
         if (!std::filesystem::exists(manifestPath)) {
-            ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+            CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::IO_ERROR)
                 .withMessage("manifest.json not found in CJMOD directory")
                 .atLocation(manifestPath.string(), 0, 0)
                 .report();
@@ -678,7 +680,10 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
         std::ifstream manifestFile(manifestPath);
         std::stringstream buffer;
         buffer << manifestFile.rdbuf();
-        info = parseManifest(buffer.str());
+        CJMODStructure structure;
+        if (!packager.parseManifest(buffer.str(), structure)) {
+            return false;
+        }
         
         // 加载extension.so/dll
         std::filesystem::path extensionPath = dirPath / "extension";
@@ -689,8 +694,9 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
         #endif
         
         if (std::filesystem::exists(extensionPath)) {
-            info.hasExtension = true;
-            info.extensionPath = extensionPath.string();
+            // Extension found - store in metadata
+            structure.metadata["hasExtension"] = "true";
+            structure.metadata["extensionPath"] = extensionPath.string();
         }
         
         // 加载syntax目录
@@ -701,7 +707,7 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
                     std::ifstream file(entry.path());
                     std::stringstream syntaxBuffer;
                     syntaxBuffer << file.rdbuf();
-                    info.syntaxDefinitions[entry.path().stem().string()] = syntaxBuffer.str();
+                    structure.metadata["syntax_" + entry.path().stem().string()] = syntaxBuffer.str();
                 }
             }
         }
@@ -709,10 +715,10 @@ bool CJMODLoader::loadFromDirectory(const std::string& dir) {
         return true;
         
     } catch (const std::exception& e) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::IO_ERROR)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::IO_ERROR)
             .withMessage("Failed to load CJMOD from directory")
             .withDetail(e.what())
-            .atLocation(path, 0, 0)
+            .atLocation(dir, 0, 0)
             .report();
         return false;
     }

@@ -17,8 +17,8 @@ namespace CHTL {
 class CHTLCompilerImpl : public CHTLCompiler {
 public:
     CHTLCompilerImpl() {
-        parser_ = std::make_shared<CHTLParser>();
-        generator_ = std::make_shared<CHTLGenerator>();
+        parser_ = std::make_shared<Parser>();
+        generator_ = std::make_shared<Generator>();
     }
     
     CompileResult compile(const std::string& code, const CompileOptions& options) override {
@@ -26,7 +26,7 @@ public:
         
         try {
             // 词法分析
-            CHTLLexer lexer;
+            Lexer lexer;
             auto tokens = lexer.tokenize(code);
             
             // 语法分析
@@ -51,7 +51,7 @@ public:
     
     bool validate(const std::string& code) override {
         try {
-            CHTLLexer lexer;
+            Lexer lexer;
             auto tokens = lexer.tokenize(code);
             parser_->parse(tokens);
             return true;
@@ -76,8 +76,8 @@ public:
     }
     
 private:
-    std::shared_ptr<CHTLParser> parser_;
-    std::shared_ptr<CHTLGenerator> generator_;
+    std::shared_ptr<Parser> parser_;
+    std::shared_ptr<Generator> generator_;
     std::shared_ptr<void> namespaceManager_;
     std::shared_ptr<void> importResolver_;
     std::shared_ptr<void> selectorAutomation_;
@@ -87,8 +87,8 @@ private:
 class CHTLJSCompilerImpl : public CHTLJSCompiler {
 public:
     CHTLJSCompilerImpl() {
-        parser_ = std::make_shared<CHTLJSParser>();
-        generator_ = std::make_shared<CHTLJSGenerator>();
+        parser_ = std::make_shared<CHTLJS::Parser>();
+        generator_ = std::make_shared<CHTLJS::Generator>();
     }
     
     CompileResult compile(const std::string& code, const CompileOptions& options) override {
@@ -96,7 +96,7 @@ public:
         
         try {
             // 词法分析
-            CHTLJSLexer lexer;
+            CHTLJS::Lexer lexer;
             auto tokens = lexer.tokenize(code);
             
             // 语法分析
@@ -117,7 +117,7 @@ public:
     
     bool validate(const std::string& code) override {
         try {
-            CHTLJSLexer lexer;
+            CHTLJS::Lexer lexer;
             auto tokens = lexer.tokenize(code);
             parser_->parse(tokens);
             return true;
@@ -138,8 +138,8 @@ public:
     }
     
 private:
-    std::shared_ptr<CHTLJSParser> parser_;
-    std::shared_ptr<CHTLJSGenerator> generator_;
+    std::shared_ptr<CHTLJS::Parser> parser_;
+    std::shared_ptr<CHTLJS::Generator> generator_;
     std::shared_ptr<void> cjmodLoader_;
     std::shared_ptr<void> virtualObjectManager_;
 };

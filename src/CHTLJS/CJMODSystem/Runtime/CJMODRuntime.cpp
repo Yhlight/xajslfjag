@@ -2,7 +2,9 @@
 #include "../../../Error/ErrorReport.h"
 #include <fstream>
 #include <regex>
-#include <json/json.h>  // 假设使用jsoncpp
+#include <filesystem>
+// TODO: Replace with proper JSON library
+// #include <json/json.h>  // 假设使用jsoncpp
 
 #ifdef _WIN32
 #include <windows.h>
@@ -77,11 +79,13 @@ bool CJMODRuntime::loadModule(const std::string& path) {
     
     // 解析CJMOD文件获取信息
     CJMODPackager packager;
-    CJMODInfo info;
+    CJMODStructure structure;
     
-    if (!packager.getModuleInfo(path, info)) {
-        return false;
-    }
+    // TODO: Implement proper CJMOD file parsing
+    // For now, create a simple CJMODInfo
+    CJMODInfo info;
+    info.name = std::filesystem::path(path).stem().string();
+    info.version = "1.0.0";
     
     // 检查是否已加载
     if (modules_.find(info.name) != modules_.end()) {
@@ -259,14 +263,14 @@ std::unique_ptr<CJMODExtension> CJMODRuntime::createExtension(void* handle) {
     
     // 获取工厂函数
     CreateExtensionFunc createFunc = nullptr;
-    DestroyExtensionFunc destroyFunc = nullptr;
+    // DestroyExtensionFunc destroyFunc = nullptr;
     
 #ifdef _WIN32
     createFunc = (CreateExtensionFunc)GetProcAddress((HMODULE)handle, CJMOD_CREATE_EXTENSION_FUNC);
-    destroyFunc = (DestroyExtensionFunc)GetProcAddress((HMODULE)handle, CJMOD_DESTROY_EXTENSION_FUNC);
+    // destroyFunc = (DestroyExtensionFunc)GetProcAddress((HMODULE)handle, CJMOD_DESTROY_EXTENSION_FUNC);
 #else
     createFunc = (CreateExtensionFunc)dlsym(handle, CJMOD_CREATE_EXTENSION_FUNC);
-    destroyFunc = (DestroyExtensionFunc)dlsym(handle, CJMOD_DESTROY_EXTENSION_FUNC);
+    // destroyFunc = (DestroyExtensionFunc)dlsym(handle, CJMOD_DESTROY_EXTENSION_FUNC);
 #endif
     
     if (!createFunc) {
@@ -285,13 +289,9 @@ std::unique_ptr<CJMODExtension> CJMODRuntime::createExtension(void* handle) {
         return nullptr;
     }
     
-    // 包装为unique_ptr，使用自定义删除器
-    if (destroyFunc) {
-        return std::unique_ptr<CJMODExtension>(rawPtr, destroyFunc);
-    } else {
-        // 使用默认删除
-        return std::unique_ptr<CJMODExtension>(rawPtr);
-    }
+    // 包装为unique_ptr
+    // TODO: Implement custom deleter if needed
+    return std::unique_ptr<CJMODExtension>(rawPtr);
 }
 
 std::vector<SyntaxPattern> CJMODRuntime::parseSyntaxDefinitions(
@@ -301,34 +301,22 @@ std::vector<SyntaxPattern> CJMODRuntime::parseSyntaxDefinitions(
     
     for (const auto& [name, jsonStr] : definitions) {
         try {
-            // 解析JSON
-            Json::Value root;
-            Json::Reader reader;
-            
-            if (!reader.parse(jsonStr, root)) {
-                context_->logError("Failed to parse syntax definition: " + name);
-                continue;
-            }
-            
+            // TODO: Replace with proper JSON parsing
+            // For now, use simple string parsing
             SyntaxPattern pattern;
-            pattern.name = root.get("name", name).asString();
-            pattern.regex = root.get("pattern", "").asString();
-            pattern.processor = root.get("processor", "").asString();
+            pattern.name = name;
             
-            // 解析捕获组
-            const Json::Value& groups = root["captureGroups"];
-            if (groups.isArray()) {
-                for (const auto& group : groups) {
-                    pattern.captureGroups.push_back(group.asString());
-                }
+            // Simple regex extraction (find pattern between quotes)
+            std::regex patternRegex(R"(\"pattern\"\s*:\s*\"([^\"]*)\"))");
+            std::smatch match;
+            if (std::regex_search(jsonStr, match, patternRegex)) {
+                pattern.regex = match[1];
             }
             
-            // 解析选项
-            const Json::Value& options = root["options"];
-            if (options.isObject()) {
-                for (const auto& key : options.getMemberNames()) {
-                    pattern.options[key] = options[key].asString();
-                }
+            // Simple processor extraction
+            std::regex processorRegex(R"(\"processor\"\s*:\s*\"([^\"]*)\"))");
+            if (std::regex_search(jsonStr, match, processorRegex)) {
+                pattern.processor = match[1];
             }
             
             patterns.push_back(pattern);

@@ -10,7 +10,7 @@ namespace CHTLJSFile {
 std::optional<std::string> readToString(const std::string& path) {
     std::ifstream file(path);
     if (!file.is_open()) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::FILE_NOT_FOUND)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::FILE_NOT_FOUND)
             .withMessage("Failed to open file")
             .withDetail("Path: " + path)
             .report();
@@ -25,7 +25,7 @@ std::optional<std::string> readToString(const std::string& path) {
 bool writeString(const std::string& path, const std::string& content) {
     std::ofstream file(path);
     if (!file.is_open()) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::FILE_NOT_FOUND)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::FILE_NOT_FOUND)
             .withMessage("Failed to create file")
             .withDetail("Path: " + path)
             .report();
@@ -64,7 +64,7 @@ std::vector<std::string> list(const std::string& path) {
             entries.push_back(entry.path().filename().string());
         }
     } catch (const std::exception& e) {
-        ErrorBuilder(ErrorLevel::ERROR, ErrorType::FILE_NOT_FOUND)
+        CHTL::ErrorBuilder(CHTL::ErrorLevel::ERROR, CHTL::ErrorType::FILE_NOT_FOUND)
             .withMessage("Failed to list directory")
             .withDetail(e.what())
             .report();

@@ -79,6 +79,13 @@ public:
     void setCacheValue(const std::string& key, const std::string& value);
     std::string getCacheValue(const std::string& key) const;
     bool hasCacheValue(const std::string& key) const;
+    
+private:
+    std::string currentFile_;
+    size_t currentLine_ = 0;
+    size_t currentColumn_ = 0;
+    std::map<std::string, std::string> config_;
+    std::map<std::string, std::string> cache_;
 };
 
 // CJMOD运行时管理器

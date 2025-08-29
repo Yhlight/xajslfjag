@@ -41,27 +41,27 @@ public:
     std::string generate(std::shared_ptr<ProgramNode> program);
     
     // 访问者方法实现
-    void visitProgramNode(ProgramNode* node) override;
-    void visitStatementNode(StatementNode* node) override;
-    void visitIdentifierNode(IdentifierNode* node) override;
-    void visitLiteralNode(LiteralNode* node) override;
-    void visitModuleNode(ModuleNode* node) override;
-    void visitEnhancedSelectorNode(EnhancedSelectorNode* node) override;
-    void visitListenNode(ListenNode* node) override;
-    void visitDelegateNode(DelegateNode* node) override;
-    void visitAnimateNode(AnimateNode* node) override;
-    void visitAnimateStateNode(AnimateStateNode* node) override;
-    void visitVirtualObjectNode(VirtualObjectNode* node) override;
-    void visitINeverAwayNode(INeverAwayNode* node) override;
-    void visitArrowAccessNode(ArrowAccessNode* node) override;
-    void visitEventBindingNode(EventBindingNode* node) override;
-    void visitBinaryExpressionNode(BinaryExpressionNode* node) override;
-    void visitUnaryExpressionNode(UnaryExpressionNode* node) override;
-    void visitFunctionDeclarationNode(FunctionDeclarationNode* node) override;
-    void visitVariableDeclarationNode(VariableDeclarationNode* node) override;
-    void visitObjectLiteralNode(ObjectLiteralNode* node) override;
-    void visitArrayLiteralNode(ArrayLiteralNode* node) override;
-    void visitCallExpressionNode(CallExpressionNode* node) override;
+    void visitProgramNode(ProgramNode* node);
+    void visitStatementNode(StatementNode* node);
+    void visitIdentifierNode(IdentifierNode* node);
+    void visitLiteralNode(LiteralNode* node);
+    void visitModuleNode(ModuleNode* node);
+    void visitEnhancedSelectorNode(EnhancedSelectorNode* node);
+    void visitListenNode(ListenNode* node);
+    void visitDelegateNode(DelegateNode* node);
+    void visitAnimateNode(AnimateNode* node);
+    void visitAnimateStateNode(AnimateStateNode* node);
+    void visitVirtualObjectNode(VirtualObjectNode* node);
+    void visitINeverAwayNode(INeverAwayNode* node);
+    void visitArrowAccessNode(ArrowAccessNode* node);
+    void visitEventBindingNode(EventBindingNode* node);
+    void visitBinaryExpressionNode(BinaryExpressionNode* node);
+    void visitUnaryExpressionNode(UnaryExpressionNode* node);
+    void visitFunctionDeclarationNode(FunctionDeclarationNode* node);
+    void visitVariableDeclarationNode(VariableDeclarationNode* node);
+    void visitObjectLiteralNode(ObjectLiteralNode* node);
+    void visitArrayLiteralNode(ArrayLiteralNode* node);
+    void visitCallExpressionNode(CallExpressionNode* node);
 
 private:
     std::shared_ptr<CompileContext> context_;
