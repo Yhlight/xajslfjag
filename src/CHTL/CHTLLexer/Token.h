@@ -72,6 +72,9 @@ enum class TokenType {
     AT_CHTL,            // @Chtl
     AT_CJMOD,           // @CJmod
     
+    // 自定义类型（动态生成，如@Vue等）
+    AT_CUSTOM_TYPE,     // 自定义@类型
+    
     // CSS选择器相关
     CLASS_SELECTOR,     // .className
     ID_SELECTOR,        // #idName

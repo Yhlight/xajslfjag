@@ -250,6 +250,30 @@ OperatorNode.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/OperatorNode.cpp.s
 .PHONY : OperatorNode.cpp.s
 
+OriginNode.o: OriginNode.cpp.o
+.PHONY : OriginNode.o
+
+# target to build an object file
+OriginNode.cpp.o:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/OriginNode.cpp.o
+.PHONY : OriginNode.cpp.o
+
+OriginNode.i: OriginNode.cpp.i
+.PHONY : OriginNode.i
+
+# target to preprocess a source file
+OriginNode.cpp.i:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/OriginNode.cpp.i
+.PHONY : OriginNode.cpp.i
+
+OriginNode.s: OriginNode.cpp.s
+.PHONY : OriginNode.s
+
+# target to generate assembly for a file
+OriginNode.cpp.s:
+	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CHTLNode/CMakeFiles/CHTLNode.dir/build.make CHTLNode/CMakeFiles/CHTLNode.dir/OriginNode.cpp.s
+.PHONY : OriginNode.cpp.s
+
 StyleNode.o: StyleNode.cpp.o
 .PHONY : StyleNode.o
 
@@ -346,6 +370,9 @@ help:
 	@echo "... OperatorNode.o"
 	@echo "... OperatorNode.i"
 	@echo "... OperatorNode.s"
+	@echo "... OriginNode.o"
+	@echo "... OriginNode.i"
+	@echo "... OriginNode.s"
 	@echo "... StyleNode.o"
 	@echo "... StyleNode.i"
 	@echo "... StyleNode.s"

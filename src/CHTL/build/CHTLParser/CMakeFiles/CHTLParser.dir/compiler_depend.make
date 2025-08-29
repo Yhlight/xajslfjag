@@ -295,6 +295,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: /workspace/src/CHTL/CHTLP
   /workspace/src/CHTL/CHTLNode/ConfigNode.h \
   /workspace/src/CHTL/CHTLNode/ElementNode.h \
   /workspace/src/CHTL/CHTLNode/OperatorNode.h \
+  /workspace/src/CHTL/CHTLNode/OriginNode.h \
   /workspace/src/CHTL/CHTLNode/StyleNode.h \
   /workspace/src/CHTL/CHTLNode/TemplateNode.h \
   /workspace/src/CHTL/CHTLNode/TextNode.h \
@@ -861,6 +862,8 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: /workspace/src/CHTL/CHTLP
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++locale.h:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/ctype_base.h:
+
+/workspace/src/CHTL/CHTLNode/OriginNode.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 

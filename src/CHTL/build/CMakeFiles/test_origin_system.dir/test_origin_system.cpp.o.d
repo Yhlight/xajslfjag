@@ -1,8 +1,7 @@
-CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
-  /workspace/src/CHTL/CHTLParser/CHTLParser.cpp \
-  /workspace/src/CHTL/CHTLParser/CHTLParser.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/Lexer.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/Token.h \
+CMakeFiles/test_origin_system.dir/test_origin_system.cpp.o: \
+  /workspace/src/CHTL/test_origin_system.cpp \
+  /workspace/src/CHTL/CHTLLexer/Lexer.h \
+  /workspace/src/CHTL/CHTLLexer/Token.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/string \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/requires_hosted.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/x86_64-linux-gnu/c++/14/bits/c++config.h \
@@ -198,7 +197,7 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/backward/auto_ptr.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/glue_memory_defs.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/pstl/execution_defs.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/Type.h \
+  /workspace/src/CHTL/CHTLLexer/Type.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_map \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_map.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/hashtable.h \
@@ -208,8 +207,8 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/erase_if.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/unordered_set \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/unordered_set.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/GlobalMap.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/../CHTLState/State.h \
+  /workspace/src/CHTL/CHTLLexer/GlobalMap.h \
+  /workspace/src/CHTL/CHTLLexer/../CHTLState/State.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/stack \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/deque \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/stl_deque.h \
@@ -219,10 +218,10 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/std_function.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/array \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/compare \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/../CHTLContext/Context.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/../CHTLContext/../CHTLState/State.h \
-  /workspace/src/CHTL/CHTLParser/../CHTLLexer/../../Error/ErrorReport.h \
+  /workspace/src/CHTL/CHTLLexer/../CHTLContext/Context.h \
+  /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLLexer/Type.h \
+  /workspace/src/CHTL/CHTLLexer/../CHTLContext/../CHTLState/State.h \
+  /workspace/src/CHTL/CHTLLexer/../../Error/ErrorReport.h \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/sstream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/istream \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/ios \
@@ -248,6 +247,9 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/ostream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/istream.tcc \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/bits/sstream.tcc \
+  /workspace/src/CHTL/CHTLParser/CHTLParser.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLLexer/Lexer.h \
+  /workspace/src/CHTL/CHTLParser/../CHTLLexer/Token.h \
   /workspace/src/CHTL/CHTLParser/../CHTLState/State.h \
   /workspace/src/CHTL/CHTLParser/../CHTLContext/Context.h \
   /workspace/src/CHTL/CHTLParser/../CHTLNode/BaseNode.h \
@@ -283,4 +285,6 @@ CHTLParser/CMakeFiles/CHTLParser.dir/CHTLParser.cpp.o: \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/TemplateManager.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../CHTLNode/AdvancedTemplateNode.h \
   /workspace/src/CHTL/CHTLParser/../CHTLManage/../../Error/ErrorReport.h \
-  /workspace/src/CHTL/CHTLParser/../../Error/ErrorReport.h
+  /workspace/src/CHTL/CHTLParser/../../Error/ErrorReport.h \
+  /workspace/src/CHTL/../Error/ErrorReport.h \
+  /usr/lib/gcc/x86_64-linux-gnu/14/../../../../include/c++/14/iostream

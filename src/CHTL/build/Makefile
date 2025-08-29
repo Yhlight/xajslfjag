@@ -195,6 +195,19 @@ test_complete_template_system/fast:
 .PHONY : test_complete_template_system/fast
 
 #=============================================================================
+# Target rules for targets named test_origin_system
+
+# Build rule for target.
+test_origin_system: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_origin_system
+.PHONY : test_origin_system
+
+# fast build rule for target.
+test_origin_system/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/build
+.PHONY : test_origin_system/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -448,6 +461,30 @@ test_complete_template_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_template_system.dir/build.make CMakeFiles/test_complete_template_system.dir/test_complete_template_system.cpp.s
 .PHONY : test_complete_template_system.cpp.s
 
+test_origin_system.o: test_origin_system.cpp.o
+.PHONY : test_origin_system.o
+
+# target to build an object file
+test_origin_system.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.o
+.PHONY : test_origin_system.cpp.o
+
+test_origin_system.i: test_origin_system.cpp.i
+.PHONY : test_origin_system.i
+
+# target to preprocess a source file
+test_origin_system.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.i
+.PHONY : test_origin_system.cpp.i
+
+test_origin_system.s: test_origin_system.cpp.s
+.PHONY : test_origin_system.s
+
+# target to generate assembly for a file
+test_origin_system.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.s
+.PHONY : test_origin_system.cpp.s
+
 test_state_context.o: test_state_context.cpp.o
 .PHONY : test_state_context.o
 
@@ -545,6 +582,7 @@ help:
 	@echo "... test_complete_system"
 	@echo "... test_complete_template_system"
 	@echo "... test_lexer"
+	@echo "... test_origin_system"
 	@echo "... test_state_context"
 	@echo "... test_template_system"
 	@echo "... test_updated_lexer"
@@ -557,6 +595,9 @@ help:
 	@echo "... test_complete_template_system.o"
 	@echo "... test_complete_template_system.i"
 	@echo "... test_complete_template_system.s"
+	@echo "... test_origin_system.o"
+	@echo "... test_origin_system.i"
+	@echo "... test_origin_system.s"
 	@echo "... test_state_context.o"
 	@echo "... test_state_context.i"
 	@echo "... test_state_context.s"

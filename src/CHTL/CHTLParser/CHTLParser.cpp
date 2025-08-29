@@ -188,11 +188,24 @@ NodePtr CHTLParser::parseTopLevel() {
         case TokenType::USE:
             return parseUse();
             
+        case TokenType::ORIGIN:
+            if (m_options.enableOrigins) {
+                return parseOrigin();
+            }
+            advance();
+            return nullptr;
+            
         case TokenType::AT_STYLE:
         case TokenType::AT_ELEMENT:
         case TokenType::AT_VAR:
             // 模板使用
             return parseTemplateUsage();
+            
+        case TokenType::AT_HTML:
+        case TokenType::AT_JAVASCRIPT:
+        case TokenType::AT_CUSTOM_TYPE:
+            // 原始嵌入使用（不带[Origin]前缀）
+            return parseOriginUsage();
             
         default:
             reportError("Unexpected token: " + getTokenString(token));
@@ -1262,6 +1275,159 @@ SpecializationInfo CHTLParser::parseInsertOperation() {
 NodePtr CHTLParser::parseVariableReference() { advance(); return nullptr; }
 NodePtr CHTLParser::parseInheritStatement() { advance(); return nullptr; }
 SpecializationInfo CHTLParser::parseIndexAccess() { return SpecializationInfo(); }
+
+// ========== 原始嵌入解析实现 ==========
+
+NodePtr CHTLParser::parseOrigin() {
+    if (!consume(TokenType::ORIGIN, "Expected '[Origin]'")) {
+        return nullptr;
+    }
+    
+    // 解析原始嵌入类型
+    if (!match({TokenType::AT_HTML, TokenType::AT_STYLE, TokenType::AT_JAVASCRIPT, TokenType::AT_CUSTOM_TYPE})) {
+        reportError("Expected origin type (@Html, @Style, @JavaScript, or custom type)");
+        return nullptr;
+    }
+    
+    std::string typeName = currentToken().value;
+    TokenType typeToken = currentToken().type;
+    advance();
+    
+    // 解析可选的名称
+    std::string originName;
+    if (match(TokenType::IDENTIFIER)) {
+        originName = currentToken().value;
+        advance();
+    }
+    
+    // 创建对应的原始嵌入节点
+    NodePtr originNode;
+    switch (typeToken) {
+        case TokenType::AT_HTML:
+            originNode = std::make_shared<OriginHtmlNode>(originName);
+            break;
+        case TokenType::AT_STYLE:
+            originNode = std::make_shared<OriginStyleNode>(originName);
+            break;
+        case TokenType::AT_JAVASCRIPT:
+            originNode = std::make_shared<OriginJavaScriptNode>(originName);
+            break;
+        case TokenType::AT_CUSTOM_TYPE:
+        default:
+            originNode = std::make_shared<OriginCustomNode>(typeName, originName);
+            break;
+    }
+    
+    // 解析原始内容
+    if (match(TokenType::LEFT_BRACE)) {
+        advance(); // consume '{'
+        
+        std::string content = parseOriginContent();
+        
+        auto origin = std::dynamic_pointer_cast<OriginNode>(originNode);
+        if (origin) {
+            origin->setContent(content);
+        }
+        
+        if (!consume(TokenType::RIGHT_BRACE, "Expected '}' after origin content")) {
+            return nullptr;
+        }
+    } else if (match(TokenType::SEMICOLON)) {
+        // 这是原始嵌入使用，不是定义
+        advance();
+        return parseOriginUsage();
+    }
+    
+    updateStatistics("origin_definitions");
+    return originNode;
+}
+
+NodePtr CHTLParser::parseOriginUsage() {
+    // 已经消费了类型token，需要从当前位置开始解析
+    // 这个方法用于解析 [Origin] @Html name; 这样的使用语句
+    
+    if (!match({TokenType::AT_HTML, TokenType::AT_STYLE, TokenType::AT_JAVASCRIPT, TokenType::AT_CUSTOM_TYPE})) {
+        // 回到上一个token重新解析
+        if (m_currentIndex > 0) {
+            m_currentIndex--;
+        }
+        
+        if (!match({TokenType::AT_HTML, TokenType::AT_STYLE, TokenType::AT_JAVASCRIPT, TokenType::AT_CUSTOM_TYPE})) {
+            reportError("Expected origin type for usage");
+            return nullptr;
+        }
+    }
+    
+    std::string typeName = currentToken().value;
+    advance();
+    
+    if (!match(TokenType::IDENTIFIER)) {
+        reportError("Expected origin name for usage");
+        return nullptr;
+    }
+    
+    std::string referenceName = currentToken().value;
+    advance();
+    
+    auto usageNode = std::make_shared<OriginUsageNode>(typeName, referenceName);
+    usageNode->setFullyQualified(true); // 因为使用了[Origin]前缀
+    
+    if (match(TokenType::SEMICOLON)) {
+        advance();
+    }
+    
+    updateStatistics("origin_usages");
+    return usageNode;
+}
+
+std::string CHTLParser::parseOriginContent() {
+    std::string content;
+    int braceDepth = 0;
+    bool inString = false;
+    char stringDelimiter = '\0';
+    
+    while (!isAtEnd()) {
+        const Token& token = currentToken();
+        
+        // 处理字符串
+        if (token.type == TokenType::DOUBLE_QUOTED_STRING || token.type == TokenType::SINGLE_QUOTED_STRING) {
+            if (!inString) {
+                inString = true;
+                stringDelimiter = (token.type == TokenType::DOUBLE_QUOTED_STRING) ? '"' : '\'';
+            } else if ((token.type == TokenType::DOUBLE_QUOTED_STRING && stringDelimiter == '"') ||
+                      (token.type == TokenType::SINGLE_QUOTED_STRING && stringDelimiter == '\'')) {
+                inString = false;
+                stringDelimiter = '\0';
+            }
+        }
+        
+        // 如果不在字符串内，检查花括号
+        if (!inString) {
+            if (token.type == TokenType::LEFT_BRACE) {
+                braceDepth++;
+            } else if (token.type == TokenType::RIGHT_BRACE) {
+                if (braceDepth == 0) {
+                    // 这是外层的右花括号，停止解析
+                    break;
+                }
+                braceDepth--;
+            }
+        }
+        
+        // 添加token内容到原始内容中
+        if (!content.empty() && 
+            token.position.line > (content.empty() ? 0 : m_tokens[m_currentIndex - 1].position.line)) {
+            content += "\n";
+        } else if (!content.empty()) {
+            content += " ";
+        }
+        
+        content += token.value;
+        advance();
+    }
+    
+    return content;
+}
 
 NodePtr CHTLParser::parseImport() { advance(); return nullptr; }
 NodePtr CHTLParser::parseConfiguration() { advance(); return nullptr; }

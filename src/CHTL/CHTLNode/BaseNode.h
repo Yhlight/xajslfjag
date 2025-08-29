@@ -49,10 +49,18 @@ enum class CHTLNodeType {
     VARIABLE_REFERENCE_NODE, // 变量引用节点
     
     // 原始嵌入节点
-    ORIGIN_HTML_NODE,       // 原始HTML嵌入节点
-    ORIGIN_STYLE_NODE,      // 原始样式嵌入节点
-    ORIGIN_JAVASCRIPT_NODE, // 原始JS嵌入节点
+    ORIGIN_HTML_NODE,       // HTML原始嵌入节点
+    ORIGIN_STYLE_NODE,      // 样式原始嵌入节点
+    ORIGIN_JAVASCRIPT_NODE, // JavaScript原始嵌入节点
     ORIGIN_CUSTOM_NODE,     // 自定义原始嵌入节点
+    ORIGIN_USAGE_NODE,      // 原始嵌入使用节点
+    
+    // 配置节点
+    CONFIG_NODE,            // 配置节点
+    NAME_CONFIG_NODE,       // 名称配置节点
+    ORIGIN_TYPE_CONFIG_NODE, // 原始类型配置节点
+    INFO_CONFIG_NODE,       // 信息配置节点
+    EXPORT_CONFIG_NODE,     // 导出配置节点
     
     // 导入节点
     IMPORT_HTML_NODE,       // 导入HTML节点

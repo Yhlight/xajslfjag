@@ -1,42 +1,82 @@
 #pragma once
 #include "BaseNode.h"
+#include <string>
 #include <unordered_map>
 #include <vector>
 
 namespace CHTL {
 
 /**
- * 配置节点类型
+ * 配置类型枚举
  */
-enum class ConfigNodeType {
-    MAIN_CONFIG,        // 主配置节点
-    NAME_CONFIG,        // Name配置块
-    ORIGINTYPE_CONFIG   // OriginType配置块
+enum class ConfigType {
+    CONFIGURATION,      // [Configuration]
+    NAME,              // [Name]
+    ORIGIN_TYPE,       // [OriginType]
+    INFO,              // [Info]
+    EXPORT             // [Export]
 };
 
 /**
- * 配置节点
- * 表示CHTL中的[Configuration]块
+ * 配置值类型
+ */
+enum class ConfigValueType {
+    BOOLEAN,           // 布尔值
+    INTEGER,           // 整数
+    STRING,            // 字符串
+    ARRAY,             // 数组
+    IDENTIFIER         // 标识符
+};
+
+/**
+ * 配置值结构
+ */
+struct ConfigValue {
+    ConfigValueType type;
+    std::string value;
+    std::vector<std::string> arrayValues;  // 用于数组类型
+    
+    ConfigValue() : type(ConfigValueType::STRING) {}
+    ConfigValue(const std::string& val) : type(ConfigValueType::STRING), value(val) {}
+    ConfigValue(bool val) : type(ConfigValueType::BOOLEAN), value(val ? "true" : "false") {}
+    ConfigValue(int val) : type(ConfigValueType::INTEGER), value(std::to_string(val)) {}
+    ConfigValue(const std::vector<std::string>& vals) : type(ConfigValueType::ARRAY), arrayValues(vals) {}
+    
+    // 获取布尔值
+    bool getBool() const;
+    
+    // 获取整数值
+    int getInt() const;
+    
+    // 获取字符串值
+    const std::string& getString() const;
+    
+    // 获取数组值
+    const std::vector<std::string>& getArray() const;
+    
+    // 检查是否为数组
+    bool isArray() const { return type == ConfigValueType::ARRAY; }
+};
+
+/**
+ * 配置节点基类
  */
 class ConfigNode : public BaseNode {
 public:
     /**
      * 构造函数
      */
-    ConfigNode(ConfigNodeType configType = ConfigNodeType::MAIN_CONFIG, 
-               const std::string& configName = "");
+    ConfigNode(ConfigType configType, const std::string& name = "");
     
     /**
      * 析构函数
      */
     virtual ~ConfigNode() = default;
     
-    // ========== 配置属性 ==========
-    
     /**
      * 获取配置类型
      */
-    ConfigNodeType getConfigType() const;
+    ConfigType getConfigType() const;
     
     /**
      * 获取配置名称
@@ -49,97 +89,125 @@ public:
     void setConfigName(const std::string& name);
     
     /**
-     * 检查是否为命名配置组
+     * 设置配置值
      */
-    bool isNamedConfig() const;
-    
-    // ========== 配置项管理 ==========
+    void setConfigValue(const std::string& key, const ConfigValue& value);
     
     /**
-     * 设置布尔配置项
+     * 获取配置值
      */
-    void setBoolConfig(const std::string& key, bool value);
+    const ConfigValue* getConfigValue(const std::string& key) const;
     
     /**
-     * 获取布尔配置项
-     */
-    bool getBoolConfig(const std::string& key, bool defaultValue = false) const;
-    
-    /**
-     * 设置整数配置项
-     */
-    void setIntConfig(const std::string& key, int value);
-    
-    /**
-     * 获取整数配置项
-     */
-    int getIntConfig(const std::string& key, int defaultValue = 0) const;
-    
-    /**
-     * 设置字符串配置项
-     */
-    void setStringConfig(const std::string& key, const std::string& value);
-    
-    /**
-     * 获取字符串配置项
-     */
-    std::string getStringConfig(const std::string& key, const std::string& defaultValue = "") const;
-    
-    /**
-     * 设置字符串数组配置项
-     */
-    void setStringArrayConfig(const std::string& key, const std::vector<std::string>& values);
-    
-    /**
-     * 获取字符串数组配置项
-     */
-    std::vector<std::string> getStringArrayConfig(const std::string& key) const;
-    
-    /**
-     * 检查是否有配置项
+     * 检查是否存在配置项
      */
     bool hasConfig(const std::string& key) const;
     
     /**
-     * 移除配置项
+     * 获取所有配置
      */
-    bool removeConfig(const std::string& key);
-    
-    // ========== 重写基类方法 ==========
+    const std::unordered_map<std::string, ConfigValue>& getAllConfigs() const;
     
     /**
-     * 克隆节点
+     * 检查是否为命名配置
      */
-    std::shared_ptr<BaseNode> clone() const override;
+    bool isNamed() const;
     
-    /**
-     * 转换为字符串
-     */
+    // BaseNode 接口实现
+    CHTLNodeType getNodeType() const { return CHTLNodeType::CONFIG_NODE; }
     std::string toString() const override;
-    
-    /**
-     * 验证节点
-     */
+    NodePtr clone() const override;
     bool validate(ErrorReporter* errorReporter = nullptr) const override;
 
 protected:
-    /**
-     * 内部验证方法
-     */
-    bool internalValidate(ErrorReporter* errorReporter) const override;
-
-private:
-    ConfigNodeType m_configType;                            // 配置类型
-    std::string m_configName;                               // 配置名称
-    std::unordered_map<std::string, bool> m_boolConfigs;    // 布尔配置
-    std::unordered_map<std::string, int> m_intConfigs;      // 整数配置
-    std::unordered_map<std::string, std::string> m_stringConfigs; // 字符串配置
-    std::unordered_map<std::string, std::vector<std::string>> m_arrayConfigs; // 数组配置
+    ConfigType m_configType;                                        // 配置类型
+    std::string m_configName;                                       // 配置名称（可选）
+    std::unordered_map<std::string, ConfigValue> m_configurations;  // 配置项
 };
 
 /**
- * Name配置节点
- * 专门处理关键字名称配置
+ * 主配置节点
+ * [Configuration] 或 [Configuration] @Config Name
+ */
+class ConfigurationNode : public ConfigNode {
+public:
+    /**
+     * 构造函数
+     */
+    ConfigurationNode(const std::string& name = "");
+    
+    /**
+     * 设置索引起始计数
+     */
+    void setIndexInitialCount(int count);
+    
+    /**
+     * 获取索引起始计数
+     */
+    int getIndexInitialCount() const;
+    
+    /**
+     * 设置是否禁用Name配置组
+     */
+    void setDisableNameGroup(bool disable);
+    
+    /**
+     * 检查是否禁用Name配置组
+     */
+    bool isNameGroupDisabled() const;
+    
+    /**
+     * 设置是否禁用自定义原始嵌入类型
+     */
+    void setDisableCustomOriginType(bool disable);
+    
+    /**
+     * 检查是否禁用自定义原始嵌入类型
+     */
+    bool isCustomOriginTypeDisabled() const;
+    
+    /**
+     * 设置调试模式
+     */
+    void setDebugMode(bool debug);
+    
+    /**
+     * 检查是否为调试模式
+     */
+    bool isDebugMode() const;
+    
+    /**
+     * 设置是否禁用默认命名空间
+     */
+    void setDisableDefaultNamespace(bool disable);
+    
+    /**
+     * 检查是否禁用默认命名空间
+     */
+    bool isDefaultNamespaceDisabled() const;
+    
+    /**
+     * 设置选择器自动化配置
+     */
+    void setStyleAutoAddClass(bool enable);
+    void setStyleAutoAddId(bool enable);
+    void setScriptAutoAddClass(bool enable);
+    void setScriptAutoAddId(bool enable);
+    
+    /**
+     * 获取选择器自动化配置
+     */
+    bool isStyleAutoAddClassEnabled() const;
+    bool isStyleAutoAddIdEnabled() const;
+    bool isScriptAutoAddClassEnabled() const;
+    bool isScriptAutoAddIdEnabled() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::CONFIG_NODE; }
+};
+
+/**
+ * 名称配置节点
+ * [Name] { ... }
  */
 class NameConfigNode : public ConfigNode {
 public:
@@ -149,34 +217,46 @@ public:
     NameConfigNode();
     
     /**
-     * 设置关键字名称
+     * 设置关键字别名
      */
-    void setKeywordName(const std::string& keyword, const std::string& name);
+    void setKeywordAlias(const std::string& keyword, const std::vector<std::string>& aliases);
     
     /**
-     * 获取关键字名称
+     * 获取关键字别名
      */
-    std::string getKeywordName(const std::string& keyword) const;
+    const std::vector<std::string>& getKeywordAliases(const std::string& keyword) const;
     
     /**
-     * 设置关键字名称列表（组选项）
+     * 检查是否为关键字别名
      */
-    void setKeywordNames(const std::string& keyword, const std::vector<std::string>& names);
+    bool isKeywordAlias(const std::string& alias) const;
     
     /**
-     * 获取关键字名称列表
+     * 获取别名对应的原始关键字
      */
-    std::vector<std::string> getKeywordNames(const std::string& keyword) const;
+    std::string getOriginalKeyword(const std::string& alias) const;
     
     /**
-     * 克隆节点
+     * 设置选项数量限制
      */
-    std::shared_ptr<BaseNode> clone() const override;
+    void setOptionCount(int count);
+    
+    /**
+     * 获取选项数量限制
+     */
+    int getOptionCount() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::NAME_CONFIG_NODE; }
+
+private:
+    std::unordered_map<std::string, std::vector<std::string>> m_keywordAliases;
+    std::unordered_map<std::string, std::string> m_aliasToKeyword;
+    int m_optionCount;
 };
 
 /**
- * OriginType配置节点
- * 专门处理自定义原始嵌入类型配置
+ * 原始类型配置节点
+ * [OriginType] { ... }
  */
 class OriginTypeConfigNode : public ConfigNode {
 public:
@@ -186,29 +266,91 @@ public:
     OriginTypeConfigNode();
     
     /**
-     * 注册原始嵌入类型
+     * 添加自定义原始类型
      */
-    void registerOriginType(const std::string& typeName, const std::string& typeValue);
+    void addCustomOriginType(const std::string& typeName, const std::string& typeIdentifier);
     
     /**
-     * 获取原始嵌入类型
+     * 检查是否为自定义原始类型
      */
-    std::string getOriginType(const std::string& typeName) const;
+    bool isCustomOriginType(const std::string& typeIdentifier) const;
     
     /**
-     * 检查是否有原始嵌入类型
+     * 获取自定义原始类型名称
      */
-    bool hasOriginType(const std::string& typeName) const;
+    std::string getCustomOriginTypeName(const std::string& typeIdentifier) const;
     
     /**
-     * 获取所有原始嵌入类型
+     * 获取所有自定义原始类型
      */
-    std::vector<std::string> getAllOriginTypes() const;
+    const std::unordered_map<std::string, std::string>& getAllCustomOriginTypes() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::ORIGIN_TYPE_CONFIG_NODE; }
+
+private:
+    std::unordered_map<std::string, std::string> m_customOriginTypes;  // typeIdentifier -> typeName
+};
+
+/**
+ * 信息配置节点
+ * [Info] { ... }
+ */
+class InfoConfigNode : public ConfigNode {
+public:
+    /**
+     * 构造函数
+     */
+    InfoConfigNode();
     
     /**
-     * 克隆节点
+     * 设置模块信息
      */
-    std::shared_ptr<BaseNode> clone() const override;
+    void setModuleInfo(const std::string& name, const std::string& version, 
+                      const std::string& description, const std::string& author,
+                      const std::string& license);
+    
+    /**
+     * 获取模块信息
+     */
+    std::string getModuleName() const;
+    std::string getModuleVersion() const;
+    std::string getModuleDescription() const;
+    std::string getModuleAuthor() const;
+    std::string getModuleLicense() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::INFO_CONFIG_NODE; }
+};
+
+/**
+ * 导出配置节点
+ * [Export] { ... }
+ */
+class ExportConfigNode : public ConfigNode {
+public:
+    /**
+     * 构造函数
+     */
+    ExportConfigNode();
+    
+    /**
+     * 添加导出项
+     */
+    void addExport(const std::string& type, const std::vector<std::string>& items);
+    
+    /**
+     * 获取导出项
+     */
+    const std::vector<std::string>& getExports(const std::string& type) const;
+    
+    /**
+     * 获取所有导出项
+     */
+    const std::unordered_map<std::string, std::vector<std::string>>& getAllExports() const;
+    
+    CHTLNodeType getNodeType() const { return CHTLNodeType::EXPORT_CONFIG_NODE; }
+
+private:
+    std::unordered_map<std::string, std::vector<std::string>> m_exports;
 };
 
 } // namespace CHTL

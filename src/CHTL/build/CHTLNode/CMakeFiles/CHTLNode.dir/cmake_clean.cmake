@@ -9,6 +9,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/CHTLNode.dir/ElementNode.cpp.o.d"
   "CMakeFiles/CHTLNode.dir/OperatorNode.cpp.o"
   "CMakeFiles/CHTLNode.dir/OperatorNode.cpp.o.d"
+  "CMakeFiles/CHTLNode.dir/OriginNode.cpp.o"
+  "CMakeFiles/CHTLNode.dir/OriginNode.cpp.o.d"
   "CMakeFiles/CHTLNode.dir/StyleNode.cpp.o"
   "CMakeFiles/CHTLNode.dir/StyleNode.cpp.o.d"
   "CMakeFiles/CHTLNode.dir/TemplateNode.cpp.o"

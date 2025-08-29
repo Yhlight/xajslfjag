@@ -13,6 +13,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/workspace/src/CHTL/CHTLNode/CommentNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/CommentNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/CommentNode.cpp.o.d"
   "/workspace/src/CHTL/CHTLNode/ElementNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/ElementNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/ElementNode.cpp.o.d"
   "/workspace/src/CHTL/CHTLNode/OperatorNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/OperatorNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/OperatorNode.cpp.o.d"
+  "/workspace/src/CHTL/CHTLNode/OriginNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/OriginNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/OriginNode.cpp.o.d"
   "/workspace/src/CHTL/CHTLNode/StyleNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/StyleNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/StyleNode.cpp.o.d"
   "/workspace/src/CHTL/CHTLNode/TemplateNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/TemplateNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/TemplateNode.cpp.o.d"
   "/workspace/src/CHTL/CHTLNode/TextNode.cpp" "CHTLNode/CMakeFiles/CHTLNode.dir/TextNode.cpp.o" "gcc" "CHTLNode/CMakeFiles/CHTLNode.dir/TextNode.cpp.o.d"

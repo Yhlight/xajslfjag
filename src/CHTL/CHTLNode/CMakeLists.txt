@@ -23,6 +23,7 @@ set(CHTL_NODE_SOURCES
     TemplateNode.cpp
     AdvancedTemplateNode.cpp
     OperatorNode.cpp
+    OriginNode.cpp
 )
 
 set(CHTL_NODE_HEADERS
@@ -35,6 +36,7 @@ set(CHTL_NODE_HEADERS
     AdvancedTemplateNode.h
     OperatorNode.h
     ConfigNode.h
+    OriginNode.h
 )
 
 # 创建静态库

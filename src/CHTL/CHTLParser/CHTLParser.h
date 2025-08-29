@@ -12,6 +12,7 @@
 #include "../CHTLNode/AdvancedTemplateNode.h"
 #include "../CHTLNode/OperatorNode.h"
 #include "../CHTLNode/ConfigNode.h"
+#include "../CHTLNode/OriginNode.h"
 #include "../CHTLIOStream/CHTLIOStream.h"
 #include "../CHTLManage/TemplateManager.h"
 #include "../../Error/ErrorReport.h"
@@ -32,6 +33,7 @@ struct ParseOptions {
     bool enableCustom = true;               // 是否解析自定义
     bool enableImports = true;              // 是否解析导入
     bool enableConfig = true;               // 是否解析配置
+    bool enableOrigins = true;              // 是否解析原始嵌入
     bool strictMode = false;                // 严格模式
     bool autoRecovery = true;               // 错误自动恢复
     size_t maxDepth = 1000;                // 最大嵌套深度
@@ -282,6 +284,21 @@ private:
     void parseInsertElementOperation(AdvancedElementTemplateNode* elementTemplate);
     
     /**
+     * 解析原始嵌入
+     */
+    NodePtr parseOrigin();
+    
+    /**
+     * 解析原始嵌入使用
+     */
+    NodePtr parseOriginUsage();
+    
+    /**
+     * 解析原始嵌入内容
+     */
+    std::string parseOriginContent();
+    
+    /**
      * 解析自定义样式组
      */
     NodePtr parseCustomStyle(const std::string& name);
@@ -339,11 +356,6 @@ private:
      * 解析命名空间
      */
     NodePtr parseNamespace();
-    
-    /**
-     * 解析原始嵌入
-     */
-    NodePtr parseOrigin();
     
     // ========== 表达式解析 ==========
     
