@@ -57,7 +57,6 @@ enum class NodeType {
     INHERIT_OP,             // 继承操作
     DELETE_OP,              // 删除操作
     INSERT_OP,              // 插入操作
-    SPECIALIZE_OP,          // 特例化操作
     
     // 约束节点
     EXCEPT_CONSTRAINT,      // except约束
