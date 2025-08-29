@@ -307,6 +307,11 @@ std::unique_ptr<BaseNode> Parser::parseTemplate() {
     
     consume(TokenType::RBRACE, "期望 '}'");
     
+    // 注册模板到上下文
+    if (context) {
+        context->registerTemplate(templateName, templateNode.get());
+    }
+    
     return templateNode;
 }
 
@@ -347,6 +352,11 @@ std::unique_ptr<BaseNode> Parser::parseCustom() {
     }
     
     consume(TokenType::RBRACE, "期望 '}'");
+    
+    // 注册自定义到上下文
+    if (context) {
+        context->registerCustom(customName, customNode.get());
+    }
     
     return customNode;
 }

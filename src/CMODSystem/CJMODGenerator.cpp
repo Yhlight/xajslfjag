@@ -1,456 +1,452 @@
 #include "CJMODGenerator.h"
+#include "../Util/StringUtils.h"
+#include <iostream>
+#include <algorithm>
 #include <regex>
-#include <sstream>
-#include <chrono>
-#include <random>
 
 namespace CJMOD {
 
-// 静态成员初始化
-GeneratorConfig CJMODGenerator::defaultConfig;
-
-// 静态方法实现
-GenerationResult CJMODGenerator::exportResult(const Arg& args) {
-    CJMODGenerator generator(defaultConfig);
-    return generator.generate(args);
+// CJMODGenerator实现
+CJMODGenerator::CJMODGenerator(const GeneratorConfig& cfg) : config(cfg) {
+    // 初始化模板映射
+    templateMap["listen"] = R"(
+function ${functionName}(${params}) {
+    ${body}
 }
-
-GenerationResult CJMODGenerator::exportResult(const Arg& args, const GeneratorConfig& config) {
-    CJMODGenerator generator(config);
-    return generator.generate(args);
-}
-
-GenerationResult CJMODGenerator::exportMultiple(const std::vector<Arg>& argsList) {
-    CJMODGenerator generator(defaultConfig);
-    return generator.generateBatch(argsList);
-}
-
-GenerationResult CJMODGenerator::exportMultiple(const std::vector<Arg>& argsList, const GeneratorConfig& config) {
-    CJMODGenerator generator(config);
-    return generator.generateBatch(argsList);
-}
-
-void CJMODGenerator::setDefaultConfig(const GeneratorConfig& config) {
-    defaultConfig = config;
-}
-
-GeneratorConfig CJMODGenerator::getDefaultConfig() {
-    return defaultConfig;
-}
-
-// 构造函数和实例方法
-CJMODGenerator::CJMODGenerator(const GeneratorConfig& config) : config(config) {}
-
-GenerationResult CJMODGenerator::generate(const Arg& args) {
-    return generateFromArg(args);
-}
-
-GenerationResult CJMODGenerator::generateBatch(const std::vector<Arg>& argsList) {
-    GenerationResult batchResult;
-    batchResult.success = true;
+)";
     
-    std::ostringstream combinedCode;
-    
-    for (size_t i = 0; i < argsList.size(); ++i) {
-        GenerationResult singleResult = generateFromArg(argsList[i]);
-        
-        if (!singleResult.success) {
-            batchResult.success = false;
-            // 添加错误信息，包含索引
-            for (const auto& error : singleResult.errors) {
-                batchResult.addError("Arg[" + std::to_string(i) + "]: " + error);
-            }
+    templateMap["delegate"] = R"(
+function ${functionName}(${params}) {
+    ${parentElement}.addEventListener('${eventType}', function(event) {
+        if (event.target.matches('${childSelector}')) {
+            ${handler}(event);
         }
-        
-        // 合并警告
-        for (const auto& warning : singleResult.warnings) {
-            batchResult.addWarning("Arg[" + std::to_string(i) + "]: " + warning);
-        }
-        
-        // 合并代码
-        if (!singleResult.jsCode.empty()) {
-            combinedCode << singleResult.jsCode;
-            if (i < argsList.size() - 1) {
-                combinedCode << "\n";
-            }
-        }
-    }
+    });
+}
+)";
     
-    batchResult.jsCode = combinedCode.str();
-    
-    // 应用批处理后的格式化
-    if (batchResult.success && !batchResult.jsCode.empty()) {
-        batchResult.jsCode = formatCode(batchResult.jsCode);
-        
-        if (config.enableMinification) {
-            batchResult.jsCode = minifyCode(batchResult.jsCode);
-        }
-    }
-    
-    return batchResult;
+    templateMap["animate"] = R"(
+function ${functionName}(${params}) {
+    return new Promise((resolve) => {
+        ${target}.animate(${keyframes}, {
+            duration: ${duration},
+            easing: '${easing}',
+            fill: 'forwards'
+        }).addEventListener('finish', resolve);
+    });
+}
+)";
 }
 
-// 私有方法实现
-GenerationResult CJMODGenerator::generateFromArg(const Arg& args) const {
+GenerationResult CJMODGenerator::generate(const Arg& args, const String& keyword) {
     GenerationResult result;
     
-    // 验证参数
-    if (!validateArgument(args)) {
-        result.addError("Invalid argument structure");
-        return result;
-    }
-    
     try {
-        // 生成基础JavaScript代码
-        CHTL::String jsCode = generateJavaScriptCode(args);
+        String functionName = generateUniqueFunctionName(keyword);
+        String paramList = generateParameterList(args);
+        String functionBody = generateFunctionBody(args, keyword);
         
-        // 应用转换和格式化
-        jsCode = transformToTargetFormat(jsCode);
-        jsCode = formatCode(jsCode);
+        // 应用模板
+        StringUnorderedMap variables = {
+            {"functionName", functionName},
+            {"params", paramList},
+            {"body", functionBody},
+            {"keyword", keyword}
+        };
+        
+        String template_ = templateMap.count(keyword) ? templateMap[keyword] : templateMap["listen"];
+        String generatedCode = applyTemplate(keyword, variables);
         
         if (config.enableOptimization) {
-            jsCode = optimizeCode(jsCode);
+            generatedCode = optimizeCode(generatedCode);
         }
         
-        if (config.enableMinification) {
-            jsCode = minifyCode(jsCode);
-        }
-        
-        if (config.strictMode) {
-            jsCode = addStrictMode(jsCode);
-        }
-        
-        if (config.enableDebugInfo) {
-            jsCode = addDebugInfo(jsCode, args);
-        }
-        
-        result.jsCode = jsCode;
-        
-        // 生成Source Map（如果启用）
-        if (config.enableSourceMap) {
-            result.sourceMap = generateSourceMap(args);
-        }
-        
-        // 代码质量检查
-        CHTL::StringVector qualityWarnings = checkCodeQuality(jsCode);
-        for (const auto& warning : qualityWarnings) {
-            result.addWarning(warning);
-        }
-        
+        result.generatedCode = generatedCode;
         result.success = true;
+        result.metadata["functionName"] = functionName;
+        result.metadata["keyword"] = keyword;
+        
+        generatedFunctions.push_back(functionName);
         
     } catch (const std::exception& e) {
-        result.addError("Code generation failed: " + CHTL::String(e.what()));
+        result.addError("代码生成失败: " + String(e.what()));
     }
     
     return result;
 }
 
-CHTL::String CJMODGenerator::generateJavaScriptCode(const Arg& args) const {
-    if (args.isTransformed) {
-        return args.getTransformedResult();
+GenerationResult CJMODGenerator::generateFromSyntax(const String& syntaxString) {
+    GenerationResult result;
+    
+    try {
+        // 分析语法字符串
+        Arg args = Syntax::analyze(syntaxString);
+        
+        // 提取关键字
+        String keyword = "custom";
+        for (const auto& atom : args.atoms) {
+            if (!atom.placeholder.empty() && atom.placeholder != "$" && atom.placeholder != "$?" && atom.placeholder != "$!") {
+                keyword = atom.placeholder;
+                break;
+            }
+        }
+        
+        result = generate(args, keyword);
+        
+    } catch (const std::exception& e) {
+        result.addError("语法解析失败: " + String(e.what()));
     }
     
-    // 默认生成：简单连接所有参数
-    return args.toString();
+    return result;
 }
 
-CHTL::String CJMODGenerator::generateSourceMap(const Arg& args) const {
-    // 简化的Source Map生成
-    std::ostringstream sourceMap;
-    sourceMap << "{\n";
-    sourceMap << "  \"version\": 3,\n";
-    sourceMap << "  \"sources\": [\"<cjmod-generated>\"],\n";
-    sourceMap << "  \"names\": [],\n";
-    sourceMap << "  \"mappings\": \"AAAA\",\n";
-    sourceMap << "  \"sourcesContent\": [\"" << escapeString(args.toString()) << "\"]\n";
-    sourceMap << "}";
-    return sourceMap.str();
-}
-
-CHTL::String CJMODGenerator::formatCode(const CHTL::String& code) const {
-    CHTL::String formatted = code;
+String CJMODGenerator::generateFunction(const Arg& args, const String& keyword) {
+    String functionName = generateUniqueFunctionName(keyword);
+    String params = generateParameterList(args);
+    String body = generateFunctionBody(args, keyword);
     
-    // 应用缩进
-    formatted = applyIndentation(formatted);
+    String function = "function " + functionName + "(" + params + ") {\n";
+    function += body + "\n";
+    function += "}";
+    
+    return function;
+}
+
+String CJMODGenerator::generateParameterList(const Arg& args) {
+    StringVector params;
+    
+    for (const auto& atom : args.atoms) {
+        if (atom.placeholder.find("$") != String::npos) {
+            String paramName = "param" + std::to_string(params.size());
+            if (atom.placeholder == "$!") {
+                // 必需参数
+                params.push_back(paramName);
+            } else if (atom.placeholder == "$?") {
+                // 可选参数，设置默认值
+                params.push_back(paramName + " = null");
+            } else if (atom.placeholder == "$_") {
+                // 无序参数
+                params.push_back("..." + paramName);
+            } else {
+                // 普通参数
+                params.push_back(paramName);
+            }
+        }
+    }
+    
+    return CHTL::Util::StringUtils::join(params, ", ");
+}
+
+String CJMODGenerator::generateFunctionBody(const Arg& args, const String& keyword) {
+    String body;
+    
+    if (keyword == "listen") {
+        body = "    // 事件监听逻辑\n";
+        body += "    for (const [event, handler] of Object.entries(arguments[0] || {})) {\n";
+        body += "        this.addEventListener(event, handler);\n";
+        body += "    }";
+    } else if (keyword == "delegate") {
+        body = "    // 事件委托逻辑\n";
+        body += "    const target = arguments[0];\n";
+        body += "    const events = arguments[1] || {};\n";
+        body += "    for (const [event, handler] of Object.entries(events)) {\n";
+        body += "        this.addEventListener(event, (e) => {\n";
+        body += "            if (e.target.matches(target)) handler(e);\n";
+        body += "        });\n";
+        body += "    }";
+    } else if (keyword == "animate") {
+        body = "    // 动画逻辑\n";
+        body += "    const options = arguments[0] || {};\n";
+        body += "    return this.animate(options.keyframes, {\n";
+        body += "        duration: options.duration || 1000,\n";
+        body += "        easing: options.easing || 'ease'\n";
+        body += "    });";
+    } else {
+        body = "    // 自定义逻辑\n";
+        body += "    console.log('CJMOD function:', '" + keyword + "', arguments);";
+    }
+    
+    return body;
+}
+
+String CJMODGenerator::generateUniqueFunctionName(const String& keyword) {
+    String baseName = sanitizeIdentifier(keyword);
+    String functionName = "cjmod_" + baseName + "_" + std::to_string(functionCounter++);
+    return functionName;
+}
+
+String CJMODGenerator::sanitizeIdentifier(const String& identifier) {
+    String sanitized = identifier;
+    
+    // 替换非法字符
+    std::replace_if(sanitized.begin(), sanitized.end(), 
+        [](char c) { return !std::isalnum(c) && c != '_'; }, '_');
+    
+    // 确保以字母或下划线开头
+    if (!sanitized.empty() && std::isdigit(sanitized[0])) {
+        sanitized = "_" + sanitized;
+    }
+    
+    return sanitized;
+}
+
+String CJMODGenerator::applyTemplate(const String& templateName, const StringUnorderedMap& variables) {
+    String template_ = templateMap.count(templateName) ? templateMap[templateName] : "";
+    
+    if (template_.empty()) {
+        return "";
+    }
+    
+    String result = template_;
+    
+    // 替换变量
+    for (const auto& var : variables) {
+        String placeholder = "${" + var.first + "}";
+        result = CHTL::Util::StringUtils::replace_all(result, placeholder, var.second);
+    }
+    
+    return result;
+}
+
+String CJMODGenerator::optimizeCode(const String& code) {
+    String optimized = code;
+    
+    if (config.enableOptimization) {
+        optimized = removeRedundantCode(optimized);
+        optimized = combineVariables(optimized);
+    }
+    
+    if (config.enableMinification) {
+        // 简单的压缩：移除多余空白
+        optimized = CHTL::Util::StringUtils::replace_all(optimized, "  ", " ");
+        optimized = CHTL::Util::StringUtils::replace_all(optimized, "\n\n", "\n");
+    }
+    
+    return CHTL::Util::StringUtils::trim(optimized);
+}
+
+String CJMODGenerator::removeRedundantCode(const String& code) {
+    // 移除重复的函数声明等
+    return code;
+}
+
+String CJMODGenerator::combineVariables(const String& code) {
+    // 合并变量声明等优化
+    return code;
+}
+
+// 静态方法实现
+GenerationResult CJMODGenerator::exportResult(const Arg& args) {
+    CJMODGenerator generator;
+    return generator.generate(args, "export");
+}
+
+String CJMODGenerator::exportJavaScript(const Arg& args, const String& keyword) {
+    CJMODGenerator generator;
+    auto result = generator.generate(args, keyword);
+    return result.success ? result.generatedCode : "";
+}
+
+// CJMODScanner实现
+CJMODScanner::CJMODScanner(const String& source) : sourceCode(source) {
+    initializePointers();
+}
+
+Arg CJMODScanner::scan(const Arg& args, const String& keyword) {
+    Arg result = args;
+    
+    // 扫描逻辑：查找关键字并填充参数
+    for (auto& atom : result.atoms) {
+        if (atom.placeholder.find("$") != String::npos) {
+            // 这里应该从源代码中提取实际值
+            // 简化实现：使用示例值
+            if (atom.placeholder == "$") {
+                atom.fillValue("defaultValue");
+            } else if (atom.placeholder == "$?") {
+                atom.fillValue("optionalValue");
+            } else if (atom.placeholder == "$!") {
+                atom.fillValue("requiredValue");
+            }
+        }
+    }
+    
+    return result;
+}
+
+void CJMODScanner::initializePointers() {
+    frontPointer = 0;
+    backPointer = 0;
+}
+
+bool CJMODScanner::findKeyword(const String& keyword, size_t& position) {
+    position = sourceCode.find(keyword, frontPointer);
+    return position != String::npos;
+}
+
+Arg CJMODScanner::scanFragment(const String& keyword) {
+    Arg result;
+    
+    size_t keywordPos;
+    if (findKeyword(keyword, keywordPos)) {
+        // 提取片段
+        String fragment = extractFragment(backPointer, keywordPos + keyword.length());
+        
+        // 分析片段
+        result = Syntax::analyze(fragment);
+    }
+    
+    return result;
+}
+
+String CJMODScanner::extractFragment(size_t start, size_t end) {
+    if (start >= sourceCode.length() || end > sourceCode.length() || start >= end) {
+        return "";
+    }
+    
+    return sourceCode.substr(start, end - start);
+}
+
+// VirtualObjectManager实现
+void VirtualObjectManager::registerVirtualObject(const String& name, const String& definition) {
+    virtualObjects[name] = definition;
+}
+
+String VirtualObjectManager::generateVirtualObjectCode(const String& name) const {
+    auto it = virtualObjects.find(name);
+    if (it != virtualObjects.end()) {
+        return "const " + name + " = " + it->second + ";";
+    }
+    return "";
+}
+
+void VirtualObjectManager::bindVirtualObject(const String& functionName) {
+    // 静态绑定实现
+    static StringVector boundObjects;
+    boundObjects.push_back(functionName);
+}
+
+// CJMODUtils命名空间实现
+namespace CJMODUtils {
+
+bool validateSyntax(const String& syntax) {
+    // 基本语法验证
+    if (syntax.empty()) {
+        return false;
+    }
+    
+    // 检查括号匹配
+    int braceCount = 0;
+    for (char c : syntax) {
+        if (c == '{') braceCount++;
+        else if (c == '}') braceCount--;
+    }
+    
+    return braceCount == 0;
+}
+
+bool validateKeyword(const String& keyword) {
+    if (keyword.empty()) {
+        return false;
+    }
+    
+    // 关键字应该是有效的标识符
+    return std::isalpha(keyword[0]) || keyword[0] == '_';
+}
+
+bool validatePlaceholder(const String& placeholder) {
+    StringVector validPlaceholders = {"$", "$?", "$!", "$_", "..."};
+    return std::find(validPlaceholders.begin(), validPlaceholders.end(), placeholder) != validPlaceholders.end();
+}
+
+String convertToJavaScript(const String& cjmodCode) {
+    // 简单的转换逻辑
+    String jsCode = cjmodCode;
+    
+    // 转换增强选择器
+    size_t pos = 0;
+    while ((pos = jsCode.find("{{", pos)) != String::npos) {
+        size_t endPos = jsCode.find("}}", pos);
+        if (endPos != String::npos) {
+            String selector = jsCode.substr(pos + 2, endPos - pos - 2);
+            String replacement = "document.querySelector('" + selector + "')";
+            jsCode.replace(pos, endPos - pos + 2, replacement);
+            pos += replacement.length();
+        } else {
+            break;
+        }
+    }
+    
+    // 转换操作符
+    jsCode = CHTL::Util::StringUtils::replace_all(jsCode, "->", ".");
+    
+    return jsCode;
+}
+
+StringVector extractPlaceholders(const String& syntax) {
+    StringVector placeholders;
+    std::regex placeholderPattern(R"(\$[?!_]?)");
+    
+    std::sregex_iterator iter(syntax.begin(), syntax.end(), placeholderPattern);
+    std::sregex_iterator end;
+    
+    for (; iter != end; ++iter) {
+        placeholders.push_back(iter->str());
+    }
+    
+    return placeholders;
+}
+
+String replacePlaceholders(const String& template_, const StringUnorderedMap& values) {
+    String result = template_;
+    
+    for (const auto& value : values) {
+        String placeholder = "${" + value.first + "}";
+        result = CHTL::Util::StringUtils::replace_all(result, placeholder, value.second);
+    }
+    
+    return result;
+}
+
+StringVector findKeywords(const String& code) {
+    StringVector keywords;
+    
+    // 查找常见的CJMOD关键字
+    StringVector commonKeywords = {"listen", "delegate", "animate", "module", "vir"};
+    
+    for (const auto& keyword : commonKeywords) {
+        if (code.find(keyword) != String::npos) {
+            keywords.push_back(keyword);
+        }
+    }
+    
+    return keywords;
+}
+
+String formatCJMODCode(const String& code) {
+    String formatted = code;
+    
+    // 简单的格式化
+    formatted = CHTL::Util::StringUtils::replace_all(formatted, "{", " {\n");
+    formatted = CHTL::Util::StringUtils::replace_all(formatted, "}", "\n}");
+    formatted = CHTL::Util::StringUtils::replace_all(formatted, ";", ";\n");
     
     return formatted;
 }
 
-CHTL::String CJMODGenerator::minifyCode(const CHTL::String& code) const {
-    CHTL::String minified = code;
+void printCJMODInfo(const Arg& args) {
+    std::cout << "CJMOD Arg 信息:" << std::endl;
+    std::cout << "原子数量: " << args.atoms.size() << std::endl;
     
-    // 移除多余的空白
-    minified = std::regex_replace(minified, std::regex(R"(\s+)"), " ");
-    
-    // 移除行尾空白
-    minified = std::regex_replace(minified, std::regex(R"(\s*;\s*)"), ";");
-    
-    // 移除注释
-    minified = std::regex_replace(minified, std::regex(R"(//.*$)"), "", std::regex_constants::match_any);
-    minified = std::regex_replace(minified, std::regex(R"(/\*.*?\*/)"), "", std::regex_constants::match_any);
-    
-    return minified;
-}
-
-CHTL::String CJMODGenerator::optimizeCode(const CHTL::String& code) const {
-    CHTL::String optimized = code;
-    
-    // 简单的优化：合并连续的字符串
-    optimized = std::regex_replace(optimized, std::regex(R"('([^']*)'\\s*\+\\s*'([^']*)')"), "'$1$2'");
-    
-    return optimized;
-}
-
-CHTL::String CJMODGenerator::addStrictMode(const CHTL::String& code) const {
-    if (code.find("'use strict'") == CHTL::String::npos) {
-        return "'use strict';\n" + code;
-    }
-    return code;
-}
-
-CHTL::String CJMODGenerator::generateES5(const CHTL::String& code) const {
-    // 简化的ES6 -> ES5转换
-    CHTL::String es5Code = code;
-    
-    // 转换箭头函数
-    es5Code = std::regex_replace(es5Code, std::regex(R"(\([^)]*\)\s*=>\s*)"), "function$1");
-    
-    // 转换let/const为var
-    es5Code = std::regex_replace(es5Code, std::regex(R"(\b(let|const)\b)"), "var");
-    
-    return es5Code;
-}
-
-CHTL::String CJMODGenerator::generateES6(const CHTL::String& code) const {
-    return code; // ES6是默认格式
-}
-
-CHTL::String CJMODGenerator::generateCommonJS(const CHTL::String& code) const {
-    return "module.exports = (function() {\n" + code + "\n})();";
-}
-
-CHTL::String CJMODGenerator::generateAMD(const CHTL::String& code) const {
-    return "define(function() {\n" + code + "\n});";
-}
-
-CHTL::String CJMODGenerator::transformToTargetFormat(const CHTL::String& code) const {
-    if (config.outputFormat == "es5") {
-        return generateES5(code);
-    } else if (config.outputFormat == "es6") {
-        return generateES6(code);
-    } else if (config.outputFormat == "commonjs") {
-        return generateCommonJS(code);
-    } else if (config.outputFormat == "amd") {
-        return generateAMD(code);
-    }
-    return code;
-}
-
-CHTL::String CJMODGenerator::applyIndentation(const CHTL::String& code) const {
-    CHTL::String indentStr = getIndentString();
-    CHTL::String indented = code;
-    
-    // 简化的缩进处理
-    indented = std::regex_replace(indented, std::regex("\\{"), "{\n" + indentStr);
-    indented = std::regex_replace(indented, std::regex("\\}"), "\n}");
-    indented = std::regex_replace(indented, std::regex(";"), ";\n" + indentStr);
-    
-    return indented;
-}
-
-CHTL::String CJMODGenerator::addDebugInfo(const CHTL::String& code, const Arg& args) const {
-    std::ostringstream debug;
-    debug << "/* CJMOD Generated Code */\n";
-    debug << "/* Args: " << args.toDebugString() << " */\n";
-    debug << code;
-    return debug.str();
-}
-
-bool CJMODGenerator::validateArgument(const Arg& args) const {
-    try {
-        // 检查必需的占位符是否已填充
-        if (args.hasUnfilledRequired()) {
-            return false;
-        }
-        
-        // 检查是否有未绑定的占位符（可选）
-        // 这里只是警告，不影响生成
-        
-        return true;
-    } catch (const std::exception&) {
-        return false;
+    for (size_t i = 0; i < args.atoms.size(); ++i) {
+        const auto& atom = args.atoms[i];
+        std::cout << "原子 " << i << ": ";
+        std::cout << "占位符=" << atom.placeholder;
+        std::cout << ", 值=" << atom.getValue();
+        std::cout << ", 已填充=" << (atom.isFilled ? "是" : "否");
+        std::cout << std::endl;
     }
 }
 
-CHTL::StringVector CJMODGenerator::checkCodeQuality(const CHTL::String& code) const {
-    CHTL::StringVector warnings;
-    
-    // 检查潜在问题
-    if (code.find("eval(") != CHTL::String::npos) {
-        warnings.push_back("Code contains eval(), which may be unsafe");
-    }
-    
-    if (code.find("with(") != CHTL::String::npos) {
-        warnings.push_back("Code contains with statement, which is deprecated");
-    }
-    
-    // 检查代码长度
-    if (code.length() > 10000) {
-        warnings.push_back("Generated code is very long (" + std::to_string(code.length()) + " chars)");
-    }
-    
-    return warnings;
-}
-
-bool CJMODGenerator::isValidJavaScript(const CHTL::String& code) const {
-    // 简单的JavaScript语法检查
-    int braceCount = 0;
-    int parenCount = 0;
-    
-    for (char c : code) {
-        if (c == '{') braceCount++;
-        else if (c == '}') braceCount--;
-        else if (c == '(') parenCount++;
-        else if (c == ')') parenCount--;
-    }
-    
-    return braceCount == 0 && parenCount == 0;
-}
-
-CHTL::String CJMODGenerator::getIndentString() const {
-    if (config.indentStyle == "tabs") {
-        return CHTL::String(config.indentSize, '\t');
-    } else {
-        return CHTL::String(config.indentSize, ' ');
-    }
-}
-
-CHTL::String CJMODGenerator::escapeString(const CHTL::String& str) const {
-    CHTL::String escaped = str;
-    escaped = std::regex_replace(escaped, std::regex("\\\\"), "\\\\");
-    escaped = std::regex_replace(escaped, std::regex("\""), "\\\"");
-    escaped = std::regex_replace(escaped, std::regex("\n"), "\\n");
-    escaped = std::regex_replace(escaped, std::regex("\r"), "\\r");
-    escaped = std::regex_replace(escaped, std::regex("\t"), "\\t");
-    return escaped;
-}
-
-CHTL::String CJMODGenerator::generateUniqueId() const {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    static std::uniform_int_distribution<> dis(1000, 9999);
-    
-    auto now = std::chrono::high_resolution_clock::now();
-    auto timestamp = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
-    
-    return "cjmod_" + std::to_string(timestamp) + "_" + std::to_string(dis(gen));
-}
-
-void CJMODGenerator::addGenerationError(GenerationResult& result, const CHTL::String& error) const {
-    result.addError(error);
-}
-
-void CJMODGenerator::addGenerationWarning(GenerationResult& result, const CHTL::String& warning) const {
-    result.addWarning(warning);
-}
-
-// GeneratorFactory实现
-std::unique_ptr<CJMODGenerator> GeneratorFactory::createGenerator(const GeneratorConfig& config) {
-    return std::make_unique<CJMODGenerator>(config);
-}
-
-std::unique_ptr<CJMODGenerator> GeneratorFactory::createMinifyingGenerator() {
-    return std::make_unique<CJMODGenerator>(getMinifyConfig());
-}
-
-std::unique_ptr<CJMODGenerator> GeneratorFactory::createDebugGenerator() {
-    return std::make_unique<CJMODGenerator>(getDebugConfig());
-}
-
-std::unique_ptr<CJMODGenerator> GeneratorFactory::createProductionGenerator() {
-    return std::make_unique<CJMODGenerator>(getProductionConfig());
-}
-
-GeneratorConfig GeneratorFactory::getMinifyConfig() {
-    GeneratorConfig config;
-    config.enableMinification = true;
-    config.enableOptimization = true;
-    config.enableSourceMap = false;
-    config.enableDebugInfo = false;
-    config.outputFormat = "es5";
-    return config;
-}
-
-GeneratorConfig GeneratorFactory::getDebugConfig() {
-    GeneratorConfig config;
-    config.enableMinification = false;
-    config.enableOptimization = false;
-    config.enableSourceMap = true;
-    config.enableDebugInfo = true;
-    config.indentSize = 4;
-    return config;
-}
-
-GeneratorConfig GeneratorFactory::getProductionConfig() {
-    GeneratorConfig config;
-    config.enableMinification = true;
-    config.enableOptimization = true;
-    config.enableSourceMap = true;
-    config.enableDebugInfo = false;
-    config.outputFormat = "es6";
-    config.strictMode = true;
-    return config;
-}
-
-// Utils命名空间实现
-namespace Utils {
-
-CHTL::String joinArgs(const Arg& args, const CHTL::String& separator) {
-    std::ostringstream oss;
-    for (size_t i = 0; i < args.size(); ++i) {
-        oss << args[i].getValue();
-        if (i < args.size() - 1) {
-            oss << separator;
-        }
-    }
-    return oss.str();
-}
-
-CHTL::String quotePlaceholders(const Arg& args) {
-    Arg quoted = args;
-    for (auto& atom : quoted.atoms) {
-        if (!atom.getValue().empty() && atom.getValue()[0] != '"' && atom.getValue()[0] != '\'') {
-            atom.fillValue("\"" + atom.getValue() + "\"");
-        }
-    }
-    return quoted.toString();
-}
-
-bool isES6Compatible(const CHTL::String& code) {
-    // 检查ES6特性
-    return code.find("=>") != CHTL::String::npos ||
-           code.find("let ") != CHTL::String::npos ||
-           code.find("const ") != CHTL::String::npos ||
-           code.find("class ") != CHTL::String::npos;
-}
-
-CHTL::String addCodeComments(const CHTL::String& code, const CHTL::StringVector& comments) {
-    std::ostringstream oss;
-    for (const auto& comment : comments) {
-        oss << "// " << comment << "\n";
-    }
-    oss << code;
-    return oss.str();
-}
-
-CHTL::String removeCodeComments(const CHTL::String& code) {
-    CHTL::String result = code;
-    result = std::regex_replace(result, std::regex(R"(//.*$)"), "", std::regex_constants::match_any);
-    result = std::regex_replace(result, std::regex(R"(/\*.*?\*/)"), "", std::regex_constants::match_any);
-    return result;
-}
-
-} // namespace Utils
+} // namespace CJMODUtils
 
 } // namespace CJMOD

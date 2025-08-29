@@ -3,6 +3,11 @@
 #include "../../Util/Common.h"
 #include "../CHTLState/State.h"
 
+// 前向声明
+namespace CHTL {
+    class BaseNode;
+}
+
 namespace CHTL {
 
 // 上下文类型
@@ -75,6 +80,7 @@ public:
     bool hasTemplate(const String& name, const String& type = "") const;
     void removeTemplate(const String& name, const String& type = "");
     StringVector getTemplateNames(const String& type = "") const;
+    void registerTemplate(const String& name, BaseNode* templateNode);  // 新增：注册模板节点
     
     // 自定义管理
     void defineCustom(const String& name, const String& type, const String& content);
@@ -82,6 +88,7 @@ public:
     bool hasCustom(const String& name, const String& type = "") const;
     void removeCustom(const String& name, const String& type = "");
     StringVector getCustomNames(const String& type = "") const;
+    void registerCustom(const String& name, BaseNode* customNode);  // 新增：注册自定义节点
     
     // 原始嵌入管理
     void defineOrigin(const String& name, const String& type, const String& content);

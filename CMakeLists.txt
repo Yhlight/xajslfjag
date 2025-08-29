@@ -41,21 +41,31 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLContext/Context.cpp
     src/CHTL/CHTLIOStream/FileStream.cpp
     src/CHTL/CHTLSelector/SelectorAutomation.cpp
+    src/CHTL/CHTLNamespace/NamespaceManager.cpp
+    src/CHTL/CHTLConstraint/ConstraintSystem.cpp
     
     # CHTL JS Lexer - 基础功能
     src/CHTLJS/CHTLJSLexer/Token.cpp
     src/CHTLJS/CHTLJSLexer/GlobalMap.cpp
     src/CHTLJS/CHTLJSLexer/Lexer.cpp
     src/CHTLJS/CHTLJSIOStream/JSFileStream.cpp
+    src/CHTLJS/CHTLJSParser/EnhancedParser.cpp
     
     # CMOD System - 核心API
     src/CMODSystem/Syntax.cpp
+    src/CMODSystem/CJMODGenerator.cpp
     
     # Util System
     src/Util/FileSystem/FileSystem.cpp
     
     # Error System
     src/Error/ErrorManager.cpp
+    
+    # Scanner System
+    src/Scanner/UnifiedScanner.cpp
+    
+    # Compiler Dispatcher
+    src/CompilerDispatcher/Dispatcher.cpp
     
     # Module System
     src/Module/ModuleManager.cpp

@@ -93,6 +93,14 @@ StringVector Context::getTemplateNames(const String& type) const {
     return names;
 }
 
+void Context::registerTemplate(const String& name, BaseNode* templateNode) {
+    if (templateNode != nullptr) {
+        // 将模板节点注册到当前作用域
+        defineTemplate(name, "element", "");
+        // 这里可以扩展以存储更多模板信息
+    }
+}
+
 void Context::defineCustom(const String& name, const String& type, const String& content) {
     if (Scope* scope = getCurrentScope()) {
         String key = makeKey(name, type);
@@ -129,6 +137,14 @@ StringVector Context::getCustomNames(const String& type) const {
         }
     }
     return names;
+}
+
+void Context::registerCustom(const String& name, BaseNode* customNode) {
+    if (customNode != nullptr) {
+        // 将自定义节点注册到当前作用域
+        defineCustom(name, "element", "");
+        // 这里可以扩展以存储更多自定义信息
+    }
 }
 
 void Context::defineOrigin(const String& name, const String& type, const String& content) {
