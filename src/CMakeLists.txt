@@ -16,11 +16,23 @@ endif()
 # 查找依赖
 find_package(Threads REQUIRED)
 
-# ANTLR4（如果可用）
-find_package(antlr4-runtime QUIET)
-if(antlr4-runtime_FOUND)
+# ANTLR4运行时
+if(WIN32)
+    set(ANTLR4_ROOT "${CMAKE_SOURCE_DIR}/../ANTLR4")
+    set(ANTLR4_INCLUDE_DIR "${ANTLR4_ROOT}/include")
+    set(ANTLR4_LIB_DIR "${ANTLR4_ROOT}/lib")
+    set(ANTLR4_LIB "${ANTLR4_LIB_DIR}/antlr4-runtime.lib")
+else()
+    set(ANTLR4_ROOT "${CMAKE_SOURCE_DIR}/../ANTLR4/linux")
+    set(ANTLR4_INCLUDE_DIR "${ANTLR4_ROOT}/include")
+    set(ANTLR4_LIB_DIR "${ANTLR4_ROOT}/lib")
+    set(ANTLR4_LIB "${ANTLR4_LIB_DIR}/libantlr4-runtime.a")
+endif()
+
+if(EXISTS ${ANTLR4_LIB})
     set(USE_ANTLR ON)
     add_definitions(-DUSE_ANTLR)
+    message(STATUS "Found ANTLR4 at ${ANTLR4_ROOT}")
 else()
     message(WARNING "ANTLR4 not found, using mock implementations")
     set(USE_ANTLR OFF)
