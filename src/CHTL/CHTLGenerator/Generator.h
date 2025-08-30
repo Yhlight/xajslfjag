@@ -119,6 +119,8 @@ public:
     void generateJavaScriptRecursive(const BaseNode* node, std::ostringstream& output, int depth);
     void collectCSSContent(const BaseNode* node, std::ostringstream& output);
     void collectJavaScriptContent(const BaseNode* node, std::ostringstream& output);
+    String cleanCSSContent(const String& css);
+    String cleanJSContent(const String& js);
     void resetState();
     void postProcessOutput(GenerationOutput& output);
     String getIndent(int depth) const;

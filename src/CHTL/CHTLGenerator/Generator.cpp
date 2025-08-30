@@ -5,8 +5,8 @@
 #include "../../CMODSystem/CJMODGenerator.h"
 #include <chrono>
 #include <sstream>
+#include <regex>
 #include "../CHTLNode/BaseNode.h"
-#include <sstream>
 #include <fstream>
 
 namespace CHTL {
@@ -309,25 +309,13 @@ void Generator::collectCSSContent(const BaseNode* node, std::ostringstream& outp
     
     switch (node->getType()) {
         case NodeType::STYLE: {
-            // 样式节点：需要解析子节点中的CSS属性
-            output << "/* Style block */" << config.newlineString;
-            
-            // 遍历子节点收集CSS属性
-            for (const auto& child : node->getChildren()) {
-                if (child) {
-                    String property = child->getValue();
-                    if (!property.empty()) {
-                        output << property << config.newlineString;
-                    }
-                }
+            // 样式节点：直接获取完整CSS内容
+            String cssContent = node->getValue();
+            if (!cssContent.empty()) {
+                // 清理CSS内容，移除多余空格和换行
+                cssContent = cleanCSSContent(cssContent);
+                output << cssContent << config.newlineString;
             }
-            
-            // 如果节点本身有值，也包含进来
-            String nodeValue = node->getValue();
-            if (!nodeValue.empty()) {
-                output << nodeValue << config.newlineString;
-            }
-            
             break;
         }
         
@@ -366,25 +354,13 @@ void Generator::collectJavaScriptContent(const BaseNode* node, std::ostringstrea
     
     switch (node->getType()) {
         case NodeType::SCRIPT: {
-            // 脚本节点：需要解析子节点中的JavaScript代码
-            output << "/* Script block */" << config.newlineString;
-            
-            // 遍历子节点收集JavaScript代码
-            for (const auto& child : node->getChildren()) {
-                if (child) {
-                    String jsCode = child->getValue();
-                    if (!jsCode.empty()) {
-                        output << jsCode << config.newlineString;
-                    }
-                }
+            // 脚本节点：直接获取完整JavaScript内容
+            String jsContent = node->getValue();
+            if (!jsContent.empty()) {
+                // 清理JavaScript内容
+                jsContent = cleanJSContent(jsContent);
+                output << jsContent << config.newlineString;
             }
-            
-            // 如果节点本身有值，也包含进来
-            String nodeValue = node->getValue();
-            if (!nodeValue.empty()) {
-                output << nodeValue << config.newlineString;
-            }
-            
             break;
         }
         
@@ -691,6 +667,48 @@ void Generator::optimizeCSS(String& css) const {
 void Generator::optimizeJS(const String& js) const {
     // JS优化（变量名压缩等）
     // 当前为占位实现
+}
+
+String Generator::cleanCSSContent(const String& css) {
+    String cleaned = css;
+    
+    // 移除多余的空格（但保留必要的空格）
+    std::regex multipleSpaces(R"(\s+)");
+    cleaned = std::regex_replace(cleaned, multipleSpaces, " ");
+    
+    // 清理分号和大括号周围的空格
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*;\s*)"), "; ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*{\s*)"), " { ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*}\s*)"), " } ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*:\s*)"), ": ");
+    
+    // 移除开头和结尾的空白
+    cleaned.erase(0, cleaned.find_first_not_of(" \t\n\r"));
+    cleaned.erase(cleaned.find_last_not_of(" \t\n\r") + 1);
+    
+    return cleaned;
+}
+
+String Generator::cleanJSContent(const String& js) {
+    String cleaned = js;
+    
+    // 移除多余的空格（但保留必要的空格）
+    std::regex multipleSpaces(R"(\s+)");
+    cleaned = std::regex_replace(cleaned, multipleSpaces, " ");
+    
+    // 清理常见的JavaScript语法周围的空格
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*;\s*)"), "; ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*{\s*)"), " { ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*}\s*)"), " } ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\(\s*)"), "(");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\)\s*)"), ") ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*,\s*)"), ", ");
+    
+    // 移除开头和结尾的空白
+    cleaned.erase(0, cleaned.find_first_not_of(" \t\n\r"));
+    cleaned.erase(cleaned.find_last_not_of(" \t\n\r") + 1);
+    
+    return cleaned;
 }
 
 } // namespace CHTL
