@@ -157,8 +157,14 @@ install(DIRECTORY src/
 if(WIN32)
     target_link_libraries(chtl_core ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib/antlr4-runtime-static.lib)
 else()
-    # Linux/macOS平台可能需要不同的库文件
-    target_link_libraries(chtl_core ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib/antlr4-runtime-static.lib)
+    # Linux版本：使用编译好的Linux库
+    target_link_libraries(chtl_core ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib/linux/libantlr4-runtime.a)
+    
+    # 添加ANTLR4头文件路径
+    target_include_directories(chtl_core PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/include)
+    
+    # Linux平台需要的系统库
+    target_link_libraries(chtl_core pthread dl)
 endif()
 
 # 显示构建信息
