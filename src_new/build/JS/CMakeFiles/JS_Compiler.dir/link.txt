@@ -1,0 +1,2 @@
+/usr/bin/ar qc libJS_Compiler.a CMakeFiles/JS_Compiler.dir/JSCompiler.cpp.o
+/usr/bin/ranlib libJS_Compiler.a

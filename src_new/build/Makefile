@@ -65,6 +65,26 @@ CMAKE_BINARY_DIR = /workspace/src_new/build
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool..."
+	/usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+.PHONY : package/fast
+
+# Special rule for the target package_source
+package_source:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Run CPack packaging tool for source..."
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /workspace/src_new/build/CPackSourceConfig.cmake
+.PHONY : package_source
+
+# Special rule for the target package_source
+package_source/fast: package_source
+.PHONY : package_source/fast
+
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "No interactive CMake dialog available..."
@@ -84,6 +104,51 @@ rebuild_cache:
 # Special rule for the target rebuild_cache
 rebuild_cache/fast: rebuild_cache
 .PHONY : rebuild_cache/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+.PHONY : list_install_components/fast
+
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
+
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
+
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -117,17 +182,82 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_antlr_libraries
+# Target rules for targets named chtl_compiler
 
 # Build rule for target.
-test_antlr_libraries: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_antlr_libraries
-.PHONY : test_antlr_libraries
+chtl_compiler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 chtl_compiler
+.PHONY : chtl_compiler
 
 # fast build rule for target.
-test_antlr_libraries/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_libraries.dir/build.make CMakeFiles/test_antlr_libraries.dir/build
-.PHONY : test_antlr_libraries/fast
+chtl_compiler/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/build
+.PHONY : chtl_compiler/fast
+
+#=============================================================================
+# Target rules for targets named test_suite
+
+# Build rule for target.
+test_suite: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_suite
+.PHONY : test_suite
+
+# fast build rule for target.
+test_suite/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_suite.dir/build.make CMakeFiles/test_suite.dir/build
+.PHONY : test_suite/fast
+
+#=============================================================================
+# Target rules for targets named test_complete_implementation
+
+# Build rule for target.
+test_complete_implementation: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_complete_implementation
+.PHONY : test_complete_implementation
+
+# fast build rule for target.
+test_complete_implementation/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_implementation.dir/build.make CMakeFiles/test_complete_implementation.dir/build
+.PHONY : test_complete_implementation/fast
+
+#=============================================================================
+# Target rules for targets named test_antlr_integration
+
+# Build rule for target.
+test_antlr_integration: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_antlr_integration
+.PHONY : test_antlr_integration
+
+# fast build rule for target.
+test_antlr_integration/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/build
+.PHONY : test_antlr_integration/fast
+
+#=============================================================================
+# Target rules for targets named Error_System
+
+# Build rule for target.
+Error_System: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Error_System
+.PHONY : Error_System
+
+# fast build rule for target.
+Error_System/fast:
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/Error_System.dir/build.make Error/CMakeFiles/Error_System.dir/build
+.PHONY : Error_System/fast
+
+#=============================================================================
+# Target rules for targets named Util_System
+
+# Build rule for target.
+Util_System: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util_System
+.PHONY : Util_System
+
+# fast build rule for target.
+Util_System/fast:
+	$(MAKE) $(MAKESILENT) -f Util/CMakeFiles/Util_System.dir/build.make Util/CMakeFiles/Util_System.dir/build
+.PHONY : Util_System/fast
 
 #=============================================================================
 # Target rules for targets named ANTLRCSSParser
@@ -155,12 +285,114 @@ ANTLRJSParser/fast:
 	$(MAKE) $(MAKESILENT) -f ThirdParty/CMakeFiles/ANTLRJSParser.dir/build.make ThirdParty/CMakeFiles/ANTLRJSParser.dir/build
 .PHONY : ANTLRJSParser/fast
 
+#=============================================================================
+# Target rules for targets named CHTL_Core
+
+# Build rule for target.
+CHTL_Core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTL_Core
+.PHONY : CHTL_Core
+
+# fast build rule for target.
+CHTL_Core/fast:
+	$(MAKE) $(MAKESILENT) -f CHTL/CMakeFiles/CHTL_Core.dir/build.make CHTL/CMakeFiles/CHTL_Core.dir/build
+.PHONY : CHTL_Core/fast
+
+#=============================================================================
+# Target rules for targets named CHTL_JS_Core
+
+# Build rule for target.
+CHTL_JS_Core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTL_JS_Core
+.PHONY : CHTL_JS_Core
+
+# fast build rule for target.
+CHTL_JS_Core/fast:
+	$(MAKE) $(MAKESILENT) -f "CHTL JS/CMakeFiles/CHTL_JS_Core.dir/build.make" "CHTL JS/CMakeFiles/CHTL_JS_Core.dir/build"
+.PHONY : CHTL_JS_Core/fast
+
+#=============================================================================
+# Target rules for targets named Scanner_Core
+
+# Build rule for target.
+Scanner_Core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Scanner_Core
+.PHONY : Scanner_Core
+
+# fast build rule for target.
+Scanner_Core/fast:
+	$(MAKE) $(MAKESILENT) -f Scanner/CMakeFiles/Scanner_Core.dir/build.make Scanner/CMakeFiles/Scanner_Core.dir/build
+.PHONY : Scanner_Core/fast
+
+#=============================================================================
+# Target rules for targets named CompilerDispatcher_Core
+
+# Build rule for target.
+CompilerDispatcher_Core: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CompilerDispatcher_Core
+.PHONY : CompilerDispatcher_Core
+
+# fast build rule for target.
+CompilerDispatcher_Core/fast:
+	$(MAKE) $(MAKESILENT) -f CompilerDispatcher/CMakeFiles/CompilerDispatcher_Core.dir/build.make CompilerDispatcher/CMakeFiles/CompilerDispatcher_Core.dir/build
+.PHONY : CompilerDispatcher_Core/fast
+
+#=============================================================================
+# Target rules for targets named CSS_Compiler
+
+# Build rule for target.
+CSS_Compiler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CSS_Compiler
+.PHONY : CSS_Compiler
+
+# fast build rule for target.
+CSS_Compiler/fast:
+	$(MAKE) $(MAKESILENT) -f CSS/CMakeFiles/CSS_Compiler.dir/build.make CSS/CMakeFiles/CSS_Compiler.dir/build
+.PHONY : CSS_Compiler/fast
+
+#=============================================================================
+# Target rules for targets named JS_Compiler
+
+# Build rule for target.
+JS_Compiler: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 JS_Compiler
+.PHONY : JS_Compiler
+
+# fast build rule for target.
+JS_Compiler/fast:
+	$(MAKE) $(MAKESILENT) -f JS/CMakeFiles/JS_Compiler.dir/build.make JS/CMakeFiles/JS_Compiler.dir/build
+.PHONY : JS_Compiler/fast
+
+main.o: main.cpp.o
+.PHONY : main.o
+
+# target to build an object file
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/main.cpp.o
+.PHONY : main.cpp.o
+
+main.i: main.cpp.i
+.PHONY : main.i
+
+# target to preprocess a source file
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/main.cpp.i
+.PHONY : main.cpp.i
+
+main.s: main.cpp.s
+.PHONY : main.s
+
+# target to generate assembly for a file
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/chtl_compiler.dir/build.make CMakeFiles/chtl_compiler.dir/main.cpp.s
+.PHONY : main.cpp.s
+
 test_antlr_libraries.o: test_antlr_libraries.cpp.o
 .PHONY : test_antlr_libraries.o
 
 # target to build an object file
 test_antlr_libraries.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_libraries.dir/build.make CMakeFiles/test_antlr_libraries.dir/test_antlr_libraries.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_libraries.cpp.o
 .PHONY : test_antlr_libraries.cpp.o
 
 test_antlr_libraries.i: test_antlr_libraries.cpp.i
@@ -168,7 +400,7 @@ test_antlr_libraries.i: test_antlr_libraries.cpp.i
 
 # target to preprocess a source file
 test_antlr_libraries.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_libraries.dir/build.make CMakeFiles/test_antlr_libraries.dir/test_antlr_libraries.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_libraries.cpp.i
 .PHONY : test_antlr_libraries.cpp.i
 
 test_antlr_libraries.s: test_antlr_libraries.cpp.s
@@ -176,8 +408,56 @@ test_antlr_libraries.s: test_antlr_libraries.cpp.s
 
 # target to generate assembly for a file
 test_antlr_libraries.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_libraries.dir/build.make CMakeFiles/test_antlr_libraries.dir/test_antlr_libraries.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_libraries.cpp.s
 .PHONY : test_antlr_libraries.cpp.s
+
+test_complete_chtl_implementation.o: test_complete_chtl_implementation.cpp.o
+.PHONY : test_complete_chtl_implementation.o
+
+# target to build an object file
+test_complete_chtl_implementation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_implementation.dir/build.make CMakeFiles/test_complete_implementation.dir/test_complete_chtl_implementation.cpp.o
+.PHONY : test_complete_chtl_implementation.cpp.o
+
+test_complete_chtl_implementation.i: test_complete_chtl_implementation.cpp.i
+.PHONY : test_complete_chtl_implementation.i
+
+# target to preprocess a source file
+test_complete_chtl_implementation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_implementation.dir/build.make CMakeFiles/test_complete_implementation.dir/test_complete_chtl_implementation.cpp.i
+.PHONY : test_complete_chtl_implementation.cpp.i
+
+test_complete_chtl_implementation.s: test_complete_chtl_implementation.cpp.s
+.PHONY : test_complete_chtl_implementation.s
+
+# target to generate assembly for a file
+test_complete_chtl_implementation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_complete_implementation.dir/build.make CMakeFiles/test_complete_implementation.dir/test_complete_chtl_implementation.cpp.s
+.PHONY : test_complete_chtl_implementation.cpp.s
+
+test_suite.o: test_suite.cpp.o
+.PHONY : test_suite.o
+
+# target to build an object file
+test_suite.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_suite.dir/build.make CMakeFiles/test_suite.dir/test_suite.cpp.o
+.PHONY : test_suite.cpp.o
+
+test_suite.i: test_suite.cpp.i
+.PHONY : test_suite.i
+
+# target to preprocess a source file
+test_suite.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_suite.dir/build.make CMakeFiles/test_suite.dir/test_suite.cpp.i
+.PHONY : test_suite.cpp.i
+
+test_suite.s: test_suite.cpp.s
+.PHONY : test_suite.s
+
+# target to generate assembly for a file
+test_suite.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_suite.dir/build.make CMakeFiles/test_suite.dir/test_suite.cpp.s
+.PHONY : test_suite.cpp.s
 
 # Help Target
 help:
@@ -186,13 +466,39 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... edit_cache"
+	@echo "... install"
+	@echo "... install/local"
+	@echo "... install/strip"
+	@echo "... list_install_components"
+	@echo "... package"
+	@echo "... package_source"
 	@echo "... rebuild_cache"
 	@echo "... ANTLRCSSParser"
 	@echo "... ANTLRJSParser"
-	@echo "... test_antlr_libraries"
+	@echo "... CHTL_Core"
+	@echo "... CHTL_JS_Core"
+	@echo "... CSS_Compiler"
+	@echo "... CompilerDispatcher_Core"
+	@echo "... Error_System"
+	@echo "... JS_Compiler"
+	@echo "... Scanner_Core"
+	@echo "... Util_System"
+	@echo "... chtl_compiler"
+	@echo "... test_antlr_integration"
+	@echo "... test_complete_implementation"
+	@echo "... test_suite"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 	@echo "... test_antlr_libraries.o"
 	@echo "... test_antlr_libraries.i"
 	@echo "... test_antlr_libraries.s"
+	@echo "... test_complete_chtl_implementation.o"
+	@echo "... test_complete_chtl_implementation.i"
+	@echo "... test_complete_chtl_implementation.s"
+	@echo "... test_suite.o"
+	@echo "... test_suite.i"
+	@echo "... test_suite.s"
 .PHONY : help
 
 

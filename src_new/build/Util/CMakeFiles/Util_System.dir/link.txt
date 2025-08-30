@@ -1,0 +1,2 @@
+/usr/bin/ar qc libUtil_System.a CMakeFiles/Util_System.dir/FileSystem/FileSystem.cpp.o CMakeFiles/Util_System.dir/ZIPUtil/ZIPUtil.cpp.o
+/usr/bin/ranlib libUtil_System.a

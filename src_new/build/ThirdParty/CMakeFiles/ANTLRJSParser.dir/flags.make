@@ -6,5 +6,5 @@ CXX_DEFINES = -DANTLR4CPP_STATIC
 
 CXX_INCLUDES = -I/workspace/src_new -I/workspace/src_new/ThirdParty/antlr/generated/JS -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/atn -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/dfa -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/misc -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/support -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/tree -isystem /workspace/src_new/ThirdParty/antlr/ANTLR4/include/internal
 
-CXX_FLAGS =  -Wall -Wextra -O2 -std=gnu++17
+CXX_FLAGS =  -O3 -DNDEBUG -std=c++17
 
