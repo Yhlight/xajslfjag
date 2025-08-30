@@ -1,8 +1,8 @@
 #!/bin/bash
-# VSCode Extension Build Script for Linux
+# VSCode Extension Build Script for macOS
 
 echo "================================================"
-echo "CHTL VSCode Extension Build for Linux"
+echo "CHTL VSCode Extension Build for macOS"
 echo "================================================"
 
 # Get script directory
@@ -92,7 +92,7 @@ if [ $? -eq 0 ]; then
     fi
     
     echo ""
-    echo "🎊 VSCode Extension Build Completed!"
+    echo "🎊 VSCode Extension Build Completed for macOS!"
     echo "================================="
     echo "Extension features:"
     echo "  ✓ CHTL syntax highlighting"

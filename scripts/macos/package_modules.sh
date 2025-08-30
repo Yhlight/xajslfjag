@@ -1,9 +1,9 @@
 #!/bin/bash
-# CHTL Module Packaging Script for Linux
+# CHTL Module Packaging Script for macOS
 # Package CMOD and CJMOD modules
 
 echo "================================================"
-echo "CHTL Module Packaging for Linux"
+echo "CHTL Module Packaging for macOS"
 echo "================================================"
 
 # Get script directory
@@ -38,7 +38,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "================================================"
-echo "Module Packaging Completed Successfully"
+echo "Module Packaging Completed Successfully on macOS"
 echo "================================================"
 echo "Packaged modules location: packages/"
 ls -la packages/*.cmod packages/*.cjmod 2>/dev/null || echo "No packaged modules found"

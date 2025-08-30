@@ -1,9 +1,9 @@
 #!/bin/bash
-# CHTL Compiler Debug Build Script for Linux
+# CHTL Compiler Debug Build Script for macOS
 # Build the complete CHTL compiler in debug mode
 
 echo "================================================"
-echo "CHTL Compiler Debug Build for Linux"
+echo "CHTL Compiler Debug Build for macOS"
 echo "================================================"
 
 # Get script directory
@@ -25,7 +25,7 @@ mkdir -p build_debug
 cd build_debug
 
 echo "Configuring CMake for Debug build..."
-cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=g++
+cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_CXX_COMPILER=clang++
 
 if [ $? -ne 0 ]; then
     echo "CMake configuration failed"
@@ -33,7 +33,7 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Building CHTL Compiler in Debug mode..."
-make -j$(nproc)
+make -j$(sysctl -n hw.ncpu)
 
 if [ $? -ne 0 ]; then
     echo "Build failed"
@@ -49,5 +49,5 @@ echo "Built components:"
 echo "  - chtl_compiler (Debug)"
 echo "  - CHTL Core Libraries (Debug)"
 echo "  - Debug symbols included"
-echo "  - Ready for development and debugging"
+echo "  - Ready for development and debugging on macOS"
 echo "================================================"
