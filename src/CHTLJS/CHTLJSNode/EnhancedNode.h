@@ -8,6 +8,9 @@
 
 namespace CHTLJS {
 
+// 引入CHTL的类型定义
+using namespace CHTL;
+
 // CHTL JS 增强语法节点类型
 enum class CHTLJSNodeType {
     LISTEN,           // listen事件监听

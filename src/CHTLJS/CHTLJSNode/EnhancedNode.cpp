@@ -8,7 +8,7 @@ namespace CHTLJS {
 // ========== CHTLJSEnhancedNode 基类实现 ==========
 
 CHTLJSEnhancedNode::CHTLJSEnhancedNode(CHTLJSNodeType type, const String& value, const CHTL::Position& pos)
-    : BaseNode(CHTL::NodeType::CHTLJS, value, pos), jsType(type) {
+    : BaseNode(CHTL::NodeType::CHTLJS_FUNCTION, value, pos), jsType(type) {
 }
 
 String CHTLJSEnhancedNode::jsTypeToString() const {

@@ -82,7 +82,6 @@ public:
     void processDocumentSelectorAutomation(BaseNode* documentNode);
     
     // 特例化解析
-    std::unique_ptr<class IndexAccessNode> parseIndexAccess();
     std::unique_ptr<class NoValueStyleNode> parseNoValueStyle();
     bool isIndexAccessSyntax(const String& input) const;
     bool isNoValueStyleSyntax(const String& input) const;
@@ -181,7 +180,7 @@ private:
     // 特例化操作解析
     std::unique_ptr<BaseNode> parseDeleteOperation();
     std::unique_ptr<BaseNode> parseInsertOperation();
-    std::unique_ptr<BaseNode> parseIndexAccess();
+    std::unique_ptr<IndexAccessNode> parseIndexAccess();
     bool isIndexAccess();
     
     // 无值样式组解析
