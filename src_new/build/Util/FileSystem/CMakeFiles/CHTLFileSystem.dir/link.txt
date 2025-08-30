@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLFileSystem.a CMakeFiles/CHTLFileSystem.dir/FileSystem.cpp.o
+/usr/bin/ranlib libCHTLFileSystem.a

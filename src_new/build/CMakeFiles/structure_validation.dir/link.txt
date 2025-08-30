@@ -1,0 +1,1 @@
+/usr/bin/c++  -Wall -Wextra -O2 -Xlinker --dependency-file=CMakeFiles/structure_validation.dir/link.d CMakeFiles/structure_validation.dir/test_standard_structure.cpp.o -o structure_validation  Error/libCHTLError.a

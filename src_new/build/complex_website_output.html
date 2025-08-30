@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHTL复杂网站演示 - 所有功能测试</title>
+    <style>
+        /* 生成的CSS代码 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; font-family: Inter, sans-serif; }
+        .main-layout { display: grid; min-height: 100vh; }
+        .header { background: #007bff; color: white; padding: 16px; }
+        .sidebar { background: #f8f9fa; padding: 24px; }
+        .main { padding: 24px; }
+        .footer { background: #343a40; color: white; padding: 32px; }
+        .card { background: white; border: 1px solid #dee2e6; border-radius: 8px; padding: 24px; }
+        .interactive-btn { background: #007bff; color: white; padding: 8px 16px; border: none; border-radius: 4px; }
+    </style>
+</head>
+<body class="main-layout">
+    <!-- 生成器注释：CHTL复杂网站演示 -->
+    <header class="header">
+        <h1>CHTL复杂网站演示</h1>
+        <nav class="navbar">
+            <ul class="nav-list">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <aside class="sidebar">
+        <nav>
+            <ul class="sidebar-menu">
+                <li><a href="#dashboard">📊 仪表板</a></li>
+                <li><a href="#components">🧩 组件库</a></li>
+                <li><a href="#templates">📝 模板</a></li>
+            </ul>
+        </nav>
+    </aside>
+    
+    <main class="main">
+        <section id="dashboard">
+            <h2>仪表板</h2>
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-label">总用户数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">567</div>
+                    <div class="stat-label">活跃会话</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">系统健康度</div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="components">
+            <h2>组件演示</h2>
+            <div class="components-showcase">
+                <div class="card">基础卡片组件</div>
+                <button class="interactive-btn">交互按钮</button>
+                <form class="demo-form">
+                    <input type="text" placeholder="用户名">
+                    <input type="email" placeholder="邮箱">
+                    <button type="submit">提交</button>
+                </form>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#privacy">隐私政策</a>
+                <a href="#terms">使用条款</a>
+                <a href="#support">技术支持</a>
+            </div>
+            <div class="copyright">© 2024 CHTL编译器项目</div>
+        </div>
+    </footer>
+    
+    <script>
+        // 生成的JavaScript代码
+        console.log('CHTL复杂网站加载完成');
+        
+        // 全局应用控制器
+        var globalApp = {
+            logMessage: function(msg) { console.log(msg); },
+            showNotification: function(msg, type) { alert(msg); },
+            initializeApp: function() { console.log('App initialized'); }
+        };
+        
+        // 事件监听器
+        document.querySelector('.interactive-btn')?.addEventListener('click', function() {
+            globalApp.logMessage('交互按钮被点击');
+        });
+        
+        // 初始化
+        globalApp.initializeApp();
+    </script>
+</body>
+</html>

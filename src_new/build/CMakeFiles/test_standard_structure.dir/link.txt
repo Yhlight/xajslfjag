@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/test_standard_structure.dir/link.d CMakeFiles/test_standard_structure.dir/test_standard_structure.cpp.o -o test_standard_structure

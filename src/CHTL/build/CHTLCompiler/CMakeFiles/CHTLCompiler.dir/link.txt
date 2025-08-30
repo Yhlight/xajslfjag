@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLCompiler.a CMakeFiles/CHTLCompiler.dir/CompilerDispatcher.cpp.o CMakeFiles/CHTLCompiler.dir/CHTLJSCompiler.cpp.o CMakeFiles/CHTLCompiler.dir/ANTLRCompiler.cpp.o
+/usr/bin/ranlib libCHTLCompiler.a

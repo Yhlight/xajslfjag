@@ -1,0 +1,72 @@
+cmake_minimum_required(VERSION 3.16)
+project(CHTL_Compiler_Complete LANGUAGES CXX)
+
+# 设置C++标准
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# 设置编译选项
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2")
+
+# 添加include目录
+include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+
+# ========== 错误处理系统 ==========
+add_subdirectory(Error)
+
+# ========== 工具类 ==========
+add_subdirectory(Util)
+
+# ========== CHTL编译器 ==========
+add_subdirectory(CHTL)
+
+# ========== CHTL JS编译器 ==========
+add_subdirectory("CHTL JS")
+
+# ========== CSS编译器 ==========
+add_subdirectory(CSS)
+
+# ========== JS编译器 ==========
+add_subdirectory(JS)
+
+# ========== 统一扫描器 ==========
+add_subdirectory(Scanner)
+
+# ========== 编译器调度器 ==========
+add_subdirectory(CompilerDispatcher)
+
+# ========== 测试系统 ==========
+add_subdirectory(Test)
+
+# ========== 主要可执行文件 ==========
+
+# CHTL编译器主程序
+add_executable(chtl_compiler main.cpp)
+target_link_libraries(chtl_compiler 
+    CHTLCore
+    CHTLJSCore
+    CSSCompiler
+    JSCompiler
+    Scanner
+    CompilerDispatcher
+    CHTLError
+    CHTLUtil
+)
+
+# 综合测试程序
+add_executable(comprehensive_test comprehensive_test.cpp)
+target_link_libraries(comprehensive_test 
+    CHTLError
+)
+
+# 最终验证程序
+add_executable(final_verification final_verification.cpp)
+target_link_libraries(final_verification 
+    CHTLError
+)
+
+# 结构验证程序
+add_executable(structure_validation test_standard_structure.cpp)
+target_link_libraries(structure_validation 
+    CHTLError
+)

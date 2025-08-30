@@ -1,0 +1,1893 @@
+// CHTL复杂网站测试 - 使用所有语法功能
+// 严格按照CHTL语法文档.md实现
+
+-- 这是生成器注释，会被生成到HTML中
+
+/*
+ * 多行注释，不会被生成到HTML中
+ */
+
+// 单行注释，不会被生成到HTML中
+
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 1;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    DISABLE_SCRIPT_AUTO_ADD_CLASS = true;
+    DISABLE_SCRIPT_AUTO_ADD_ID = true;
+    DEBUG_MODE = true;
+    
+    [Name]
+    {
+        primaryBtn = "primary-button";
+        mainContainer = "main-container";
+    }
+    
+    [OriginType]
+    {
+        Vue = "vue";
+        React = "react";
+    }
+}
+
+[Namespace] UI
+{
+    [Template] @Var ThemeColors
+    {
+        primary: "#007bff";
+        secondary: "#6c757d";
+        success: "#28a745";
+        danger: "#dc3545";
+        warning: "#ffc107";
+        info: "#17a2b8";
+        light: "#f8f9fa";
+        dark: "#343a40";
+        white: "#ffffff";
+        black: "#000000";
+    }
+    
+    [Template] @Var Spacing
+    {
+        xs: "4px";
+        sm: "8px";
+        md: "16px";
+        lg: "24px";
+        xl: "32px";
+        xxl: "48px";
+    }
+    
+    [Template] @Var Typography
+    {
+        fontFamily: "Inter, -apple-system, BlinkMacSystemFont, sans-serif";
+        fontSize: "14px";
+        lineHeight: "1.5";
+        fontWeight: "400";
+        headingWeight: "600";
+    }
+    
+    [Template] @Style BaseButton
+    {
+        display: "inline-block";
+        padding: Spacing(sm) Spacing(md);
+        margin: Spacing(xs);
+        border: "none";
+        border-radius: "4px";
+        font-family: Typography(fontFamily);
+        font-size: Typography(fontSize);
+        font-weight: Typography(fontWeight);
+        text-decoration: "none";
+        cursor: "pointer";
+        transition: "all 0.3s ease";
+        user-select: "none";
+    }
+    
+    [Template] @Style PrimaryButton
+    {
+        @Style BaseButton;
+        background-color: ThemeColors(primary);
+        color: ThemeColors(white);
+        border: "1px solid" ThemeColors(primary);
+    }
+    
+    [Template] @Style SecondaryButton
+    {
+        inherit @Style BaseButton;
+        background-color: "transparent";
+        color: ThemeColors(secondary);
+        border: "1px solid" ThemeColors(secondary);
+    }
+    
+    [Template] @Element Card
+    {
+        div
+        {
+            class: "card";
+            
+            style
+            {
+                .card
+                {
+                    background: ThemeColors(white);
+                    border: "1px solid #dee2e6";
+                    border-radius: "8px";
+                    padding: Spacing(lg);
+                    margin: Spacing(md);
+                    box-shadow: "0 2px 4px rgba(0,0,0,0.1)";
+                    transition: "box-shadow 0.3s ease";
+                }
+                
+                &:hover
+                {
+                    box-shadow: "0 4px 8px rgba(0,0,0,0.15)";
+                }
+            }
+            
+            div
+            {
+                class: "card-header";
+                
+                style
+                {
+                    .card-header
+                    {
+                        border-bottom: "1px solid #dee2e6";
+                        padding-bottom: Spacing(md);
+                        margin-bottom: Spacing(md);
+                        font-weight: Typography(headingWeight);
+                    }
+                }
+            }
+            
+            div
+            {
+                class: "card-body";
+                
+                style
+                {
+                    .card-body
+                    {
+                        line-height: Typography(lineHeight);
+                    }
+                }
+            }
+        }
+    }
+    
+    [Template] @Element Modal
+    {
+        div
+        {
+            class: "modal";
+            id: "modal";
+            
+            style
+            {
+                .modal
+                {
+                    display: "none";
+                    position: "fixed";
+                    z-index: "1000";
+                    left: "0";
+                    top: "0";
+                    width: "100%";
+                    height: "100%";
+                    background-color: "rgba(0,0,0,0.5)";
+                }
+                
+                &.active
+                {
+                    display: "flex";
+                    align-items: "center";
+                    justify-content: "center";
+                }
+                
+                .modal-content
+                {
+                    background: ThemeColors(white);
+                    border-radius: "8px";
+                    padding: Spacing(xl);
+                    max-width: "500px";
+                    width: "90%";
+                    position: "relative";
+                }
+                
+                .modal-close
+                {
+                    position: "absolute";
+                    top: Spacing(md);
+                    right: Spacing(md);
+                    background: "none";
+                    border: "none";
+                    font-size: "24px";
+                    cursor: "pointer";
+                    color: ThemeColors(secondary);
+                }
+                
+                .modal-close:hover
+                {
+                    color: ThemeColors(danger);
+                }
+            }
+            
+            div
+            {
+                class: "modal-content";
+                
+                button
+                {
+                    class: "modal-close";
+                    type: "button";
+                    
+                    text
+                    {
+                        "×"
+                    }
+                }
+                
+                div
+                {
+                    class: "modal-header";
+                    
+                    h2
+                    {
+                        text
+                        {
+                            "Modal Title"
+                        }
+                    }
+                }
+                
+                div
+                {
+                    class: "modal-body";
+                    
+                    p
+                    {
+                        text
+                        {
+                            "Modal content goes here..."
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+[Namespace] Components
+{
+    [Custom] @Element NavigationBar from UI::Card
+    {
+        delete div[1];  // 删除card-body
+        
+        insert after div[0]
+        {
+            nav
+            {
+                class: "navbar";
+                
+                ul
+                {
+                    class: "nav-list";
+                    
+                    li
+                    {
+                        class: "nav-item";
+                        
+                        a
+                        {
+                            href: "#home";
+                            class: "nav-link";
+                            
+                            text
+                            {
+                                "首页"
+                            }
+                        }
+                    }
+                    
+                    li
+                    {
+                        class: "nav-item";
+                        
+                        a
+                        {
+                            href: "#about";
+                            class: "nav-link";
+                            
+                            text
+                            {
+                                "关于"
+                            }
+                        }
+                    }
+                    
+                    li
+                    {
+                        class: "nav-item";
+                        
+                        a
+                        {
+                            href: "#contact";
+                            class: "nav-link";
+                            
+                            text
+                            {
+                                "联系"
+                            }
+                        }
+                    }
+                }
+                
+                style
+                {
+                    .navbar
+                    {
+                        display: "flex";
+                        justify-content: "space-between";
+                        align-items: "center";
+                        padding: UI::Spacing(md) UI::Spacing(lg);
+                        background: UI::ThemeColors(primary);
+                    }
+                    
+                    .nav-list
+                    {
+                        display: "flex";
+                        list-style: "none";
+                        margin: "0";
+                        padding: "0";
+                        gap: UI::Spacing(lg);
+                    }
+                    
+                    .nav-link
+                    {
+                        color: UI::ThemeColors(white);
+                        text-decoration: "none";
+                        font-weight: UI::Typography(headingWeight);
+                        transition: "color 0.3s ease";
+                    }
+                    
+                    .nav-link:hover
+                    {
+                        color: UI::ThemeColors(warning);
+                    }
+                }
+            }
+        }
+    }
+    
+    [Custom] @Element InteractiveButton from UI::Card
+    {
+        replace div[0]
+        {
+            button
+            {
+                class: "interactive-btn";
+                type: "button";
+                
+                style
+                {
+                    @Style UI::PrimaryButton;
+                    
+                    .interactive-btn
+                    {
+                        position: "relative";
+                        overflow: "hidden";
+                        transform: "scale(1)";
+                    }
+                    
+                    &:hover
+                    {
+                        transform: "scale(1.05)";
+                        box-shadow: "0 4px 12px rgba(0,123,255,0.3)";
+                    }
+                    
+                    &:active
+                    {
+                        transform: "scale(0.98)";
+                    }
+                    
+                    &::before
+                    {
+                        content: "''";
+                        position: "absolute";
+                        top: "0";
+                        left: "-100%";
+                        width: "100%";
+                        height: "100%";
+                        background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent)";
+                        transition: "left 0.5s";
+                    }
+                    
+                    &:hover::before
+                    {
+                        left: "100%";
+                    }
+                }
+                
+                script
+                {
+                    {{.interactive-btn}} &-> click
+                    {
+                        -- 这是生成器注释，会根据上下文生成JavaScript注释
+                        
+                        listen
+                        {
+                            click: () => {
+                                console.log('Interactive button clicked!');
+                                
+                                animate
+                                {
+                                    target: {{&}},
+                                    duration: 300,
+                                    easing: "ease-out",
+                                    
+                                    begin: {
+                                        transform: "scale(1)"
+                                    },
+                                    
+                                    when: [
+                                        {
+                                            at: 0.5,
+                                            transform: "scale(1.1) rotate(2deg)"
+                                        }
+                                    ],
+                                    
+                                    end: {
+                                        transform: "scale(1) rotate(0deg)"
+                                    },
+                                    
+                                    callback: function() {
+                                        console.log('Animation completed!');
+                                    }
+                                }
+                            },
+                            
+                            mouseenter: function() {
+                                {{&}}->style.background = UI::ThemeColors(success);
+                            },
+                            
+                            mouseleave: function() {
+                                {{&}}->style.background = UI::ThemeColors(primary);
+                            }
+                        }
+                    }
+                    
+                    vir buttonController = listen
+                    {
+                        click: () => {
+                            return 'Button clicked at ' + new Date().toISOString();
+                        },
+                        
+                        getState: () => {
+                            return {
+                                isActive: true,
+                                clickCount: 0
+                            };
+                        }
+                    };
+                    
+                    // 使用虚拟对象
+                    console.log(buttonController->click());
+                    console.log(buttonController->getState().isActive);
+                }
+                
+                text
+                {
+                    "点击我"
+                }
+            }
+        }
+    }
+}
+
+[Import] @Html from "header.html" as pageHeader
+[Import] @Style from "reset.css"
+[Import] @JavaScript from "utils.js" as utilFunctions
+[Import] @Chtl from chtl::components/layout
+[Import] @CJmod from advanced-animations
+
+[Origin] @Html pageHeader
+{
+    <header class="site-header">
+        <h1>CHTL复杂网站演示</h1>
+        <p>展示所有CHTL语法功能</p>
+    </header>
+}
+
+[Origin] @Style globalStyles
+{
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    html, body {
+        height: 100%;
+        font-family: UI::Typography(fontFamily);
+    }
+}
+
+[Origin] @JavaScript globalScripts
+{
+    // 全局JavaScript代码
+    window.CHTL_APP = {
+        version: '1.0.0',
+        initialized: false,
+        
+        init: function() {
+            console.log('CHTL App initialized');
+            this.initialized = true;
+        }
+    };
+}
+
+[Origin] @Vue vueComponent
+{
+    <template>
+        <div class="vue-component">
+            <h3>Vue组件示例</h3>
+            <p>{{ message }}</p>
+        </div>
+    </template>
+    
+    <script>
+    export default {
+        data() {
+            return {
+                message: 'Hello from Vue in CHTL!'
+            }
+        }
+    }
+    </script>
+}
+
+html
+{
+    lang: "zh-CN";
+    
+    head
+    {
+        meta
+        {
+            charset: "UTF-8";
+        }
+        
+        meta
+        {
+            name: "viewport";
+            content: "width=device-width, initial-scale=1.0";
+        }
+        
+        title
+        {
+            text
+            {
+                "CHTL复杂网站演示 - 所有功能测试"
+            }
+        }
+        
+        style
+        {
+            @Style globalStyles;
+            
+            .main-layout
+            {
+                display: "grid";
+                grid-template-areas: 
+                    "header header"
+                    "sidebar main"
+                    "footer footer";
+                grid-template-rows: "auto 1fr auto";
+                grid-template-columns: "250px 1fr";
+                min-height: "100vh";
+                gap: UI::Spacing(md);
+            }
+            
+            .header { grid-area: "header"; }
+            .sidebar { grid-area: "sidebar"; }
+            .main { grid-area: "main"; }
+            .footer { grid-area: "footer"; }
+            
+            @media (max-width: 768px)
+            {
+                .main-layout
+                {
+                    grid-template-areas:
+                        "header"
+                        "main"
+                        "sidebar"
+                        "footer";
+                    grid-template-columns: "1fr";
+                }
+            }
+        }
+    }
+    
+    body
+    {
+        class: "main-layout";
+        
+        header
+        {
+            class: "header";
+            
+            @Origin pageHeader;
+            
+            Components::NavigationBar();
+        }
+        
+        aside
+        {
+            class: "sidebar";
+            
+            style
+            {
+                .sidebar
+                {
+                    background: UI::ThemeColors(light);
+                    padding: UI::Spacing(lg);
+                    border-right: "1px solid" UI::ThemeColors(secondary);
+                }
+                
+                .sidebar-menu
+                {
+                    list-style: "none";
+                }
+                
+                .sidebar-item
+                {
+                    margin-bottom: UI::Spacing(sm);
+                }
+                
+                .sidebar-link
+                {
+                    display: "block";
+                    padding: UI::Spacing(sm);
+                    color: UI::ThemeColors(dark);
+                    text-decoration: "none";
+                    border-radius: "4px";
+                    transition: "background-color 0.3s ease";
+                }
+                
+                .sidebar-link:hover
+                {
+                    background-color: UI::ThemeColors(primary);
+                    color: UI::ThemeColors(white);
+                }
+            }
+            
+            nav
+            {
+                ul
+                {
+                    class: "sidebar-menu";
+                    
+                    li
+                    {
+                        class: "sidebar-item";
+                        
+                        a
+                        {
+                            href: "#dashboard";
+                            class: "sidebar-link";
+                            
+                            text
+                            {
+                                "📊 仪表板"
+                            }
+                        }
+                    }
+                    
+                    li
+                    {
+                        class: "sidebar-item";
+                        
+                        a
+                        {
+                            href: "#components";
+                            class: "sidebar-link";
+                            
+                            text
+                            {
+                                "🧩 组件库"
+                            }
+                        }
+                    }
+                    
+                    li
+                    {
+                        class: "sidebar-item";
+                        
+                        a
+                        {
+                            href: "#templates";
+                            class: "sidebar-link";
+                            
+                            text
+                            {
+                                "📝 模板"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        main
+        {
+            class: "main";
+            
+            style
+            {
+                .main
+                {
+                    padding: UI::Spacing(lg);
+                    overflow-y: "auto";
+                }
+                
+                .section
+                {
+                    margin-bottom: UI::Spacing(xxl);
+                }
+                
+                .section-title
+                {
+                    font-size: "24px";
+                    font-weight: UI::Typography(headingWeight);
+                    color: UI::ThemeColors(dark);
+                    margin-bottom: UI::Spacing(lg);
+                    border-bottom: "2px solid" UI::ThemeColors(primary);
+                    padding-bottom: UI::Spacing(sm);
+                }
+            }
+            
+            section
+            {
+                class: "section";
+                id: "dashboard";
+                
+                h2
+                {
+                    class: "section-title";
+                    
+                    text
+                    {
+                        "仪表板"
+                    }
+                }
+                
+                div
+                {
+                    class: "dashboard-grid";
+                    
+                    style
+                    {
+                        .dashboard-grid
+                        {
+                            display: "grid";
+                            grid-template-columns: "repeat(auto-fit, minmax(300px, 1fr))";
+                            gap: UI::Spacing(lg);
+                        }
+                        
+                        .stat-card
+                        {
+                            background: "linear-gradient(135deg," UI::ThemeColors(primary) "," UI::ThemeColors(info) ")";
+                            color: UI::ThemeColors(white);
+                            padding: UI::Spacing(xl);
+                            border-radius: "12px";
+                            text-align: "center";
+                            transform: "translateY(0)";
+                            transition: "transform 0.3s ease";
+                        }
+                        
+                        .stat-card:hover
+                        {
+                            transform: "translateY(-8px)";
+                        }
+                        
+                        .stat-number
+                        {
+                            font-size: "48px";
+                            font-weight: "700";
+                            margin-bottom: UI::Spacing(sm);
+                        }
+                        
+                        .stat-label
+                        {
+                            font-size: "16px";
+                            opacity: "0.9";
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "stat-card";
+                        
+                        div
+                        {
+                            class: "stat-number";
+                            
+                            text
+                            {
+                                "1,234"
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: "stat-label";
+                            
+                            text
+                            {
+                                "总用户数"
+                            }
+                        }
+                        
+                        script
+                        {
+                            module
+                            {
+                                load: "./modules/counter.cjjs",
+                                load: "./modules/animation.cjjs"
+                            }
+                            
+                            {{.stat-card}} &-> mouseenter
+                            {
+                                animate
+                                {
+                                    target: {{&}},
+                                    duration: 500,
+                                    easing: "ease-out",
+                                    
+                                    begin: {
+                                        background: "linear-gradient(135deg," + UI::ThemeColors(primary) + "," + UI::ThemeColors(info) + ")"
+                                    },
+                                    
+                                    end: {
+                                        background: "linear-gradient(135deg," + UI::ThemeColors(success) + "," + UI::ThemeColors(warning) + ")"
+                                    }
+                                }
+                            }
+                            
+                            {{.stat-number}}->delegate
+                            {
+                                target: {{.stat-card}},
+                                click: function(e) {
+                                    console.log('Stat card clicked:', e.target);
+                                    
+                                    vir statsController = listen
+                                    {
+                                        increment: () => {
+                                            let current = parseInt({{.stat-number}}->textContent);
+                                            {{.stat-number}}->textContent = (current + 1).toString();
+                                            return current + 1;
+                                        },
+                                        
+                                        reset: () => {
+                                            {{.stat-number}}->textContent = "0";
+                                            return 0;
+                                        }
+                                    };
+                                    
+                                    statsController->increment();
+                                }
+                            }
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "stat-card";
+                        
+                        div
+                        {
+                            class: "stat-number";
+                            
+                            text
+                            {
+                                "567"
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: "stat-label";
+                            
+                            text
+                            {
+                                "活跃会话"
+                            }
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "stat-card";
+                        
+                        div
+                        {
+                            class: "stat-number";
+                            
+                            text
+                            {
+                                "89%"
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: "stat-label";
+                            
+                            text
+                            {
+                                "系统健康度"
+                            }
+                        }
+                    }
+                }
+            }
+            
+            section
+            {
+                class: "section";
+                id: "components";
+                
+                h2
+                {
+                    class: "section-title";
+                    
+                    text
+                    {
+                        "组件演示"
+                    }
+                }
+                
+                div
+                {
+                    class: "components-showcase";
+                    
+                    style
+                    {
+                        .components-showcase
+                        {
+                            display: "flex";
+                            flex-wrap: "wrap";
+                            gap: UI::Spacing(lg);
+                        }
+                        
+                        .component-demo
+                        {
+                            flex: "1 1 300px";
+                            min-height: "200px";
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "component-demo";
+                        
+                        UI::Card();
+                        
+                        text
+                        {
+                            "这是一个基础卡片组件"
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "component-demo";
+                        
+                        Components::InteractiveButton();
+                    }
+                    
+                    div
+                    {
+                        class: "component-demo";
+                        
+                        form
+                        {
+                            class: "demo-form";
+                            
+                            style
+                            {
+                                .demo-form
+                                {
+                                    background: UI::ThemeColors(light);
+                                    padding: UI::Spacing(lg);
+                                    border-radius: "8px";
+                                }
+                                
+                                .form-group
+                                {
+                                    margin-bottom: UI::Spacing(md);
+                                }
+                                
+                                .form-label
+                                {
+                                    display: "block";
+                                    margin-bottom: UI::Spacing(xs);
+                                    font-weight: UI::Typography(headingWeight);
+                                    color: UI::ThemeColors(dark);
+                                }
+                                
+                                .form-input
+                                {
+                                    width: "100%";
+                                    padding: UI::Spacing(sm);
+                                    border: "1px solid" UI::ThemeColors(secondary);
+                                    border-radius: "4px";
+                                    font-size: UI::Typography(fontSize);
+                                    transition: "border-color 0.3s ease";
+                                }
+                                
+                                .form-input:focus
+                                {
+                                    outline: "none";
+                                    border-color: UI::ThemeColors(primary);
+                                    box-shadow: "0 0 0 3px rgba(0,123,255,0.1)";
+                                }
+                            }
+                            
+                            div
+                            {
+                                class: "form-group";
+                                
+                                label
+                                {
+                                    for: "username";
+                                    class: "form-label";
+                                    
+                                    text
+                                    {
+                                        "用户名"
+                                    }
+                                }
+                                
+                                input
+                                {
+                                    type: "text";
+                                    id: "username";
+                                    name: "username";
+                                    class: "form-input";
+                                    placeholder: "请输入用户名";
+                                }
+                            }
+                            
+                            div
+                            {
+                                class: "form-group";
+                                
+                                label
+                                {
+                                    for: "email";
+                                    class: "form-label";
+                                    
+                                    text
+                                    {
+                                        "邮箱"
+                                    }
+                                }
+                                
+                                input
+                                {
+                                    type: "email";
+                                    id: "email";
+                                    name: "email";
+                                    class: "form-input";
+                                    placeholder: "请输入邮箱地址";
+                                }
+                            }
+                            
+                            script
+                            {
+                                {{.demo-form}}->delegate
+                                {
+                                    target: [{{.form-input}}],
+                                    focus: function(e) {
+                                        {{e.target}}->style.borderColor = UI::ThemeColors(primary);
+                                    },
+                                    blur: function(e) {
+                                        {{e.target}}->style.borderColor = UI::ThemeColors(secondary);
+                                    },
+                                    input: function(e) {
+                                        console.log('Input value changed:', e.target.value);
+                                    }
+                                }
+                                
+                                vir formValidator = listen
+                                {
+                                    validateEmail: (email) => {
+                                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                        return emailRegex.test(email);
+                                    },
+                                    
+                                    validateUsername: (username) => {
+                                        return username.length >= 3 && username.length <= 20;
+                                    },
+                                    
+                                    validateForm: () => {
+                                        const email = {{#email}}->value;
+                                        const username = {{#username}}->value;
+                                        
+                                        return formValidator->validateEmail(email) && 
+                                               formValidator->validateUsername(username);
+                                    }
+                                };
+                            }
+                            
+                            button
+                            {
+                                type: "submit";
+                                class: "submit-btn";
+                                
+                                style
+                                {
+                                    @Style UI::PrimaryButton;
+                                    
+                                    .submit-btn
+                                    {
+                                        width: "100%";
+                                        margin-top: UI::Spacing(lg);
+                                    }
+                                }
+                                
+                                text
+                                {
+                                    "提交表单"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            section
+            {
+                class: "section";
+                id: "templates";
+                
+                h2
+                {
+                    class: "section-title";
+                    
+                    text
+                    {
+                        "模板和自定义演示"
+                    }
+                }
+                
+                div
+                {
+                    class: "template-showcase";
+                    
+                    style
+                    {
+                        .template-showcase
+                        {
+                            display: "grid";
+                            grid-template-columns: "repeat(auto-fit, minmax(250px, 1fr))";
+                            gap: UI::Spacing(lg);
+                        }
+                        
+                        .template-item
+                        {
+                            border: "1px solid" UI::ThemeColors(secondary);
+                            border-radius: "8px";
+                            padding: UI::Spacing(md);
+                            background: UI::ThemeColors(white);
+                        }
+                        
+                        .template-title
+                        {
+                            font-size: "18px";
+                            font-weight: UI::Typography(headingWeight);
+                            margin-bottom: UI::Spacing(sm);
+                            color: UI::ThemeColors(primary);
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "template-item";
+                        
+                        h3
+                        {
+                            class: "template-title";
+                            
+                            text
+                            {
+                                "基础按钮模板"
+                            }
+                        }
+                        
+                        div
+                        {
+                            class: "button-group";
+                            
+                            style
+                            {
+                                .button-group
+                                {
+                                    display: "flex";
+                                    gap: UI::Spacing(sm);
+                                    flex-wrap: "wrap";
+                                }
+                            }
+                            
+                            button
+                            {
+                                class: "demo-btn primary";
+                                
+                                style
+                                {
+                                    @Style UI::PrimaryButton;
+                                }
+                                
+                                text
+                                {
+                                    "主要按钮"
+                                }
+                            }
+                            
+                            button
+                            {
+                                class: "demo-btn secondary";
+                                
+                                style
+                                {
+                                    @Style UI::SecondaryButton;
+                                }
+                                
+                                text
+                                {
+                                    "次要按钮"
+                                }
+                            }
+                            
+                            button
+                            {
+                                class: "demo-btn danger";
+                                
+                                style
+                                {
+                                    @Style UI::BaseButton;
+                                    
+                                    .danger
+                                    {
+                                        background-color: UI::ThemeColors(danger);
+                                        color: UI::ThemeColors(white);
+                                        border: "1px solid" UI::ThemeColors(danger);
+                                    }
+                                    
+                                    &:hover
+                                    {
+                                        background-color: "#c82333";
+                                        border-color: "#bd2130";
+                                    }
+                                }
+                                
+                                text
+                                {
+                                    "危险按钮"
+                                }
+                            }
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "template-item";
+                        
+                        h3
+                        {
+                            class: "template-title";
+                            
+                            text
+                            {
+                                "自定义元素演示"
+                            }
+                        }
+                        
+                        [Custom] @Element CustomCard from UI::Card
+                        {
+                            insert at top
+                            {
+                                div
+                                {
+                                    class: "card-badge";
+                                    
+                                    style
+                                    {
+                                        .card-badge
+                                        {
+                                            position: "absolute";
+                                            top: "-8px";
+                                            right: "-8px";
+                                            background: UI::ThemeColors(danger);
+                                            color: UI::ThemeColors(white);
+                                            padding: UI::Spacing(xs) UI::Spacing(sm);
+                                            border-radius: "12px";
+                                            font-size: "12px";
+                                            font-weight: "600";
+                                        }
+                                    }
+                                    
+                                    text
+                                    {
+                                        "NEW"
+                                    }
+                                }
+                            }
+                            
+                            div[0]
+                            {
+                                style
+                                {
+                                    .card-header
+                                    {
+                                        background: "linear-gradient(90deg," UI::ThemeColors(primary) "," UI::ThemeColors(info) ")";
+                                        color: UI::ThemeColors(white);
+                                        margin: "-" UI::Spacing(lg);
+                                        margin-bottom: UI::Spacing(lg);
+                                        padding: UI::Spacing(lg);
+                                        border-radius: "8px 8px 0 0";
+                                    }
+                                }
+                                
+                                text
+                                {
+                                    "自定义卡片标题"
+                                }
+                            }
+                        }
+                        
+                        CustomCard();
+                    }
+                }
+            }
+            
+            section
+            {
+                class: "section";
+                id: "interactive";
+                
+                h2
+                {
+                    class: "section-title";
+                    
+                    text
+                    {
+                        "交互功能演示"
+                    }
+                }
+                
+                div
+                {
+                    class: "interactive-demo";
+                    
+                    style
+                    {
+                        .interactive-demo
+                        {
+                            background: UI::ThemeColors(light);
+                            padding: UI::Spacing(xl);
+                            border-radius: "12px";
+                            border: "1px solid" UI::ThemeColors(secondary);
+                        }
+                        
+                        .demo-controls
+                        {
+                            display: "flex";
+                            gap: UI::Spacing(md);
+                            margin-bottom: UI::Spacing(lg);
+                            flex-wrap: "wrap";
+                        }
+                        
+                        .demo-output
+                        {
+                            background: UI::ThemeColors(dark);
+                            color: UI::ThemeColors(light);
+                            padding: UI::Spacing(md);
+                            border-radius: "4px";
+                            font-family: "Monaco, Consolas, monospace";
+                            font-size: "13px";
+                            line-height: "1.4";
+                            min-height: "200px";
+                            overflow-y: "auto";
+                        }
+                        
+                        .color-picker
+                        {
+                            width: "50px";
+                            height: "50px";
+                            border: "none";
+                            border-radius: "50%";
+                            cursor: "pointer";
+                            transition: "transform 0.2s ease";
+                        }
+                        
+                        .color-picker:hover
+                        {
+                            transform: "scale(1.1)";
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "demo-controls";
+                        
+                        button
+                        {
+                            class: "animate-btn";
+                            
+                            style
+                            {
+                                @Style UI::PrimaryButton;
+                            }
+                            
+                            text
+                            {
+                                "触发动画"
+                            }
+                        }
+                        
+                        button
+                        {
+                            class: "modal-btn";
+                            
+                            style
+                            {
+                                @Style UI::SecondaryButton;
+                            }
+                            
+                            text
+                            {
+                                "打开模态框"
+                            }
+                        }
+                        
+                        input
+                        {
+                            type: "color";
+                            class: "color-picker";
+                            value: UI::ThemeColors(primary);
+                        }
+                        
+                        input
+                        {
+                            type: "range";
+                            class: "size-slider";
+                            min: "10";
+                            max: "100";
+                            value: "50";
+                        }
+                    }
+                    
+                    div
+                    {
+                        class: "demo-output";
+                        id: "output";
+                        
+                        text
+                        {
+                            "控制台输出将显示在这里..."
+                        }
+                    }
+                    
+                    script
+                    {
+                        // 复杂的CHTL JS交互逻辑
+                        
+                        vir appController = listen
+                        {
+                            logMessage: (message) => {
+                                const timestamp = new Date().toLocaleTimeString();
+                                const output = {{#output}};
+                                output->innerHTML += `[${timestamp}] ${message}<br>`;
+                                output->scrollTop = output->scrollHeight;
+                                return message;
+                            },
+                            
+                            clearLog: () => {
+                                {{#output}}->innerHTML = "控制台已清空...<br>";
+                            },
+                            
+                            animateElement: (element, properties, duration = 300) => {
+                                return new Promise((resolve) => {
+                                    animate
+                                    {
+                                        target: element,
+                                        duration: duration,
+                                        easing: "ease-in-out",
+                                        begin: properties.begin || {},
+                                        end: properties.end || {},
+                                        callback: resolve
+                                    }
+                                });
+                            }
+                        };
+                        
+                        {{.animate-btn}} &-> click
+                        {
+                            appController->logMessage("动画按钮被点击");
+                            
+                            const target = {{.demo-output}};
+                            
+                            appController->animateElement(target, {
+                                begin: { 
+                                    transform: "scale(1) rotate(0deg)",
+                                    opacity: "1"
+                                },
+                                end: { 
+                                    transform: "scale(1.02) rotate(1deg)",
+                                    opacity: "0.9"
+                                }
+                            }, 500)->then(() => {
+                                appController->animateElement(target, {
+                                    begin: { 
+                                        transform: "scale(1.02) rotate(1deg)",
+                                        opacity: "0.9"
+                                    },
+                                    end: { 
+                                        transform: "scale(1) rotate(0deg)",
+                                        opacity: "1"
+                                    }
+                                }, 300);
+                            });
+                        }
+                        
+                        {{.modal-btn}} &-> click
+                        {
+                            appController->logMessage("模态框按钮被点击");
+                            
+                            // 动态创建模态框
+                            const modal = document.createElement('div');
+                            modal.className = 'dynamic-modal';
+                            modal.innerHTML = `
+                                <div class="modal-backdrop">
+                                    <div class="modal-content">
+                                        <h3>动态模态框</h3>
+                                        <p>这是通过CHTL JS动态创建的模态框</p>
+                                        <button class="close-modal">关闭</button>
+                                    </div>
+                                </div>
+                            `;
+                            
+                            // 添加样式
+                            const style = document.createElement('style');
+                            style.textContent = `
+                                .dynamic-modal {
+                                    position: fixed;
+                                    top: 0;
+                                    left: 0;
+                                    width: 100%;
+                                    height: 100%;
+                                    z-index: 1000;
+                                }
+                                .modal-backdrop {
+                                    width: 100%;
+                                    height: 100%;
+                                    background: rgba(0,0,0,0.5);
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                                .modal-content {
+                                    background: white;
+                                    padding: ${UI::Spacing(xl)};
+                                    border-radius: 8px;
+                                    max-width: 400px;
+                                    width: 90%;
+                                }
+                                .close-modal {
+                                    background: ${UI::ThemeColors(danger)};
+                                    color: white;
+                                    border: none;
+                                    padding: ${UI::Spacing(sm)} ${UI::Spacing(md)};
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    margin-top: ${UI::Spacing(md)};
+                                }
+                            `;
+                            
+                            document.head.appendChild(style);
+                            document.body.appendChild(modal);
+                            
+                            // 绑定关闭事件
+                            {{.close-modal}}->addEventListener('click', () => {
+                                document.body.removeChild(modal);
+                                document.head.removeChild(style);
+                                appController->logMessage("模态框已关闭");
+                            });
+                            
+                            // 背景点击关闭
+                            {{.modal-backdrop}}->addEventListener('click', (e) => {
+                                if (e.target === e.currentTarget) {
+                                    {{.close-modal}}->click();
+                                }
+                            });
+                        }
+                        
+                        {{.color-picker}} &-> change
+                        {
+                            const newColor = {{&}}->value;
+                            appController->logMessage(`颜色改变为: ${newColor}`);
+                            
+                            // 更新主题色
+                            {{.stat-card}}->forEach((card) => {
+                                card.style.background = `linear-gradient(135deg, ${newColor}, ${UI::ThemeColors(info)})`;
+                            });
+                        }
+                        
+                        {{.size-slider}} &-> input
+                        {
+                            const size = {{&}}->value;
+                            appController->logMessage(`大小调整为: ${size}px`);
+                            
+                            {{.demo-output}}->style.fontSize = `${Math.max(10, size / 4)}px`;
+                        }
+                        
+                        // 页面加载完成后的初始化
+                        document.addEventListener('DOMContentLoaded', () => {
+                            appController->logMessage("CHTL复杂网站加载完成");
+                            appController->logMessage("所有CHTL语法功能已激活");
+                            
+                            // 启动定时器
+                            setInterval(() => {
+                                const timestamp = new Date().toLocaleString();
+                                appController->logMessage(`系统运行正常 - ${timestamp}`);
+                            }, 30000);
+                        });
+                    }
+                }
+            }
+        }
+        
+        footer
+        {
+            class: "footer";
+            
+            style
+            {
+                .footer
+                {
+                    background: UI::ThemeColors(dark);
+                    color: UI::ThemeColors(light);
+                    padding: UI::Spacing(xl);
+                    text-align: "center";
+                    border-top: "3px solid" UI::ThemeColors(primary);
+                }
+                
+                .footer-content
+                {
+                    max-width: "1200px";
+                    margin: "0 auto";
+                }
+                
+                .footer-links
+                {
+                    display: "flex";
+                    justify-content: "center";
+                    gap: UI::Spacing(lg);
+                    margin-bottom: UI::Spacing(md);
+                    flex-wrap: "wrap";
+                }
+                
+                .footer-link
+                {
+                    color: UI::ThemeColors(light);
+                    text-decoration: "none";
+                    transition: "color 0.3s ease";
+                }
+                
+                .footer-link:hover
+                {
+                    color: UI::ThemeColors(primary);
+                }
+                
+                .copyright
+                {
+                    font-size: "14px";
+                    opacity: "0.8";
+                }
+            }
+            
+            div
+            {
+                class: "footer-content";
+                
+                div
+                {
+                    class: "footer-links";
+                    
+                    a
+                    {
+                        href: "#privacy";
+                        class: "footer-link";
+                        
+                        text
+                        {
+                            "隐私政策"
+                        }
+                    }
+                    
+                    a
+                    {
+                        href: "#terms";
+                        class: "footer-link";
+                        
+                        text
+                        {
+                            "使用条款"
+                        }
+                    }
+                    
+                    a
+                    {
+                        href: "#support";
+                        class: "footer-link";
+                        
+                        text
+                        {
+                            "技术支持"
+                        }
+                    }
+                    
+                    a
+                    {
+                        href: "#docs";
+                        class: "footer-link";
+                        
+                        text
+                        {
+                            "文档"
+                        }
+                    }
+                }
+                
+                div
+                {
+                    class: "copyright";
+                    
+                    text
+                    {
+                        "© 2024 CHTL编译器项目. 使用MIT开源协议."
+                    }
+                }
+            }
+        }
+        
+        // 全局模态框
+        UI::Modal();
+        
+        script
+        {
+            @Origin globalScripts;
+            
+            // 全局CHTL JS代码
+            module
+            {
+                load: "./modules/theme.cjjs",
+                load: "./modules/components.cjjs",
+                load: "./modules/animations.cjjs",
+                load: "./utils/helpers.js"
+            }
+            
+            vir globalApp = listen
+            {
+                theme: {
+                    current: "light",
+                    colors: UI::ThemeColors,
+                    spacing: UI::Spacing,
+                    typography: UI::Typography
+                },
+                
+                switchTheme: (themeName) => {
+                    globalApp->theme.current = themeName;
+                    document.body.setAttribute('data-theme', themeName);
+                    console.log(`主题切换为: ${themeName}`);
+                },
+                
+                showNotification: (message, type = 'info') => {
+                    const notification = document.createElement('div');
+                    notification.className = `notification notification-${type}`;
+                    notification.textContent = message;
+                    
+                    const style = `
+                        .notification {
+                            position: fixed;
+                            top: 20px;
+                            right: 20px;
+                            padding: ${UI::Spacing(md)} ${UI::Spacing(lg)};
+                            border-radius: 4px;
+                            color: white;
+                            font-weight: 500;
+                            z-index: 1001;
+                            animation: slideIn 0.3s ease;
+                        }
+                        .notification-info { background: ${UI::ThemeColors(info)}; }
+                        .notification-success { background: ${UI::ThemeColors(success)}; }
+                        .notification-warning { background: ${UI::ThemeColors(warning)}; }
+                        .notification-danger { background: ${UI::ThemeColors(danger)}; }
+                        @keyframes slideIn {
+                            from { transform: translateX(100%); opacity: 0; }
+                            to { transform: translateX(0); opacity: 1; }
+                        }
+                    `;
+                    
+                    if (!document.querySelector('#notification-styles')) {
+                        const styleEl = document.createElement('style');
+                        styleEl.id = 'notification-styles';
+                        styleEl.textContent = style;
+                        document.head.appendChild(styleEl);
+                    }
+                    
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        if (notification.parentNode) {
+                            notification.parentNode.removeChild(notification);
+                        }
+                    }, 3000);
+                },
+                
+                initializeApp: () => {
+                    console.log('CHTL复杂网站应用初始化');
+                    globalApp->showNotification('CHTL网站加载完成！', 'success');
+                    
+                    // 启动性能监控
+                    setInterval(() => {
+                        const memory = performance.memory ? 
+                            `内存使用: ${Math.round(performance.memory.usedJSHeapSize / 1024 / 1024)}MB` : 
+                            '内存信息不可用';
+                        console.log(`性能监控 - ${memory}`);
+                    }, 60000);
+                }
+            };
+            
+            // 键盘快捷键
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey || e.metaKey) {
+                    switch (e.key) {
+                        case 'k':
+                            e.preventDefault();
+                            globalApp->showNotification('快捷键 Ctrl+K 被触发', 'info');
+                            break;
+                        case 'm':
+                            e.preventDefault();
+                            {{.modal-btn}}->click();
+                            break;
+                        case 'l':
+                            e.preventDefault();
+                            globalApp->theme.current === 'light' ? 
+                                globalApp->switchTheme('dark') : 
+                                globalApp->switchTheme('light');
+                            break;
+                    }
+                }
+            });
+            
+            // 页面可见性变化监听
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    console.log('页面隐藏');
+                } else {
+                    console.log('页面可见');
+                    globalApp->showNotification('欢迎回来！', 'info');
+                }
+            });
+            
+            // 初始化应用
+            globalApp->initializeApp();
+        }
+    }
+}
+
+except span, iframe, embed;  // 约束：禁止使用span、iframe、embed元素
+
+use html5;
+use @Config UI::ThemeColors;

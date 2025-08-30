@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/debug_config_tokens.dir/link.d CMakeFiles/debug_config_tokens.dir/debug_config_tokens.cpp.o -o debug_config_tokens  CHTLError/libCHTLError.a CHTLLexer/libCHTLLexer.a CHTLState/libCHTLState.a CHTLContext/libCHTLContext.a CHTLLexer/libCHTLLexer.a CHTLContext/libCHTLContext.a CHTLError/libCHTLError.a CHTLState/libCHTLState.a

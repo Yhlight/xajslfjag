@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLTest.a CMakeFiles/CHTLTest.dir/UtilTest/NodeTest.cpp.o CMakeFiles/CHTLTest.dir/CompilationMonitor/CompilationMonitor.cpp.o
+/usr/bin/ranlib libCHTLTest.a

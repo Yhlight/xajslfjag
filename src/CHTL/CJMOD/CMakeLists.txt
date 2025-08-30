@@ -1,0 +1,45 @@
+# CJMOD模块CMake配置文件
+
+set(CHTL_CJMOD_SOURCES
+    CJMODApi.cpp
+)
+
+set(CHTL_CJMOD_HEADERS
+    CJMODApi.h
+)
+
+# 创建CJMOD静态库
+add_library(CHTLCJMOD STATIC
+    ${CHTL_CJMOD_SOURCES}
+    ${CHTL_CJMOD_HEADERS}
+)
+
+# 设置头文件目录
+target_include_directories(CHTLCJMOD PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src
+)
+
+# 链接依赖库
+target_link_libraries(CHTLCJMOD
+    CHTLError
+    CHTLContext
+)
+
+# 设置编译选项
+set_target_properties(CHTLCJMOD PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    POSITION_INDEPENDENT_CODE ON
+)
+
+# 安装配置
+install(TARGETS CHTLCJMOD
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION bin
+)
+
+install(FILES ${CHTL_CJMOD_HEADERS}
+    DESTINATION include/CHTL/CJMOD
+)
