@@ -1,0 +1,2 @@
+/usr/bin/ar qc libANTLRJSParser.a CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptLexer.cpp.o CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptParser.cpp.o CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptLexerBase.cpp.o CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptParserBase.cpp.o CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptParserBaseListener.cpp.o CMakeFiles/ANTLRJSParser.dir/antlr/generated/JS/JavaScriptParserListener.cpp.o
+/usr/bin/ranlib libANTLRJSParser.a

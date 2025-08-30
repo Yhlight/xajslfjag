@@ -1,0 +1,7 @@
+/workspace/src_new/build/CMakeFiles/test_antlr_libraries.dir
+/workspace/src_new/build/CMakeFiles/edit_cache.dir
+/workspace/src_new/build/CMakeFiles/rebuild_cache.dir
+/workspace/src_new/build/ThirdParty/CMakeFiles/ANTLRCSSParser.dir
+/workspace/src_new/build/ThirdParty/CMakeFiles/ANTLRJSParser.dir
+/workspace/src_new/build/ThirdParty/CMakeFiles/edit_cache.dir
+/workspace/src_new/build/ThirdParty/CMakeFiles/rebuild_cache.dir
