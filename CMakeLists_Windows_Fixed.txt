@@ -1,0 +1,203 @@
+# CHTL Windows环境修复版CMake配置
+cmake_minimum_required(VERSION 3.16)
+project(CHTL_Windows VERSION 1.0.0)
+
+# Windows专用配置
+if(WIN32)
+    message(STATUS "配置Windows环境构建")
+    
+    # 设置C++标准
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    
+    # Windows特定编译选项
+    if(MSVC)
+        add_compile_options(/utf-8)  # 支持UTF-8编码
+        add_compile_options(/W3)     # 警告级别
+        add_compile_options(/bigobj) # 支持大对象文件
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+        add_compile_definitions(WIN32_LEAN_AND_MEAN)
+        add_compile_definitions(NOMINMAX)
+        add_compile_definitions(ANTLR4CPP_STATIC)  # ANTLR静态链接
+    endif()
+endif()
+
+# 检查必要文件存在性
+set(REQUIRED_DIRS
+    "src/CHTL"
+    "src/CHTLJS" 
+    "src/CMODSystem"
+    "src/Scanner"
+    "src/Util"
+)
+
+foreach(dir ${REQUIRED_DIRS})
+    if(NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${dir}")
+        message(FATAL_ERROR "必需目录不存在: ${dir}")
+    endif()
+endforeach()
+
+# CHTL核心源文件 (仅包含确实存在的文件)
+set(CHTL_CORE_SOURCES
+    # 核心CHTL系统
+    src/CHTL/CHTLLexer/Token.cpp
+    src/CHTL/CHTLLexer/GlobalMap.cpp
+    src/CHTL/CHTLLexer/Lexer.cpp
+    src/CHTL/CHTLParser/Parser.cpp
+    src/CHTL/CHTLParser/SafetyMethods.cpp
+    src/CHTL/CHTLNode/BaseNode.cpp
+    src/CHTL/CHTLNode/TemplateNode.cpp
+    src/CHTL/CHTLNode/CustomNode.cpp
+    src/CHTL/CHTLNode/OriginNode.cpp
+    src/CHTL/CHTLNode/ConstraintNode.cpp
+    src/CHTL/CHTLNode/SpecializationNode.cpp
+    src/CHTL/CHTLNode/ImportNode.cpp
+    src/CHTL/CHTLConfig/ConfigurationManager.cpp
+    src/CHTL/CHTLLoader/ImportEnhancer.cpp
+    src/CHTL/CMODSystem/CMODManager.cpp
+    src/CHTL/CHTLNode/InheritanceManager.cpp
+    src/CHTL/CHTLGenerator/GeneratorMethods.cpp
+    src/CHTL/CHTLGenerator/Generator.cpp
+    src/CHTL/CHTLState/State.cpp
+    src/CHTL/CHTLContext/Context.cpp
+    src/CHTL/CHTLIOStream/FileStream.cpp
+    src/CHTL/CHTLSelector/SelectorAutomation.cpp
+    src/CHTL/CHTLConstraint/ConstraintSystem.cpp
+    src/CHTL/CHTLNamespace/NamespaceManager.cpp
+    
+    # CHTL JS系统
+    src/CHTLJS/CHTLJSLexer/Token.cpp
+    src/CHTLJS/CHTLJSLexer/GlobalMap.cpp
+    src/CHTLJS/CHTLJSParser/EnhancedParser.cpp
+    src/CHTLJS/CHTLJSLexer/Lexer.cpp
+    src/CHTLJS/CHTLJSIOStream/JSFileStream.cpp
+    
+    # CMOD/CJMOD系统 (确保可用)
+    src/CMODSystem/Syntax.cpp
+    src/CMODSystem/CJMODGenerator.cpp
+    
+    # 工具和基础设施
+    src/Util/FileSystem/FileSystem.cpp
+    src/Error/ErrorManager.cpp
+    src/Scanner/UnifiedScanner.cpp
+    src/Module/ModuleManager.cpp
+    
+    # 测试系统 (基础测试)
+    src/Test/UtilTest/UtilTestSuite.cpp
+    src/Test/TokenTest/TokenPrint.cpp
+    src/Test/ASTTest/ASTPrint.cpp
+    src/Test/CompileTimer/CompileTimer.cpp
+)
+
+# 条件性添加ANTLR源文件 (如果存在)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated")
+    list(APPEND CHTL_CORE_SOURCES
+        src/CompilerDispatcher/Dispatcher.cpp
+        src/CSS/CSSParser/Parser.cpp
+        src/JS/JSParser/Parser.cpp
+    )
+    
+    # 检查ANTLR生成文件
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/CSS/CSSLexer.cpp")
+        list(APPEND CHTL_CORE_SOURCES
+            third-party/antlr/generated/CSS/CSSLexer.cpp
+            third-party/antlr/generated/CSS/CSSParser.cpp
+            third-party/antlr/generated/CSS/CSSParserBaseListener.cpp
+        )
+        set(HAS_CSS_ANTLR TRUE)
+    endif()
+    
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/JS/SimpleJSLexer.cpp")
+        list(APPEND CHTL_CORE_SOURCES
+            third-party/antlr/generated/JS/SimpleJSLexer.cpp
+            third-party/antlr/generated/JS/SimpleJSParser.cpp
+            third-party/antlr/generated/JS/SimpleJSParserBaseListener.cpp
+        )
+        set(HAS_JS_ANTLR TRUE)
+    endif()
+    
+    set(HAS_ANTLR TRUE)
+else()
+    message(WARNING "ANTLR文件不存在，将构建不含ANTLR的核心版本")
+    set(HAS_ANTLR FALSE)
+endif()
+
+# 创建静态库
+add_library(chtl_core STATIC ${CHTL_CORE_SOURCES})
+
+# 基础包含目录
+target_include_directories(chtl_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+# 条件性添加ANTLR包含目录
+if(HAS_ANTLR AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/include")
+    target_include_directories(chtl_core PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/CSS
+        ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/JS
+    )
+    
+    # Windows专用ANTLR链接
+    if(WIN32)
+        set(ANTLR_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib)
+        
+        if(EXISTS "${ANTLR_LIB_PATH}/antlr4-runtime-static.lib")
+            target_link_libraries(chtl_core ${ANTLR_LIB_PATH}/antlr4-runtime-static.lib)
+            message(STATUS "链接ANTLR静态库: ${ANTLR_LIB_PATH}/antlr4-runtime-static.lib")
+        else()
+            message(WARNING "ANTLR静态库不存在: ${ANTLR_LIB_PATH}/antlr4-runtime-static.lib")
+        endif()
+    endif()
+endif()
+
+# Windows系统库
+if(WIN32)
+    target_link_libraries(chtl_core
+        kernel32
+        user32
+        gdi32
+        winspool
+        shell32
+        ole32
+        oleaut32
+        uuid
+        comdlg32
+        advapi32
+    )
+endif()
+
+# 编译特性
+target_compile_features(chtl_core PUBLIC cxx_std_17)
+
+# 预处理器定义
+target_compile_definitions(chtl_core PUBLIC
+    CHTL_VERSION_MAJOR=1
+    CHTL_VERSION_MINOR=0
+    CHTL_VERSION_PATCH=0
+)
+
+if(HAS_ANTLR)
+    target_compile_definitions(chtl_core PUBLIC CHTL_HAS_ANTLR)
+endif()
+
+if(HAS_CSS_ANTLR)
+    target_compile_definitions(chtl_core PUBLIC CHTL_HAS_CSS_PARSER)
+endif()
+
+if(HAS_JS_ANTLR)
+    target_compile_definitions(chtl_core PUBLIC CHTL_HAS_JS_PARSER)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(chtl_core PUBLIC CHTL_DEBUG)
+endif()
+
+# 输出编译信息
+message(STATUS "CHTL Windows编译配置:")
+message(STATUS "  核心源文件: ${CHTL_CORE_SOURCES}")
+message(STATUS "  ANTLR支持: ${HAS_ANTLR}")
+message(STATUS "  CSS解析器: ${HAS_CSS_ANTLR}")
+message(STATUS "  JS解析器: ${HAS_JS_ANTLR}")
+message(STATUS "  构建目标: chtl_core (静态库)")

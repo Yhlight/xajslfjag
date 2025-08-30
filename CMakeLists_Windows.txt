@@ -1,0 +1,151 @@
+# CHTL Windows环境专用CMake配置
+cmake_minimum_required(VERSION 3.16)
+project(CHTL_Windows VERSION 1.0.0)
+
+# Windows专用配置
+if(WIN32)
+    message(STATUS "配置Windows环境构建")
+    
+    # 设置C++标准
+    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD_REQUIRED ON)
+    
+    # Windows特定编译选项
+    if(MSVC)
+        add_compile_options(/utf-8)  # 支持UTF-8编码
+        add_compile_options(/W3)     # 警告级别
+        add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+        add_compile_definitions(WIN32_LEAN_AND_MEAN)
+        add_compile_definitions(NOMINMAX)
+    endif()
+    
+    # 输出配置信息
+    message(STATUS "CHTL Windows配置:")
+    message(STATUS "  版本: ${PROJECT_VERSION}")
+    message(STATUS "  C++标准: ${CMAKE_CXX_STANDARD}")
+    message(STATUS "  构建类型: ${CMAKE_BUILD_TYPE}")
+    message(STATUS "  编译器: ${CMAKE_CXX_COMPILER_ID}")
+endif()
+
+# CHTL核心源文件
+set(CHTL_CORE_SOURCES
+    # 核心CHTL系统
+    src/CHTL/CHTLLexer/Token.cpp
+    src/CHTL/CHTLLexer/GlobalMap.cpp
+    src/CHTL/CHTLLexer/Lexer.cpp
+    src/CHTL/CHTLParser/Parser.cpp
+    src/CHTL/CHTLParser/SafetyMethods.cpp
+    src/CHTL/CHTLNode/BaseNode.cpp
+    src/CHTL/CHTLNode/TemplateNode.cpp
+    src/CHTL/CHTLNode/CustomNode.cpp
+    src/CHTL/CHTLNode/OriginNode.cpp
+    src/CHTL/CHTLNode/ConstraintNode.cpp
+    src/CHTL/CHTLNode/SpecializationNode.cpp
+    src/CHTL/CHTLNode/ImportNode.cpp
+    src/CHTL/CHTLConfig/ConfigurationManager.cpp
+    src/CHTL/CHTLLoader/ImportEnhancer.cpp
+    src/CHTL/CMODSystem/CMODManager.cpp
+    src/CHTL/CHTLNode/InheritanceManager.cpp
+    src/CHTL/CHTLGenerator/GeneratorMethods.cpp
+    src/CHTL/CHTLGenerator/Generator.cpp
+    src/CHTL/CHTLState/State.cpp
+    src/CHTL/CHTLContext/Context.cpp
+    src/CHTL/CHTLIOStream/FileStream.cpp
+    src/CHTL/CHTLSelector/SelectorAutomation.cpp
+    src/CHTL/CHTLConstraint/ConstraintSystem.cpp
+    src/CHTL/CHTLNamespace/NamespaceManager.cpp
+    
+    # CHTL JS系统
+    src/CHTLJS/CHTLJSLexer/Token.cpp
+    src/CHTLJS/CHTLJSLexer/GlobalMap.cpp
+    src/CHTLJS/CHTLJSParser/EnhancedParser.cpp
+    src/CHTLJS/CHTLJSLexer/Lexer.cpp
+    src/CHTLJS/CHTLJSIOStream/JSFileStream.cpp
+    
+    # CMOD/CJMOD系统
+    src/CMODSystem/Syntax.cpp
+    src/CMODSystem/CJMODGenerator.cpp
+    
+    # 工具和基础设施
+    src/Util/FileSystem/FileSystem.cpp
+    src/Error/ErrorManager.cpp
+    src/Scanner/UnifiedScanner.cpp
+    src/CompilerDispatcher/Dispatcher.cpp
+    src/CSS/CSSParser/Parser.cpp
+    src/JS/JSParser/Parser.cpp
+    src/Module/ModuleManager.cpp
+    
+    # ANTLR生成的源文件
+    third-party/antlr/generated/CSS/CSSLexer.cpp
+    third-party/antlr/generated/CSS/CSSParser.cpp
+    third-party/antlr/generated/CSS/CSSParserBaseListener.cpp
+    third-party/antlr/generated/JS/SimpleJSLexer.cpp
+    third-party/antlr/generated/JS/SimpleJSParser.cpp
+    third-party/antlr/generated/JS/SimpleJSParserBaseListener.cpp
+    
+    # 测试系统
+    src/Test/UtilTest/UtilTestSuite.cpp
+    src/Test/TokenTest/TokenPrint.cpp
+    src/Test/ASTTest/ASTPrint.cpp
+    src/Test/CompileTimer/CompileTimer.cpp
+)
+
+# 创建静态库
+add_library(chtl_core STATIC ${CHTL_CORE_SOURCES})
+
+# Windows专用包含目录
+target_include_directories(chtl_core PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/CSS
+    ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/generated/JS
+)
+
+# Windows专用链接配置
+if(WIN32)
+    # ANTLR库路径
+    set(ANTLR_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/third-party/antlr/ANTLR4/lib)
+    
+    # 链接ANTLR静态库 (Windows版本)
+    target_link_libraries(chtl_core 
+        ${ANTLR_LIB_PATH}/antlr4-runtime-static.lib
+    )
+    
+    # Windows系统库
+    target_link_libraries(chtl_core
+        kernel32
+        user32
+        gdi32
+        winspool
+        shell32
+        ole32
+        oleaut32
+        uuid
+        comdlg32
+        advapi32
+    )
+    
+    message(STATUS "Windows库链接配置完成")
+    message(STATUS "  ANTLR库路径: ${ANTLR_LIB_PATH}")
+endif()
+
+# 编译特性
+target_compile_features(chtl_core PUBLIC cxx_std_17)
+
+# 预处理器定义
+target_compile_definitions(chtl_core PUBLIC
+    CHTL_VERSION_MAJOR=1
+    CHTL_VERSION_MINOR=0
+    CHTL_VERSION_PATCH=0
+)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_compile_definitions(chtl_core PUBLIC CHTL_DEBUG)
+endif()
+
+# 输出库信息
+message(STATUS "CHTL核心库配置完成:")
+message(STATUS "  源文件数量: ${CHTL_CORE_SOURCES}")
+message(STATUS "  目标库: chtl_core (静态库)")
+message(STATUS "  Windows链接: 已配置")

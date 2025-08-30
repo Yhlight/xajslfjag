@@ -1,0 +1,239 @@
+// CHTL完整特性测试文件
+// 测试所有CHTL语法特性的全面实现
+
+use html5;
+
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 0;
+    DISABLE_DEFAULT_NAMESPACE = false;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    DISABLE_SCRIPT_AUTO_ADD_CLASS = true;
+    DISABLE_SCRIPT_AUTO_ADD_ID = true;
+}
+
+[Namespace] TestNamespace
+{
+    except [Template];  // 全局约束测试
+
+    [Template] @Style ButtonTheme
+    {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+    }
+
+    [Template] @Element Button
+    {
+        button
+        {
+            style
+            {
+                &:hover
+                {
+                    background-color: #0056b3;
+                }
+            }
+        }
+    }
+
+    [Template] @Var Colors
+    {
+        primary: "#007bff";
+        secondary: "#6c757d";
+        success: "#28a745";
+        warning: "#ffc107";
+    }
+
+    [Custom] @Style CardStyle
+    {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        padding: 1rem;
+    }
+
+    [Custom] @Element Card
+    {
+        div
+        {
+            except span, strong;  // 精确约束测试
+            
+            @Style CardStyle;
+            
+            div
+            {
+                except @Html;  // 类型约束测试
+                
+                text
+                {
+                    "卡片内容"
+                }
+            }
+        }
+    }
+
+    [Custom] @Var ThemeColors
+    {
+        background: "rgb(248, 249, 250)";
+        text: "rgb(33, 37, 41)";
+        border: "rgb(222, 226, 230)";
+    }
+}
+
+[Import] @Chtl from utils.chtl
+
+html
+{
+    head
+    {
+        title
+        {
+            text
+            {
+                "CHTL完整特性测试"
+            }
+        }
+    }
+
+    body
+    {
+        style
+        {
+            background-color: ThemeColors(background);
+            color: ThemeColors(text);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        div
+        {
+            class: "container";
+
+            @Element Button from TestNamespace
+            {
+                insert after div[0] {
+                    span
+                    {
+                        text
+                        {
+                            "插入的内容"
+                        }
+                    }
+                }
+
+                delete span[1];  // 删除特定索引的元素
+            }
+
+            @Element Card from TestNamespace
+            {
+                // 特殊化：删除继承的样式
+                delete @Style CardStyle;
+                
+                style
+                {
+                    .custom-card
+                    {
+                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                        color: white;
+                    }
+                }
+            }
+
+            script
+            {
+                // CHTL JS增强语法测试
+                {{.container}}->listen {
+                    click: () => {
+                        console.log("Container clicked");
+                    },
+                    
+                    mouseenter: function() {
+                        console.log("Mouse entered container");
+                    }
+                };
+
+                {{.container}}->delegate {
+                    target: {{.custom-card}},
+                    click: function(e) {
+                        console.log("Card clicked via delegation");
+                    }
+                };
+
+                const cardAnimation = animate {
+                    target: {{.custom-card}},
+                    duration: 1000,
+                    easing: "ease-in-out",
+                    
+                    begin: {
+                        opacity: 0;
+                        transform: translateY(-20px);
+                    },
+                    
+                    when: [
+                        {
+                            at: 0.5;
+                            opacity: 0.5;
+                            transform: translateY(-10px);
+                        }
+                    ],
+                    
+                    end: {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                };
+
+                vir TestObject = {
+                    name: "Test Virtual Object",
+                    value: 100,
+                    
+                    getName: function() {
+                        return this.name;
+                    }
+                };
+
+                module TestModule {
+                    load: ["helper.js", "utils.js"],
+                    
+                    init: function() {
+                        console.log("Module initialized");
+                    }
+                };
+            }
+        }
+
+        [Origin] @Html
+        {
+            <!-- 原始HTML嵌入测试 -->
+            <div class="raw-html">
+                <p>这是原始HTML内容</p>
+            </div>
+        }
+
+        [Origin] @Style
+        {
+            /* 原始CSS嵌入测试 */
+            .raw-css {
+                background: #f8f9fa;
+                padding: 10px;
+                border-left: 4px solid #007bff;
+            }
+        }
+
+        [Origin] @JavaScript
+        {
+            // 原始JavaScript嵌入测试
+            console.log("原始JavaScript代码执行");
+            
+            function rawJSFunction() {
+                return "Hello from raw JS";
+            }
+        }
+    }
+}

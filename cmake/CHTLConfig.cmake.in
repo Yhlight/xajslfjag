@@ -1,0 +1,45 @@
+@PACKAGE_INIT@
+
+include("${CMAKE_CURRENT_LIST_DIR}/CHTLTargets.cmake")
+
+check_required_components(CHTL)
+
+# CHTL配置信息
+set(CHTL_VERSION "@CHTL_VERSION@")
+set(CHTL_CXX_STANDARD "@CMAKE_CXX_STANDARD@")
+
+# 包含目录
+set(CHTL_INCLUDE_DIRS "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+
+# 库信息
+set(CHTL_LIBRARIES CHTL::chtl_core)
+
+# 编译器特性
+set(CHTL_FEATURES
+    "CHTL语法解析"
+    "CHTL JS语法支持" 
+    "智能脚本分离"
+    "CJMOD API"
+    "模块系统"
+    "选择器自动化"
+)
+
+# 提供的组件
+set(CHTL_COMPONENTS
+    Core
+    Scanner
+    Parser
+    Generator
+    CJMODSystem
+)
+
+# 检查组件
+foreach(comp ${CHTL_FIND_COMPONENTS})
+    if(NOT comp IN_LIST CHTL_COMPONENTS)
+        set(CHTL_FOUND FALSE)
+        set(CHTL_NOT_FOUND_MESSAGE "Unsupported component: ${comp}")
+    endif()
+endforeach()
+
+# 设置找到标志
+set(CHTL_FOUND TRUE)
