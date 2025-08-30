@@ -57,8 +57,8 @@ set(CHTL_CORE_SOURCES
     src/CHTLJS/CHTLJSParser/EnhancedParser.cpp
     
     # CMOD System - 核心API
-    src/CMODSystem/Syntax.cpp
-    src/CMODSystem/CJMODGenerator.cpp
+    src/CHTL/CMODSystem/Syntax.cpp
+    src/CHTL/CMODSystem/CJMODGenerator.cpp
     
     # Util System
     src/Util/FileSystem/FileSystem.cpp

@@ -2,7 +2,7 @@
 #include "../../Util/StringUtils.h"
 #include "../../CSS/CSSCompiler.h"
 #include "../../JS/JSCompiler.h"
-#include "../../CMODSystem/CJMODGenerator.h"
+#include "../CMODSystem/CJMODGenerator.h"
 #include <chrono>
 #include <sstream>
 #include <regex>
@@ -297,7 +297,7 @@ String Generator::convertCHTLJSToJS(const BaseNode* node) {
     auto result = cjmodGenerator.generateFromSyntax(nodeValue);
     
     if (result.success) {
-        return result.generatedCode;
+        return result.javascript;
     } else {
         // 如果CJMOD生成失败，返回注释形式
         return "// CHTL JS (generation failed): " + nodeValue;

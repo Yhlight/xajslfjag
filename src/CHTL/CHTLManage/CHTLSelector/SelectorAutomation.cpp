@@ -1,6 +1,6 @@
 #include "SelectorAutomation.h"
-#include "../../Util/StringUtils.h"
-#include "../CHTLNode/BaseNode.h"
+#include "../../../Util/StringUtils.h"
+#include "../../CHTLNode/BaseNode.h"
 #include <regex>
 #include <algorithm>
 

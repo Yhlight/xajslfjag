@@ -1,5 +1,5 @@
 #include "ConfigurationManager.h"
-#include "../CHTLLexer/GlobalMap.h"
+#include "../../CHTLLexer/GlobalMap.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
