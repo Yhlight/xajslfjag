@@ -771,7 +771,16 @@ void Generator::visitExceptNode(ExceptNode* node) {
     // except约束在解析阶段进行验证，生成阶段不输出
     (void)node;
 }
-void Generator::visitUseNode(UseNode* node) { (void)node; }
+void Generator::visitUseNode(UseNode* node) { 
+    if (!node) return;
+    
+    const std::string& target = node->getTarget();
+    if (target == "html5") {
+        // use html5应该在generate()方法中处理，这里不输出
+        // 因为DOCTYPE需要在所有内容之前
+    }
+    // 其他use语句（如配置组）在解析阶段处理
+}
 
 void Generator::generateCSSRule(SelectorNode* node) {
     if (!node) return;
