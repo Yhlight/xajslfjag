@@ -118,8 +118,8 @@ bool CMODModule::parseInfoBlock(const std::string& content) {
     
     // 解析字段
     std::regex fieldRegex(R"((\w+)\s*=\s*"([^"]*)")");
-    std::sregex_iterator iter(infoContent.begin(), infoContent.end(), fieldRegex);
-    std::sregex_iterator end;
+    auto iter = std::sregex_iterator(infoContent.begin(), infoContent.end(), fieldRegex);
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         std::string key = (*iter)[1].str();
@@ -162,8 +162,8 @@ bool CMODModule::parseExportBlock(const std::string& content) {
     
     // 解析导出项
     std::regex exportLineRegex(R"(\[(\w+)\]\s*@(\w+)\s+([^;]+);)");
-    std::sregex_iterator iter(exportContent.begin(), exportContent.end(), exportLineRegex);
-    std::sregex_iterator end;
+    auto iter = std::sregex_iterator(exportContent.begin(), exportContent.end(), exportLineRegex);
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         std::string category = (*iter)[1].str();  // Custom, Template, Origin等
@@ -176,8 +176,8 @@ bool CMODModule::parseExportBlock(const std::string& content) {
         
         // 解析导出项列表
         std::regex itemRegex(R"([^,\s]+)");
-        std::sregex_iterator itemIter(itemsStr.begin(), itemsStr.end(), itemRegex);
-        std::sregex_iterator itemEnd;
+        auto itemIter = std::sregex_iterator(itemsStr.begin(), itemsStr.end(), itemRegex);
+        auto itemEnd = std::sregex_iterator();
         
         for (; itemIter != itemEnd; ++itemIter) {
             std::string itemName = (*itemIter).str();

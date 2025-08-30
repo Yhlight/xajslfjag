@@ -36,7 +36,7 @@ enum class NodeType {
     EVENT_LISTENER
 };
 
-class BaseNode {
+class BaseNode : public std::enable_shared_from_this<BaseNode> {
 public:
     BaseNode(NodeType type = NodeType::ELEMENT);
     virtual ~BaseNode();

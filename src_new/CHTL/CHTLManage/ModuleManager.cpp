@@ -578,9 +578,9 @@ bool ModuleManager::parseInfoBlock(const std::string& content, ModuleInfo& info)
     std::string infoContent = match[1].str();
     
     // 解析各个字段
-    std::regex fieldRegex(R"((\w+)\s*=\s*"([^"]*)")");
-    std::sregex_iterator iter(infoContent.begin(), infoContent.end(), fieldRegex);
-    std::sregex_iterator end;
+    std::regex fieldRegex(R"((\w+)\s*=\s*\"([^\"]*)\")");  
+    auto iter = std::sregex_iterator(infoContent.begin(), infoContent.end(), fieldRegex);
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         std::string key = (*iter)[1].str();
@@ -624,7 +624,7 @@ bool ModuleManager::parseExportBlock(const std::string& content, std::unordered_
     // 解析导出项
     std::regex exportItemRegex(R"(\[(\w+)\]\s*@(\w+)\s+([^;]+);)");
     std::sregex_iterator iter(exportContent.begin(), exportContent.end(), exportItemRegex);
-    std::sregex_iterator end;
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         std::string category = (*iter)[1].str();  // Custom, Template, Origin等

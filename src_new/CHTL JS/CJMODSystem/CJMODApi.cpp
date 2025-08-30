@@ -176,7 +176,7 @@ Arg CJMODScanner::scan(const std::string& code, const std::string& keyword) {
     // 简单的代码分析，创建基本的Arg结构
     std::regex tokenRegex(R"(\S+)");
     std::sregex_iterator iter(code.begin(), code.end(), tokenRegex);
-    std::sregex_iterator end;
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         AtomArg arg;
@@ -507,7 +507,7 @@ std::vector<std::string> Syntax::tokenizeSyntax(const std::string& syntaxPattern
     
     std::regex tokenRegex(R"(\$[!?_]*|\.\.\.|[^\s]+)");
     std::sregex_iterator iter(syntaxPattern.begin(), syntaxPattern.end(), tokenRegex);
-    std::sregex_iterator end;
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         tokens.push_back((*iter).str());
@@ -711,7 +711,7 @@ bool CJMODModule::parseInfoFile(const std::string& infoPath) {
     // 解析字段
     std::regex fieldRegex(R"((\w+)\s*=\s*"([^"]*)")");
     std::sregex_iterator iter(infoContent.begin(), infoContent.end(), fieldRegex);
-    std::sregex_iterator end;
+    auto end = std::sregex_iterator();
     
     for (; iter != end; ++iter) {
         std::string key = (*iter)[1].str();

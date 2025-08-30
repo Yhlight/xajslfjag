@@ -41,8 +41,8 @@ std::string VarGroup::ReplaceVariables(const std::string& content, const VarGrou
     
     // 替换VarGroup(varName)格式的变量引用
     std::regex varRegex(R"((\w+)\((\w+)\))");
-    std::sregex_iterator iter(result.begin(), result.end(), varRegex);
-    std::sregex_iterator end;
+    auto iter = std::sregex_iterator(result.begin(), result.end(), varRegex);
+    auto end = std::sregex_iterator();
     
     std::vector<std::pair<std::string, std::string>> replacements;
     
