@@ -1,0 +1,39 @@
+// Yuigahama模块信息文件  
+// 由比滨结衣 - 温柔善良的女孩
+// 基于《我的青春恋爱物语果然有问题》角色设计
+
+[Info]
+{
+    name = "yuigahama";
+    version = "1.0.0";
+    description = "由比滨结衣主题模块 - 温柔善良的女孩，提供友善的UI组件和交互体验";
+    author = "CHTL Team";
+    license = "MIT";
+    category = "theme";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+    dependencies = "";
+}
+
+[Export]
+{
+    [Custom] @Style YuigahamaStyle, YuigahamaCard, YuigahamaButton,
+           YuigahamaHeader, YuigahamaFooter, YuigahamaAccordion,
+           YuigahamaGallery, YuigahaMemo, YuigahamaNote,
+           YuigahamaPlayer, YuigahamaMouse;
+
+    [Custom] @Element YuigahamaPage, YuigahamaSection, YuigahamaNav,
+             YuigahamaModal, YuigahamaAccordionPanel, YuigahamaGalleryItem,
+             YuigahaMemoCard, YuigahaNoteEditor, YuigahaMusicPlayer,
+             YuigahamaMouseEffect;
+
+    [Custom] @Var YuigahamaColors, YuigahamaFonts, YuigahamaSpacing,
+         YuigahamaBreakpoints, YuigahamaAnimations, YuigahamaEffects;
+
+    [Template] @Style YuigahamaBaseStyle, YuigahamaTheme, YuigahamaLayout;
+    [Template] @Element YuigahamaContainer, YuigahamaWrapper;
+    [Template] @Var YuigahamaPalette, YuigahamaTypography;
+    
+    [Origin] @Html YuigahamaHeader, YuigahamaFooter;
+    [Origin] @Style YuigahamaReset, YuigahamaUtilities;
+}

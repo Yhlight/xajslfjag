@@ -1,0 +1,27 @@
+// Chtholly CJMOD模块信息文件
+// 珂朵莉的CHTL JS扩展功能
+
+[Info]
+{
+    name = "chtholly";
+    version = "1.0.0";
+    description = "珂朵莉CJMOD模块 - 提供printMylove和iNeverAway等CHTL JS扩展功能";
+    author = "CHTL Team";
+    license = "MIT";
+    category = "chtl-js-extension";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+    dependencies = "";
+}
+
+// 导出的CHTL JS函数
+[Export]
+{
+    printMylove: "function";
+    iNeverAway: "function";
+    chthollyMagic: "function";
+    swordGlow: "function";
+    petalRain: "function";
+    memoryBox: "function";
+    happinessLevel: "function";
+}
