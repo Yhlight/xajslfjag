@@ -1,0 +1,557 @@
+// 张小明的第一个CHTL项目
+// 我要创建一个个人博客网站！
+
+-- 这是我第一次使用CHTL，好激动！
+
+[Import] @Chtl from chtl::Chtholly
+[Import] @Chtl from chtl::Yuigahama
+
+[Configuration]
+{
+    INDEX_INITIAL_COUNT = 1;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DEBUG_MODE = true;
+}
+
+[Template] @Var MyColors
+{
+    primary: "#3498db";
+    secondary: "#2ecc71";
+    accent: "#e74c3c";
+    background: "#ecf0f1";
+    text: "#2c3e50";
+}
+
+[Template] @Style MyButton
+{
+    padding: "12px 24px";
+    border-radius: "8px";
+    border: "none";
+    cursor: "pointer";
+    font-weight: "500";
+    transition: "all 0.3s ease";
+    background: MyColors(primary);
+    color: "white";
+    
+    &:hover
+    {
+        background: "#2980b9";
+        transform: "translateY(-2px)";
+        box-shadow: "0 4px 12px rgba(52, 152, 219, 0.3)";
+    }
+}
+
+html
+{
+    lang: "zh-CN";
+    
+    head
+    {
+        meta
+        {
+            charset: "UTF-8";
+        }
+        
+        meta
+        {
+            name: "viewport";
+            content: "width=device-width, initial-scale=1.0";
+        }
+        
+        title
+        {
+            text
+            {
+                "张小明的CHTL博客"
+            }
+        }
+        
+        style
+        {
+            body
+            {
+                font-family: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+                margin: "0";
+                padding: "0";
+                background: MyColors(background);
+                color: MyColors(text);
+                line-height: "1.6";
+            }
+            
+            .container
+            {
+                max-width: "1200px";
+                margin: "0 auto";
+                padding: "0 20px";
+            }
+            
+            .header
+            {
+                background: "linear-gradient(135deg," MyColors(primary) "," MyColors(secondary) ")";
+                color: "white";
+                padding: "2rem 0";
+                text-align: "center";
+            }
+            
+            .header h1
+            {
+                margin: "0";
+                font-size: "2.5rem";
+                font-weight: "300";
+            }
+            
+            .header p
+            {
+                margin: "10px 0 0";
+                opacity: "0.9";
+            }
+        }
+    }
+    
+    body
+    {
+        header
+        {
+            class: "header";
+            
+            div
+            {
+                class: "container";
+                
+                h1
+                {
+                    text
+                    {
+                        "张小明的技术博客"
+                    }
+                }
+                
+                p
+                {
+                    text
+                    {
+                        "探索CHTL编译器的奇妙世界"
+                    }
+                }
+            }
+        }
+        
+        main
+        {
+            class: "main-content";
+            
+            style
+            {
+                .main-content
+                {
+                    padding: "3rem 0";
+                }
+                
+                .blog-grid
+                {
+                    display: "grid";
+                    grid-template-columns: "repeat(auto-fit, minmax(300px, 1fr))";
+                    gap: "2rem";
+                    margin-top: "2rem";
+                }
+            }
+            
+            div
+            {
+                class: "container";
+                
+                section
+                {
+                    class: "intro";
+                    
+                    style
+                    {
+                        .intro
+                        {
+                            text-align: "center";
+                            margin-bottom: "3rem";
+                        }
+                        
+                        .intro h2
+                        {
+                            font-size: "2rem";
+                            margin-bottom: "1rem";
+                            color: MyColors(primary);
+                        }
+                        
+                        .intro p
+                        {
+                            font-size: "1.1rem";
+                            max-width: "600px";
+                            margin: "0 auto";
+                            opacity: "0.8";
+                        }
+                    }
+                    
+                    h2
+                    {
+                        text
+                        {
+                            "欢迎来到我的CHTL学习之旅"
+                        }
+                    }
+                    
+                    p
+                    {
+                        text
+                        {
+                            "作为一名前端开发者，我被CHTL的简洁语法和强大功能深深吸引。让我们一起探索这个神奇的超文本编译器！"
+                        }
+                    }
+                }
+                
+                section
+                {
+                    class: "blog-posts";
+                    
+                    div
+                    {
+                        class: "blog-grid";
+                        
+                        -- 使用Chtholly模块的卡片组件
+                        ChthollyCard()
+                        {
+                            div[1]
+                            {
+                                h3
+                                {
+                                    text
+                                    {
+                                        "初识CHTL"
+                                    }
+                                }
+                                
+                                p
+                                {
+                                    text
+                                    {
+                                        "第一次接触CHTL编译器，被它的语法简洁性震撼了。不需要写复杂的HTML标签，直接用元素名就行！"
+                                    }
+                                }
+                                
+                                button
+                                {
+                                    style
+                                    {
+                                        @Style MyButton;
+                                    }
+                                    
+                                    text
+                                    {
+                                        "阅读更多"
+                                    }
+                                }
+                            }
+                        }
+                        
+                        -- 使用Yuigahama模块的卡片组件
+                        YuigahamaCard()
+                        {
+                            div[1]
+                            {
+                                h3
+                                {
+                                    text
+                                    {
+                                        "模块系统体验"
+                                    }
+                                }
+                                
+                                p
+                                {
+                                    text
+                                    {
+                                        "CHTL的模块系统太强大了！可以直接导入官方模块，瞬间获得美丽的UI组件。Chtholly和Yuigahama模块都很棒！"
+                                    }
+                                }
+                                
+                                button
+                                {
+                                    style
+                                    {
+                                        @Style MyButton;
+                                        background: MyColors(secondary);
+                                        
+                                        &:hover
+                                        {
+                                            background: "#27ae60";
+                                        }
+                                    }
+                                    
+                                    text
+                                    {
+                                        "了解模块"
+                                    }
+                                }
+                            }
+                        }
+                        
+                        ChthollyCard()
+                        {
+                            div[1]
+                            {
+                                h3
+                                {
+                                    text
+                                    {
+                                        "CHTL JS增强功能"
+                                    }
+                                }
+                                
+                                p
+                                {
+                                    text
+                                    {
+                                        "{{选择器}}语法太方便了！还有动画系统、虚拟对象，让JavaScript开发变得更加直观和强大。"
+                                    }
+                                }
+                                
+                                button
+                                {
+                                    style
+                                    {
+                                        @Style MyButton;
+                                        background: MyColors(accent);
+                                        
+                                        &:hover
+                                        {
+                                            background: "#c0392b";
+                                        }
+                                    }
+                                    
+                                    text
+                                    {
+                                        "体验CHTL JS"
+                                    }
+                                }
+                                
+                                script
+                                {
+                                    {{button}} &-> click
+                                    {
+                                        animate
+                                        {
+                                            target: {{&}},
+                                            duration: 300,
+                                            easing: "ease-out",
+                                            
+                                            begin: {
+                                                transform: "scale(1)"
+                                            },
+                                            
+                                            end: {
+                                                transform: "scale(1.1)"
+                                            },
+                                            
+                                            callback: () => {
+                                                animate
+                                                {
+                                                    target: {{&}},
+                                                    duration: 200,
+                                                    
+                                                    begin: {
+                                                        transform: "scale(1.1)"
+                                                    },
+                                                    
+                                                    end: {
+                                                        transform: "scale(1)"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        console.log('哇！CHTL JS动画太流畅了！');
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                section
+                {
+                    class: "interactive-demo";
+                    
+                    style
+                    {
+                        .interactive-demo
+                        {
+                            margin-top: "4rem";
+                            text-align: "center";
+                        }
+                        
+                        .demo-title
+                        {
+                            font-size: "1.8rem";
+                            margin-bottom: "2rem";
+                            color: MyColors(primary);
+                        }
+                    }
+                    
+                    h2
+                    {
+                        class: "demo-title";
+                        
+                        text
+                        {
+                            "交互演示"
+                        }
+                    }
+                    
+                    -- 使用Chtholly的手风琴组件
+                    ChthollyAccordionPanel()
+                    {
+                        script
+                        {
+                            {{.accordion-header}} &-> click
+                            {
+                                const accordion = {{&}}->closest('.chtholly-accordion');
+                                accordion->classList.toggle('active');
+                                
+                                console.log('手风琴切换！珂朵莉的魔法生效了！');
+                            }
+                        }
+                    }
+                    
+                    -- 使用Yuigahama的音乐播放器
+                    YuigahaMusicPlayer()
+                    {
+                        script
+                        {
+                            vir musicController = listen
+                            {
+                                play: () => {
+                                    const cover = {{.player-cover}};
+                                    cover->classList.add('playing');
+                                    console.log('🎵 开始播放由比滨结衣的音乐！');
+                                },
+                                
+                                pause: () => {
+                                    const cover = {{.player-cover}};
+                                    cover->classList.remove('playing');
+                                    console.log('⏸️ 音乐暂停');
+                                }
+                            };
+                            
+                            {{.player-btn.play}} &-> click
+                            {
+                                const isPlaying = {{.player-cover}}->classList.contains('playing');
+                                
+                                if (isPlaying) {
+                                    musicController->pause();
+                                    {{&}}->textContent = '▶';
+                                } else {
+                                    musicController->play();
+                                    {{&}}->textContent = '⏸';
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        
+        footer
+        {
+            style
+            {
+                footer
+                {
+                    background: MyColors(text);
+                    color: "white";
+                    text-align: "center";
+                    padding: "2rem 0";
+                    margin-top: "4rem";
+                }
+                
+                .footer-text
+                {
+                    opacity: "0.8";
+                }
+            }
+            
+            div
+            {
+                class: "container";
+                
+                p
+                {
+                    class: "footer-text";
+                    
+                    text
+                    {
+                        "© 2024 张小明的CHTL博客 | 使用CHTL编译器构建 | 感谢Chtholly和Yuigahama模块"
+                    }
+                }
+            }
+        }
+        
+        script
+        {
+            // 页面加载动画
+            document.addEventListener('DOMContentLoaded', () => {
+                console.log('🎉 张小明的CHTL博客加载完成！');
+                console.log('✨ CHTL编译器真的太棒了！');
+                
+                // 添加一些页面交互
+                animate
+                {
+                    target: document.body,
+                    duration: 800,
+                    easing: "ease-out",
+                    
+                    begin: {
+                        opacity: "0"
+                    },
+                    
+                    end: {
+                        opacity: "1"
+                    }
+                }
+            });
+            
+            // 添加一些有趣的交互
+            vir pageController = listen
+            {
+                showWelcomeMessage: () => {
+                    alert('欢迎来到张小明的CHTL博客！这是用CHTL编译器创建的！');
+                },
+                
+                highlightFeatures: () => {
+                    {{.blog-grid .card}}->forEach(card => {
+                        animate
+                        {
+                            target: card,
+                            duration: 500,
+                            easing: "ease-in-out",
+                            
+                            begin: {
+                                transform: "scale(1)"
+                            },
+                            
+                            end: {
+                                transform: "scale(1.05)"
+                            }
+                        }
+                    });
+                }
+            };
+            
+            // 3秒后显示欢迎消息
+            setTimeout(() => {
+                pageController->showWelcomeMessage();
+            }, 3000);
+            
+            // 5秒后高亮功能卡片
+            setTimeout(() => {
+                pageController->highlightFeatures();
+            }, 5000);
+        }
+    }
+}
+
+use html5;
