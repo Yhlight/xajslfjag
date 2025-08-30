@@ -122,10 +122,10 @@
 ## 🎯 **建议的审查重点**
 
 ### 代码审查
-1. **核心编译器逻辑** - src_new/Scanner/, src_new/CompilerDispatcher/
-2. **模块系统实现** - src_new/CHTL/CHTLManage/, src_new/CHTL/CMODSystem/
-3. **CJMOD API实现** - src_new/CHTL JS/CJMODSystem/
-4. **官方模块质量** - src_new/Module/Chtholly/, src_new/Module/Yuigahama/
+1. **核心编译器逻辑** - src/Scanner/, src/CompilerDispatcher/
+2. **模块系统实现** - src/CHTL/CHTLManage/, src/CHTL/CMODSystem/
+3. **CJMOD API实现** - src/CHTL JS/CJMODSystem/
+4. **官方模块质量** - src/Module/Chtholly/, src/Module/Yuigahama/
 
 ### 功能验证
 1. **语法支持完整性** - 所有117个功能

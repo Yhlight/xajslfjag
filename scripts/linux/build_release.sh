@@ -12,13 +12,13 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 cd "$PROJECT_ROOT"
 
-# Check if src_new directory exists
-if [ ! -d "src_new" ]; then
-    echo "Error: src_new directory not found"
+# Check if src directory exists
+if [ ! -d "src" ]; then
+    echo "Error: src directory not found"
     exit 1
 fi
 
-cd src_new
+cd src
 
 # Create build directory
 mkdir -p build_release

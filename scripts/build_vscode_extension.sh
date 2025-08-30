@@ -42,19 +42,19 @@ mkdir -p bin
 mkdir -p modules
 
 # Copy compiled CHTL compiler
-if [ -f "../src_new/build_release/chtl_compiler" ]; then
-    cp "../src_new/build_release/chtl_compiler" bin/
+if [ -f "../src/build_release/chtl_compiler" ]; then
+    cp "../src/build_release/chtl_compiler" bin/
     echo "  ✓ Compiler binary copied"
-elif [ -f "../src_new/build/chtl_compiler" ]; then
-    cp "../src_new/build/chtl_compiler" bin/
+elif [ -f "../src/build/chtl_compiler" ]; then
+    cp "../src/build/chtl_compiler" bin/
     echo "  ✓ Compiler binary copied (debug version)"
 else
     echo "  ⚠️ Compiler binary not found, extension will work without compilation"
 fi
 
 # Copy official modules
-if [ -d "../src_new/Module" ]; then
-    cp -r ../src_new/Module/* modules/
+if [ -d "../src/Module" ]; then
+    cp -r ../src/Module/* modules/
     echo "  ✓ Official modules copied"
     
     # List copied modules

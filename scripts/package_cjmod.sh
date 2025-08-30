@@ -12,15 +12,15 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 # Check if Module directory exists
-if [ ! -d "src_new/Module" ]; then
-    echo "❌ Module directory not found: src_new/Module"
+if [ ! -d "src/Module" ]; then
+    echo "❌ Module directory not found: src/Module"
     exit 1
 fi
 
-cd src_new/Module
+cd src/Module
 
 # Create output directory for packaged modules
-mkdir -p "../../packaged_modules"
+mkdir -p "../../packages"
 
 echo "🔍 Scanning for CJMOD modules..."
 
@@ -91,7 +91,7 @@ for module_dir in */; do
                                 fi
                             done
                             
-                            cd "$PROJECT_ROOT/src_new/Module"
+                            cd "$PROJECT_ROOT/src/Module"
                             
                             if [ "$cpp_compiled" = true ]; then
                                 echo "  ✓ C++ compilation completed"
@@ -101,7 +101,7 @@ for module_dir in */; do
                             
                             # Create CJMOD package
                             package_name="${module_name}-${module_version}.cjmod"
-                            package_path="../../packaged_modules/$package_name"
+                            package_path="../../packages/$package_name"
                             
                             echo "  📦 Creating CJMOD package: $package_name"
                             
@@ -114,7 +114,7 @@ for module_dir in */; do
                             
                             # Create ZIP package (CJMOD format)
                             cd "$temp_dir"
-                            zip -r "$PROJECT_ROOT/packaged_modules/$package_name" "$module_name"
+                            zip -r "$PROJECT_ROOT/packages/$package_name" "$module_name"
                             
                             if [ $? -eq 0 ]; then
                                 echo "  ✅ CJMOD package created successfully"
@@ -124,7 +124,7 @@ for module_dir in */; do
                             
                             # Cleanup
                             rm -rf "$temp_dir"
-                            cd "$PROJECT_ROOT/src_new/Module"
+                            cd "$PROJECT_ROOT/src/Module"
                             
                         else
                             echo "  ❌ [Info] block not found in $info_file"
@@ -147,13 +147,13 @@ done
 echo ""
 echo "📊 CJMOD Packaging Summary"
 echo "================================="
-packaged_count=$(ls -1 ../../packaged_modules/*.cjmod 2>/dev/null | wc -l)
+packaged_count=$(ls -1 ../../packages/*.cjmod 2>/dev/null | wc -l)
 echo "Packaged CJMOD modules: $packaged_count"
 
 if [ $packaged_count -gt 0 ]; then
     echo ""
     echo "📦 Packaged modules:"
-    ls -la ../../packaged_modules/*.cjmod 2>/dev/null
+    ls -la ../../packages/*.cjmod 2>/dev/null
 fi
 
 echo ""

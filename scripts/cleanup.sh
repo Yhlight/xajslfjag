@@ -244,7 +244,7 @@ echo ""
 
 # List main components
 echo "📋 Main components:"
-echo "  ✓ src_new/ - CHTL compiler source code"
+echo "  ✓ src/ - CHTL compiler source code"
 echo "  ✓ docs/ - Complete documentation"
 echo "  ✓ scripts/ - Cross-platform build scripts"
 echo "  ✓ vscode-chtl-extension/ - VSCode extension"

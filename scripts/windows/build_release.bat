@@ -8,13 +8,13 @@ echo ================================================
 
 cd /d "%~dp0..\.."
 
-REM Check if src_new directory exists
-if not exist "src_new" (
-    echo Error: src_new directory not found
+REM Check if src directory exists
+if not exist "src" (
+    echo Error: src directory not found
     exit /b 1
 )
 
-cd src_new
+cd src
 
 REM Create build directory
 if not exist "build_release" mkdir build_release

@@ -23,7 +23,7 @@ git clone <chtl-repo>
 cd chtl-compiler
 
 # 2. 进入源码目录
-cd src_new
+cd src
 
 # 3. 创建构建目录
 mkdir build && cd build
@@ -45,7 +45,7 @@ git clone <chtl-repo>
 cd chtl-compiler
 
 REM 2. 进入源码目录
-cd src_new
+cd src
 
 REM 3. 创建构建目录
 mkdir build && cd build

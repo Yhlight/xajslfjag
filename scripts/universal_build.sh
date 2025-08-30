@@ -75,20 +75,20 @@ DIST_DIR="$PROJECT_ROOT/dist"
 mkdir -p "$DIST_DIR"
 
 # Copy compiler binaries
-if [ -d "src_new/build_release" ]; then
-    cp -r src_new/build_release/bin "$DIST_DIR/" 2>/dev/null || echo "⚠️ No bin directory found"
-    cp -r src_new/build_release/lib "$DIST_DIR/" 2>/dev/null || echo "⚠️ No lib directory found"
+if [ -d "src/build_release" ]; then
+    cp -r src/build_release/bin "$DIST_DIR/" 2>/dev/null || echo "⚠️ No bin directory found"
+    cp -r src/build_release/lib "$DIST_DIR/" 2>/dev/null || echo "⚠️ No lib directory found"
 fi
 
 # Copy official modules
-if [ -d "src_new/Module" ]; then
-    cp -r src_new/Module "$DIST_DIR/modules"
+if [ -d "src/Module" ]; then
+    cp -r src/Module "$DIST_DIR/modules"
     echo "✓ Official modules copied"
 fi
 
 # Copy VSCode extension
-if [ -f "vscode-chtl-extension.vsix" ]; then
-    cp vscode-chtl-extension.vsix "$DIST_DIR/"
+if [ -f "chtl-language-support.vsix" ]; then
+    cp chtl-language-support.vsix "$DIST_DIR/"
     echo "✓ VSCode extension copied"
 fi
 
