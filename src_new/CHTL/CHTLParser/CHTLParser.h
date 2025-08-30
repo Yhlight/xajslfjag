@@ -52,6 +52,16 @@ private:
     std::shared_ptr<BaseNode> parseStyleBlock();
     std::shared_ptr<BaseNode> parseScriptBlock();
     std::shared_ptr<BaseNode> parseTextNode();
+    std::shared_ptr<BaseNode> parseAttribute();
+    std::shared_ptr<BaseNode> parseGeneratorComment();
+    std::shared_ptr<BaseNode> parseBlockStatement();
+    std::shared_ptr<BaseNode> parseElementContent();
+    std::shared_ptr<BaseNode> parseTemplateContent(const std::string& templateType);
+    std::shared_ptr<BaseNode> parseStyleContent();
+    std::shared_ptr<BaseNode> parseVariableDefinition();
+    std::shared_ptr<BaseNode> parseCustomContent(const std::string& customType);
+    std::shared_ptr<BaseNode> parseNamespaceContent();
+    std::shared_ptr<BaseNode> parseConfigurationContent();
     
     // Token操作
     Token getCurrentToken() const;

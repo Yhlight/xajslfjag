@@ -212,7 +212,7 @@ bool CMODModule::loadSourceFiles() {
                 std::string filePath = entry.path().string();
                 std::string fileName = entry.path().filename().string();
                 
-                if (fileName.ends_with(".chtl") && filePath != mainFile) {
+                if (fileName.length() > 5 && fileName.substr(fileName.length() - 5) == ".chtl" && filePath != mainFile) {
                     m_sourceFiles.push_back(filePath);
                 }
             }
@@ -352,7 +352,7 @@ bool CMODApi::unloadCMOD(const std::string& moduleName) {
     return false;
 }
 
-std::shared_ptr<CMODModule> CMODApi::getCMOD(const std::string& moduleName) {
+std::shared_ptr<CMODModule> CMODApi::getCMOD(const std::string& moduleName) const {
     auto it = m_loadedModules.find(moduleName);
     if (it != m_loadedModules.end()) {
         return it->second;
@@ -373,7 +373,7 @@ bool CMODApi::hasCMOD(const std::string& moduleName) const {
 }
 
 CMODInfo CMODApi::getCMODInfo(const std::string& moduleName) const {
-    auto module = getCMOD(moduleName);
+    auto module = const_cast<CMODApi*>(this)->getCMOD(moduleName);
     if (module) {
         return module->getInfo();
     }
@@ -381,7 +381,7 @@ CMODInfo CMODApi::getCMODInfo(const std::string& moduleName) const {
 }
 
 CMODExportTable CMODApi::getCMODExports(const std::string& moduleName) const {
-    auto module = getCMOD(moduleName);
+    auto module = const_cast<CMODApi*>(this)->getCMOD(moduleName);
     if (module) {
         return module->getExportTable();
     }
@@ -389,7 +389,7 @@ CMODExportTable CMODApi::getCMODExports(const std::string& moduleName) const {
 }
 
 std::shared_ptr<CMODModule> CMODApi::getSubModule(const std::string& parentModule, const std::string& subModule) {
-    auto parent = getCMOD(parentModule);
+    auto parent = const_cast<CMODApi*>(this)->getCMOD(parentModule);
     if (parent) {
         return parent->getSubModule(subModule);
     }
@@ -397,7 +397,7 @@ std::shared_ptr<CMODModule> CMODApi::getSubModule(const std::string& parentModul
 }
 
 bool CMODApi::hasSubModule(const std::string& parentModule, const std::string& subModule) const {
-    auto parent = getCMOD(parentModule);
+    auto parent = const_cast<CMODApi*>(this)->getCMOD(parentModule);
     if (parent) {
         return parent->hasSubModule(subModule);
     }

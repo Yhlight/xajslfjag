@@ -774,6 +774,35 @@ void CHTLParser::reportWarning(const std::string& message) {
     reporter.warning("CHTLParser", message);
 }
 
+std::shared_ptr<BaseNode> CHTLParser::parseCustomContent(const std::string& customType) {
+    if (customType == "Style") {
+        return parseStyleContent();
+    } else if (customType == "Element") {
+        return parseElement();
+    } else if (customType == "Var") {
+        return parseVariableDefinition();
+    }
+    return parseElement();
+}
+
+std::shared_ptr<BaseNode> CHTLParser::parseNamespaceContent() {
+    // 命名空间内容可以是任何顶级声明
+    return parseBlockStatement();
+}
+
+std::shared_ptr<BaseNode> CHTLParser::parseConfigurationContent() {
+    // 配置内容解析
+    Token token = getCurrentToken();
+    if (token.type == TokenType::IDENTIFIER) {
+        auto configNode = std::make_shared<BaseNode>(NodeType::CONFIGURATION);
+        configNode->setValue(token.value);
+        consumeToken();
+        return configNode;
+    }
+    consumeToken();
+    return nullptr;
+}
+
 bool CHTLParser::isKeyword(const std::string& word) const {
     std::vector<std::string> keywords = {
         "Template", "Custom", "Origin", "Import", "Namespace", "Configuration",

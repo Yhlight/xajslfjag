@@ -578,7 +578,7 @@ bool ModuleManager::parseInfoBlock(const std::string& content, ModuleInfo& info)
     std::string infoContent = match[1].str();
     
     // 解析各个字段
-    std::regex fieldRegex(R"((\w+)\s*=\s*\"([^\"]*)\")");  
+    std::regex fieldRegex("(\\w+)\\s*=\\s*\"([^\"]*)\"");
     auto iter = std::sregex_iterator(infoContent.begin(), infoContent.end(), fieldRegex);
     auto end = std::sregex_iterator();
     

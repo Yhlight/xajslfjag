@@ -86,7 +86,7 @@ public:
     // 模块管理
     bool loadCMOD(const std::string& modulePath);
     bool unloadCMOD(const std::string& moduleName);
-    std::shared_ptr<CMODModule> getCMOD(const std::string& moduleName);
+    std::shared_ptr<CMODModule> getCMOD(const std::string& moduleName) const;
     std::vector<std::string> getLoadedCMODs() const;
     
     // 模块查询
