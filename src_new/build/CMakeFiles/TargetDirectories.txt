@@ -1,0 +1,5 @@
+/workspace/src_new/build/CMakeFiles/test_standard_structure.dir
+/workspace/src_new/build/CMakeFiles/structure_validation.dir
+/workspace/src_new/build/CMakeFiles/final_verification.dir
+/workspace/src_new/build/CMakeFiles/edit_cache.dir
+/workspace/src_new/build/CMakeFiles/rebuild_cache.dir
