@@ -32,6 +32,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/share/cmake-3.31/Modules/Platform/Linux.cmake"
   "/usr/share/cmake-3.31/Modules/Platform/UnixPaths.cmake"
   "/workspace/src_new/CMakeLists.txt"
+  "/workspace/src_new/Error/CMakeLists.txt"
+  "/workspace/src_new/Util/CMakeLists.txt"
+  "/workspace/src_new/Util/FileSystem/CMakeLists.txt"
+  "/workspace/src_new/Util/ZIPUtil/CMakeLists.txt"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
   )
@@ -45,11 +49,18 @@ set(CMAKE_MAKEFILE_OUTPUTS
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Error/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/FileSystem/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "Util/ZIPUtil/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/test_standard_structure.dir/DependInfo.cmake"
-  "CMakeFiles/structure_validation.dir/DependInfo.cmake"
+  "CMakeFiles/comprehensive_test.dir/DependInfo.cmake"
   "CMakeFiles/final_verification.dir/DependInfo.cmake"
+  "CMakeFiles/structure_validation.dir/DependInfo.cmake"
+  "Error/CMakeFiles/CHTLError.dir/DependInfo.cmake"
+  "Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/DependInfo.cmake"
+  "Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/DependInfo.cmake"
   )

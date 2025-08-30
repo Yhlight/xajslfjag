@@ -15,6 +15,96 @@
 ########################
 
 //Value Computed by CMake
+CHTLContext_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLContext
+
+//Value Computed by CMake
+CHTLContext_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLContext_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLContext
+
+//Value Computed by CMake
+CHTLError_BINARY_DIR:STATIC=/workspace/src_new/build/Error
+
+//Value Computed by CMake
+CHTLError_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLError_SOURCE_DIR:STATIC=/workspace/src_new/Error
+
+//Value Computed by CMake
+CHTLGenerator_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLGenerator
+
+//Value Computed by CMake
+CHTLGenerator_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLGenerator_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLGenerator
+
+//Value Computed by CMake
+CHTLIOStream_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLIOStream
+
+//Value Computed by CMake
+CHTLIOStream_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLIOStream_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLIOStream
+
+//Value Computed by CMake
+CHTLManage_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLManage
+
+//Value Computed by CMake
+CHTLManage_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLManage_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLManage
+
+//Value Computed by CMake
+CHTLNode_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLNode
+
+//Value Computed by CMake
+CHTLNode_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLNode_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLNode
+
+//Value Computed by CMake
+CHTLParser_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLParser
+
+//Value Computed by CMake
+CHTLParser_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLParser_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLParser
+
+//Value Computed by CMake
+CHTLState_BINARY_DIR:STATIC=/workspace/src_new/build/CHTL/CHTLState
+
+//Value Computed by CMake
+CHTLState_IS_TOP_LEVEL:STATIC=OFF
+
+//Value Computed by CMake
+CHTLState_SOURCE_DIR:STATIC=/workspace/src_new/CHTL/CHTLState
+
+//Value Computed by CMake
+CHTL_Compiler_Complete_BINARY_DIR:STATIC=/workspace/src_new/build
+
+//Value Computed by CMake
+CHTL_Compiler_Complete_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+CHTL_Compiler_Complete_SOURCE_DIR:STATIC=/workspace/src_new
+
+//Value Computed by CMake
+CHTL_Complete_BINARY_DIR:STATIC=/workspace/src_new/build
+
+//Value Computed by CMake
+CHTL_Complete_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+CHTL_Complete_SOURCE_DIR:STATIC=/workspace/src_new
+
+//Value Computed by CMake
 CHTL_Standard_Structure_BINARY_DIR:STATIC=/workspace/src_new/build
 
 //Value Computed by CMake
@@ -132,7 +222,22 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=CHTL_Standard_Structure
+CMAKE_PROJECT_NAME:STATIC=CHTL_Complete
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION:STATIC=1.0.0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MAJOR:STATIC=1
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_MINOR:STATIC=0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_PATCH:STATIC=0
+
+//Value Computed by CMake
+CMAKE_PROJECT_VERSION_TWEAK:STATIC=
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -290,7 +395,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=5
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

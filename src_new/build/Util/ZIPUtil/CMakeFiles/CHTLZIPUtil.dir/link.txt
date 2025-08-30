@@ -1,0 +1,2 @@
+/usr/bin/ar qc libCHTLZIPUtil.a CMakeFiles/CHTLZIPUtil.dir/ZIPUtil.cpp.o
+/usr/bin/ranlib libCHTLZIPUtil.a

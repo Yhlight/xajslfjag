@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/workspace/src_new -I/workspace/src_new/Error
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS =  -Wall -Wextra -O2 -std=gnu++17
 

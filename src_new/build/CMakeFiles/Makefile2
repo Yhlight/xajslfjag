@@ -63,104 +63,159 @@ CMAKE_BINARY_DIR = /workspace/src_new/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/test_standard_structure.dir/all
-all: CMakeFiles/structure_validation.dir/all
+all: CMakeFiles/comprehensive_test.dir/all
 all: CMakeFiles/final_verification.dir/all
+all: CMakeFiles/structure_validation.dir/all
+all: Error/all
+all: Util/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/test_standard_structure.dir/codegen
-codegen: CMakeFiles/structure_validation.dir/codegen
+codegen: CMakeFiles/comprehensive_test.dir/codegen
 codegen: CMakeFiles/final_verification.dir/codegen
+codegen: CMakeFiles/structure_validation.dir/codegen
+codegen: Error/codegen
+codegen: Util/codegen
 .PHONY : codegen
 
 # The main recursive "preinstall" target.
-preinstall:
+preinstall: Error/preinstall
+preinstall: Util/preinstall
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/test_standard_structure.dir/clean
-clean: CMakeFiles/structure_validation.dir/clean
+clean: CMakeFiles/comprehensive_test.dir/clean
 clean: CMakeFiles/final_verification.dir/clean
+clean: CMakeFiles/structure_validation.dir/clean
+clean: Error/clean
+clean: Util/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/test_standard_structure.dir
+# Directory level rules for directory Error
 
-# All Build rule for target.
-CMakeFiles/test_standard_structure.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=5,6 "Built target test_standard_structure"
-.PHONY : CMakeFiles/test_standard_structure.dir/all
+# Recursive "all" directory target.
+Error/all: Error/CMakeFiles/CHTLError.dir/all
+.PHONY : Error/all
 
-# Build rule for subdir invocation for target.
-CMakeFiles/test_standard_structure.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/test_standard_structure.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
-.PHONY : CMakeFiles/test_standard_structure.dir/rule
+# Recursive "codegen" directory target.
+Error/codegen: Error/CMakeFiles/CHTLError.dir/codegen
+.PHONY : Error/codegen
 
-# Convenience name for target.
-test_standard_structure: CMakeFiles/test_standard_structure.dir/rule
-.PHONY : test_standard_structure
+# Recursive "preinstall" directory target.
+Error/preinstall:
+.PHONY : Error/preinstall
 
-# codegen rule for target.
-CMakeFiles/test_standard_structure.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=5,6 "Finished codegen for target test_standard_structure"
-.PHONY : CMakeFiles/test_standard_structure.dir/codegen
-
-# clean rule for target.
-CMakeFiles/test_standard_structure.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/clean
-.PHONY : CMakeFiles/test_standard_structure.dir/clean
+# Recursive "clean" directory target.
+Error/clean: Error/CMakeFiles/CHTLError.dir/clean
+.PHONY : Error/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/structure_validation.dir
+# Directory level rules for directory Util
+
+# Recursive "all" directory target.
+Util/all: Util/FileSystem/all
+Util/all: Util/ZIPUtil/all
+.PHONY : Util/all
+
+# Recursive "codegen" directory target.
+Util/codegen: Util/FileSystem/codegen
+Util/codegen: Util/ZIPUtil/codegen
+.PHONY : Util/codegen
+
+# Recursive "preinstall" directory target.
+Util/preinstall: Util/FileSystem/preinstall
+Util/preinstall: Util/ZIPUtil/preinstall
+.PHONY : Util/preinstall
+
+# Recursive "clean" directory target.
+Util/clean: Util/FileSystem/clean
+Util/clean: Util/ZIPUtil/clean
+.PHONY : Util/clean
+
+#=============================================================================
+# Directory level rules for directory Util/FileSystem
+
+# Recursive "all" directory target.
+Util/FileSystem/all: Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/all
+.PHONY : Util/FileSystem/all
+
+# Recursive "codegen" directory target.
+Util/FileSystem/codegen: Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/codegen
+.PHONY : Util/FileSystem/codegen
+
+# Recursive "preinstall" directory target.
+Util/FileSystem/preinstall:
+.PHONY : Util/FileSystem/preinstall
+
+# Recursive "clean" directory target.
+Util/FileSystem/clean: Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/clean
+.PHONY : Util/FileSystem/clean
+
+#=============================================================================
+# Directory level rules for directory Util/ZIPUtil
+
+# Recursive "all" directory target.
+Util/ZIPUtil/all: Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/all
+.PHONY : Util/ZIPUtil/all
+
+# Recursive "codegen" directory target.
+Util/ZIPUtil/codegen: Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/codegen
+.PHONY : Util/ZIPUtil/codegen
+
+# Recursive "preinstall" directory target.
+Util/ZIPUtil/preinstall:
+.PHONY : Util/ZIPUtil/preinstall
+
+# Recursive "clean" directory target.
+Util/ZIPUtil/clean: Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/clean
+.PHONY : Util/ZIPUtil/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/comprehensive_test.dir
 
 # All Build rule for target.
-CMakeFiles/structure_validation.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=3,4 "Built target structure_validation"
-.PHONY : CMakeFiles/structure_validation.dir/all
+CMakeFiles/comprehensive_test.dir/all: Error/CMakeFiles/CHTLError.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=7,8 "Built target comprehensive_test"
+.PHONY : CMakeFiles/comprehensive_test.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/structure_validation.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/structure_validation.dir/all
+CMakeFiles/comprehensive_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/comprehensive_test.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
-.PHONY : CMakeFiles/structure_validation.dir/rule
+.PHONY : CMakeFiles/comprehensive_test.dir/rule
 
 # Convenience name for target.
-structure_validation: CMakeFiles/structure_validation.dir/rule
-.PHONY : structure_validation
+comprehensive_test: CMakeFiles/comprehensive_test.dir/rule
+.PHONY : comprehensive_test
 
 # codegen rule for target.
-CMakeFiles/structure_validation.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=3,4 "Finished codegen for target structure_validation"
-.PHONY : CMakeFiles/structure_validation.dir/codegen
+CMakeFiles/comprehensive_test.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=7,8 "Finished codegen for target comprehensive_test"
+.PHONY : CMakeFiles/comprehensive_test.dir/codegen
 
 # clean rule for target.
-CMakeFiles/structure_validation.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/clean
-.PHONY : CMakeFiles/structure_validation.dir/clean
+CMakeFiles/comprehensive_test.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/clean
+.PHONY : CMakeFiles/comprehensive_test.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/final_verification.dir
 
 # All Build rule for target.
-CMakeFiles/final_verification.dir/all:
+CMakeFiles/final_verification.dir/all: Error/CMakeFiles/CHTLError.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=1,2 "Built target final_verification"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=9,10 "Built target final_verification"
 .PHONY : CMakeFiles/final_verification.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/final_verification.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/final_verification.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
 .PHONY : CMakeFiles/final_verification.dir/rule
@@ -172,13 +227,141 @@ final_verification: CMakeFiles/final_verification.dir/rule
 # codegen rule for target.
 CMakeFiles/final_verification.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=1,2 "Finished codegen for target final_verification"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=9,10 "Finished codegen for target final_verification"
 .PHONY : CMakeFiles/final_verification.dir/codegen
 
 # clean rule for target.
 CMakeFiles/final_verification.dir/clean:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/clean
 .PHONY : CMakeFiles/final_verification.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/structure_validation.dir
+
+# All Build rule for target.
+CMakeFiles/structure_validation.dir/all: Error/CMakeFiles/CHTLError.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=11,12 "Built target structure_validation"
+.PHONY : CMakeFiles/structure_validation.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/structure_validation.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 4
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/structure_validation.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
+.PHONY : CMakeFiles/structure_validation.dir/rule
+
+# Convenience name for target.
+structure_validation: CMakeFiles/structure_validation.dir/rule
+.PHONY : structure_validation
+
+# codegen rule for target.
+CMakeFiles/structure_validation.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=11,12 "Finished codegen for target structure_validation"
+.PHONY : CMakeFiles/structure_validation.dir/codegen
+
+# clean rule for target.
+CMakeFiles/structure_validation.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/clean
+.PHONY : CMakeFiles/structure_validation.dir/clean
+
+#=============================================================================
+# Target rules for target Error/CMakeFiles/CHTLError.dir
+
+# All Build rule for target.
+Error/CMakeFiles/CHTLError.dir/all:
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/CHTLError.dir/build.make Error/CMakeFiles/CHTLError.dir/depend
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/CHTLError.dir/build.make Error/CMakeFiles/CHTLError.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=1,2 "Built target CHTLError"
+.PHONY : Error/CMakeFiles/CHTLError.dir/all
+
+# Build rule for subdir invocation for target.
+Error/CMakeFiles/CHTLError.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Error/CMakeFiles/CHTLError.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
+.PHONY : Error/CMakeFiles/CHTLError.dir/rule
+
+# Convenience name for target.
+CHTLError: Error/CMakeFiles/CHTLError.dir/rule
+.PHONY : CHTLError
+
+# codegen rule for target.
+Error/CMakeFiles/CHTLError.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/CHTLError.dir/build.make Error/CMakeFiles/CHTLError.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=1,2 "Finished codegen for target CHTLError"
+.PHONY : Error/CMakeFiles/CHTLError.dir/codegen
+
+# clean rule for target.
+Error/CMakeFiles/CHTLError.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/CHTLError.dir/build.make Error/CMakeFiles/CHTLError.dir/clean
+.PHONY : Error/CMakeFiles/CHTLError.dir/clean
+
+#=============================================================================
+# Target rules for target Util/FileSystem/CMakeFiles/CHTLFileSystem.dir
+
+# All Build rule for target.
+Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build.make Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build.make Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=3,4 "Built target CHTLFileSystem"
+.PHONY : Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/all
+
+# Build rule for subdir invocation for target.
+Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
+.PHONY : Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/rule
+
+# Convenience name for target.
+CHTLFileSystem: Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/rule
+.PHONY : CHTLFileSystem
+
+# codegen rule for target.
+Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build.make Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=3,4 "Finished codegen for target CHTLFileSystem"
+.PHONY : Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/codegen
+
+# clean rule for target.
+Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build.make Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/clean
+.PHONY : Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/clean
+
+#=============================================================================
+# Target rules for target Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir
+
+# All Build rule for target.
+Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/all:
+	$(MAKE) $(MAKESILENT) -f Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build.make Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/depend
+	$(MAKE) $(MAKESILENT) -f Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build.make Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=5,6 "Built target CHTLZIPUtil"
+.PHONY : Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/all
+
+# Build rule for subdir invocation for target.
+Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /workspace/src_new/build/CMakeFiles 0
+.PHONY : Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/rule
+
+# Convenience name for target.
+CHTLZIPUtil: Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/rule
+.PHONY : CHTLZIPUtil
+
+# codegen rule for target.
+Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build.make Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=5,6 "Finished codegen for target CHTLZIPUtil"
+.PHONY : Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/codegen
+
+# clean rule for target.
+Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/clean:
+	$(MAKE) $(MAKESILENT) -f Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build.make Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/clean
+.PHONY : Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

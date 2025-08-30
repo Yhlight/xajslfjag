@@ -117,17 +117,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named test_standard_structure
+# Target rules for targets named comprehensive_test
 
 # Build rule for target.
-test_standard_structure: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_standard_structure
-.PHONY : test_standard_structure
+comprehensive_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 comprehensive_test
+.PHONY : comprehensive_test
 
 # fast build rule for target.
-test_standard_structure/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/build
-.PHONY : test_standard_structure/fast
+comprehensive_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/build
+.PHONY : comprehensive_test/fast
+
+#=============================================================================
+# Target rules for targets named final_verification
+
+# Build rule for target.
+final_verification: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 final_verification
+.PHONY : final_verification
+
+# fast build rule for target.
+final_verification/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/build
+.PHONY : final_verification/fast
 
 #=============================================================================
 # Target rules for targets named structure_validation
@@ -143,17 +156,67 @@ structure_validation/fast:
 .PHONY : structure_validation/fast
 
 #=============================================================================
-# Target rules for targets named final_verification
+# Target rules for targets named CHTLError
 
 # Build rule for target.
-final_verification: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 final_verification
-.PHONY : final_verification
+CHTLError: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLError
+.PHONY : CHTLError
 
 # fast build rule for target.
-final_verification/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/build
-.PHONY : final_verification/fast
+CHTLError/fast:
+	$(MAKE) $(MAKESILENT) -f Error/CMakeFiles/CHTLError.dir/build.make Error/CMakeFiles/CHTLError.dir/build
+.PHONY : CHTLError/fast
+
+#=============================================================================
+# Target rules for targets named CHTLFileSystem
+
+# Build rule for target.
+CHTLFileSystem: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLFileSystem
+.PHONY : CHTLFileSystem
+
+# fast build rule for target.
+CHTLFileSystem/fast:
+	$(MAKE) $(MAKESILENT) -f Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build.make Util/FileSystem/CMakeFiles/CHTLFileSystem.dir/build
+.PHONY : CHTLFileSystem/fast
+
+#=============================================================================
+# Target rules for targets named CHTLZIPUtil
+
+# Build rule for target.
+CHTLZIPUtil: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CHTLZIPUtil
+.PHONY : CHTLZIPUtil
+
+# fast build rule for target.
+CHTLZIPUtil/fast:
+	$(MAKE) $(MAKESILENT) -f Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build.make Util/ZIPUtil/CMakeFiles/CHTLZIPUtil.dir/build
+.PHONY : CHTLZIPUtil/fast
+
+comprehensive_test.o: comprehensive_test.cpp.o
+.PHONY : comprehensive_test.o
+
+# target to build an object file
+comprehensive_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/comprehensive_test.cpp.o
+.PHONY : comprehensive_test.cpp.o
+
+comprehensive_test.i: comprehensive_test.cpp.i
+.PHONY : comprehensive_test.i
+
+# target to preprocess a source file
+comprehensive_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/comprehensive_test.cpp.i
+.PHONY : comprehensive_test.cpp.i
+
+comprehensive_test.s: comprehensive_test.cpp.s
+.PHONY : comprehensive_test.s
+
+# target to generate assembly for a file
+comprehensive_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/comprehensive_test.dir/build.make CMakeFiles/comprehensive_test.dir/comprehensive_test.cpp.s
+.PHONY : comprehensive_test.cpp.s
 
 final_verification.o: final_verification.cpp.o
 .PHONY : final_verification.o
@@ -184,7 +247,6 @@ test_standard_structure.o: test_standard_structure.cpp.o
 
 # target to build an object file
 test_standard_structure.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/test_standard_structure.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/test_standard_structure.cpp.o
 .PHONY : test_standard_structure.cpp.o
 
@@ -193,7 +255,6 @@ test_standard_structure.i: test_standard_structure.cpp.i
 
 # target to preprocess a source file
 test_standard_structure.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/test_standard_structure.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/test_standard_structure.cpp.i
 .PHONY : test_standard_structure.cpp.i
 
@@ -202,7 +263,6 @@ test_standard_structure.s: test_standard_structure.cpp.s
 
 # target to generate assembly for a file
 test_standard_structure.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_standard_structure.dir/build.make CMakeFiles/test_standard_structure.dir/test_standard_structure.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/structure_validation.dir/build.make CMakeFiles/structure_validation.dir/test_standard_structure.cpp.s
 .PHONY : test_standard_structure.cpp.s
 
@@ -214,9 +274,15 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... CHTLError"
+	@echo "... CHTLFileSystem"
+	@echo "... CHTLZIPUtil"
+	@echo "... comprehensive_test"
 	@echo "... final_verification"
 	@echo "... structure_validation"
-	@echo "... test_standard_structure"
+	@echo "... comprehensive_test.o"
+	@echo "... comprehensive_test.i"
+	@echo "... comprehensive_test.s"
 	@echo "... final_verification.o"
 	@echo "... final_verification.i"
 	@echo "... final_verification.s"

@@ -1,16 +1,18 @@
 # CHTL JS编译器CMake配置文件
 
-# CHTL JS核心组件
-add_subdirectory(CHTLJSContext)
-add_subdirectory(CHTLJSGenerator)
+# CHTL JS核心组件（按照依赖顺序）
+add_subdirectory(CHTLJSState)
 add_subdirectory(CHTLJSLexer)
-add_subdirectory(CHTLJSLoader)
-add_subdirectory(CHTLJSManage)
+add_subdirectory(CHTLJSContext)
 add_subdirectory(CHTLJSNode)
 add_subdirectory(CHTLJSParser)
-add_subdirectory(CHTLJSState)
-add_subdirectory(CHTLJSIOStream)
+add_subdirectory(CHTLJSGenerator)
 add_subdirectory(CJMODSystem)
+
+# 占位目录（暂时为空库）
+add_library(CHTLJSLoader INTERFACE)
+add_library(CHTLJSManage INTERFACE)
+add_library(CHTLJSIOStream INTERFACE)
 
 # 创建CHTL JS核心库
 add_library(CHTLJSCore STATIC
@@ -19,18 +21,17 @@ add_library(CHTLJSCore STATIC
 
 # 链接所有CHTL JS组件
 target_link_libraries(CHTLJSCore
-    CHTLJSContext
-    CHTLJSGenerator
+    CHTLJSState
     CHTLJSLexer
-    CHTLJSLoader
-    CHTLJSManage
+    CHTLJSContext
     CHTLJSNode
     CHTLJSParser
-    CHTLJSState
-    CHTLJSIOStream
+    CHTLJSGenerator
     CJMODSystem
+    CHTLJSLoader
+    CHTLJSManage
+    CHTLJSIOStream
     CHTLError
-    CHTLUtil
 )
 
 # 设置包含目录

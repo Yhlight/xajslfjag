@@ -96,6 +96,7 @@ final_verification_EXTERNAL_OBJECTS =
 final_verification: CMakeFiles/final_verification.dir/final_verification.cpp.o
 final_verification: CMakeFiles/final_verification.dir/build.make
 final_verification: CMakeFiles/final_verification.dir/compiler_depend.ts
+final_verification: Error/libCHTLError.a
 final_verification: CMakeFiles/final_verification.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable final_verification"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/final_verification.dir/link.txt --verbose=$(VERBOSE)

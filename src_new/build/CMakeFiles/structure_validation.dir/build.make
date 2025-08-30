@@ -96,6 +96,7 @@ structure_validation_EXTERNAL_OBJECTS =
 structure_validation: CMakeFiles/structure_validation.dir/test_standard_structure.cpp.o
 structure_validation: CMakeFiles/structure_validation.dir/build.make
 structure_validation: CMakeFiles/structure_validation.dir/compiler_depend.ts
+structure_validation: Error/libCHTLError.a
 structure_validation: CMakeFiles/structure_validation.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src_new/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable structure_validation"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/structure_validation.dir/link.txt --verbose=$(VERBOSE)
