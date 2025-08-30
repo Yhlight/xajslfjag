@@ -1,5 +1,5 @@
 
-// Generated from third-party/antlr/Grammars/JavaScript/SimpleJSLexer.g4 by ANTLR 4.13.2
+// Generated from SimpleJSLexer.g4 by ANTLR 4.13.2
 
 
 #include "SimpleJSLexer.h"

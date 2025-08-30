@@ -1,5 +1,5 @@
 
-// Generated from third-party/antlr/Grammars/CSS3/CSSLexer.g4 by ANTLR 4.13.2
+// Generated from CSSLexer.g4 by ANTLR 4.13.2
 
 
 #include "CSSLexer.h"
