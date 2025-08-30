@@ -1,0 +1,177 @@
+// CMOD模块：主题系统
+// 提供完整的主题管理功能
+
+[Info]
+{
+    NAME = "theme-system";
+    VERSION = "1.0.0";
+    DESCRIPTION = "CHTL主题系统模块，提供颜色、字体、间距等设计令牌";
+    AUTHOR = "CHTL开发者";
+    LICENSE = "MIT";
+    DEPENDENCIES = [];
+}
+
+[Export]
+{
+    [Template] @Var DarkTheme;
+    [Template] @Var LightTheme;
+    [Template] @Style ThemeButton;
+    [Template] @Element ThemeCard;
+    [Custom] @Style AdaptiveText;
+}
+
+[Template] @Var DarkTheme
+{
+    // 深色主题配色
+    primary: "#3b82f6";
+    secondary: "#64748b";
+    accent: "#f59e0b";
+    success: "#10b981";
+    warning: "#f59e0b";
+    error: "#ef4444";
+    info: "#06b6d4";
+    
+    // 深色背景色
+    background: "#0f172a";
+    surface: "#1e293b";
+    card: "#334155";
+    
+    // 深色文本色
+    textPrimary: "#f8fafc";
+    textSecondary: "#cbd5e1";
+    textMuted: "#94a3b8";
+    
+    // 边框和分割线
+    border: "#475569";
+    divider: "#334155";
+}
+
+[Template] @Var LightTheme
+{
+    // 浅色主题配色
+    primary: "#2563eb";
+    secondary: "#64748b";
+    accent: "#f59e0b";
+    success: "#059669";
+    warning: "#d97706";
+    error: "#dc2626";
+    info: "#0284c7";
+    
+    // 浅色背景色
+    background: "#ffffff";
+    surface: "#f8fafc";
+    card: "#ffffff";
+    
+    // 浅色文本色
+    textPrimary: "#0f172a";
+    textSecondary: "#334155";
+    textMuted: "#64748b";
+    
+    // 边框和分割线
+    border: "#e2e8f0";
+    divider: "#f1f5f9";
+}
+
+[Template] @Style ThemeButton
+{
+    // 主题感知按钮样式
+    padding: "0.75rem 1.5rem";
+    border-radius: "0.5rem";
+    font-weight: "500";
+    transition: "all 0.2s ease-in-out";
+    border: "1px solid transparent";
+    cursor: "pointer";
+    
+    // 使用CSS变量支持主题切换
+    background-color: "var(--color-primary)";
+    color: "var(--color-surface)";
+    border-color: "var(--color-primary)";
+    
+    &:hover
+    {
+        transform: "translateY(-2px)";
+        box-shadow: "0 10px 25px rgba(0, 0, 0, 0.15)";
+        filter: "brightness(1.1)";
+    }
+    
+    &:active
+    {
+        transform: "translateY(0)";
+        box-shadow: "0 5px 15px rgba(0, 0, 0, 0.1)";
+    }
+    
+    &:focus
+    {
+        outline: "none";
+        box-shadow: "0 0 0 3px rgba(59, 130, 246, 0.3)";
+    }
+}
+
+[Template] @Element ThemeCard
+{
+    div
+    {
+        class: "theme-card";
+        
+        style
+        {
+            .theme-card
+            {
+                background-color: "var(--color-card)";
+                border: "1px solid var(--color-border)";
+                border-radius: "1rem";
+                padding: "1.5rem";
+                box-shadow: "0 4px 6px rgba(0, 0, 0, 0.05)";
+                transition: "all 0.3s ease-in-out";
+                position: "relative";
+                overflow: "hidden";
+            }
+            
+            .theme-card:hover
+            {
+                box-shadow: "0 20px 25px rgba(0, 0, 0, 0.1)";
+                transform: "translateY(-4px)";
+            }
+            
+            .theme-card::before
+            {
+                content: "''";
+                position: "absolute";
+                top: "0";
+                left: "0";
+                right: "0";
+                height: "4px";
+                background: "linear-gradient(90deg, var(--color-primary), var(--color-accent))";
+            }
+        }
+        
+        div
+        {
+            class: "card-content";
+            
+            style
+            {
+                .card-content
+                {
+                    color: "var(--color-text-primary)";
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Style AdaptiveText from ThemeButton
+{
+    delete background-color, border-color;
+    
+    background: "transparent";
+    color: "var(--color-text-primary)";
+    border: "1px solid var(--color-border)";
+    
+    &:hover
+    {
+        background-color: "var(--color-surface)";
+        border-color: "var(--color-primary)";
+        color: "var(--color-primary)";
+    }
+}

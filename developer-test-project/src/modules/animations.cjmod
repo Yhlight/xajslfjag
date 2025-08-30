@@ -1,0 +1,89 @@
+// CJMOD模块：高级动画系统
+// 使用CJMOD API扩展CHTL JS动画功能
+
+[Info]
+{
+    NAME = "advanced-animations";
+    VERSION = "2.0.0";
+    DESCRIPTION = "高级动画系统，提供复杂的动画效果和交互";
+    AUTHOR = "CHTL开发者";
+    LICENSE = "MIT";
+    DEPENDENCIES = ["performance-monitor"];
+}
+
+// 使用CJMOD API创建高级动画函数
+
+/*
+C++ CJMOD实现示例：
+
+#include "CJMODApi.h"
+
+// 弹性动画函数
+Arg elasticArgs = Syntax::analyze("$ ** $ ** $");
+elasticArgs.bind("$", [](const std::string& value) {
+    return value;
+});
+elasticArgs.bind("**", [](const std::string& value) {
+    return value;
+});
+
+// 扫描动画参数：element ** duration ** easing
+Arg result = CJMODScanner::scan(elasticArgs, "**");
+elasticArgs.fillValue(result);
+
+// 转换为弹性动画代码
+elasticArgs.transform("elasticBounce(" + elasticArgs[0].value + ", " + 
+                     elasticArgs[2].value + ", " + elasticArgs[4].value + ")");
+
+CJMODGenerator::exportResult(elasticArgs);
+
+// 创建CHTL JS函数
+CHTLJSFunction::CreateCHTLJSFunction("elasticBounce {element: $!_, duration: $?_, easing: $?_}");
+CHTLJSFunction::bindVirtualObject("elasticBounce");
+*/
+
+[Export] elasticBounce {element: $!_, duration: $?_, easing: $?_}
+[Export] morphTransition {from: $!_, to: $!_, duration: $?_}
+[Export] particleEffect {target: $!_, count: $?_, type: $?_}
+[Export] rippleEffect {element: $!_, color: $?_, size: $?_}
+[Export] parallaxScroll {elements: $!_, speed: $?_, direction: $?_}
+
+// 在CHTL JS中使用这些函数：
+
+script
+{
+    // 弹性反弹动画
+    elasticBounce({
+        element: {{.button}},
+        duration: 600,
+        easing: "cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+    });
+    
+    // 形变过渡
+    morphTransition({
+        from: {{.card}},
+        to: {{.modal}},
+        duration: 800
+    });
+    
+    // 粒子效果
+    particleEffect({
+        target: {{.hero-section}},
+        count: 50,
+        type: "stars"
+    });
+    
+    // 波纹效果
+    rippleEffect({
+        element: {{.interactive-button}},
+        color: "#3b82f6",
+        size: 100
+    });
+    
+    // 视差滚动
+    parallaxScroll({
+        elements: [{{.bg-layer1}}, {{.bg-layer2}}],
+        speed: 0.5,
+        direction: "vertical"
+    });
+}
