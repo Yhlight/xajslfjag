@@ -585,11 +585,10 @@ if(BUILD_TESTS)
         CHTLCJMOD
     )
     
-    # 原始CJMOD API测试（严格按照原始API.md）
-    add_executable(test_original_cjmod_api test_original_cjmod_api.cpp)
-    target_link_libraries(test_original_cjmod_api 
+    # CJMOD正确运行时理解说明
+    add_executable(test_cjmod_correct_runtime test_cjmod_correct_runtime.cpp)
+    target_link_libraries(test_cjmod_correct_runtime 
         CHTLError
-        CHTLCJMOD
     )
     
 endif()

@@ -86,33 +86,17 @@ CJMOD/CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.s"
 	cd /workspace/src/CHTL/build/CJMOD && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CJMOD/CJMODApi.cpp -o CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.s
 
-CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o: CJMOD/CMakeFiles/CHTLCJMOD.dir/flags.make
-CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o: /workspace/src/CHTL/CJMOD/SimpleCJMODApi.cpp
-CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o: CJMOD/CMakeFiles/CHTLCJMOD.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o"
-	cd /workspace/src/CHTL/build/CJMOD && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o -MF CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o.d -o CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o -c /workspace/src/CHTL/CJMOD/SimpleCJMODApi.cpp
-
-CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.i"
-	cd /workspace/src/CHTL/build/CJMOD && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /workspace/src/CHTL/CJMOD/SimpleCJMODApi.cpp > CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.i
-
-CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.s"
-	cd /workspace/src/CHTL/build/CJMOD && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /workspace/src/CHTL/CJMOD/SimpleCJMODApi.cpp -o CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.s
-
 # Object files for target CHTLCJMOD
 CHTLCJMOD_OBJECTS = \
-"CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.o" \
-"CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o"
+"CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.o"
 
 # External object files for target CHTLCJMOD
 CHTLCJMOD_EXTERNAL_OBJECTS =
 
 CJMOD/libCHTLCJMOD.a: CJMOD/CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.o
-CJMOD/libCHTLCJMOD.a: CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o
 CJMOD/libCHTLCJMOD.a: CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make
 CJMOD/libCHTLCJMOD.a: CJMOD/CMakeFiles/CHTLCJMOD.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libCHTLCJMOD.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/workspace/src/CHTL/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libCHTLCJMOD.a"
 	cd /workspace/src/CHTL/build/CJMOD && $(CMAKE_COMMAND) -P CMakeFiles/CHTLCJMOD.dir/cmake_clean_target.cmake
 	cd /workspace/src/CHTL/build/CJMOD && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/CHTLCJMOD.dir/link.txt --verbose=$(VERBOSE)
 

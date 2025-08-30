@@ -199,30 +199,6 @@ CJMODApi.cpp.s:
 	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make CJMOD/CMakeFiles/CHTLCJMOD.dir/CJMODApi.cpp.s
 .PHONY : CJMODApi.cpp.s
 
-SimpleCJMODApi.o: SimpleCJMODApi.cpp.o
-.PHONY : SimpleCJMODApi.o
-
-# target to build an object file
-SimpleCJMODApi.cpp.o:
-	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.o
-.PHONY : SimpleCJMODApi.cpp.o
-
-SimpleCJMODApi.i: SimpleCJMODApi.cpp.i
-.PHONY : SimpleCJMODApi.i
-
-# target to preprocess a source file
-SimpleCJMODApi.cpp.i:
-	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.i
-.PHONY : SimpleCJMODApi.cpp.i
-
-SimpleCJMODApi.s: SimpleCJMODApi.cpp.s
-.PHONY : SimpleCJMODApi.s
-
-# target to generate assembly for a file
-SimpleCJMODApi.cpp.s:
-	cd /workspace/src/CHTL/build && $(MAKE) $(MAKESILENT) -f CJMOD/CMakeFiles/CHTLCJMOD.dir/build.make CJMOD/CMakeFiles/CHTLCJMOD.dir/SimpleCJMODApi.cpp.s
-.PHONY : SimpleCJMODApi.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -239,9 +215,6 @@ help:
 	@echo "... CJMODApi.o"
 	@echo "... CJMODApi.i"
 	@echo "... CJMODApi.s"
-	@echo "... SimpleCJMODApi.o"
-	@echo "... SimpleCJMODApi.i"
-	@echo "... SimpleCJMODApi.s"
 .PHONY : help
 
 

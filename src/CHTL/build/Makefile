@@ -552,17 +552,17 @@ test_cjmod_complete_integration/fast:
 .PHONY : test_cjmod_complete_integration/fast
 
 #=============================================================================
-# Target rules for targets named test_original_cjmod_api
+# Target rules for targets named test_cjmod_correct_runtime
 
 # Build rule for target.
-test_original_cjmod_api: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_original_cjmod_api
-.PHONY : test_original_cjmod_api
+test_cjmod_correct_runtime: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_cjmod_correct_runtime
+.PHONY : test_cjmod_correct_runtime
 
 # fast build rule for target.
-test_original_cjmod_api/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_original_cjmod_api.dir/build.make CMakeFiles/test_original_cjmod_api.dir/build
-.PHONY : test_original_cjmod_api/fast
+test_cjmod_correct_runtime/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_correct_runtime.dir/build.make CMakeFiles/test_cjmod_correct_runtime.dir/build
+.PHONY : test_cjmod_correct_runtime/fast
 
 #=============================================================================
 # Target rules for targets named CHTLError
@@ -1001,6 +1001,30 @@ test_cjmod_complete_integration.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_complete_integration.dir/build.make CMakeFiles/test_cjmod_complete_integration.dir/test_cjmod_complete_integration.cpp.s
 .PHONY : test_cjmod_complete_integration.cpp.s
 
+test_cjmod_correct_runtime.o: test_cjmod_correct_runtime.cpp.o
+.PHONY : test_cjmod_correct_runtime.o
+
+# target to build an object file
+test_cjmod_correct_runtime.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_correct_runtime.dir/build.make CMakeFiles/test_cjmod_correct_runtime.dir/test_cjmod_correct_runtime.cpp.o
+.PHONY : test_cjmod_correct_runtime.cpp.o
+
+test_cjmod_correct_runtime.i: test_cjmod_correct_runtime.cpp.i
+.PHONY : test_cjmod_correct_runtime.i
+
+# target to preprocess a source file
+test_cjmod_correct_runtime.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_correct_runtime.dir/build.make CMakeFiles/test_cjmod_correct_runtime.dir/test_cjmod_correct_runtime.cpp.i
+.PHONY : test_cjmod_correct_runtime.cpp.i
+
+test_cjmod_correct_runtime.s: test_cjmod_correct_runtime.cpp.s
+.PHONY : test_cjmod_correct_runtime.s
+
+# target to generate assembly for a file
+test_cjmod_correct_runtime.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_cjmod_correct_runtime.dir/build.make CMakeFiles/test_cjmod_correct_runtime.dir/test_cjmod_correct_runtime.cpp.s
+.PHONY : test_cjmod_correct_runtime.cpp.s
+
 test_cjmod_runtime.o: test_cjmod_runtime.cpp.o
 .PHONY : test_cjmod_runtime.o
 
@@ -1264,30 +1288,6 @@ test_origin_system.s: test_origin_system.cpp.s
 test_origin_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_origin_system.dir/build.make CMakeFiles/test_origin_system.dir/test_origin_system.cpp.s
 .PHONY : test_origin_system.cpp.s
-
-test_original_cjmod_api.o: test_original_cjmod_api.cpp.o
-.PHONY : test_original_cjmod_api.o
-
-# target to build an object file
-test_original_cjmod_api.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_original_cjmod_api.dir/build.make CMakeFiles/test_original_cjmod_api.dir/test_original_cjmod_api.cpp.o
-.PHONY : test_original_cjmod_api.cpp.o
-
-test_original_cjmod_api.i: test_original_cjmod_api.cpp.i
-.PHONY : test_original_cjmod_api.i
-
-# target to preprocess a source file
-test_original_cjmod_api.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_original_cjmod_api.dir/build.make CMakeFiles/test_original_cjmod_api.dir/test_original_cjmod_api.cpp.i
-.PHONY : test_original_cjmod_api.cpp.i
-
-test_original_cjmod_api.s: test_original_cjmod_api.cpp.s
-.PHONY : test_original_cjmod_api.s
-
-# target to generate assembly for a file
-test_original_cjmod_api.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_original_cjmod_api.dir/build.make CMakeFiles/test_original_cjmod_api.dir/test_original_cjmod_api.cpp.s
-.PHONY : test_original_cjmod_api.cpp.s
 
 test_selector_automation.o: test_selector_automation.cpp.o
 .PHONY : test_selector_automation.o
@@ -1565,6 +1565,7 @@ help:
 	@echo "... test_chtl_js_system"
 	@echo "... test_chtl_syntax"
 	@echo "... test_cjmod_complete_integration"
+	@echo "... test_cjmod_correct_runtime"
 	@echo "... test_cjmod_runtime"
 	@echo "... test_compilation_monitor"
 	@echo "... test_complete_chtl_features"
@@ -1578,7 +1579,6 @@ help:
 	@echo "... test_lexer"
 	@echo "... test_namespace_system"
 	@echo "... test_origin_system"
-	@echo "... test_original_cjmod_api"
 	@echo "... test_selector_automation"
 	@echo "... test_short_term_goals_simple"
 	@echo "... test_simple_custom"
@@ -1616,6 +1616,9 @@ help:
 	@echo "... test_cjmod_complete_integration.o"
 	@echo "... test_cjmod_complete_integration.i"
 	@echo "... test_cjmod_complete_integration.s"
+	@echo "... test_cjmod_correct_runtime.o"
+	@echo "... test_cjmod_correct_runtime.i"
+	@echo "... test_cjmod_correct_runtime.s"
 	@echo "... test_cjmod_runtime.o"
 	@echo "... test_cjmod_runtime.i"
 	@echo "... test_cjmod_runtime.s"
@@ -1649,9 +1652,6 @@ help:
 	@echo "... test_origin_system.o"
 	@echo "... test_origin_system.i"
 	@echo "... test_origin_system.s"
-	@echo "... test_original_cjmod_api.o"
-	@echo "... test_original_cjmod_api.i"
-	@echo "... test_original_cjmod_api.s"
 	@echo "... test_selector_automation.o"
 	@echo "... test_selector_automation.i"
 	@echo "... test_selector_automation.s"
