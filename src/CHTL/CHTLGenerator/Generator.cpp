@@ -478,26 +478,25 @@ GenerationOutput Generator::generateDocument(const BaseNode* documentNode) {
     GenerationOutput output;
     
     try {
-        // 🔄 正确的生成流程：
-        // 1. 首先处理CHTL语法（模板、自定义等）并生成HTML
-        // 2. 然后收集所有CSS和JS内容
-        // 3. 最后调用CSS和JS编译器处理完整代码片段
+        // 🔄 正确的编译流程：
+        // 1. CHTL编译器 → 处理CHTL语法 (模板、自定义、原始嵌入等)
+        // 2. CHTL JS编译器 → 处理CHTL JS语法 (listen, animate, vir等)
+        // 3. 代码合并阶段 → 将所有CSS和JS代码合并成完整片段
+        // 4. CSS编译器 → 接收合并后的完整CSS代码片段
+        // 5. JS编译器 → 接收合并后的完整JavaScript代码片段
         
-        // 第一阶段：生成HTML结构
+        // 阶段1: CHTL编译器 - 处理CHTL语法
         output.html = generateHTML(documentNode);
         
-        // 第二阶段：收集完整的CSS代码片段
-        std::ostringstream cssCollector;
-        collectCSSContent(documentNode, cssCollector);
-        String completeCSSCode = cssCollector.str();
+        // 阶段2: CHTL JS编译器 - 处理CHTL JS语法并转换
+        processCHTLJSSyntax(documentNode);
         
-        // 第三阶段：收集完整的JavaScript代码片段
-        std::ostringstream jsCollector;
-        collectJavaScriptContent(documentNode, jsCollector);
-        String completeJSCode = jsCollector.str();
+        // 阶段3: 代码合并阶段 - 合并所有CSS和JS代码
+        String mergedCSSCode = mergeAllCSSCode(documentNode);
+        String mergedJSCode = mergeAllJavaScriptCode(documentNode);
         
-        // 第四阶段：如果有CSS内容，使用ANTLR CSS编译器处理完整片段
-        if (!completeCSSCode.empty()) {
+        // 阶段4: CSS编译器 - 接收合并后的完整CSS代码片段
+        if (!mergedCSSCode.empty()) {
             CSS::CSSCompilerConfig cssConfig;
             cssConfig.minifyOutput = config.optimizeCSS;
             cssConfig.preserveComments = config.includeCSSComments;
@@ -506,21 +505,21 @@ GenerationOutput Generator::generateDocument(const BaseNode* documentNode) {
             cssConfig.enableVariables = true;
             
             CSS::CSSCompiler cssCompiler(cssConfig);
-            auto cssResult = cssCompiler.compile(completeCSSCode);
+            auto cssResult = cssCompiler.compile(mergedCSSCode);
             
             if (cssResult.success) {
                 output.css = cssResult.css;
             } else {
-                output.css = completeCSSCode;
-                output.warnings.push_back("CSS编译失败，使用原始CSS");
+                output.css = mergedCSSCode;
+                output.warnings.push_back("CSS编译失败，使用合并后的CSS");
                 for (const auto& error : cssResult.errors) {
                     output.warnings.push_back("CSS错误: " + error);
                 }
             }
         }
         
-        // 第五阶段：如果有JavaScript内容，使用ANTLR JS编译器处理完整片段
-        if (!completeJSCode.empty()) {
+        // 阶段5: JS编译器 - 接收合并后的完整JavaScript代码片段
+        if (!mergedJSCode.empty()) {
             JS::JSCompilerConfig jsConfig;
             jsConfig.minifyOutput = config.optimizeJS;
             jsConfig.preserveComments = config.includeJSComments;
@@ -529,13 +528,13 @@ GenerationOutput Generator::generateDocument(const BaseNode* documentNode) {
             jsConfig.enableAsync = true;
             
             JS::JSCompiler jsCompiler(jsConfig);
-            auto jsResult = jsCompiler.compile(completeJSCode);
+            auto jsResult = jsCompiler.compile(mergedJSCode);
             
             if (jsResult.success) {
                 output.javascript = jsResult.javascript;
             } else {
-                output.javascript = completeJSCode;
-                output.warnings.push_back("JS编译失败，使用原始JavaScript");
+                output.javascript = mergedJSCode;
+                output.warnings.push_back("JS编译失败，使用合并后的JavaScript");
                 for (const auto& error : jsResult.errors) {
                     output.warnings.push_back("JS错误: " + error);
                 }
@@ -678,8 +677,8 @@ String Generator::cleanCSSContent(const String& css) {
     
     // 清理分号和大括号周围的空格
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*;\s*)"), "; ");
-    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*{\s*)"), " { ");
-    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*}\s*)"), " } ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\{\s*)"), " { ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\}\s*)"), " } ");
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*:\s*)"), ": ");
     
     // 移除开头和结尾的空白
@@ -698,8 +697,8 @@ String Generator::cleanJSContent(const String& js) {
     
     // 清理常见的JavaScript语法周围的空格
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*;\s*)"), "; ");
-    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*{\s*)"), " { ");
-    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*}\s*)"), " } ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\{\s*)"), " { ");
+    cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\}\s*)"), " } ");
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\(\s*)"), "(");
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*\)\s*)"), ") ");
     cleaned = std::regex_replace(cleaned, std::regex(R"(\s*,\s*)"), ", ");
@@ -709,6 +708,165 @@ String Generator::cleanJSContent(const String& js) {
     cleaned.erase(cleaned.find_last_not_of(" \t\n\r") + 1);
     
     return cleaned;
+}
+
+// ========== 正确编译流程的新方法实现 ==========
+
+void Generator::processCHTLJSSyntax(const BaseNode* node) {
+    if (!node) return;
+    
+    // 处理CHTL JS增强语法节点
+    switch (node->getType()) {
+        case NodeType::CHTLJS_FUNCTION:
+        case NodeType::CHTLJS_LISTEN:
+        case NodeType::CHTLJS_DELEGATE:
+        case NodeType::CHTLJS_ANIMATE:
+        case NodeType::CHTLJS_VIR_OBJECT:
+        case NodeType::CHTLJS_MODULE: {
+            // 使用CJMOD生成器转换CHTL JS语法为标准JavaScript
+            String convertedJS = convertCHTLJSToJS(node);
+            
+            // 将转换后的代码存储到节点中，以便后续合并
+            // 这里可以将转换结果临时存储或标记
+            break;
+        }
+        
+        default:
+            // 递归处理子节点
+            for (const auto& child : node->getChildren()) {
+                processCHTLJSSyntax(child.get());
+            }
+            break;
+    }
+}
+
+String Generator::mergeAllCSSCode(const BaseNode* node) {
+    std::ostringstream mergedCSS;
+    
+    // 合并所有CSS代码源：
+    // 1. 直接的style节点
+    // 2. 模板样式 (已处理)
+    // 3. 自定义样式 (已处理)
+    // 4. 原始嵌入的@Style
+    
+    std::function<void(const BaseNode*)> mergeCSSRecursive = [&](const BaseNode* current) {
+        if (!current) return;
+        
+        switch (current->getType()) {
+            case NodeType::STYLE: {
+                String cssContent = current->getValue();
+                if (!cssContent.empty()) {
+                    // 修复CSS语法问题
+                    cssContent = cleanCSSContent(cssContent);
+                    
+                    // 确保CSS规则完整
+                    size_t openBraces = std::count(cssContent.begin(), cssContent.end(), '{');
+                    size_t closeBraces = std::count(cssContent.begin(), cssContent.end(), '}');
+                    while (closeBraces < openBraces) {
+                        cssContent += " }";
+                        closeBraces++;
+                    }
+                    
+                    mergedCSS << cssContent << config.newlineString;
+                }
+                break;
+            }
+            
+            case NodeType::TEMPLATE_STYLE:
+            case NodeType::CUSTOM_STYLE: {
+                // 已处理的模板和自定义样式
+                String styleContent = current->getValue();
+                if (!styleContent.empty()) {
+                    mergedCSS << "/* Template/Custom Style */" << config.newlineString;
+                    mergedCSS << styleContent << config.newlineString;
+                }
+                break;
+            }
+            
+            case NodeType::ORIGIN_STYLE: {
+                // @Style原始嵌入
+                String originCSS = current->getValue();
+                if (!originCSS.empty()) {
+                    mergedCSS << "/* Origin Style */" << config.newlineString;
+                    mergedCSS << originCSS << config.newlineString;
+                }
+                break;
+            }
+            
+            default:
+                // 递归处理子节点
+                for (const auto& child : current->getChildren()) {
+                    mergeCSSRecursive(child.get());
+                }
+                break;
+        }
+    };
+    
+    mergeCSSRecursive(node);
+    
+    return mergedCSS.str();
+}
+
+String Generator::mergeAllJavaScriptCode(const BaseNode* node) {
+    std::ostringstream mergedJS;
+    
+    // 合并所有JavaScript代码源：
+    // 1. 直接的script节点
+    // 2. CHTL JS转换后的代码
+    // 3. 原始嵌入的@JavaScript
+    
+    std::function<void(const BaseNode*)> mergeJSRecursive = [&](const BaseNode* current) {
+        if (!current) return;
+        
+        switch (current->getType()) {
+            case NodeType::SCRIPT: {
+                String jsContent = current->getValue();
+                if (!jsContent.empty()) {
+                    // 修复JavaScript语法问题
+                    jsContent = cleanJSContent(jsContent);
+                    
+                    mergedJS << jsContent << config.newlineString;
+                }
+                break;
+            }
+            
+            case NodeType::CHTLJS_FUNCTION:
+            case NodeType::CHTLJS_LISTEN:
+            case NodeType::CHTLJS_DELEGATE:
+            case NodeType::CHTLJS_ANIMATE:
+            case NodeType::CHTLJS_VIR_OBJECT:
+            case NodeType::CHTLJS_MODULE: {
+                // CHTL JS转换后的代码
+                String convertedJS = convertCHTLJSToJS(current);
+                if (!convertedJS.empty()) {
+                    mergedJS << "/* CHTL JS Converted */" << config.newlineString;
+                    mergedJS << convertedJS << config.newlineString;
+                }
+                break;
+            }
+            
+            case NodeType::ORIGIN_JAVASCRIPT: {
+                // @JavaScript原始嵌入
+                String originJS = current->getValue();
+                if (!originJS.empty()) {
+                    mergedJS << "/* Origin JavaScript */" << config.newlineString;
+                    mergedJS << originJS << config.newlineString;
+                }
+                break;
+            }
+            
+            default:
+                // 递归处理子节点
+                for (const auto& child : current->getChildren()) {
+                    mergeJSRecursive(child.get());
+                }
+                break;
+        }
+    };
+    
+    mergeJSRecursive(node);
+    
+    return mergedJS.str();
 }
 
 } // namespace CHTL

@@ -121,6 +121,11 @@ public:
     void collectJavaScriptContent(const BaseNode* node, std::ostringstream& output);
     String cleanCSSContent(const String& css);
     String cleanJSContent(const String& js);
+    
+    // 正确的编译流程方法
+    void processCHTLJSSyntax(const BaseNode* node);
+    String mergeAllCSSCode(const BaseNode* node);
+    String mergeAllJavaScriptCode(const BaseNode* node);
     void resetState();
     void postProcessOutput(GenerationOutput& output);
     String getIndent(int depth) const;
