@@ -117,6 +117,8 @@ public:
     // 新增辅助方法
     void generateHTMLRecursive(const BaseNode* node, std::ostringstream& output, int depth);
     void generateJavaScriptRecursive(const BaseNode* node, std::ostringstream& output, int depth);
+    void collectCSSContent(const BaseNode* node, std::ostringstream& output);
+    void collectJavaScriptContent(const BaseNode* node, std::ostringstream& output);
     void resetState();
     void postProcessOutput(GenerationOutput& output);
     String getIndent(int depth) const;

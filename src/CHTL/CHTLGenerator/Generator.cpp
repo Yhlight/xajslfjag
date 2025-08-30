@@ -1,5 +1,8 @@
 #include "Generator.h"
 #include "../../Util/StringUtils.h"
+#include "../../CSS/CSSCompiler.h"
+#include "../../JS/JSCompiler.h"
+#include "../../CMODSystem/CJMODGenerator.h"
 #include <chrono>
 #include <sstream>
 #include "../CHTLNode/BaseNode.h"
@@ -181,22 +184,67 @@ void Generator::generateHTMLRecursive(const BaseNode* node, std::ostringstream& 
 
 String Generator::generateCSS(const BaseNode* ast) {
     if (!ast) return "";
-    return "/* Generated CSS */\nbody { font-family: Arial; }\n";
+    
+    std::ostringstream cssOutput;
+    
+    // 收集所有CSS内容
+    collectCSSContent(ast, cssOutput);
+    
+    String cssSource = cssOutput.str();
+    if (cssSource.empty()) {
+        return "";
+    }
+    
+    // 使用CSS编译器处理完整的CSS代码片段
+    CSS::CSSCompilerConfig cssConfig;
+    cssConfig.minifyOutput = config.optimizeCSS;
+    cssConfig.preserveComments = config.includeCSSComments;
+    cssConfig.enableAutoprefixer = config.addVendorPrefixes;
+    
+    CSS::CSSCompiler cssCompiler(cssConfig);
+    auto result = cssCompiler.compile(cssSource);
+    
+    if (result.success) {
+        return result.css;
+    } else {
+        // 如果编译失败，返回原始CSS
+        return cssSource;
+    }
 }
 
 String Generator::generateJavaScript(const BaseNode* ast) {
     if (!ast) return "";
     
-    std::ostringstream js;
+    std::ostringstream jsOutput;
     
     if (config.addStrictMode) {
-        js << "'use strict';" << config.newlineString;
+        jsOutput << "'use strict';" << config.newlineString;
     }
     
-    // 递归生成JavaScript内容
-    generateJavaScriptRecursive(ast, js, 0);
+    // 收集所有JavaScript内容
+    collectJavaScriptContent(ast, jsOutput);
     
-    return js.str();
+    String jsSource = jsOutput.str();
+    if (jsSource.empty()) {
+        return "";
+    }
+    
+    // 使用JS编译器处理完整的JavaScript代码片段
+    JS::JSCompilerConfig jsConfig;
+    jsConfig.minifyOutput = config.optimizeJS;
+    jsConfig.preserveComments = config.includeJSComments;
+    jsConfig.enableModules = config.useESModules;
+    jsConfig.strictMode = config.addStrictMode;
+    
+    JS::JSCompiler jsCompiler(jsConfig);
+    auto result = jsCompiler.compile(jsSource);
+    
+    if (result.success) {
+        return result.javascript;
+    } else {
+        // 如果编译失败，返回原始JavaScript
+        return jsSource;
+    }
 }
 
 void Generator::generateJavaScriptRecursive(const BaseNode* node, std::ostringstream& output, int depth) {
@@ -242,9 +290,104 @@ void Generator::generateJavaScriptRecursive(const BaseNode* node, std::ostringst
 }
 
 String Generator::convertCHTLJSToJS(const BaseNode* node) {
-    // TODO: 实现CHTL JS到JS的转换
-    // 这里需要调用CJMOD生成器
-    return "// CHTL JS converted: " + node->getValue();
+    // 使用CJMOD生成器处理CHTL JS语法
+    CJMOD::CJMODGenerator cjmodGenerator;
+    
+    String nodeValue = node->getValue();
+    auto result = cjmodGenerator.generateFromSyntax(nodeValue);
+    
+    if (result.success) {
+        return result.generatedCode;
+    } else {
+        // 如果CJMOD生成失败，返回注释形式
+        return "// CHTL JS (generation failed): " + nodeValue;
+    }
+}
+
+void Generator::collectCSSContent(const BaseNode* node, std::ostringstream& output) {
+    if (!node) return;
+    
+    switch (node->getType()) {
+        case NodeType::STYLE: {
+            // 样式节点：收集CSS内容
+            String content = node->getValue();
+            if (!content.empty()) {
+                output << content << config.newlineString;
+            }
+            break;
+        }
+        
+        case NodeType::TEMPLATE_STYLE:
+        case NodeType::CUSTOM_STYLE: {
+            // 模板和自定义样式：收集内容
+            String content = node->getValue();
+            if (!content.empty()) {
+                output << content << config.newlineString;
+            }
+            break;
+        }
+        
+        case NodeType::ORIGIN_STYLE: {
+            // @Style原始嵌入：收集CSS内容
+            String content = node->getValue();
+            if (!content.empty()) {
+                output << content << config.newlineString;
+            }
+            break;
+        }
+        
+        default:
+            // 递归处理子节点
+            for (const auto& child : node->getChildren()) {
+                collectCSSContent(child.get(), output);
+            }
+            break;
+    }
+}
+
+void Generator::collectJavaScriptContent(const BaseNode* node, std::ostringstream& output) {
+    if (!node) return;
+    
+    switch (node->getType()) {
+        case NodeType::SCRIPT: {
+            // 脚本节点：收集JavaScript内容
+            String content = node->getValue();
+            if (!content.empty()) {
+                output << content << config.newlineString;
+            }
+            break;
+        }
+        
+        case NodeType::CHTLJS_FUNCTION:
+        case NodeType::CHTLJS_LISTEN:
+        case NodeType::CHTLJS_DELEGATE:
+        case NodeType::CHTLJS_ANIMATE:
+        case NodeType::CHTLJS_VIR_OBJECT:
+        case NodeType::CHTLJS_MODULE: {
+            // CHTL JS增强语法：转换为JavaScript
+            String convertedJS = convertCHTLJSToJS(node);
+            if (!convertedJS.empty()) {
+                output << convertedJS << config.newlineString;
+            }
+            break;
+        }
+        
+        case NodeType::ORIGIN_JAVASCRIPT: {
+            // @JavaScript原始嵌入：收集JavaScript内容
+            String content = node->getValue();
+            if (!content.empty()) {
+                output << content << config.newlineString;
+            }
+            break;
+        }
+        
+        default:
+            // 递归处理子节点
+            for (const auto& child : node->getChildren()) {
+                collectJavaScriptContent(child.get(), output);
+            }
+            break;
+    }
 }
 
 GenerationOutput Generator::generate(const BaseNode* ast) {

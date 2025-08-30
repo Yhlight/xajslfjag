@@ -71,7 +71,11 @@ set(CHTL_CORE_SOURCES
     
     # Compiler Dispatcher
     src/CompilerDispatcher/Dispatcher.cpp
+    
+    # CSS and JS Compilers - 重要！
+    src/CSS/CSSCompiler.cpp
     src/CSS/CSSParser/Parser.cpp
+    src/JS/JSCompiler.cpp
     src/JS/JSParser/Parser.cpp
     
     # Module System
