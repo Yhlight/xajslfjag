@@ -1,0 +1,39 @@
+// Chtholly模块信息文件
+// 珂朵莉·诺塔·瑟尼欧里斯 - 世界上最幸福的女孩
+// 基于《末日时在做什么？有没有空？可以来拯救吗？》角色设计
+
+[Info]
+{
+    name = "chtholly";
+    version = "1.0.0";
+    description = "珂朵莉主题模块 - 世界上最幸福的女孩，提供优雅的UI组件和动画效果";
+    author = "CHTL Team";
+    license = "MIT";
+    category = "theme";
+    minCHTLVersion = "1.0.0";
+    maxCHTLVersion = "2.0.0";
+    dependencies = "";
+}
+
+[Export]
+{
+    [Custom] @Style ChthollyStyle, ChthollyCard, ChthollyButton,
+           ChthollyHeader, ChthollyFooter, ChthollyAccordion,
+           ChthollyGallery, ChthollyMemo, ChthollyNote,
+           ChthollyProgress, ChthollyMenu;
+
+    [Custom] @Element ChthollyPage, ChthollySection, ChthollyNav,
+             ChthollyModal, ChthollyAccordionPanel, ChthollyGalleryItem,
+             ChthollyMemoCard, ChthollyNoteEditor, ChthollyProgressBar,
+             ChthollyContextMenu;
+
+    [Custom] @Var ChthollyColors, ChthollyFonts, ChthollySpacing,
+         ChthollyBreakpoints, ChthollyAnimations, ChthollyEffects;
+
+    [Template] @Style ChthollyBaseStyle, ChthollyTheme, ChthollyLayout;
+    [Template] @Element ChthollyContainer, ChthollyWrapper;
+    [Template] @Var ChthollyPalette, ChthollyTypography;
+    
+    [Origin] @Html ChthollyHeader, ChthollyFooter;
+    [Origin] @Style ChthollyReset, ChthollyUtilities;
+}

@@ -1,0 +1,53 @@
+# Build artifacts
+build/
+build_*/
+*.o
+*.a
+*.so
+*.dll
+*.exe
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+CPackConfig.cmake
+CPackSourceConfig.cmake
+
+# IDE files
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Node.js (for VSCode extension)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Distribution
+dist/
+packaged_modules/
+*.vsix
+
+# Test artifacts
+test_*
+*test*
+*verification*
+comprehensive_*
+
+# Development artifacts
+developer-simulation/
+developer-test-project/

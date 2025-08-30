@@ -1,0 +1,1314 @@
+// Chtholly主模块 - 珂朵莉·诺塔·瑟尼欧里斯
+// 世界上最幸福的女孩，黄金妖精，持剑战士
+// 温柔、认真、有责任感，拥有美丽的红发和蓝眼
+
+[Configuration] @Config ChthollyTheme
+{
+    INDEX_INITIAL_COUNT = 1;
+    DISABLE_STYLE_AUTO_ADD_CLASS = false;
+    DISABLE_STYLE_AUTO_ADD_ID = false;
+    DEBUG_MODE = false;
+    
+    [Name]
+    {
+        // 珂朵莉专用关键字别名
+        fairy = "chtholly";
+        golden = "fairy";
+        sword = "weapon";
+        happiness = "joy";
+        memory = "memo";
+    }
+    
+    [OriginType]
+    {
+        ORIGINTYPE_FAIRY = @Fairy;
+        ORIGINTYPE_SWORD = @Sword;
+        ORIGINTYPE_MEMORY = @Memory;
+    }
+}
+
+[Template] @Var ChthollyColors
+{
+    // 珂朵莉的标志性颜色 - 红发蓝眼
+    primary: "#e74c3c";        // 珂朵莉的红发色
+    secondary: "#3498db";      // 珂朵莉的蓝眼色
+    accent: "#f39c12";         // 温暖的金色
+    
+    // 情感色彩
+    happiness: "#ffeb3b";      // 幸福的黄色
+    memory: "#9c27b0";         // 回忆的紫色
+    courage: "#ff5722";        // 勇气的橙红色
+    gentle: "#e8f5e8";         // 温柔的淡绿色
+    
+    // 武器色彩
+    swordSilver: "#c0c0c0";    // 剑身银色
+    swordGold: "#ffd700";      // 剑柄金色
+    swordGlow: "#87ceeb";      // 剑光蓝色
+    
+    // 背景色彩
+    skyBlue: "#87ceeb";        // 天空蓝
+    cloudWhite: "#f8f8ff";     // 云朵白
+    sunsetOrange: "#ff6347";   // 夕阳橙
+    nightBlue: "#191970";      // 夜空蓝
+    
+    // 中性色
+    white: "#ffffff";
+    black: "#2c3e50";
+    gray100: "#f8f9fa";
+    gray200: "#e9ecef";
+    gray300: "#dee2e6";
+    gray400: "#ced4da";
+    gray500: "#adb5bd";
+    gray600: "#6c757d";
+    gray700: "#495057";
+    gray800: "#343a40";
+    gray900: "#212529";
+}
+
+[Template] @Var ChthollyTypography
+{
+    // 珂朵莉风格字体
+    primaryFont: "'Noto Sans SC', 'Microsoft YaHei', sans-serif";
+    titleFont: "'Noto Serif SC', 'Times New Roman', serif";
+    codeFont: "'Fira Code', 'Consolas', monospace";
+    
+    // 字体大小 - 优雅的比例
+    xs: "0.75rem";     // 12px
+    sm: "0.875rem";    // 14px
+    base: "1rem";      // 16px
+    lg: "1.125rem";    // 18px
+    xl: "1.25rem";     // 20px
+    "2xl": "1.5rem";   // 24px
+    "3xl": "1.875rem"; // 30px
+    "4xl": "2.25rem";  // 36px
+    "5xl": "3rem";     // 48px
+    
+    // 字重
+    light: "300";
+    normal: "400";
+    medium: "500";
+    semibold: "600";
+    bold: "700";
+    
+    // 行高
+    tight: "1.25";
+    normal: "1.5";
+    relaxed: "1.75";
+    loose: "2";
+}
+
+[Template] @Var ChthollySpacing
+{
+    // 珂朵莉风格间距 - 和谐的比例
+    xs: "0.25rem";    // 4px
+    sm: "0.5rem";     // 8px
+    md: "1rem";       // 16px
+    lg: "1.5rem";     // 24px
+    xl: "2rem";       // 32px
+    "2xl": "3rem";    // 48px
+    "3xl": "4rem";    // 64px
+    "4xl": "6rem";    // 96px
+    "5xl": "8rem";    // 128px
+}
+
+[Template] @Var ChthollyAnimations
+{
+    // 珂朵莉风格动画时长 - 优雅的节奏
+    instant: "0ms";
+    fast: "150ms";
+    normal: "300ms";
+    slow: "500ms";
+    slower: "800ms";
+    
+    // 缓动函数
+    easeIn: "cubic-bezier(0.4, 0, 1, 1)";
+    easeOut: "cubic-bezier(0, 0, 0.2, 1)";
+    easeInOut: "cubic-bezier(0.4, 0, 0.2, 1)";
+    bounce: "cubic-bezier(0.68, -0.55, 0.265, 1.55)";
+    elastic: "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+}
+
+[Template] @Var ChthollyEffects
+{
+    // 阴影效果 - 柔和的光影
+    shadowSoft: "0 2px 8px rgba(231, 76, 60, 0.1)";
+    shadowMedium: "0 4px 16px rgba(231, 76, 60, 0.15)";
+    shadowLarge: "0 8px 32px rgba(231, 76, 60, 0.2)";
+    shadowGlow: "0 0 20px rgba(52, 152, 219, 0.3)";
+    
+    // 渐变效果
+    gradientPrimary: "linear-gradient(135deg, #e74c3c, #3498db)";
+    gradientSunset: "linear-gradient(135deg, #ff6347, #ffd700)";
+    gradientMemory: "linear-gradient(135deg, #9c27b0, #e74c3c)";
+    gradientSky: "linear-gradient(135deg, #87ceeb, #f8f8ff)";
+    
+    // 边框半径
+    radiusSmall: "0.25rem";
+    radiusMedium: "0.5rem";
+    radiusLarge: "1rem";
+    radiusRound: "50%";
+    
+    // 透明度
+    transparent: "transparent";
+    semiTransparent: "rgba(255, 255, 255, 0.8)";
+    overlay: "rgba(44, 62, 80, 0.6)";
+}
+
+[Template] @Style ChthollyBaseStyle
+{
+    // 珂朵莉基础样式
+    font-family: ChthollyTypography(primaryFont);
+    font-size: ChthollyTypography(base);
+    line-height: ChthollyTypography(normal);
+    color: ChthollyColors(black);
+    transition: "all" ChthollyAnimations(normal) ChthollyAnimations(easeInOut);
+}
+
+[Template] @Style ChthollyTheme
+{
+    @Style ChthollyBaseStyle;
+    
+    // 主题色彩变量
+    --chtholly-primary: ChthollyColors(primary);
+    --chtholly-secondary: ChthollyColors(secondary);
+    --chtholly-accent: ChthollyColors(accent);
+    --chtholly-happiness: ChthollyColors(happiness);
+    --chtholly-memory: ChthollyColors(memory);
+    --chtholly-gentle: ChthollyColors(gentle);
+    
+    // 背景变量
+    --chtholly-bg-sky: ChthollyColors(skyBlue);
+    --chtholly-bg-cloud: ChthollyColors(cloudWhite);
+    --chtholly-bg-sunset: ChthollyColors(sunsetOrange);
+    --chtholly-bg-night: ChthollyColors(nightBlue);
+    
+    // 效果变量
+    --chtholly-shadow: ChthollyEffects(shadowSoft);
+    --chtholly-glow: ChthollyEffects(shadowGlow);
+    --chtholly-gradient: ChthollyEffects(gradientPrimary);
+}
+
+[Custom] @Style ChthollyCard from ChthollyBaseStyle
+{
+    background: ChthollyColors(cloudWhite);
+    border: "1px solid" ChthollyColors(gray200);
+    border-radius: ChthollyEffects(radiusMedium);
+    padding: ChthollySpacing(lg);
+    box-shadow: ChthollyEffects(shadowSoft);
+    position: "relative";
+    overflow: "hidden";
+    
+    // 珂朵莉风格的卡片光效
+    &::before
+    {
+        content: "''";
+        position: "absolute";
+        top: "0";
+        left: "-100%";
+        width: "100%";
+        height: "100%";
+        background: ChthollyEffects(gradientSky);
+        opacity: "0";
+        transition: "all" ChthollyAnimations(slow) ChthollyAnimations(easeOut);
+        z-index: "1";
+    }
+    
+    &:hover::before
+    {
+        left: "100%";
+        opacity: "0.1";
+    }
+    
+    &:hover
+    {
+        transform: "translateY(-4px)";
+        box-shadow: ChthollyEffects(shadowMedium);
+    }
+}
+
+[Custom] @Style ChthollyButton from ChthollyBaseStyle
+{
+    display: "inline-flex";
+    align-items: "center";
+    justify-content: "center";
+    padding: ChthollySpacing(sm) ChthollySpacing(lg);
+    background: ChthollyEffects(gradientPrimary);
+    color: ChthollyColors(white);
+    border: "none";
+    border-radius: ChthollyEffects(radiusMedium);
+    font-weight: ChthollyTypography(medium);
+    cursor: "pointer";
+    position: "relative";
+    overflow: "hidden";
+    
+    // 珂朵莉的剑光效果
+    &::after
+    {
+        content: "''";
+        position: "absolute";
+        top: "50%";
+        left: "50%";
+        width: "0";
+        height: "0";
+        background: "radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%)";
+        border-radius: ChthollyEffects(radiusRound);
+        transform: "translate(-50%, -50%)";
+        transition: "all" ChthollyAnimations(normal) ChthollyAnimations(easeOut);
+    }
+    
+    &:hover
+    {
+        transform: "translateY(-2px)";
+        box-shadow: ChthollyEffects(shadowGlow);
+    }
+    
+    &:hover::after
+    {
+        width: "120%";
+        height: "120%";
+        opacity: "0";
+    }
+    
+    &:active
+    {
+        transform: "translateY(0)";
+    }
+}
+
+[Custom] @Style ChthollyAccordion from ChthollyCard
+{
+    // 手风琴样式
+    border-radius: "0";
+    margin-bottom: "1px";
+    
+    .accordion-header
+    {
+        background: ChthollyEffects(gradientPrimary);
+        color: ChthollyColors(white);
+        padding: ChthollySpacing(md) ChthollySpacing(lg);
+        cursor: "pointer";
+        display: "flex";
+        justify-content: "space-between";
+        align-items: "center";
+        font-weight: ChthollyTypography(semibold);
+        
+        &:hover
+        {
+            background: ChthollyEffects(gradientSunset);
+        }
+    }
+    
+    .accordion-icon
+    {
+        transition: "transform" ChthollyAnimations(normal) ChthollyAnimations(easeInOut);
+        font-size: ChthollyTypography(lg);
+    }
+    
+    .accordion-content
+    {
+        max-height: "0";
+        overflow: "hidden";
+        transition: "max-height" ChthollyAnimations(slow) ChthollyAnimations(easeInOut);
+        background: ChthollyColors(gentle);
+    }
+    
+    .accordion-body
+    {
+        padding: ChthollySpacing(lg);
+        border-top: "1px solid" ChthollyColors(gray200);
+    }
+    
+    &.active .accordion-icon
+    {
+        transform: "rotate(180deg)";
+    }
+    
+    &.active .accordion-content
+    {
+        max-height: "500px";
+    }
+}
+
+[Custom] @Style ChthollyGallery from ChthollyBaseStyle
+{
+    // 四叶窗相册样式
+    display: "grid";
+    grid-template-columns: "repeat(auto-fit, minmax(250px, 1fr))";
+    gap: ChthollySpacing(md);
+    
+    .gallery-item
+    {
+        position: "relative";
+        aspect-ratio: "1 / 1";
+        border-radius: ChthollyEffects(radiusMedium);
+        overflow: "hidden";
+        cursor: "pointer";
+        background: ChthollyEffects(gradientSky);
+    }
+    
+    .gallery-image
+    {
+        width: "100%";
+        height: "100%";
+        object-fit: "cover";
+        transition: "transform" ChthollyAnimations(slow) ChthollyAnimations(easeInOut);
+    }
+    
+    .gallery-overlay
+    {
+        position: "absolute";
+        top: "0";
+        left: "0";
+        right: "0";
+        bottom: "0";
+        background: ChthollyEffects(overlay);
+        display: "flex";
+        align-items: "center";
+        justify-content: "center";
+        opacity: "0";
+        transition: "opacity" ChthollyAnimations(normal) ChthollyAnimations(easeInOut);
+    }
+    
+    .gallery-title
+    {
+        color: ChthollyColors(white);
+        font-size: ChthollyTypography(lg);
+        font-weight: ChthollyTypography(semibold);
+        text-align: "center";
+        transform: "translateY(20px)";
+        transition: "transform" ChthollyAnimations(normal) ChthollyAnimations(easeOut);
+    }
+    
+    .gallery-item:hover .gallery-image
+    {
+        transform: "scale(1.1)";
+    }
+    
+    .gallery-item:hover .gallery-overlay
+    {
+        opacity: "1";
+    }
+    
+    .gallery-item:hover .gallery-title
+    {
+        transform: "translateY(0)";
+    }
+}
+
+[Custom] @Style ChthollyMemo from ChthollyCard
+{
+    // 备忘录样式
+    background: ChthollyColors(gentle);
+    border-left: "4px solid" ChthollyColors(primary);
+    
+    .memo-header
+    {
+        display: "flex";
+        align-items: "center";
+        margin-bottom: ChthollySpacing(md);
+        padding-bottom: ChthollySpacing(sm);
+        border-bottom: "1px solid" ChthollyColors(gray200);
+    }
+    
+    .memo-icon
+    {
+        width: "24px";
+        height: "24px";
+        margin-right: ChthollySpacing(sm);
+        color: ChthollyColors(primary);
+    }
+    
+    .memo-title
+    {
+        font-size: ChthollyTypography(lg);
+        font-weight: ChthollyTypography(semibold);
+        color: ChthollyColors(black);
+    }
+    
+    .memo-date
+    {
+        margin-left: "auto";
+        font-size: ChthollyTypography(sm);
+        color: ChthollyColors(gray600);
+    }
+    
+    .memo-content
+    {
+        line-height: ChthollyTypography(relaxed);
+        color: ChthollyColors(gray700);
+    }
+    
+    .memo-tags
+    {
+        display: "flex";
+        gap: ChthollySpacing(xs);
+        margin-top: ChthollySpacing(md);
+        flex-wrap: "wrap";
+    }
+    
+    .memo-tag
+    {
+        background: ChthollyColors(primary);
+        color: ChthollyColors(white);
+        padding: ChthollySpacing(xs) ChthollySpacing(sm);
+        border-radius: ChthollyEffects(radiusSmall);
+        font-size: ChthollyTypography(xs);
+        font-weight: ChthollyTypography(medium);
+    }
+}
+
+[Custom] @Style ChthollyNote from ChthollyCard
+{
+    // 暖色笔记样式
+    background: "linear-gradient(135deg," ChthollyColors(gentle) "," ChthollyColors(cloudWhite) ")";
+    border: "1px solid" ChthollyColors(happiness);
+    
+    .note-header
+    {
+        background: ChthollyEffects(gradientSunset);
+        color: ChthollyColors(white);
+        margin: "-" ChthollySpacing(lg);
+        margin-bottom: ChthollySpacing(lg);
+        padding: ChthollySpacing(md) ChthollySpacing(lg);
+        border-radius: ChthollyEffects(radiusMedium) ChthollyEffects(radiusMedium) "0 0";
+    }
+    
+    .note-title
+    {
+        font-size: ChthollyTypography(xl);
+        font-weight: ChthollyTypography(bold);
+        margin-bottom: ChthollySpacing(xs);
+    }
+    
+    .note-subtitle
+    {
+        font-size: ChthollyTypography(sm);
+        opacity: "0.9";
+    }
+    
+    .note-content
+    {
+        line-height: ChthollyTypography(relaxed);
+        font-size: ChthollyTypography(base);
+    }
+    
+    .note-highlight
+    {
+        background: ChthollyColors(happiness);
+        color: ChthollyColors(black);
+        padding: ChthollySpacing(xs) ChthollySpacing(sm);
+        border-radius: ChthollyEffects(radiusSmall);
+        font-weight: ChthollyTypography(medium);
+    }
+}
+
+[Custom] @Style ChthollyProgress from ChthollyBaseStyle
+{
+    // 进度条样式
+    width: "100%";
+    height: "8px";
+    background: ChthollyColors(gray200);
+    border-radius: ChthollyEffects(radiusSmall);
+    overflow: "hidden";
+    position: "relative";
+    
+    .progress-bar
+    {
+        height: "100%";
+        background: ChthollyEffects(gradientPrimary);
+        border-radius: ChthollyEffects(radiusSmall);
+        transition: "width" ChthollyAnimations(slow) ChthollyAnimations(easeOut);
+        position: "relative";
+    }
+    
+    .progress-glow
+    {
+        position: "absolute";
+        top: "0";
+        right: "0";
+        width: "20px";
+        height: "100%";
+        background: "linear-gradient(90deg, transparent," ChthollyColors(white) ")";
+        opacity: "0.7";
+        animation: "chthollyGlow 2s ease-in-out infinite";
+    }
+    
+    @keyframes chthollyGlow
+    {
+        0%, 100% { opacity: "0.7"; transform: "translateX(0)"; }
+        50% { opacity: "1"; transform: "translateX(-10px)"; }
+    }
+}
+
+[Custom] @Style ChthollyMenu from ChthollyCard
+{
+    // 右键菜单样式
+    position: "fixed";
+    z-index: "9999";
+    min-width: "200px";
+    background: ChthollyColors(white);
+    border: "1px solid" ChthollyColors(gray300);
+    border-radius: ChthollyEffects(radiusMedium);
+    box-shadow: ChthollyEffects(shadowLarge);
+    padding: ChthollySpacing(xs) "0";
+    opacity: "0";
+    transform: "scale(0.8) translateY(-10px)";
+    transition: "all" ChthollyAnimations(fast) ChthollyAnimations(easeOut);
+    pointer-events: "none";
+    
+    .menu-item
+    {
+        display: "flex";
+        align-items: "center";
+        padding: ChthollySpacing(sm) ChthollySpacing(lg);
+        color: ChthollyColors(gray700);
+        cursor: "pointer";
+        transition: "all" ChthollyAnimations(fast) ChthollyAnimations(easeInOut);
+        border-bottom: "1px solid transparent";
+    }
+    
+    .menu-item:hover
+    {
+        background: ChthollyColors(gentle);
+        color: ChthollyColors(primary);
+        border-bottom-color: ChthollyColors(primary);
+    }
+    
+    .menu-icon
+    {
+        margin-right: ChthollySpacing(sm);
+        font-size: ChthollyTypography(base);
+    }
+    
+    .menu-text
+    {
+        font-size: ChthollyTypography(sm);
+        font-weight: ChthollyTypography(medium);
+    }
+    
+    .menu-shortcut
+    {
+        margin-left: "auto";
+        font-size: ChthollyTypography(xs);
+        color: ChthollyColors(gray500);
+    }
+    
+    &.show
+    {
+        opacity: "1";
+        transform: "scale(1) translateY(0)";
+        pointer-events: "auto";
+    }
+}
+
+[Template] @Element ChthollyContainer
+{
+    div
+    {
+        class: "chtholly-container";
+        
+        style
+        {
+            @Style ChthollyTheme;
+            
+            .chtholly-container
+            {
+                max-width: "1200px";
+                margin: "0 auto";
+                padding: "0" ChthollySpacing(lg);
+                position: "relative";
+            }
+            
+            // 珂朵莉的樱花雨背景效果
+            .chtholly-container::before
+            {
+                content: "''";
+                position: "absolute";
+                top: "0";
+                left: "0";
+                right: "0";
+                bottom: "0";
+                background-image: "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"20\" cy=\"20\" r=\"2\" fill=\"%23ffb6c1\" opacity=\"0.3\"/><circle cx=\"80\" cy=\"40\" r=\"1.5\" fill=\"%23ffc0cb\" opacity=\"0.4\"/><circle cx=\"60\" cy=\"80\" r=\"1\" fill=\"%23ffe4e1\" opacity=\"0.5\"/></svg>')";
+                background-size: "100px 100px";
+                animation: "chthollyPetals 20s linear infinite";
+                pointer-events: "none";
+                z-index: "-1";
+            }
+            
+            @keyframes chthollyPetals
+            {
+                0% { transform: "translateY(-100px)"; }
+                100% { transform: "translateY(calc(100vh + 100px))"; }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyAccordionPanel from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            @Style ChthollyAccordion;
+        }
+        
+        div
+        {
+            class: "accordion-header";
+            
+            h3
+            {
+                class: "accordion-title";
+                
+                text
+                {
+                    "珂朵莉的回忆"
+                }
+            }
+            
+            span
+            {
+                class: "accordion-icon";
+                
+                text
+                {
+                    "▼"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "accordion-content";
+            
+            div
+            {
+                class: "accordion-body";
+                
+                p
+                {
+                    text
+                    {
+                        "在这个世界的尽头，珂朵莉找到了属于自己的幸福。即使是黄金妖精，也能拥有最珍贵的回忆。"
+                    }
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyGalleryItem from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            @Style ChthollyGallery;
+        }
+        
+        div
+        {
+            class: "gallery-item";
+            
+            img
+            {
+                class: "gallery-image";
+                src: "chtholly-memory-1.jpg";
+                alt: "珂朵莉的回忆";
+            }
+            
+            div
+            {
+                class: "gallery-overlay";
+                
+                h4
+                {
+                    class: "gallery-title";
+                    
+                    text
+                    {
+                        "最幸福的时光"
+                    }
+                }
+            }
+        }
+        
+        div
+        {
+            class: "gallery-item";
+            
+            img
+            {
+                class: "gallery-image";
+                src: "chtholly-sword.jpg";
+                alt: "瑟尼欧里斯";
+            }
+            
+            div
+            {
+                class: "gallery-overlay";
+                
+                h4
+                {
+                    class: "gallery-title";
+                    
+                    text
+                    {
+                        "瑟尼欧里斯"
+                    }
+                }
+            }
+        }
+        
+        div
+        {
+            class: "gallery-item";
+            
+            img
+            {
+                class: "gallery-image";
+                src: "chtholly-smile.jpg";
+                alt: "珂朵莉的微笑";
+            }
+            
+            div
+            {
+                class: "gallery-overlay";
+                
+                h4
+                {
+                    class: "gallery-title";
+                    
+                    text
+                    {
+                        "永远的微笑"
+                    }
+                }
+            }
+        }
+        
+        div
+        {
+            class: "gallery-item";
+            
+            img
+            {
+                class: "gallery-image";
+                src: "chtholly-sky.jpg";
+                alt: "天空的记忆";
+            }
+            
+            div
+            {
+                class: "gallery-overlay";
+                
+                h4
+                {
+                    class: "gallery-title";
+                    
+                    text
+                    {
+                        "天空的约定"
+                    }
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyMemoCard from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            @Style ChthollyMemo;
+        }
+        
+        div
+        {
+            class: "memo-header";
+            
+            div
+            {
+                class: "memo-icon";
+                
+                text
+                {
+                    "📝"
+                }
+            }
+            
+            h3
+            {
+                class: "memo-title";
+                
+                text
+                {
+                    "珂朵莉的日记"
+                }
+            }
+            
+            span
+            {
+                class: "memo-date";
+                
+                text
+                {
+                    "今天"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "memo-content";
+            
+            p
+            {
+                text
+                {
+                    "今天又是平静的一天。和威廉一起看了日落，天空的颜色真的很美。我想，这就是幸福的感觉吧。"
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "瑟尼欧里斯今天很乖，没有发出奇怪的声音。也许它也感受到了这份宁静。"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "memo-tags";
+            
+            span
+            {
+                class: "memo-tag";
+                
+                text
+                {
+                    "日常"
+                }
+            }
+            
+            span
+            {
+                class: "memo-tag";
+                
+                text
+                {
+                    "幸福"
+                }
+            }
+            
+            span
+            {
+                class: "memo-tag";
+                
+                text
+                {
+                    "回忆"
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyNoteEditor from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            @Style ChthollyNote;
+        }
+        
+        div
+        {
+            class: "note-header";
+            
+            h2
+            {
+                class: "note-title";
+                
+                text
+                {
+                    "珂朵莉的温暖笔记"
+                }
+            }
+            
+            p
+            {
+                class: "note-subtitle";
+                
+                text
+                {
+                    "记录每一个美好的瞬间"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "note-content";
+            
+            p
+            {
+                text
+                {
+                    "在这个即将终结的世界里，我找到了最珍贵的东西。不是作为武器的价值，而是作为一个人的"
+                }
+                
+                span
+                {
+                    class: "note-highlight";
+                    
+                    text
+                    {
+                        "幸福"
+                    }
+                }
+                
+                text
+                {
+                    "。"
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "威廉教会了我什么是爱，什么是希望。即使明天世界就要结束，我也会为了保护这份美好而战斗。"
+                }
+            }
+            
+            p
+            {
+                text
+                {
+                    "这就是我，珂朵莉·诺塔·瑟尼欧里斯，"
+                }
+                
+                span
+                {
+                    class: "note-highlight";
+                    
+                    text
+                    {
+                        "世界上最幸福的女孩"
+                    }
+                }
+                
+                text
+                {
+                    "。"
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyProgressBar from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            .progress-container
+            {
+                margin: ChthollySpacing(lg) "0";
+            }
+            
+            .progress-label
+            {
+                display: "flex";
+                justify-content: "space-between";
+                margin-bottom: ChthollySpacing(sm);
+                font-size: ChthollyTypography(sm);
+                font-weight: ChthollyTypography(medium);
+                color: ChthollyColors(gray700);
+            }
+            
+            @Style ChthollyProgress;
+        }
+        
+        div
+        {
+            class: "progress-container";
+            
+            div
+            {
+                class: "progress-label";
+                
+                span
+                {
+                    text
+                    {
+                        "珂朵莉的幸福指数"
+                    }
+                }
+                
+                span
+                {
+                    class: "progress-percentage";
+                    
+                    text
+                    {
+                        "100%"
+                    }
+                }
+            }
+            
+            div
+            {
+                class: "chtholly-progress";
+                
+                div
+                {
+                    class: "progress-bar";
+                    style: "width: 100%;";
+                    
+                    div
+                    {
+                        class: "progress-glow";
+                    }
+                }
+            }
+        }
+    }
+}
+
+[Custom] @Element ChthollyContextMenu from ChthollyContainer
+{
+    div[0]
+    {
+        style
+        {
+            @Style ChthollyMenu;
+        }
+        
+        div
+        {
+            class: "menu-item";
+            
+            span
+            {
+                class: "menu-icon";
+                
+                text
+                {
+                    "💝"
+                }
+            }
+            
+            span
+            {
+                class: "menu-text";
+                
+                text
+                {
+                    "珂朵莉的回忆"
+                }
+            }
+            
+            span
+            {
+                class: "menu-shortcut";
+                
+                text
+                {
+                    "Ctrl+M"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "menu-item";
+            
+            span
+            {
+                class: "menu-icon";
+                
+                text
+                {
+                    "⚔️"
+                }
+            }
+            
+            span
+            {
+                class: "menu-text";
+                
+                text
+                {
+                    "瑟尼欧里斯"
+                }
+            }
+            
+            span
+            {
+                class: "menu-shortcut";
+                
+                text
+                {
+                    "Ctrl+S"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "menu-item";
+            
+            span
+            {
+                class: "menu-icon";
+                
+                text
+                {
+                    "🌸"
+                }
+            }
+            
+            span
+            {
+                class: "menu-text";
+                
+                text
+                {
+                    "樱花雨"
+                }
+            }
+            
+            span
+            {
+                class: "menu-shortcut";
+                
+                text
+                {
+                    "Ctrl+P"
+                }
+            }
+        }
+        
+        div
+        {
+            class: "menu-item";
+            
+            span
+            {
+                class: "menu-icon";
+                
+                text
+                {
+                    "✨"
+                }
+            }
+            
+            span
+            {
+                class: "menu-text";
+                
+                text
+                {
+                    "魔法特效"
+                }
+            }
+            
+            span
+            {
+                class: "menu-shortcut";
+                
+                text
+                {
+                    "Ctrl+E"
+                }
+            }
+        }
+    }
+}
+
+[Origin] @Html ChthollyHeader
+{
+    <header class="chtholly-header">
+        <div class="chtholly-container">
+            <div class="header-content">
+                <div class="header-logo">
+                    <h1 class="logo-text">珂朵莉</h1>
+                    <p class="logo-subtitle">世界上最幸福的女孩</p>
+                </div>
+                <nav class="header-nav">
+                    <a href="#memories" class="nav-link">回忆</a>
+                    <a href="#gallery" class="nav-link">相册</a>
+                    <a href="#notes" class="nav-link">笔记</a>
+                    <a href="#about" class="nav-link">关于</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+}
+
+[Origin] @Style ChthollyReset
+{
+    /* 珂朵莉风格的CSS重置 */
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+    }
+    
+    body {
+        font-family: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+        line-height: 1.6;
+        color: #2c3e50;
+        background: linear-gradient(135deg, #f8f8ff 0%, #e8f5e8 100%);
+        min-height: 100vh;
+    }
+    
+    img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 0.5rem;
+    }
+    
+    button {
+        font-family: inherit;
+    }
+    
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    /* 珂朵莉专用滚动条 */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        background: #f8f8ff;
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #e74c3c, #3498db);
+        border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #c0392b, #2980b9);
+    }
+}
