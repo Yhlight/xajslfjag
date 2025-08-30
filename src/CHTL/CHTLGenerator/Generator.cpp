@@ -59,6 +59,10 @@ std::string Generator::generate(std::shared_ptr<ProgramNode> program) {
                 case NodeType::NAMESPACE:
                     visitNamespaceNode(static_cast<NamespaceNode*>(node.get()));
                     break;
+                case NodeType::FUNCTION_CALL:
+                    // 处理顶层模板使用
+                    visitTemplateUseNode(static_cast<TemplateUseNode*>(node.get()));
+                    break;
                 default:
                     // Skip unknown node types
                     break;
@@ -138,7 +142,7 @@ void Generator::generateHtmlElement(ElementNode* node) {
     currentState_.currentElementNode = node;
     currentState_.currentElement = tagName;
     
-    // 先扫描子节点，收集局部样式块的信息
+    // 先扫描子节点，收集局部样式块的信息和模板使用
     for (const auto& child : node->getChildNodes()) {
         if (child && child->getType() == NodeType::STYLE_BLOCK) {
             auto styleNode = static_cast<StyleNode*>(child.get());
@@ -153,7 +157,11 @@ void Generator::generateHtmlElement(ElementNode* node) {
                         if (!currentState_.pendingInlineStyles.empty()) {
                             currentState_.pendingInlineStyles += " ";
                         }
-                        currentState_.pendingInlineStyles += prop->getName() + ": " + prop->getValue() + ";";
+                        currentState_.pendingInlineStyles += prop->getName() + ": " + processTemplateVariables(prop->getValue()) + ";";
+                    } else if (rule->getType() == NodeType::FUNCTION_CALL) {
+                        // 处理样式模板使用
+                        auto templateUse = static_cast<TemplateUseNode*>(rule.get());
+                        templateUse->accept(this);
                     }
                 }
             }
@@ -194,6 +202,10 @@ void Generator::generateHtmlElement(ElementNode* node) {
                         break;
                     case NodeType::SCRIPT_BLOCK:
                         visitScriptNode(static_cast<ScriptNode*>(child.get()));
+                        break;
+                    case NodeType::FUNCTION_CALL:
+                        // 处理模板使用
+                        visitTemplateUseNode(static_cast<TemplateUseNode*>(child.get()));
                         break;
                     default:
                         // Skip other node types inside elements
@@ -589,26 +601,176 @@ std::string Generator::escapeJs(const std::string& text) {
     return text;
 }
 
+std::string Generator::processTemplateVariables(const std::string& input) {
+    std::string result = input;
+    
+    // 处理变量组模板调用 TemplateName(varName)
+    size_t pos = 0;
+    while ((pos = result.find('(', pos)) != std::string::npos) {
+        // 查找模板名
+        size_t start = pos;
+        while (start > 0 && (std::isalnum(result[start-1]) || result[start-1] == '_')) {
+            start--;
+        }
+        
+        if (start < pos) {
+            std::string templateName = result.substr(start, pos - start);
+            size_t endParen = result.find(')', pos);
+            
+            if (endParen != std::string::npos) {
+                std::string varName = result.substr(pos + 1, endParen - pos - 1);
+                
+                // 查找变量值
+                auto templateVars = varTemplateStorage_.find(templateName);
+                if (templateVars != varTemplateStorage_.end()) {
+                    auto varValue = templateVars->second.find(varName);
+                    if (varValue != templateVars->second.end()) {
+                        // 替换变量
+                        result = result.substr(0, start) + varValue->second + result.substr(endParen + 1);
+                        pos = start + varValue->second.length();
+                        continue;
+                    }
+                }
+            }
+        }
+        pos++;
+    }
+    
+    return result;
+}
+
 // 其他访问者方法的空实现
 void Generator::visitTemplateNode(TemplateNode* node) { 
-    // Templates are registered during parsing, no HTML output needed
-    (void)node;
+    // 存储模板定义供后续使用
+    if (node) {
+        templateStorage_[node->getName()] = node;
+        
+        // 如果是变量组模板，提取变量
+        if (node->getTemplateType() == TemplateType::VAR && node->getContent()) {
+            auto content = node->getContent();
+            if (content->getType() == NodeType::ELEMENT) {
+                auto element = static_cast<ElementNode*>(content.get());
+                // 从属性中提取变量
+                for (const auto& [key, value] : element->getAttributes()) {
+                    varTemplateStorage_[node->getName()][key] = value;
+                }
+            }
+        }
+    }
 }
-void Generator::visitTemplateUseNode(TemplateUseNode* node) { (void)node; }
+void Generator::visitTemplateUseNode(TemplateUseNode* node) {
+    if (!node) return;
+    
+    // 获取模板信息
+    const std::string& templateName = node->getName();
+    TemplateType templateType = node->getTemplateType();
+    
+    // 从模板存储中查找模板定义
+    auto templateDef = templateStorage_.find(templateName);
+    if (templateDef == templateStorage_.end()) {
+        ErrorBuilder(ErrorLevel::ERROR, ErrorType::REFERENCE_ERROR)
+            .withMessage("Undefined template: " + templateName)
+            .report();
+        return;
+    }
+    
+    switch (templateType) {
+        case TemplateType::STYLE: {
+            // 样式组模板使用 - 将模板中的属性添加到当前元素的样式中
+            if (currentState_.currentElementNode) {
+                // 获取模板内容
+                auto content = templateDef->second->getContent();
+                if (content && content->getType() == NodeType::STYLE_BLOCK) {
+                    auto styleNode = static_cast<StyleNode*>(content.get());
+                    for (const auto& rule : styleNode->getRules()) {
+                        if (rule->getType() == NodeType::PROPERTY) {
+                            auto prop = static_cast<PropertyNode*>(rule.get());
+                            if (!currentState_.pendingInlineStyles.empty()) {
+                                currentState_.pendingInlineStyles += " ";
+                            }
+                            currentState_.pendingInlineStyles += prop->getName() + ": " + processTemplateVariables(prop->getValue()) + ";";
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        
+        case TemplateType::ELEMENT: {
+            // 元素模板使用 - 将模板内容展开到当前位置
+            auto content = templateDef->second->getContent();
+            if (content) {
+                // 直接访问模板内容
+                content->accept(this);
+            }
+            break;
+        }
+        
+        case TemplateType::VAR: {
+            // 变量组模板在CSS值解析时处理
+            // 这里不需要做什么
+            break;
+        }
+    }
+}
 void Generator::visitCustomNode(CustomNode* node) { (void)node; }
 void Generator::visitCustomUseNode(CustomUseNode* node) { (void)node; }
 void Generator::visitOriginNode(OriginNode* node) { (void)node; }
 void Generator::visitOriginUseNode(OriginUseNode* node) { (void)node; }
-void Generator::visitImportNode(ImportNode* node) { (void)node; }
-void Generator::visitConfigNode(ConfigNode* node) { (void)node; }
+void Generator::visitImportNode(ImportNode* node) { 
+    if (!node) return;
+    
+    // 导入处理在解析阶段完成，生成阶段不需要输出
+    // 但需要处理导入的HTML/CSS/JS文件
+    ImportType importType = node->getImportType();
+    const std::string& path = node->getFromPath();
+    auto alias = node->getAlias();
+    
+    switch (importType) {
+        case ImportType::HTML:
+            // TODO: 读取HTML文件内容并输出
+            break;
+        case ImportType::STYLE:
+            // TODO: 生成<link>标签或内联样式
+            writeLine("<link rel=\"stylesheet\" href=\"" + path + "\">");
+            break;
+        case ImportType::JAVASCRIPT:
+            // TODO: 生成<script>标签
+            writeLine("<script src=\"" + path + "\"></script>");
+            break;
+        default:
+            // 其他导入类型在解析阶段处理
+            break;
+    }
+}
+void Generator::visitConfigNode(ConfigNode* node) { 
+    // 配置在解析阶段应用，生成阶段不输出
+    (void)node;
+}
 void Generator::visitInfoNode(InfoNode* node) { (void)node; }
-void Generator::visitExportNode(ExportNode* node) { (void)node; }
-void Generator::visitNamespaceNode(NamespaceNode* node) { (void)node; }
+void Generator::visitExportNode(ExportNode* node) { 
+    // [Export]块不生成输出，仅用于CMOD打包时的查询表
+    (void)node;
+}
+void Generator::visitNamespaceNode(NamespaceNode* node) { 
+    // 命名空间在解析阶段处理，生成阶段不输出内容
+    // 但需要处理命名空间内的内容
+    if (node) {
+        for (const auto& child : node->getContent()) {
+            if (child) {
+                child->accept(this);
+            }
+        }
+    }
+}
 void Generator::visitFromNode(FromNode* node) { (void)node; }
 void Generator::visitDeleteNode(DeleteNode* node) { (void)node; }
 void Generator::visitInsertNode(InsertNode* node) { (void)node; }
 void Generator::visitInheritNode(InheritNode* node) { (void)node; }
-void Generator::visitExceptNode(ExceptNode* node) { (void)node; }
+void Generator::visitExceptNode(ExceptNode* node) { 
+    // except约束在解析阶段进行验证，生成阶段不输出
+    (void)node;
+}
 void Generator::visitUseNode(UseNode* node) { (void)node; }
 
 void Generator::generateCSSRule(SelectorNode* node) {
@@ -626,7 +788,8 @@ void Generator::generateCSSRule(SelectorNode* node) {
         for (const auto& rule : styleContent->getRules()) {
             if (rule && rule->getType() == NodeType::PROPERTY) {
                 auto prop = static_cast<PropertyNode*>(rule.get());
-                writeLine(prop->getName() + ": " + prop->getValue() + ";");
+                std::string value = processTemplateVariables(prop->getValue());
+                writeLine(prop->getName() + ": " + value + ";");
             }
         }
     }

@@ -1,57 +1,47 @@
-// Test template features
-
-// Style template
-[Template] @Style DefaultText {
-    color: black;
-    line-height: 1.6;
-    font-size: 16px;
+// 测试模板功能
+[Template] @Style button-style {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
 }
 
-// Element template  
 [Template] @Element Card {
     div {
         class: "card";
-        
-        h3 {
-            text {
-                "Card Title"
-            }
+        style {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
         }
         
-        p {
-            text {
-                "Card content goes here"
-            }
-        }
+        h3 { "Card Title" }
+        p { "Card content goes here" }
     }
 }
 
-// Variable template
-[Template] @Var ThemeColors {
+[Template] @Var colors {
     primary: "#007bff";
     secondary: "#6c757d";
     success: "#28a745";
 }
 
-// Using templates
-html {
-    body {
-        // Use element template
-        @Element Card;
-        
-        // Another card
-        div {
-            style {
-                // Use style template
-                @Style DefaultText;
-                
-                // Additional styles
-                margin: 20px;
-            }
-            
-            text {
-                "This div uses the DefaultText style template"
-            }
+// 使用模板
+div {
+    button {
+        style {
+            @Style button-style;
         }
+        "Click me!"
+    }
+    
+    @Element Card;
+    
+    section {
+        style {
+            background-color: colors(primary);
+        }
+        "Section with primary color"
     }
 }

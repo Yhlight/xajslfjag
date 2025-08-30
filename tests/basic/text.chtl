@@ -1,0 +1,21 @@
+// 测试文本节点
+div {
+    "Simple text"
+    
+    p {
+        "Text with \"quotes\""
+    }
+    
+    span {
+        'Single quoted text'
+    }
+    
+    // 文本块
+    article {
+        text {
+            This is a text block.
+            It can span multiple lines.
+            No quotes needed.
+        }
+    }
+}

@@ -1,0 +1,16 @@
+// 测试样式模板
+[Template] @Style button-style {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+}
+
+button {
+    style {
+        @Style button-style;
+        font-size: 16px;  // 额外的样式
+    }
+    "Click me!"
+}

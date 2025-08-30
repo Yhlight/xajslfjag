@@ -1,0 +1,299 @@
+// 综合语法测试 - 覆盖CHTL所有核心特性
+
+// ========== 1. 基础元素和属性 ==========
+div {
+    id: "main-container";
+    class: "container fluid";
+    data-test: "value";
+    
+    // 文本节点
+    "Welcome to CHTL!"
+    
+    // 嵌套元素
+    header {
+        h1 { "CHTL Comprehensive Test" }
+        nav {
+            ul {
+                li { a { href: "/home"; "Home" } }
+                li { a { href: "/about"; "About" } }
+                li { a { href: "/contact"; "Contact" } }
+            }
+        }
+    }
+}
+
+// ========== 2. 注释系统 ==========
+// 单行注释
+/* 多行注释
+   可以跨越多行 */
+-- 生成器注释，会出现在生成的HTML中
+
+// ========== 3. 样式系统 ==========
+// 全局样式块
+style {
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+// 局部样式块与选择器自动化
+section {
+    style {
+        padding: 20px;
+        background: #f5f5f5;
+        
+        .section-title {
+            font-size: 24px;
+            color: #333;
+        }
+        
+        #unique-section {
+            border: 1px solid #ddd;
+        }
+        
+        &:hover {
+            background: #e0e0e0;
+        }
+    }
+    
+    h2 {
+        class: "section-title";
+        "Section with Auto Selectors"
+    }
+}
+
+// ========== 4. 模板系统 ==========
+// 样式组模板
+[Template] @Style primary-button {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+// 元素模板
+[Template] @Element Card {
+    div {
+        class: "card";
+        style {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h3 { class: "card-title"; "" }
+        p { class: "card-content"; "" }
+    }
+}
+
+// 变量组模板
+[Template] @Var theme {
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+    danger: "#dc3545";
+    warning: "#ffc107";
+    info: "#17a2b8";
+}
+
+// 使用模板
+main {
+    // 使用样式模板
+    button {
+        style {
+            @Style primary-button;
+        }
+        "Click Me"
+    }
+    
+    // 使用元素模板
+    @Element Card;
+    
+    // 使用变量模板
+    div {
+        style {
+            background-color: theme(primary);
+            color: white;
+            padding: 10px;
+        }
+        "Themed Division"
+    }
+}
+
+// ========== 5. 自定义系统 ==========
+// 自定义样式组
+[Custom] @Style dark-theme {
+    background: #2c3e50;
+    color: #ecf0f1;
+}
+
+// 自定义元素
+[Custom] @Element Modal {
+    div {
+        class: "modal-overlay";
+        div {
+            class: "modal-content";
+            button {
+                class: "modal-close";
+                "×"
+            }
+            ""
+        }
+    }
+}
+
+// 自定义变量组
+[Custom] @Var spacing {
+    small: "5px";
+    medium: "10px";
+    large: "20px";
+}
+
+// ========== 6. 原始嵌入 ==========
+// HTML嵌入
+[Origin] @Html legacy-code {
+    <div class="legacy">
+        <p>This is legacy HTML code</p>
+    </div>
+}
+
+// CSS嵌入
+[Origin] @Style {
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+}
+
+// JavaScript嵌入
+[Origin] @JavaScript {
+    console.log('CHTL is loaded!');
+}
+
+// 使用命名原始嵌入
+article {
+    [Origin] @Html legacy-code;
+}
+
+// ========== 7. 导入系统 ==========
+[Import] @Style from "external.css"
+[Import] @JavaScript from "utils.js"
+[Import] [Template] @Element Button from "components.chtl"
+
+// ========== 8. 命名空间 ==========
+[Namespace] ui {
+    [Template] @Style button-base {
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    [Template] @Element Button {
+        button {
+            style {
+                @Style button-base;
+            }
+            ""
+        }
+    }
+}
+
+// 使用命名空间
+footer {
+    @Element Button from ui;
+}
+
+// ========== 9. 配置系统 ==========
+[Configuration] {
+    INDEX_INITIAL_COUNT = 0;
+    DEBUG_MODE = false;
+    
+    [Name] {
+        CUSTOM_STYLE = [@Style, @style];
+        CUSTOM_ELEMENT = @Element;
+        CUSTOM_VAR = @Var;
+    }
+}
+
+// ========== 10. 约束系统 ==========
+div {
+    class: "restricted";
+    except span, img;  // 禁止使用span和img元素
+    
+    p { "This is allowed" }
+    // span { "This would cause an error" }
+}
+
+// ========== 11. 文本块 ==========
+article {
+    text {
+        这是一个文本块。
+        可以包含多行文本。
+        不需要引号包围。
+    }
+}
+
+// ========== 12. CE等价性 ==========
+// 使用 = 代替 :
+div {
+    id = "equivalent";
+    class = "ce-syntax";
+    style {
+        width = 100%;
+        height = auto;
+    }
+}
+
+// ========== 13. 脚本块 ==========
+script {
+    function init() {
+        console.log('Initialized');
+    }
+    
+    window.addEventListener('load', init);
+}
+
+// ========== 14. use语句 ==========
+use html5;
+
+// ========== 15. 完整页面示例 ==========
+html {
+    head {
+        title { "CHTL Comprehensive Test" }
+        meta { charset: "UTF-8"; }
+        meta { 
+            name: "viewport"; 
+            content: "width=device-width, initial-scale=1.0";
+        }
+    }
+    
+    body {
+        // 页面内容
+        @Element Card;
+        
+        div {
+            style {
+                margin-top: 20px;
+                .footer {
+                    text-align: center;
+                    padding: 20px;
+                    background: #333;
+                    color: white;
+                }
+            }
+            
+            p { "© 2024 CHTL Project" }
+        }
+    }
+}

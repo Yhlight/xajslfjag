@@ -1,0 +1,25 @@
+// 测试全局样式
+style {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    #header {
+        background: #333;
+        color: white;
+    }
+}
+
+div {
+    class: "container";
+    header {
+        id: "header";
+        "Header Content"
+    }
+}

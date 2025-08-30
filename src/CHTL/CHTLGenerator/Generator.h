@@ -31,7 +31,7 @@ struct GeneratorConfig {
 };
 
 // HTML生成器
-class Generator {
+class Generator : public Visitor {
 private:
     // 模板变量存储
     std::unordered_map<std::string, std::string> templateVars_;
@@ -96,6 +96,10 @@ private:
     std::stack<GeneratorState> stateStack_;
     GeneratorState currentState_;
     
+    // 模板存储
+    std::unordered_map<std::string, TemplateNode*> templateStorage_;
+    std::unordered_map<std::string, std::unordered_map<std::string, std::string>> varTemplateStorage_;
+    
     // 输出辅助方法
     void write(const std::string& text);
     void writeLine(const std::string& text = "");
@@ -146,6 +150,7 @@ private:
     std::string escapeHtml(const std::string& text);
     std::string escapeCss(const std::string& text);
     std::string escapeJs(const std::string& text);
+    std::string processTemplateVariables(const std::string& input);
 };
 
 // 生成器异常

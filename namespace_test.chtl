@@ -1,4 +1,22 @@
-// Test namespace
-[Namespace] components {
-    @Element Header;
+// 测试命名空间
+[Namespace] ui {
+    [Template] @Style button-style {
+        background: #28a745;
+        color: white;
+        padding: 8px 16px;
+    }
+    
+    [Template] @Element Button {
+        button {
+            style {
+                @Style button-style;
+            }
+            "Namespaced Button"
+        }
+    }
+}
+
+// 使用命名空间中的模板
+div {
+    @Element Button from ui;
 }

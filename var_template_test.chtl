@@ -1,0 +1,13 @@
+// 测试变量模板
+[Template] @Var colors {
+    primary: "#007bff";
+    secondary: "#6c757d";
+}
+
+div {
+    style {
+        background-color: colors(primary);
+        color: colors(secondary);
+    }
+    "Test colors"
+}

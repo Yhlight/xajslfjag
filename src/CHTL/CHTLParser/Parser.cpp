@@ -1085,11 +1085,47 @@ std::string Parser::parseCSSValue() {
             if (needSpace && !value.empty()) value += " ";
             value += parseString();
             needSpace = true;
+        } else if (check(TokenType::IDENTIFIER)) {
+            std::string lexeme = current_->getLexeme();
+            
+            // 检查是否是变量组模板调用 TemplateName(varName)
+            auto next = lexer_->peekToken();
+            if (next && next->getType() == TokenType::LEFT_PAREN) {
+                // 这是一个变量组模板调用
+                value += lexeme;  // 模板名
+                advance();
+                value += current_->getLexeme();  // (
+                advance();
+                
+                // 解析变量名
+                if (check(TokenType::IDENTIFIER)) {
+                    value += current_->getLexeme();
+                    advance();
+                }
+                
+                // 期待右括号
+                if (check(TokenType::RIGHT_PAREN)) {
+                    value += current_->getLexeme();
+                    advance();
+                }
+                needSpace = true;
+            } else {
+                // 普通标识符
+                if (needSpace && !value.empty() && 
+                    lexeme != "," && lexeme != ")" && lexeme != ";" && lexeme != "px" &&
+                    lexeme != "em" && lexeme != "rem" && lexeme != "%" && lexeme != "vh" &&
+                    lexeme != "vw" && !std::isdigit(lexeme[0]) &&
+                    value.back() != '(' && value.back() != ',' && value.back() != '#') {
+                    value += " ";
+                }
+                value += lexeme;
+                advance();
+                needSpace = (lexeme != "(" && lexeme != ",");
+            }
         } else {
             std::string lexeme = current_->getLexeme();
             
             // 检查是否需要添加空格
-            // 不在某些符号之间添加空格
             if (needSpace && !value.empty() && 
                 lexeme != "," && lexeme != ")" && lexeme != ";" && lexeme != "px" &&
                 lexeme != "em" && lexeme != "rem" && lexeme != "%" && lexeme != "vh" &&
@@ -1099,9 +1135,9 @@ std::string Parser::parseCSSValue() {
             }
             
             value += lexeme;
-            needSpace = (lexeme != "(" && lexeme != ",");
+            needSpace = (lexeme != "(" && lexeme != "," && lexeme != "#");
+            advance();
         }
-        advance();
     }
     
     return value;

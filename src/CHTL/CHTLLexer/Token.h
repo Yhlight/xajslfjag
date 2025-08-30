@@ -43,6 +43,9 @@ enum class TokenType {
     KEYWORD_AT_TOP,        // at top
     KEYWORD_AT_BOTTOM,     // at bottom
     KEYWORD_HTML5,         // html5
+    KEYWORD_MODULE,        // module (CJJS)
+    KEYWORD_LISTEN,        // listen (CJJS)
+    KEYWORD_LOAD,          // load (CJJS)
     
     // 类型标识符
     TYPE_STYLE,            // @Style
@@ -64,6 +67,7 @@ enum class TokenType {
     AMPERSAND,             // &
     HASH,                  // #
     AT,                    // @
+    ARROW,                 // -> (CJJS)
     
     // 括号
     LEFT_BRACE,            // {
