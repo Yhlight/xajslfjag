@@ -8,7 +8,7 @@
 
 namespace CHTL {
 
-// 自定义原始嵌入类型
+// 自定义原始嵌入类型 - 严格按照文档定义
 enum class CustomOriginType {
     VUE,                // Vue.js 组件
     REACT,              // React 组件

@@ -33,11 +33,8 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLNode/ConstraintNode.cpp
     src/CHTL/CHTLNode/SpecializationNode.cpp
     src/CHTL/CHTLNode/ImportNode.cpp
-    src/CHTL/CHTLNode/EnhancedCustomNode.cpp
     src/CHTL/CHTLConfig/ConfigurationManager.cpp
-    src/CHTL/CHTLConfig/SuperAdvancedConfigurationManager.cpp
     src/CHTL/CHTLLoader/ImportEnhancer.cpp
-    src/CHTL/CHTLLoader/SuperImportResolver.cpp
     src/CHTL/CMODSystem/CMODManager.cpp
     src/CHTL/CHTLNode/InheritanceManager.cpp
     src/CHTL/CHTLGenerator/Generator.cpp
