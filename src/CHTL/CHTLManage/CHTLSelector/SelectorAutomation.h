@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Util/Common.h"
-#include "../CHTLNode/BaseNode.h"
+#include "../../../Util/Common.h"
+#include "../../CHTLNode/BaseNode.h"
 #include "../CHTLConfig/ConfigurationManager.h"
 
 namespace CHTL {

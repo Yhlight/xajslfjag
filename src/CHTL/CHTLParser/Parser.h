@@ -5,7 +5,7 @@
 #include "../CHTLNode/BaseNode.h"
 #include "../CHTLContext/Context.h"
 #include "../CHTLState/State.h"
-#include "../CHTLSelector/SelectorAutomation.h"
+#include "../CHTLManage/CHTLSelector/SelectorAutomation.h"
 
 namespace CHTL {
 

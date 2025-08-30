@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../CHTLNode/BaseNode.h"
+#include "../../CHTLNode/BaseNode.h"
 
 namespace CHTL {
 

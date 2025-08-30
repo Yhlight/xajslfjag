@@ -1,7 +1,7 @@
 #include "Parser.h"
 #include "../CHTLNode/ConstraintNode.h"
 #include "../CHTLNode/SpecializationNode.h"
-#include "../CHTLConfig/ConfigurationManager.h"
+#include "../CHTLManage/CHTLConfig/ConfigurationManager.h"
 #include "../CHTLLoader/ImportEnhancer.h"
 #include "../CHTLLexer/GlobalMap.h"
 #include <iostream>

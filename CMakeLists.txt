@@ -33,7 +33,7 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLNode/ConstraintNode.cpp
     src/CHTL/CHTLNode/SpecializationNode.cpp
     src/CHTL/CHTLNode/ImportNode.cpp
-    src/CHTL/CHTLConfig/ConfigurationManager.cpp
+    src/CHTL/CHTLManage/CHTLConfig/ConfigurationManager.cpp
     src/CHTL/CHTLLoader/ImportEnhancer.cpp
     src/CHTL/CMODSystem/CMODManager.cpp
     src/CHTL/CHTLNode/InheritanceManager.cpp
@@ -42,9 +42,9 @@ set(CHTL_CORE_SOURCES
     src/CHTL/CHTLState/State.cpp
     src/CHTL/CHTLContext/Context.cpp
     src/CHTL/CHTLIOStream/FileStream.cpp
-    src/CHTL/CHTLSelector/SelectorAutomation.cpp
-    src/CHTL/CHTLNamespace/NamespaceManager.cpp
-    src/CHTL/CHTLConstraint/ConstraintSystem.cpp
+    src/CHTL/CHTLManage/CHTLSelector/SelectorAutomation.cpp
+    src/CHTL/CHTLManage/CHTLNamespace/NamespaceManager.cpp
+    src/CHTL/CHTLManage/CHTLConstraint/ConstraintSystem.cpp
     
     # CHTL JS Lexer - 基础功能
     src/CHTLJS/CHTLJSLexer/Token.cpp

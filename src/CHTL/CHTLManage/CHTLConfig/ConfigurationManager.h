@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../Util/Common.h"
-#include "../CHTLNode/BaseNode.h"
+#include "../../../Util/Common.h"
+#include "../../CHTLNode/BaseNode.h"
 #include "ConfigNode.h"
 #include <unordered_map>
 #include <memory>
