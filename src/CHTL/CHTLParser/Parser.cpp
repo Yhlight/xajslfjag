@@ -272,11 +272,37 @@ std::unique_ptr<BaseNode> Parser::parseStyle() {
     
     consume(TokenType::LBRACE, "期望 '{'");
     
-    // 解析样式内容
+    // 解析样式内容 - 安全的大括号处理
     String styleContent;
-    while (!check(TokenType::RBRACE) && !isAtEnd()) {
-        styleContent += currentToken.value + " ";
-        advance();
+    int braceDepth = 0;
+    int maxTokens = 1000; // 防止无限循环
+    int tokenCount = 0;
+    
+    while (!isAtEnd() && tokenCount < maxTokens) {
+        tokenCount++;
+        
+        if (check(TokenType::LBRACE)) {
+            braceDepth++;
+            styleContent += currentToken.value + " ";
+            advance();
+        } else if (check(TokenType::RBRACE)) {
+            if (braceDepth == 0) {
+                // 这是样式块的结束大括号
+                break;
+            } else {
+                // 这是内部的大括号
+                braceDepth--;
+                styleContent += currentToken.value + " ";
+                advance();
+            }
+        } else {
+            styleContent += currentToken.value + " ";
+            advance();
+        }
+    }
+    
+    if (tokenCount >= maxTokens) {
+        reportError("样式块解析超时，可能存在语法错误", "STYLE_PARSE_TIMEOUT");
     }
     
     styleNode->value = styleContent;
@@ -296,11 +322,37 @@ std::unique_ptr<BaseNode> Parser::parseScript() {
     
     consume(TokenType::LBRACE, "期望 '{'");
     
-    // 解析脚本内容
+    // 解析脚本内容 - 安全的大括号处理
     String scriptContent;
-    while (!check(TokenType::RBRACE) && !isAtEnd()) {
-        scriptContent += currentToken.value + " ";
-        advance();
+    int braceDepth = 0;
+    int maxTokens = 1000; // 防止无限循环
+    int tokenCount = 0;
+    
+    while (!isAtEnd() && tokenCount < maxTokens) {
+        tokenCount++;
+        
+        if (check(TokenType::LBRACE)) {
+            braceDepth++;
+            scriptContent += currentToken.value + " ";
+            advance();
+        } else if (check(TokenType::RBRACE)) {
+            if (braceDepth == 0) {
+                // 这是脚本块的结束大括号
+                break;
+            } else {
+                // 这是内部的大括号
+                braceDepth--;
+                scriptContent += currentToken.value + " ";
+                advance();
+            }
+        } else {
+            scriptContent += currentToken.value + " ";
+            advance();
+        }
+    }
+    
+    if (tokenCount >= maxTokens) {
+        reportError("脚本块解析超时，可能存在语法错误", "SCRIPT_PARSE_TIMEOUT");
     }
     
     scriptNode->value = scriptContent;
