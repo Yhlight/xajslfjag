@@ -591,4 +591,12 @@ if(BUILD_TESTS)
         CHTLError
     )
     
+    # 正确编译顺序测试
+    add_executable(test_correct_compilation_order test_correct_compilation_order.cpp)
+    target_link_libraries(test_correct_compilation_order 
+        CHTLError
+        CHTLScanner
+        CHTLCompiler
+    )
+    
 endif()

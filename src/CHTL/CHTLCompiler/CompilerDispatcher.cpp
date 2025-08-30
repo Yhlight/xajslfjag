@@ -132,18 +132,55 @@ CompilationResult CompilerDispatcher::compileFragment(const CodeFragment& fragme
 std::vector<CompilationResult> CompilerDispatcher::compileFragments(const std::vector<CodeFragment>& fragments) {
     std::vector<CompilationResult> results;
     
-    // 优化编译顺序
-    auto optimizedFragments = optimizeCompilationOrder(fragments);
+    // 正确的编译顺序：
+    // 1. 先处理CHTL和CHTL JS片段
+    // 2. 合并CHTL和CHTL JS的结果
+    // 3. 再将合并后的完整代码交给CSS和JS编译器
     
-    if (m_parallelCompilation) {
-        // 并行编译（需要线程池实现）
-        for (const auto& fragment : optimizedFragments) {
-            results.push_back(compileFragment(fragment));
+    std::vector<CompilationResult> chtlResults;
+    std::vector<CompilationResult> chtlJSResults;
+    std::vector<CodeFragment> cssFragments;
+    std::vector<CodeFragment> jsFragments;
+    
+    // 第一阶段：分类并处理CHTL和CHTL JS片段
+    for (const auto& fragment : fragments) {
+        if (fragment.type == FragmentType::CHTL) {
+            auto result = compileFragment(fragment);
+            chtlResults.push_back(result);
+        } else if (fragment.type == FragmentType::CHTL_JS) {
+            auto result = compileFragment(fragment);
+            chtlJSResults.push_back(result);
+        } else if (fragment.type == FragmentType::CSS) {
+            cssFragments.push_back(fragment);
+        } else if (fragment.type == FragmentType::JAVASCRIPT) {
+            jsFragments.push_back(fragment);
         }
-    } else {
-        // 串行编译
-        for (const auto& fragment : optimizedFragments) {
-            results.push_back(compileFragment(fragment));
+    }
+    
+    // 将CHTL和CHTL JS结果添加到最终结果
+    results.insert(results.end(), chtlResults.begin(), chtlResults.end());
+    results.insert(results.end(), chtlJSResults.begin(), chtlJSResults.end());
+    
+    // 第二阶段：合并CHTL和CHTL JS的输出，然后处理CSS和JS
+    if (!cssFragments.empty() || !jsFragments.empty()) {
+        // 合并已处理的CHTL和CHTL JS结果
+        std::string mergedCSS = mergeCSS(chtlResults);
+        std::string mergedJS = mergeJavaScript(chtlJSResults);
+        
+        // 处理CSS片段（接收完整的合并后代码）
+        for (auto& cssFragment : cssFragments) {
+            // 将合并后的CSS代码添加到片段中
+            cssFragment.content = mergedCSS + "\n" + cssFragment.content;
+            auto result = compileFragment(cssFragment);
+            results.push_back(result);
+        }
+        
+        // 处理JS片段（接收完整的合并后代码）
+        for (auto& jsFragment : jsFragments) {
+            // 将合并后的JS代码添加到片段中
+            jsFragment.content = mergedJS + "\n" + jsFragment.content;
+            auto result = compileFragment(jsFragment);
+            results.push_back(result);
         }
     }
     
@@ -294,13 +331,16 @@ bool CompilerDispatcher::validateFragmentCompatibility(const CodeFragment& fragm
 std::vector<CodeFragment> CompilerDispatcher::optimizeCompilationOrder(const std::vector<CodeFragment>& fragments) {
     std::vector<CodeFragment> optimized = fragments;
     
-    // 简单的优化：CHTL片段优先，然后是CSS，最后是JavaScript
+    // 正确的编译顺序：
+    // 1. CHTL片段（最高优先级）
+    // 2. CHTL JS片段
+    // 3. CSS和JS片段必须在CHTL和CHTL JS完成后处理
     std::sort(optimized.begin(), optimized.end(), [](const CodeFragment& a, const CodeFragment& b) {
         static const std::unordered_map<FragmentType, int> priority = {
-            {FragmentType::CHTL, 1},
-            {FragmentType::CSS, 2},
-            {FragmentType::CHTL_JS, 3},
-            {FragmentType::JAVASCRIPT, 4},
+            {FragmentType::CHTL, 1},        // 最先处理
+            {FragmentType::CHTL_JS, 2},     // 其次处理
+            {FragmentType::CSS, 3},         // 等待CHTL处理完成后
+            {FragmentType::JAVASCRIPT, 4},  // 等待CHTL JS处理完成后
             {FragmentType::HTML, 5}
         };
         

@@ -565,6 +565,19 @@ test_cjmod_correct_runtime/fast:
 .PHONY : test_cjmod_correct_runtime/fast
 
 #=============================================================================
+# Target rules for targets named test_correct_compilation_order
+
+# Build rule for target.
+test_correct_compilation_order: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_correct_compilation_order
+.PHONY : test_correct_compilation_order
+
+# fast build rule for target.
+test_correct_compilation_order/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_correct_compilation_order.dir/build.make CMakeFiles/test_correct_compilation_order.dir/build
+.PHONY : test_correct_compilation_order/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -1193,6 +1206,30 @@ test_constraint_system.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_constraint_system.dir/build.make CMakeFiles/test_constraint_system.dir/test_constraint_system.cpp.s
 .PHONY : test_constraint_system.cpp.s
 
+test_correct_compilation_order.o: test_correct_compilation_order.cpp.o
+.PHONY : test_correct_compilation_order.o
+
+# target to build an object file
+test_correct_compilation_order.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_correct_compilation_order.dir/build.make CMakeFiles/test_correct_compilation_order.dir/test_correct_compilation_order.cpp.o
+.PHONY : test_correct_compilation_order.cpp.o
+
+test_correct_compilation_order.i: test_correct_compilation_order.cpp.i
+.PHONY : test_correct_compilation_order.i
+
+# target to preprocess a source file
+test_correct_compilation_order.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_correct_compilation_order.dir/build.make CMakeFiles/test_correct_compilation_order.dir/test_correct_compilation_order.cpp.i
+.PHONY : test_correct_compilation_order.cpp.i
+
+test_correct_compilation_order.s: test_correct_compilation_order.cpp.s
+.PHONY : test_correct_compilation_order.s
+
+# target to generate assembly for a file
+test_correct_compilation_order.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_correct_compilation_order.dir/build.make CMakeFiles/test_correct_compilation_order.dir/test_correct_compilation_order.cpp.s
+.PHONY : test_correct_compilation_order.cpp.s
+
 test_final_simple.o: test_final_simple.cpp.o
 .PHONY : test_final_simple.o
 
@@ -1574,6 +1611,7 @@ help:
 	@echo "... test_config_debug"
 	@echo "... test_configuration_system"
 	@echo "... test_constraint_system"
+	@echo "... test_correct_compilation_order"
 	@echo "... test_final_simple"
 	@echo "... test_import_system"
 	@echo "... test_lexer"
@@ -1640,6 +1678,9 @@ help:
 	@echo "... test_constraint_system.o"
 	@echo "... test_constraint_system.i"
 	@echo "... test_constraint_system.s"
+	@echo "... test_correct_compilation_order.o"
+	@echo "... test_correct_compilation_order.i"
+	@echo "... test_correct_compilation_order.s"
 	@echo "... test_final_simple.o"
 	@echo "... test_final_simple.i"
 	@echo "... test_final_simple.s"
