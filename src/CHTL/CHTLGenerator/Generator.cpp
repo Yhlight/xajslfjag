@@ -491,9 +491,13 @@ GenerationOutput Generator::generateDocument(const BaseNode* documentNode) {
         // 阶段2: CHTL JS编译器 - 处理CHTL JS语法并转换
         processCHTLJSSyntax(documentNode);
         
-        // 阶段3: 代码合并阶段 - 合并所有CSS和JS代码
-        String mergedCSSCode = mergeAllCSSCode(documentNode);
-        String mergedJSCode = mergeAllJavaScriptCode(documentNode);
+        // 阶段3: 代码收集阶段 - 收集所有CSS和JS代码
+        std::ostringstream cssCollector;
+        std::ostringstream jsCollector;
+        collectCSSContent(documentNode, cssCollector);
+        collectJavaScriptContent(documentNode, jsCollector);
+        String mergedCSSCode = cssCollector.str();
+        String mergedJSCode = jsCollector.str();
         
         // 阶段4: CSS编译器 - 接收合并后的完整CSS代码片段
         if (!mergedCSSCode.empty()) {
