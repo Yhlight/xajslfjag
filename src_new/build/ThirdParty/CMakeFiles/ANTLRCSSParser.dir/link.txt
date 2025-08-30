@@ -1,2 +1,0 @@
-/usr/bin/ar qc libANTLRCSSParser.a CMakeFiles/ANTLRCSSParser.dir/antlr/generated/CSS/css3Lexer.cpp.o CMakeFiles/ANTLRCSSParser.dir/antlr/generated/CSS/css3Parser.cpp.o CMakeFiles/ANTLRCSSParser.dir/antlr/generated/CSS/css3ParserBaseListener.cpp.o CMakeFiles/ANTLRCSSParser.dir/antlr/generated/CSS/css3ParserListener.cpp.o
-/usr/bin/ranlib libANTLRCSSParser.a

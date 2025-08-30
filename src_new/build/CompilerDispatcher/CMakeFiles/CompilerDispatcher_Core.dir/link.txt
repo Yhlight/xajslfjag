@@ -1,2 +1,0 @@
-/usr/bin/ar qc libCompilerDispatcher_Core.a CMakeFiles/CompilerDispatcher_Core.dir/CompilerDispatcher.cpp.o
-/usr/bin/ranlib libCompilerDispatcher_Core.a

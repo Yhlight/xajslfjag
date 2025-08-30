@@ -1,2 +1,0 @@
-/usr/bin/ar qc libCHTL_JS_Core.a CMakeFiles/CHTL_JS_Core.dir/CHTLJSGenerator/CHTLJSGenerator.cpp.o CMakeFiles/CHTL_JS_Core.dir/CHTLJSParser/CHTLJSParser.cpp.o CMakeFiles/CHTL_JS_Core.dir/CJMODSystem/CJMODApi.cpp.o
-/usr/bin/ranlib libCHTL_JS_Core.a

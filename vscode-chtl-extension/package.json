@@ -1,0 +1,225 @@
+{
+    "name": "chtl-language-support",
+    "displayName": "CHTL Language Support",
+    "description": "Complete CHTL language support with syntax highlighting, auto-completion, compilation and live preview",
+    "version": "1.0.0",
+    "publisher": "CHTL-Team",
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Programming Languages",
+        "Snippets",
+        "Formatters",
+        "Other"
+    ],
+    "keywords": [
+        "chtl",
+        "hypertext",
+        "compiler",
+        "web development",
+        "html",
+        "css",
+        "javascript"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "languages": [
+            {
+                "id": "chtl",
+                "aliases": ["CHTL", "chtl"],
+                "extensions": [".chtl"],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "chtl-js",
+                "aliases": ["CHTL JS", "chtl-js"],
+                "extensions": [".cjjs"],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "cmod",
+                "aliases": ["CMOD", "cmod"],
+                "extensions": [".cmod"],
+                "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "cjmod",
+                "aliases": ["CJMOD", "cjmod"],
+                "extensions": [".cjmod"],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "chtl",
+                "scopeName": "source.chtl",
+                "path": "./syntaxes/chtl.tmLanguage.json"
+            },
+            {
+                "language": "chtl-js",
+                "scopeName": "source.chtl-js",
+                "path": "./syntaxes/chtl-js.tmLanguage.json"
+            },
+            {
+                "language": "cmod",
+                "scopeName": "source.cmod",
+                "path": "./syntaxes/cmod.tmLanguage.json"
+            },
+            {
+                "language": "cjmod",
+                "scopeName": "source.cjmod",
+                "path": "./syntaxes/cjmod.tmLanguage.json"
+            }
+        ],
+        "snippets": [
+            {
+                "language": "chtl",
+                "path": "./snippets/chtl.json"
+            },
+            {
+                "language": "chtl-js",
+                "path": "./snippets/chtl-js.json"
+            }
+        ],
+        "commands": [
+            {
+                "command": "chtl.compile",
+                "title": "Compile CHTL File",
+                "category": "CHTL"
+            },
+            {
+                "command": "chtl.compileAndPreview",
+                "title": "Compile and Preview",
+                "category": "CHTL"
+            },
+            {
+                "command": "chtl.startLiveServer",
+                "title": "Start Live Server",
+                "category": "CHTL"
+            },
+            {
+                "command": "chtl.stopLiveServer",
+                "title": "Stop Live Server",
+                "category": "CHTL"
+            },
+            {
+                "command": "chtl.createProject",
+                "title": "Create CHTL Project",
+                "category": "CHTL"
+            },
+            {
+                "command": "chtl.loadOfficialModules",
+                "title": "Load Official Modules",
+                "category": "CHTL"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compile",
+                    "group": "chtl"
+                },
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compileAndPreview",
+                    "group": "chtl"
+                }
+            ],
+            "editor/context": [
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compile",
+                    "group": "chtl"
+                },
+                {
+                    "when": "resourceExtname == .chtl",
+                    "command": "chtl.compileAndPreview",
+                    "group": "chtl"
+                }
+            ]
+        },
+        "keybindings": [
+            {
+                "command": "chtl.compile",
+                "key": "ctrl+shift+c",
+                "when": "resourceExtname == .chtl"
+            },
+            {
+                "command": "chtl.compileAndPreview",
+                "key": "ctrl+shift+p",
+                "when": "resourceExtname == .chtl"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "CHTL Configuration",
+            "properties": {
+                "chtl.compilerPath": {
+                    "type": "string",
+                    "default": "",
+                    "description": "Path to CHTL compiler executable"
+                },
+                "chtl.enableLiveServer": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable live server for real-time preview"
+                },
+                "chtl.liveServerPort": {
+                    "type": "number",
+                    "default": 3000,
+                    "description": "Live server port"
+                },
+                "chtl.autoCompileOnSave": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Automatically compile CHTL files on save"
+                },
+                "chtl.enableOfficialModules": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable official modules (Chtholly, Yuigahama)"
+                },
+                "chtl.debugMode": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Enable debug mode for detailed logging"
+                }
+            }
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.74.0",
+        "@types/node": "16.x",
+        "typescript": "^4.9.4"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "ws": "^8.13.0",
+        "chokidar": "^3.5.3"
+    },
+    "activationEvents": [
+        "onLanguage:chtl",
+        "onLanguage:chtl-js",
+        "onLanguage:cmod",
+        "onLanguage:cjmod",
+        "onCommand:chtl.compile",
+        "onCommand:chtl.createProject"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/CHTL-Team/chtl-compiler"
+    },
+    "bugs": {
+        "url": "https://github.com/CHTL-Team/chtl-compiler/issues"
+    },
+    "homepage": "https://github.com/CHTL-Team/chtl-compiler#readme",
+    "license": "MIT",
+    "icon": "images/chtl-icon.png"
+}

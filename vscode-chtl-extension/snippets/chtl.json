@@ -1,0 +1,221 @@
+{
+    "CHTL Template Style": {
+        "prefix": "template-style",
+        "body": [
+            "[Template] @Style ${1:StyleName}",
+            "{",
+            "\t${2:property}: \"${3:value}\";",
+            "}"
+        ],
+        "description": "Create a CHTL style template"
+    },
+    "CHTL Template Element": {
+        "prefix": "template-element",
+        "body": [
+            "[Template] @Element ${1:ElementName}",
+            "{",
+            "\t${2:element}",
+            "\t{",
+            "\t\t${3:content}",
+            "\t}",
+            "}"
+        ],
+        "description": "Create a CHTL element template"
+    },
+    "CHTL Template Var": {
+        "prefix": "template-var",
+        "body": [
+            "[Template] @Var ${1:VarGroupName}",
+            "{",
+            "\t${2:varName}: \"${3:value}\";",
+            "}"
+        ],
+        "description": "Create a CHTL variable group template"
+    },
+    "CHTL Custom Style": {
+        "prefix": "custom-style",
+        "body": [
+            "[Custom] @Style ${1:StyleName}${2: from ${3:ParentStyle}}",
+            "{",
+            "\t${4:property}: \"${5:value}\";",
+            "}"
+        ],
+        "description": "Create a CHTL custom style"
+    },
+    "CHTL Custom Element": {
+        "prefix": "custom-element",
+        "body": [
+            "[Custom] @Element ${1:ElementName}${2: from ${3:ParentElement}}",
+            "{",
+            "\t${4:element}",
+            "\t{",
+            "\t\t${5:content}",
+            "\t}",
+            "}"
+        ],
+        "description": "Create a CHTL custom element"
+    },
+    "CHTL Import": {
+        "prefix": "import",
+        "body": [
+            "[Import] @${1|Chtl,Html,Style,JavaScript,CJmod|} from ${2:path}${3: as ${4:alias}}"
+        ],
+        "description": "Import CHTL modules or files"
+    },
+    "CHTL Configuration": {
+        "prefix": "config",
+        "body": [
+            "[Configuration]${1: @Config ${2:ConfigName}}",
+            "{",
+            "\tINDEX_INITIAL_COUNT = ${3:1};",
+            "\tDEBUG_MODE = ${4:false};",
+            "}"
+        ],
+        "description": "Create CHTL configuration block"
+    },
+    "CHTL Namespace": {
+        "prefix": "namespace",
+        "body": [
+            "[Namespace] ${1:NamespaceName}",
+            "{",
+            "\t${2:content}",
+            "}"
+        ],
+        "description": "Create CHTL namespace"
+    },
+    "CHTL Origin": {
+        "prefix": "origin",
+        "body": [
+            "[Origin] @${1|Html,Style,JavaScript,Vue|} ${2:name}",
+            "{",
+            "\t${3:content}",
+            "}"
+        ],
+        "description": "Create CHTL origin embedding"
+    },
+    "CHTL Text Node": {
+        "prefix": "text",
+        "body": [
+            "text",
+            "{",
+            "\t${1:content}",
+            "}"
+        ],
+        "description": "Create CHTL text node"
+    },
+    "CHTL Style Block": {
+        "prefix": "style",
+        "body": [
+            "style",
+            "{",
+            "\t.${1:className}",
+            "\t{",
+            "\t\t${2:property}: \"${3:value}\";",
+            "\t}",
+            "}"
+        ],
+        "description": "Create CHTL style block"
+    },
+    "CHTL Script Block": {
+        "prefix": "script",
+        "body": [
+            "script",
+            "{",
+            "\t${1:// CHTL JS code}",
+            "}"
+        ],
+        "description": "Create CHTL script block"
+    },
+    "CHTL Element": {
+        "prefix": "element",
+        "body": [
+            "${1:div}",
+            "{",
+            "\t${2:id}: \"${3:elementId}\";",
+            "\t${4:class}: \"${5:elementClass}\";",
+            "\t",
+            "\t${6:content}",
+            "}"
+        ],
+        "description": "Create CHTL element with attributes"
+    },
+    "CHTL JS Enhanced Selector": {
+        "prefix": "selector",
+        "body": [
+            "{{${1:.className}}}${2:->}${3:method}(${4:args})"
+        ],
+        "description": "CHTL JS enhanced selector"
+    },
+    "CHTL JS Event Binding": {
+        "prefix": "event-bind",
+        "body": [
+            "{{${1:.selector}}} &-> ${2:click}",
+            "{",
+            "\t${3:// event handler}",
+            "}"
+        ],
+        "description": "CHTL JS event binding"
+    },
+    "CHTL JS Animate": {
+        "prefix": "animate",
+        "body": [
+            "animate",
+            "{",
+            "\ttarget: ${1:{{.selector}}},",
+            "\tduration: ${2:300},",
+            "\teasing: \"${3:ease-out}\",",
+            "\t",
+            "\tbegin: {",
+            "\t\t${4:property}: \"${5:value}\"",
+            "\t},",
+            "\t",
+            "\tend: {",
+            "\t\t${6:property}: \"${7:value}\"",
+            "\t}",
+            "}"
+        ],
+        "description": "CHTL JS animation block"
+    },
+    "CHTL JS Virtual Object": {
+        "prefix": "vir",
+        "body": [
+            "vir ${1:objectName} = listen",
+            "{",
+            "\t${2:methodName}: function(${3:params}) {",
+            "\t\t${4:// method implementation}",
+            "\t}",
+            "};"
+        ],
+        "description": "CHTL JS virtual object"
+    },
+    "Chtholly Card": {
+        "prefix": "chtholly-card",
+        "body": [
+            "ChthollyCard()",
+            "{",
+            "\tdiv[1]",
+            "\t{",
+            "\t\th3 { text { \"${1:Title}\" } }",
+            "\t\tp { text { \"${2:Content}\" } }",
+            "\t}",
+            "}"
+        ],
+        "description": "Chtholly module card component"
+    },
+    "Yuigahama Music Player": {
+        "prefix": "yuigahama-player",
+        "body": [
+            "YuigahaMusicPlayer()",
+            "{",
+            "\tscript",
+            "\t{",
+            "\t\t{{.player-btn.play}} &-> click",
+            "\t\t{",
+            "\t\t\tconsole.log('🎵 Music started!');",
+            "\t\t}",
+            "\t}",
+            "}"
+        ],
+        "description": "Yuigahama module music player"
+    }
+}
