@@ -169,6 +169,19 @@ test_antlr_integration/fast:
 .PHONY : test_antlr_integration/fast
 
 #=============================================================================
+# Target rules for targets named simple_complex_test
+
+# Build rule for target.
+simple_complex_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 simple_complex_test
+.PHONY : simple_complex_test
+
+# fast build rule for target.
+simple_complex_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_complex_test.dir/build.make CMakeFiles/simple_complex_test.dir/build
+.PHONY : simple_complex_test/fast
+
+#=============================================================================
 # Target rules for targets named ANTLR4Runtime
 
 # Build rule for target.
@@ -294,6 +307,30 @@ final_verification.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/final_verification.cpp.s
 .PHONY : final_verification.cpp.s
 
+simple_complex_test.o: simple_complex_test.cpp.o
+.PHONY : simple_complex_test.o
+
+# target to build an object file
+simple_complex_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_complex_test.dir/build.make CMakeFiles/simple_complex_test.dir/simple_complex_test.cpp.o
+.PHONY : simple_complex_test.cpp.o
+
+simple_complex_test.i: simple_complex_test.cpp.i
+.PHONY : simple_complex_test.i
+
+# target to preprocess a source file
+simple_complex_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_complex_test.dir/build.make CMakeFiles/simple_complex_test.dir/simple_complex_test.cpp.i
+.PHONY : simple_complex_test.cpp.i
+
+simple_complex_test.s: simple_complex_test.cpp.s
+.PHONY : simple_complex_test.s
+
+# target to generate assembly for a file
+simple_complex_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/simple_complex_test.dir/build.make CMakeFiles/simple_complex_test.dir/simple_complex_test.cpp.s
+.PHONY : simple_complex_test.cpp.s
+
 test_antlr_integration.o: test_antlr_integration.cpp.o
 .PHONY : test_antlr_integration.o
 
@@ -358,6 +395,7 @@ help:
 	@echo "... CHTLZIPUtil"
 	@echo "... comprehensive_test"
 	@echo "... final_verification"
+	@echo "... simple_complex_test"
 	@echo "... structure_validation"
 	@echo "... test_antlr_integration"
 	@echo "... comprehensive_test.o"
@@ -366,6 +404,9 @@ help:
 	@echo "... final_verification.o"
 	@echo "... final_verification.i"
 	@echo "... final_verification.s"
+	@echo "... simple_complex_test.o"
+	@echo "... simple_complex_test.i"
+	@echo "... simple_complex_test.s"
 	@echo "... test_antlr_integration.o"
 	@echo "... test_antlr_integration.i"
 	@echo "... test_antlr_integration.s"

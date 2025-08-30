@@ -43,3 +43,9 @@ add_executable(test_antlr_integration test_antlr_integration.cpp)
 target_link_libraries(test_antlr_integration 
     CHTLError
 )
+
+# 复杂网站功能测试
+add_executable(simple_complex_test simple_complex_test.cpp)
+target_link_libraries(simple_complex_test 
+    CHTLError
+)

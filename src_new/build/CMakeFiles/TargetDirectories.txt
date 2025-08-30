@@ -2,6 +2,7 @@
 /workspace/src_new/build/CMakeFiles/final_verification.dir
 /workspace/src_new/build/CMakeFiles/structure_validation.dir
 /workspace/src_new/build/CMakeFiles/test_antlr_integration.dir
+/workspace/src_new/build/CMakeFiles/simple_complex_test.dir
 /workspace/src_new/build/CMakeFiles/edit_cache.dir
 /workspace/src_new/build/CMakeFiles/rebuild_cache.dir
 /workspace/src_new/build/ThirdParty/CMakeFiles/ANTLR4Runtime.dir

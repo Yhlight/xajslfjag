@@ -1,8 +1,6 @@
 #pragma once
 #include "Token.h"
 #include "GlobalMap.h"
-#include "../CHTLJSState/State.h"
-#include "../CHTLJSContext/Context.h"
 #include "../../Error/ErrorReport.h"
 #include <string>
 #include <vector>
