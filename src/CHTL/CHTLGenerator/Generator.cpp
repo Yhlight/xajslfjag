@@ -309,11 +309,25 @@ void Generator::collectCSSContent(const BaseNode* node, std::ostringstream& outp
     
     switch (node->getType()) {
         case NodeType::STYLE: {
-            // 样式节点：收集CSS内容
-            String content = node->getValue();
-            if (!content.empty()) {
-                output << content << config.newlineString;
+            // 样式节点：需要解析子节点中的CSS属性
+            output << "/* Style block */" << config.newlineString;
+            
+            // 遍历子节点收集CSS属性
+            for (const auto& child : node->getChildren()) {
+                if (child) {
+                    String property = child->getValue();
+                    if (!property.empty()) {
+                        output << property << config.newlineString;
+                    }
+                }
             }
+            
+            // 如果节点本身有值，也包含进来
+            String nodeValue = node->getValue();
+            if (!nodeValue.empty()) {
+                output << nodeValue << config.newlineString;
+            }
+            
             break;
         }
         
@@ -322,6 +336,7 @@ void Generator::collectCSSContent(const BaseNode* node, std::ostringstream& outp
             // 模板和自定义样式：收集内容
             String content = node->getValue();
             if (!content.empty()) {
+                output << "/* Template/Custom style */" << config.newlineString;
                 output << content << config.newlineString;
             }
             break;
@@ -331,6 +346,7 @@ void Generator::collectCSSContent(const BaseNode* node, std::ostringstream& outp
             // @Style原始嵌入：收集CSS内容
             String content = node->getValue();
             if (!content.empty()) {
+                output << "/* Origin Style */" << config.newlineString;
                 output << content << config.newlineString;
             }
             break;
@@ -350,11 +366,25 @@ void Generator::collectJavaScriptContent(const BaseNode* node, std::ostringstrea
     
     switch (node->getType()) {
         case NodeType::SCRIPT: {
-            // 脚本节点：收集JavaScript内容
-            String content = node->getValue();
-            if (!content.empty()) {
-                output << content << config.newlineString;
+            // 脚本节点：需要解析子节点中的JavaScript代码
+            output << "/* Script block */" << config.newlineString;
+            
+            // 遍历子节点收集JavaScript代码
+            for (const auto& child : node->getChildren()) {
+                if (child) {
+                    String jsCode = child->getValue();
+                    if (!jsCode.empty()) {
+                        output << jsCode << config.newlineString;
+                    }
+                }
             }
+            
+            // 如果节点本身有值，也包含进来
+            String nodeValue = node->getValue();
+            if (!nodeValue.empty()) {
+                output << nodeValue << config.newlineString;
+            }
+            
             break;
         }
         
@@ -365,6 +395,7 @@ void Generator::collectJavaScriptContent(const BaseNode* node, std::ostringstrea
         case NodeType::CHTLJS_VIR_OBJECT:
         case NodeType::CHTLJS_MODULE: {
             // CHTL JS增强语法：转换为JavaScript
+            output << "/* CHTL JS converted */" << config.newlineString;
             String convertedJS = convertCHTLJSToJS(node);
             if (!convertedJS.empty()) {
                 output << convertedJS << config.newlineString;
@@ -376,6 +407,7 @@ void Generator::collectJavaScriptContent(const BaseNode* node, std::ostringstrea
             // @JavaScript原始嵌入：收集JavaScript内容
             String content = node->getValue();
             if (!content.empty()) {
+                output << "/* Origin JavaScript */" << config.newlineString;
                 output << content << config.newlineString;
             }
             break;
@@ -467,7 +499,81 @@ GenerationOutput Generator::generate(const BaseNode* ast) {
 }
 
 GenerationOutput Generator::generateDocument(const BaseNode* documentNode) {
-    return generate(documentNode);
+    GenerationOutput output;
+    
+    try {
+        // 🔄 正确的生成流程：
+        // 1. 首先处理CHTL语法（模板、自定义等）并生成HTML
+        // 2. 然后收集所有CSS和JS内容
+        // 3. 最后调用CSS和JS编译器处理完整代码片段
+        
+        // 第一阶段：生成HTML结构
+        output.html = generateHTML(documentNode);
+        
+        // 第二阶段：收集完整的CSS代码片段
+        std::ostringstream cssCollector;
+        collectCSSContent(documentNode, cssCollector);
+        String completeCSSCode = cssCollector.str();
+        
+        // 第三阶段：收集完整的JavaScript代码片段
+        std::ostringstream jsCollector;
+        collectJavaScriptContent(documentNode, jsCollector);
+        String completeJSCode = jsCollector.str();
+        
+        // 第四阶段：如果有CSS内容，使用ANTLR CSS编译器处理完整片段
+        if (!completeCSSCode.empty()) {
+            CSS::CSSCompilerConfig cssConfig;
+            cssConfig.minifyOutput = config.optimizeCSS;
+            cssConfig.preserveComments = config.includeCSSComments;
+            cssConfig.enableAutoprefixer = config.addVendorPrefixes;
+            cssConfig.enableNesting = true;
+            cssConfig.enableVariables = true;
+            
+            CSS::CSSCompiler cssCompiler(cssConfig);
+            auto cssResult = cssCompiler.compile(completeCSSCode);
+            
+            if (cssResult.success) {
+                output.css = cssResult.css;
+            } else {
+                output.css = completeCSSCode;
+                output.warnings.push_back("CSS编译失败，使用原始CSS");
+                for (const auto& error : cssResult.errors) {
+                    output.warnings.push_back("CSS错误: " + error);
+                }
+            }
+        }
+        
+        // 第五阶段：如果有JavaScript内容，使用ANTLR JS编译器处理完整片段
+        if (!completeJSCode.empty()) {
+            JS::JSCompilerConfig jsConfig;
+            jsConfig.minifyOutput = config.optimizeJS;
+            jsConfig.preserveComments = config.includeJSComments;
+            jsConfig.enableModules = config.useESModules;
+            jsConfig.strictMode = config.addStrictMode;
+            jsConfig.enableAsync = true;
+            
+            JS::JSCompiler jsCompiler(jsConfig);
+            auto jsResult = jsCompiler.compile(completeJSCode);
+            
+            if (jsResult.success) {
+                output.javascript = jsResult.javascript;
+            } else {
+                output.javascript = completeJSCode;
+                output.warnings.push_back("JS编译失败，使用原始JavaScript");
+                for (const auto& error : jsResult.errors) {
+                    output.warnings.push_back("JS错误: " + error);
+                }
+            }
+        }
+        
+        output.success = true;
+        
+    } catch (const std::exception& e) {
+        output.errors.push_back("文档生成异常: " + String(e.what()));
+        output.success = false;
+    }
+    
+    return output;
 }
 
 GenerationOutput Generator::generateFragment(const BaseNode* fragmentNode) {
