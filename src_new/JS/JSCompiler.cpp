@@ -2,6 +2,17 @@
 #include <regex>
 #include <sstream>
 
+// ANTLR4运行时
+#include "antlr4-runtime.h"
+#include "ANTLRInputStream.h"
+#include "CommonTokenStream.h"
+#include "tree/ParseTree.h"
+
+// 生成的JavaScript解析器
+#include "SimpleJSLexer.h"
+#include "SimpleJSParser.h"
+#include "SimpleJSParserBaseListener.h"
+
 namespace CHTL {
 
 JSCompiler::JSCompiler() : m_initialized(false) {
@@ -80,18 +91,33 @@ std::string JSCompiler::getCompilerInfo() const {
 }
 
 void JSCompiler::initializeANTLR() {
-    // 初始化ANTLR4 JavaScript解析器
-    // 这里应该加载JavaScript.g4语法文件并初始化解析器
-    m_initialized = true;
+    try {
+        // 初始化ANTLR4 JavaScript解析器
+        m_initialized = true;
+    } catch (const std::exception& e) {
+        handleJSError("Failed to initialize ANTLR4 JavaScript parser: " + std::string(e.what()), 0, 0);
+        m_initialized = false;
+    }
 }
 
 std::string JSCompiler::parseWithANTLR(const std::string& jsCode) {
-    // 使用ANTLR4解析JavaScript代码
-    // 这里应该使用生成的JavaScript解析器
+    if (!m_initialized) {
+        return jsCode;
+    }
     
-    std::ostringstream result;
+    try {
+        // 创建ANTLR4解析树
+        auto parseTree = createParseTree(jsCode);
+        
+        if (parseTree) {
+            // 从解析树生成JavaScript代码
+            return generateJSFromTree(parseTree);
+        }
+    } catch (const std::exception& e) {
+        handleJSError("ANTLR4 parsing failed: " + std::string(e.what()), 0, 0);
+    }
     
-    // 简化的JavaScript处理：确保基本语法正确
+    // 如果ANTLR4解析失败，使用简化处理
     std::string processed = jsCode;
     
     // 确保语句以分号结尾
@@ -100,12 +126,46 @@ std::string JSCompiler::parseWithANTLR(const std::string& jsCode) {
     // 确保函数声明格式正确
     processed = std::regex_replace(processed, std::regex(R"(function\s*([^(]*)\s*\()"), "function $1(");
     
-    // 确保变量声明格式正确
-    processed = std::regex_replace(processed, std::regex(R"((var|let|const)\s+)"), "$1 ");
+    return processed;
+}
+
+std::shared_ptr<antlr4::tree::ParseTree> JSCompiler::createParseTree(const std::string& jsCode) {
+    try {
+        // 创建输入流
+        m_inputStream = std::make_unique<antlr4::ANTLRInputStream>(jsCode);
+        
+        // 创建词法分析器
+        m_lexer = std::make_unique<SimpleJSLexer>(m_inputStream.get());
+        
+        // 创建Token流
+        m_tokenStream = std::make_unique<antlr4::CommonTokenStream>(m_lexer.get());
+        
+        // 创建语法分析器
+        m_parser = std::make_unique<SimpleJSParser>(m_tokenStream.get());
+        
+        // 解析JavaScript
+        return std::shared_ptr<antlr4::tree::ParseTree>(m_parser->program());
+        
+    } catch (const std::exception& e) {
+        handleJSError("Failed to create parse tree: " + std::string(e.what()), 0, 0);
+        return nullptr;
+    }
+}
+
+std::string JSCompiler::generateJSFromTree(const std::shared_ptr<antlr4::tree::ParseTree>& tree) {
+    if (!tree) {
+        return "";
+    }
     
-    result << processed;
+    // 从解析树生成JavaScript代码
+    std::string result = tree->getText();
     
-    return result.str();
+    // 基本格式化
+    result = std::regex_replace(result, std::regex(R"(\s*\{\s*)"), " {\n    ");
+    result = std::regex_replace(result, std::regex(R"(\s*\}\s*)"), "\n}\n");
+    result = std::regex_replace(result, std::regex(R"(\s*;\s*)"), ";\n");
+    
+    return result;
 }
 
 void JSCompiler::handleJSError(const std::string& error, size_t line, size_t column) {

@@ -156,6 +156,58 @@ structure_validation/fast:
 .PHONY : structure_validation/fast
 
 #=============================================================================
+# Target rules for targets named test_antlr_integration
+
+# Build rule for target.
+test_antlr_integration: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 test_antlr_integration
+.PHONY : test_antlr_integration
+
+# fast build rule for target.
+test_antlr_integration/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/build
+.PHONY : test_antlr_integration/fast
+
+#=============================================================================
+# Target rules for targets named ANTLR4Runtime
+
+# Build rule for target.
+ANTLR4Runtime: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ANTLR4Runtime
+.PHONY : ANTLR4Runtime
+
+# fast build rule for target.
+ANTLR4Runtime/fast:
+	$(MAKE) $(MAKESILENT) -f ThirdParty/CMakeFiles/ANTLR4Runtime.dir/build.make ThirdParty/CMakeFiles/ANTLR4Runtime.dir/build
+.PHONY : ANTLR4Runtime/fast
+
+#=============================================================================
+# Target rules for targets named ANTLRCSSParser
+
+# Build rule for target.
+ANTLRCSSParser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ANTLRCSSParser
+.PHONY : ANTLRCSSParser
+
+# fast build rule for target.
+ANTLRCSSParser/fast:
+	$(MAKE) $(MAKESILENT) -f ThirdParty/CMakeFiles/ANTLRCSSParser.dir/build.make ThirdParty/CMakeFiles/ANTLRCSSParser.dir/build
+.PHONY : ANTLRCSSParser/fast
+
+#=============================================================================
+# Target rules for targets named ANTLRJSParser
+
+# Build rule for target.
+ANTLRJSParser: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ANTLRJSParser
+.PHONY : ANTLRJSParser
+
+# fast build rule for target.
+ANTLRJSParser/fast:
+	$(MAKE) $(MAKESILENT) -f ThirdParty/CMakeFiles/ANTLRJSParser.dir/build.make ThirdParty/CMakeFiles/ANTLRJSParser.dir/build
+.PHONY : ANTLRJSParser/fast
+
+#=============================================================================
 # Target rules for targets named CHTLError
 
 # Build rule for target.
@@ -242,6 +294,30 @@ final_verification.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/final_verification.dir/build.make CMakeFiles/final_verification.dir/final_verification.cpp.s
 .PHONY : final_verification.cpp.s
 
+test_antlr_integration.o: test_antlr_integration.cpp.o
+.PHONY : test_antlr_integration.o
+
+# target to build an object file
+test_antlr_integration.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_integration.cpp.o
+.PHONY : test_antlr_integration.cpp.o
+
+test_antlr_integration.i: test_antlr_integration.cpp.i
+.PHONY : test_antlr_integration.i
+
+# target to preprocess a source file
+test_antlr_integration.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_integration.cpp.i
+.PHONY : test_antlr_integration.cpp.i
+
+test_antlr_integration.s: test_antlr_integration.cpp.s
+.PHONY : test_antlr_integration.s
+
+# target to generate assembly for a file
+test_antlr_integration.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/test_antlr_integration.dir/build.make CMakeFiles/test_antlr_integration.dir/test_antlr_integration.cpp.s
+.PHONY : test_antlr_integration.cpp.s
+
 test_standard_structure.o: test_standard_structure.cpp.o
 .PHONY : test_standard_structure.o
 
@@ -274,18 +350,25 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... ANTLR4Runtime"
+	@echo "... ANTLRCSSParser"
+	@echo "... ANTLRJSParser"
 	@echo "... CHTLError"
 	@echo "... CHTLFileSystem"
 	@echo "... CHTLZIPUtil"
 	@echo "... comprehensive_test"
 	@echo "... final_verification"
 	@echo "... structure_validation"
+	@echo "... test_antlr_integration"
 	@echo "... comprehensive_test.o"
 	@echo "... comprehensive_test.i"
 	@echo "... comprehensive_test.s"
 	@echo "... final_verification.o"
 	@echo "... final_verification.i"
 	@echo "... final_verification.s"
+	@echo "... test_antlr_integration.o"
+	@echo "... test_antlr_integration.i"
+	@echo "... test_antlr_integration.s"
 	@echo "... test_standard_structure.o"
 	@echo "... test_standard_structure.i"
 	@echo "... test_standard_structure.s"

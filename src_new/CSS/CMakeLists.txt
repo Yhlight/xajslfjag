@@ -18,6 +18,8 @@ add_library(CSSCompiler STATIC
 target_link_libraries(CSSCompiler
     Scanner
     CHTLError
+    ANTLRCSSParser
+    ANTLR4Runtime
 )
 
 # 设置包含目录

@@ -11,6 +11,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2")
 # 添加include目录
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+# ========== 第三方库（ANTLR4） ==========
+add_subdirectory(ThirdParty)
+
 # ========== 错误处理系统 ==========
 add_subdirectory(Error)
 
@@ -32,5 +35,11 @@ target_link_libraries(final_verification
 # 结构验证程序
 add_executable(structure_validation test_standard_structure.cpp)
 target_link_libraries(structure_validation 
+    CHTLError
+)
+
+# ANTLR4集成测试程序
+add_executable(test_antlr_integration test_antlr_integration.cpp)
+target_link_libraries(test_antlr_integration 
     CHTLError
 )

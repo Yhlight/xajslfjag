@@ -18,6 +18,8 @@ add_library(JSCompiler STATIC
 target_link_libraries(JSCompiler
     Scanner
     CHTLError
+    ANTLRJSParser
+    ANTLR4Runtime
 )
 
 # 设置包含目录

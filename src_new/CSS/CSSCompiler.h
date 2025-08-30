@@ -2,6 +2,20 @@
 #include "../Scanner/UnifiedScanner.h"
 #include "../Error/ErrorReport.h"
 #include <string>
+#include <memory>
+
+// ANTLR4前向声明
+namespace antlr4 {
+    class ANTLRInputStream;
+    class CommonTokenStream;
+    namespace tree {
+        class ParseTree;
+    }
+}
+
+// 生成的CSS解析器前向声明
+class CSSLexer;
+class CSSParser;
 
 namespace CHTL {
 
@@ -39,6 +53,12 @@ public:
 private:
     bool m_initialized;
     
+    // ANTLR4组件
+    std::unique_ptr<CSSLexer> m_lexer;
+    std::unique_ptr<CSSParser> m_parser;
+    std::unique_ptr<antlr4::ANTLRInputStream> m_inputStream;
+    std::unique_ptr<antlr4::CommonTokenStream> m_tokenStream;
+    
     /**
      * 初始化ANTLR4 CSS解析器
      */
@@ -48,6 +68,16 @@ private:
      * 使用ANTLR4解析CSS
      */
     std::string parseWithANTLR(const std::string& cssCode);
+    
+    /**
+     * 创建ANTLR4解析树
+     */
+    std::shared_ptr<antlr4::tree::ParseTree> createParseTree(const std::string& cssCode);
+    
+    /**
+     * 从解析树生成CSS代码
+     */
+    std::string generateCSSFromTree(const std::shared_ptr<antlr4::tree::ParseTree>& tree);
     
     /**
      * 处理CSS语法错误
