@@ -1,0 +1,26 @@
+// 测试选择器自动化
+div {
+    style {
+        // 内联样式
+        padding: 10px;
+        
+        // 类选择器 - 应该自动添加class="box"
+        .box {
+            width: 300px;
+            height: 200px;
+            background: #f0f0f0;
+        }
+        
+        // ID选择器 - 应该自动添加id="main"
+        #main {
+            margin: 0 auto;
+        }
+        
+        // 伪类选择器 - 应该生成.box:hover
+        &:hover {
+            background: #e0e0e0;
+        }
+    }
+    
+    "Box content"
+}

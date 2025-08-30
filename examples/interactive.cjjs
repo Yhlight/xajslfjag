@@ -1,0 +1,148 @@
+// CHTL JS交互示例
+module {
+    load: ["dom-utils", "animation"]
+}
+
+// 虚拟对象定义
+vir AppState {
+    count: 0,
+    isMenuOpen: false,
+    theme: "light"
+}
+
+// 增强的事件监听
+listen {
+    // 使用CSS选择器
+    {{.cta}} -> {
+        click: (e) => {
+            e.preventDefault()
+            AppState.count++
+            updateCounter()
+        }
+    }
+    
+    // ID选择器
+    {{#menu-toggle}} -> {
+        click: () => {
+            AppState.isMenuOpen = !AppState.isMenuOpen
+            toggleMenu()
+        }
+    }
+    
+    // 标签选择器带索引
+    {{button[0]}} -> {
+        mouseenter: () => {
+            this.style.transform = "scale(1.05)"
+        },
+        mouseleave: () => {
+            this.style.transform = "scale(1)"
+        }
+    }
+}
+
+// 事件委托
+delegate {
+    {{.container}} -> {
+        // 委托给所有子元素的.item
+        on: "click",
+        selector: ".item",
+        handler: (e, target) => {
+            console.log("Clicked item:", target.textContent)
+            highlightItem(target)
+        }
+    }
+}
+
+// 动画定义
+animate {
+    {{#hero}} -> {
+        trigger: "onLoad",
+        duration: 1000,
+        easing: "ease-out",
+        from: {
+            opacity: 0,
+            transform: "translateY(20px)"
+        },
+        to: {
+            opacity: 1,
+            transform: "translateY(0)"
+        }
+    }
+    
+    {{.feature-card}} -> {
+        trigger: "onScroll",
+        threshold: 0.5,
+        duration: 600,
+        delay: (index) => index * 100,
+        from: {
+            opacity: 0,
+            transform: "scale(0.9)"
+        },
+        to: {
+            opacity: 1,
+            transform: "scale(1)"
+        }
+    }
+}
+
+// 使用事件绑定操作符
+{{.theme-toggle}} &-> {
+    click: () => {
+        AppState.theme = AppState.theme === "light" ? "dark" : "light"
+        document.body.className = AppState.theme + "-theme"
+    }
+}
+
+// 辅助函数
+function updateCounter() {
+    {{#counter}}.textContent = `Count: ${AppState.count}`
+}
+
+function toggleMenu() {
+    const menu = {{#mobile-menu}}
+    if (AppState.isMenuOpen) {
+        menu.classList.add("open")
+    } else {
+        menu.classList.remove("open")
+    }
+}
+
+function highlightItem(element) {
+    // 移除其他高亮
+    {{.item.highlighted}}.forEach(el => {
+        el.classList.remove("highlighted")
+    })
+    
+    // 添加高亮到当前元素
+    element.classList.add("highlighted")
+    
+    // 动画效果
+    animate {
+        element -> {
+            duration: 300,
+            from: {
+                backgroundColor: "transparent"
+            },
+            to: {
+                backgroundColor: "#ffffcc"
+            }
+        }
+    }
+}
+
+// 初始化
+listen {
+    document -> {
+        DOMContentLoaded: () => {
+            console.log("CHTL JS App initialized")
+            
+            // 设置初始主题
+            document.body.className = AppState.theme + "-theme"
+            
+            // 启动动画
+            {{.animate-on-load}}.forEach(el => {
+                el.classList.add("animated")
+            })
+        }
+    }
+}

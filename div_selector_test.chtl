@@ -1,0 +1,10 @@
+// 测试div选择器
+style {
+    div {
+        color: red;
+    }
+    
+    p {
+        color: blue;
+    }
+}

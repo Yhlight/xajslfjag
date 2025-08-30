@@ -1,0 +1,13 @@
+// Test configuration followed by except
+[Configuration] @Config test {
+    key: "value";
+    
+    [Name] {
+        author: "dev";
+    }
+}
+
+div {
+    except p;
+    span { "test" }
+}

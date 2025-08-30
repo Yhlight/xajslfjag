@@ -1,0 +1,11 @@
+// Test [Name] parsing
+[Configuration] @Config test {
+    [Name] {
+        author: "test";
+    }
+}
+
+// Now test [Custom] after
+[Custom] @Style theme {
+    color: blue;
+}

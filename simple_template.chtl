@@ -1,0 +1,9 @@
+// Simple template test
+[Template] @Style button-style {
+    color: blue;
+}
+
+div {
+    @Style button-style;
+    "Test content"
+}

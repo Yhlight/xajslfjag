@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/cmod_pack.dir/link.d CMakeFiles/cmod_pack.dir/Tools/cmod_pack.cpp.o -o cmod_pack  libCHTLCore.a /workspace/src/../ANTLR4/linux/lib/libantlr4-runtime.a

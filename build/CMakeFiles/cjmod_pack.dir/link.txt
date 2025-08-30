@@ -1,0 +1,1 @@
+/usr/bin/c++ -Xlinker --dependency-file=CMakeFiles/cjmod_pack.dir/link.d CMakeFiles/cjmod_pack.dir/Tools/cjmod_pack.cpp.o -o cjmod_pack  libCHTLCore.a /workspace/src/../ANTLR4/linux/lib/libantlr4-runtime.a

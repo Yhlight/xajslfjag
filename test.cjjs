@@ -1,0 +1,31 @@
+// 测试CJJS文件
+module {
+    load: ./utils.cjjs,
+    load: ./components.cjjs
+}
+
+div {
+    class: "container";
+    
+    button {
+        style {
+            .btn {
+                padding: 10px;
+                background: #007bff;
+            }
+        }
+        
+        script {
+            {{.btn}}->addEventListener('click', () => {
+                console.log('Button clicked!');
+            });
+            
+            // 使用listen语法
+            {{&}}->listen('hover', () => {
+                {{&}}->style->background = '#0056b3';
+            });
+        }
+        
+        "Click Me"
+    }
+}

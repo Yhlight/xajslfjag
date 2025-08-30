@@ -1,0 +1,12 @@
+{
+    "name": "animate",
+    "pattern": "animate\\s*\\{([^{}]*(?:\\{[^{}]*\\}[^{}]*)*)\\}",
+    "processor": "processAnimateBlock",
+    "captureGroups": ["body"],
+    "options": {
+        "multiline": true,
+        "priority": 100
+    },
+    "description": "Matches animate blocks for defining animations",
+    "example": "animate {\n  {{.card}} -> {\n    duration: 1000,\n    from: { opacity: 0 },\n    to: { opacity: 1 }\n  }\n}"
+}

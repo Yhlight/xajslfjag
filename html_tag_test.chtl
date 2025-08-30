@@ -1,0 +1,6 @@
+// 测试HTML_TAG token
+style {
+    html {
+        font-size: 16px;
+    }
+}

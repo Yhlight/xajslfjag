@@ -1,0 +1,5 @@
+// Test basic CHTL functionality
+div {
+    "Hello, CHTL!"
+    p { "This is a paragraph" }
+}

@@ -1,0 +1,47 @@
+// 测试模板功能
+[Template] @Style button-style {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+}
+
+[Template] @Element Card {
+    div {
+        class: "card";
+        style {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+        }
+        
+        h3 { "Card Title" }
+        p { "Card content goes here" }
+    }
+}
+
+[Template] @Var colors {
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+}
+
+// 使用模板
+div {
+    button {
+        style {
+            @Style button-style;
+        }
+        "Click me!"
+    }
+    
+    @Element Card;
+    
+    section {
+        style {
+            background-color: colors(primary);
+        }
+        "Section with primary color"
+    }
+}

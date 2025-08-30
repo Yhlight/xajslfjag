@@ -1,0 +1,32 @@
+// 测试变量模板
+[Template] @Var colors {
+    primary: "#007bff";
+    secondary: "#6c757d";
+    success: "#28a745";
+    danger: "#dc3545";
+}
+
+[Template] @Var spacing {
+    small: "5px";
+    medium: "10px";
+    large: "20px";
+}
+
+div {
+    style {
+        background: colors(primary);
+        color: white;
+        padding: spacing(large);
+        margin-bottom: spacing(medium);
+    }
+    "Primary colored div"
+}
+
+div {
+    style {
+        background: colors(success);
+        color: white;
+        padding: spacing(medium);
+    }
+    "Success colored div"
+}

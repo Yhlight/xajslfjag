@@ -1,0 +1,38 @@
+// 这是一个CHTL测试文件
+
+html {
+    head {
+        title {
+            text {
+                "CHTL Test Page"
+            }
+        }
+    }
+    
+    body {
+        div {
+            id: "container";
+            class: "main-content";
+            
+            h1 {
+                text {
+                    "Welcome to CHTL!"
+                }
+            }
+            
+            p {
+                text {
+                    "This is a test of the CHTL compiler."
+                }
+            }
+            
+            // 局部样式块
+            style {
+                .highlight {
+                    color: red;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

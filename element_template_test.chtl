@@ -1,0 +1,19 @@
+// 测试元素模板
+[Template] @Element Card {
+    div {
+        class: "card";
+        style {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px;
+        }
+        
+        h3 { "Card Title" }
+        p { "Card content goes here" }
+    }
+}
+
+body {
+    @Element Card;
+    @Element Card;  // 使用两次
+}

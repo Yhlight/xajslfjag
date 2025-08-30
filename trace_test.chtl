@@ -1,0 +1,11 @@
+// Minimal test to trace the issue
+button {
+    @Style button-style;
+    "Click me!"
+}
+
+@Element Card;
+
+[Custom] @Style theme-colors {
+    primary: #007bff;
+}

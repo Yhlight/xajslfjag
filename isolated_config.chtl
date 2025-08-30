@@ -1,0 +1,8 @@
+// Isolated config test
+[Configuration] @Config test {
+    title: "test";
+    
+    [Name] {
+        author: "dev";
+    }
+}

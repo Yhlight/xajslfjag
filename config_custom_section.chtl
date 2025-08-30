@@ -1,0 +1,8 @@
+// Test with [Custom] as section name
+[Configuration] @Config test {
+    title: "test";
+    
+    [Custom] {
+        value: "custom section";
+    }
+}

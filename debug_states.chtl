@@ -1,0 +1,9 @@
+// 调试状态问题
+button {
+    @Style button-style;
+}
+
+// 这里应该回到GLOBAL状态
+[Custom] @Style theme {
+    primary: blue;
+}

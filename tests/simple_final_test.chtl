@@ -1,0 +1,74 @@
+// 简单的最终测试
+use html5;
+
+// 样式模板
+[Template] @Style main-style {
+    padding: 20px;
+    background: #f5f5f5;
+}
+
+// 元素模板
+[Template] @Element Header {
+    header {
+        h1 { "CHTL Works!" }
+        p { "A modern hypertext language" }
+    }
+}
+
+// 变量模板
+[Template] @Var theme {
+    primary: "#007bff";
+    text: "#333";
+}
+
+// 全局样式
+style {
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: theme(text);
+    }
+}
+
+// 页面结构
+html {
+    head {
+        title { "CHTL Final Test" }
+        meta { charset: "UTF-8"; }
+    }
+    
+    body {
+        @Element Header;
+        
+        main {
+            style {
+                @Style main-style;
+                
+                .content {
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+            }
+            
+            h2 { "Features Demonstrated:" }
+            ul {
+                li { "✓ HTML5 doctype generation" }
+                li { "✓ Style templates" }
+                li { "✓ Element templates" }
+                li { "✓ Variable templates" }
+                li { "✓ Local and global styles" }
+                li { "✓ Selector automation" }
+                li { "✓ Nested elements" }
+                li { "✓ Text nodes" }
+            }
+            
+            p {
+                style {
+                    color: theme(primary);
+                    font-weight: bold;
+                }
+                "CHTL is fully implemented!"
+            }
+        }
+    }
+}

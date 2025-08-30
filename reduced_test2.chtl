@@ -1,0 +1,13 @@
+// Reduced test 2
+div {
+    h1 { "Title" }
+}
+
+[Configuration] @Config test {
+    key: "value";
+}
+
+div {
+    except p;
+    span { "test" }
+}

@@ -1,0 +1,4 @@
+// 测试元素内的@Style使用
+button {
+    @Style button-style;
+}

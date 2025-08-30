@@ -1,0 +1,21 @@
+{
+    "name": "animate-extension",
+    "version": "1.0.0",
+    "description": "Enhanced animation syntax for CHTL JS",
+    "author": "CHTL Team",
+    "license": "MIT",
+    "type": "syntax",
+    "apiVersion": "1.0",
+    "entry": "extension.so",
+    "syntax": [
+        "syntax/animate.json",
+        "syntax/animate-inline.json"
+    ],
+    "dependencies": {
+        "chtljs": ">=1.0.0"
+    },
+    "config": {
+        "supportLegacyBrowsers": true,
+        "enableOptimizations": true
+    }
+}

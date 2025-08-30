@@ -1,0 +1,11 @@
+// Test button, @Element, [Custom]
+button {
+    @Style button-style;
+    "Click me!"
+}
+
+@Element Card;
+
+[Custom] @Style theme {
+    primary: blue;
+}

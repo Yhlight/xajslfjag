@@ -1,0 +1,2 @@
+// Test just template element usage
+@Element Card;

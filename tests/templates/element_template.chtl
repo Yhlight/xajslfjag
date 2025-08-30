@@ -1,0 +1,23 @@
+// 测试元素模板
+[Template] @Element Card {
+    div {
+        class: "card";
+        style {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        h3 { class: "card-title"; "Card Title" }
+        p { class: "card-body"; "Card content goes here" }
+    }
+}
+
+// 使用元素模板
+main {
+    @Element Card;
+    @Element Card;
+    @Element Card;
+}

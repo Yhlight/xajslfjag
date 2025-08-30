@@ -1,0 +1,11 @@
+// 测试导入功能
+[Import] @Style from "styles.css"
+[Import] @JavaScript from "script.js"
+
+// 导入CHTL文件中的模板
+[Import] [Template] @Style button-style from "components.chtl"
+[Import] [Template] @Element Card from "components.chtl"
+
+div {
+    "Import test"
+}

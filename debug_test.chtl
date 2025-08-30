@@ -1,0 +1,31 @@
+// Debug test - add features one by one
+div { "Test1" }
+
+[Template] @Style s1 { color: blue; }
+
+div { "Test2" }
+
+[Custom] @Style s2 { color: red; }
+
+div { "Test3" }
+
+[Origin] @Style { body { margin: 0; } }
+
+div { "Test4" }
+
+[Import] [Custom] H from "./h.chtl";
+
+div { "Test5" }
+
+[Namespace] ns { @Element H; }
+
+div { "Test6" }
+
+[Configuration] @Config cfg {
+    title: "test";
+    [Name] {
+        author: "dev";
+    }
+}
+
+div { "Test7" }

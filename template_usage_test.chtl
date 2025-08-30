@@ -1,0 +1,10 @@
+// Test template usage
+[Template] @Style button-style {
+    background: blue;
+    color: white;
+}
+
+button {
+    @Style button-style;
+    "Click me!"
+}

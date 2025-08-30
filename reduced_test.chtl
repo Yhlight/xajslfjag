@@ -1,0 +1,8 @@
+// Reduced test
+div {
+    h1 { "Title" }
+}
+
+[Configuration] @Config test {
+    key: "value";
+}

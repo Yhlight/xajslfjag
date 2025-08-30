@@ -1,0 +1,10 @@
+div{h1{"Title"}}
+[Template]@Style s{color:blue;}
+button{@Style s;"Click";}
+[Custom]@Style t{color:red;}
+[Custom]@Element H{header{"H";}}
+[Origin]@Style{body{margin:0;}}
+[Origin]@JavaScript{console.log("test");}
+[Configuration]@Config c{title:"test";[Name]{author:"dev";}}
+div{except p;span{"test";}}
+style{*{margin:0;}}

@@ -1,0 +1,21 @@
+// 测试选择器自动化
+div {
+    style {
+        padding: 10px;
+        
+        .auto-class {
+            background: yellow;
+            border: 1px solid orange;
+        }
+        
+        #auto-id {
+            font-weight: bold;
+        }
+        
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+    
+    "This div should have class='auto-class' and id='auto-id' automatically"
+}

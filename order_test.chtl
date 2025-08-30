@@ -1,0 +1,12 @@
+// Test order of features
+[Configuration] @Config test {
+    key: "value";
+    
+    [Name] {
+        author: "test";
+    }
+}
+
+[Custom] @Style theme {
+    color: red;
+}
